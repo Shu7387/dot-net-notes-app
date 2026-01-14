@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="consolidated-styles.css" />
+    <title>Tech Notes - Home</title>
+    <style>
+      /* Landing page specific styles */
+      .landing-container {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .landing-title {
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .landing-subtitle {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 40px;
+      }
+
+      .topics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 800px;
+        margin-top: 40px;
+      }
+
+      .topic-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 24px;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+      }
+
+      .topic-card:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+      }
+
+      .topic-card h3 {
+        margin: 0 0 8px 0;
+        font-size: 20px;
+        color: #667eea;
+      }
+
+      .topic-card p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="landing-container">
+      <h1 class="landing-title">Tech Learning Notes</h1>
+      <p class="landing-subtitle">
+        Comprehensive notes on modern web development technologies
+      </p>
+
+      <div class="topics-grid">
+        <a href="Notes/SQL.html" class="topic-card">
+          <h3>SQL Server</h3>
+          <p>Database fundamentals, queries, optimization</p>
+        </a>
+
+        <a href="Notes/CSharp.html" class="topic-card">
+          <h3>C#</h3>
+          <p>OOP, LINQ, async programming, patterns</p>
+        </a>
+
+        <a href="Notes/WebAPI.html" class="topic-card">
+          <h3>ASP.NET Web API</h3>
+          <p>REST, EF Core, authentication, performance</p>
+        </a>
+
+        <a href="Notes/MVC.html" class="topic-card">
+          <h3>ASP.NET MVC</h3>
+          <p>Controllers, views, routing, security</p>
+        </a>
+
+        <a href="Notes/JS.html" class="topic-card">
+          <h3>JavaScript</h3>
+          <p>ES6+, async, DOM, jQuery essentials</p>
+        </a>
+
+        <a href="Notes/TS.html" class="topic-card">
+          <h3>TypeScript</h3>
+          <p>Types, interfaces, generics, utilities</p>
+        </a>
+
+        <a href="Notes/Angular.html" class="topic-card">
+          <h3>Angular</h3>
+          <p>Components, RxJS, routing, best practices</p>
+        </a>
+
+        <a href="Notes/GitDocker.html" class="topic-card">
+          <h3>DevOps</h3>
+          <p
+            class="swap-text"
+            style="width: auto; height: auto; display: block"
+          >
+            <span>Git workflows & version control</span>
+            <span>CI/CD pipelines & automation</span>
+            <span>Docker containers & deployment</span>
+          </p>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style.css" />
+    <title>C# Notes</title>
+  </head>
+  <body>
+    <h1>2. C#</h1>
+
+    <h2>SECTION 1: C# Fundamentals</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Value vs Reference Type</strong></td>
+          <td>
+            Value (stack, int, bool, struct, enum); Reference (heap, class,
+            string, array)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Stack vs Heap</strong></td>
+          <td>
+            Stack: fast, fixed size, auto-cleanup; Heap: dynamic size, objects,
+            GC managed
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Nullable Types</strong></td>
+          <td>
+            <code>int?</code>, <code>Nullable&lt;T&gt;</code>; allows null for
+            value types
+          </td>
+        </tr>
+        <tr>
+          <td><strong>var vs dynamic vs object</strong></td>
+          <td>
+            <code>var</code>: compile-time type inference; <code>dynamic</code>:
+            runtime type; <code>object</code>: base type, needs casting
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Access Modifiers</strong></td>
+          <td>
+            <code>public</code>, <code>private</code>, <code>protected</code>,
+            <code>internal</code>, <code>protected internal</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Arrays</strong></td>
+          <td>Fixed-size collection; <code>int[] arr = new int[5]</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <p><strong>Collections Interfaces:</strong></p>
+      <ul>
+        <li>
+          <strong>IEnumerable:</strong> LINQ to Objects; Data is loaded first &
+          filtering happens in memory. In-memory operations.
+        </li>
+        <li>
+          <strong>IQueryable:</strong> LINQ to SQL/EF; Query is executed and
+          filtered on the database server. For DB queries. Faster.
+        </li>
+        <li>
+          <strong>ICollection:</strong> Non Indexed access; Count, Add, Remove,
+          Clear
+        </li>
+        <li><strong>IList:</strong> Indexed access; Insert, RemoveAt</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Type Conversion:</strong></p>
+      <ul>
+        <li>
+          <strong>Parse:</strong> Throws exception if invalid
+          <code>int k = int.Parse("123")</code>
+        </li>
+        <li>
+          <strong>TryParse:</strong> Returns bool; safe conversion
+          <code>bool ok = int.TryParse("123", out x)</code>
+        </li>
+        <li>
+          <strong>Cast:</strong> Explicit type conversion
+          <code>(int)value</code>
+        </li>
+        <li>
+          <strong>Convert:</strong> Handles null;
+          <code>Convert.ToInt32(a)</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Control Flow:</strong></p>
+      <ul>
+        <li>
+          <strong>Loops:</strong> <code>foreach</code>, <code>for</code>,
+          <code>while</code>, <code>do-while</code>
+        </li>
+        <li>
+          <strong>Conditionals:</strong> <code>if-else</code>, ternary
+          <code>(?:)</code>, <code>switch</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Keywords:</strong></p>
+      <ul>
+        <li>
+          <strong>const:</strong> Compile-time constant; value fixed at compile
+          time; <strong>always static</strong>
+        </li>
+        <li>
+          <strong>readonly:</strong> Runtime constant; value set at declaration
+          or constructor; <strong>can be static or instance</strong>
+        </li>
+        <li>
+          <strong>as:</strong> Safe cast; returns null if fails
+          <code>obj as Employee;</code>
+        </li>
+        <li>
+          <strong>is:</strong> Type checking; pattern matching
+          <code>if (obj is Employee e)</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Pattern Matching:</strong></p>
+      <ul>
+        <li>
+          <strong>Type pattern (is):</strong> Check type, then cast & assign to
+          variable in one step
+          <code>if (obj is Employee e)</code>
+        </li>
+
+        <li>
+          <strong>Switch expression:</strong> Replace long if-else with clean
+          rules
+          <code
+            >result = input switch { int n => "Num", string s => "Str", _ =>
+            "Other" }</code
+          >
+        </li>
+
+        <li>
+          <strong>When guard:</strong> Add condition to a pattern
+          <code>if (obj is int n when n &gt; 0)</code>
+        </li>
+
+        <li>
+          <strong>Relational pattern:</strong> Compare values using operators
+          <code>marks switch { &gt;=90 => "A", _ => "Fail" }</code>
+        </li>
+
+        <li>
+          <strong>Property pattern:</strong> Match object properties directly
+          <code>if (user is { Role: "Admin", IsActive: true })</code>
+        </li>
+
+        <li>
+          <strong>Null pattern:</strong> Explicit null check in pattern matching
+          <code>if (obj is null)</code>
+        </li>
+
+        <li>
+          <strong>Tuple pattern:</strong> Match multiple values together
+          <code>(role, active) switch { ("Admin", true) => "Access" }</code>
+        </li>
+
+        <li>
+          <strong>Discard (_):</strong> Ignore unmatched values (default case)
+          <code>_ => "Default"</code>
+        </li>
+      </ul>
+    </div>
+
+    <h2>SECTION 2: OOP Principles</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pillar</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Abstraction</strong></td>
+          <td>Show only essentials; Hide complexity</td>
+          <td>
+            Interface, abstract class, public properties, method declaration
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Encapsulation</strong></td>
+          <td>Data hiding</td>
+          <td>class, private fields, method implementation</td>
+        </tr>
+        <tr>
+          <td><strong>Inheritance</strong></td>
+          <td>Code reuse; Extend functionality; IS-A relationship</td>
+          <td>
+            <code>class B : A</code>; Single, Multilevel, Hierarchical level
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Polymorphism</strong></td>
+          <td>Same method, different behavior</td>
+          <td>
+            Method Overloading (compile-time), Method Overriding (runtime)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <ul>
+        <li>
+          <strong>Method Overloading:</strong> Same method name,
+          <strong>different parameters</strong>, resolved at
+          <strong>compile time</strong>.
+        </li>
+        <li>
+          <strong>Method Overriding:</strong> Child class
+          <strong>provides its own implementation</strong> of a parent method;
+          decided at <strong>runtime</strong>.
+        </li>
+        <li>
+          <strong>Method Hiding:</strong> Child
+          <strong>hides base method using <code>new</code> keyword</strong>.
+          Method called depends on <strong>reference type</strong>, not runtime.
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p>
+        <strong>Association:</strong> A relationship between two independent
+        classes where one uses the other.
+      </p>
+      <ul>
+        <li>
+          <strong>Composition:</strong> Strong ownership; child dies with parent
+          (Car → Engine); <strong>owns-a (strong)</strong>
+        </li>
+        <li>
+          <strong>Aggregation:</strong> Weak ownership; child exists
+          independently (Department → Employee); <strong>has-a (weak)</strong>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p>
+        <strong>Method Parameters:</strong>
+        <code>int a = 5; int b = 3; int c</code>
+        <code>ChangeValue(a, ref b, out c);</code> Default is Value.
+      </p>
+      <ul>
+        <li>
+          <strong>Value:</strong> A copy is passed, so changes inside the called
+          method do not affect the original value.
+          <code>a</code>
+        </li>
+        <li>
+          <strong>ref:</strong> A reference is passed; variable must be
+          initialized before calling, and changes affect the original variable
+          value. <code>b</code>
+        </li>
+        <li>
+          <strong>out:</strong> A reference is passed; called method must assign
+          a value, commonly used to return multiple values. <code>c</code>
+        </li>
+        <li>
+          <strong>params:</strong> Allows passing multiple values as arguments
+          array; must be the last parameter <code>params int[] numbers</code>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Keywords:</strong></p>
+      <ul>
+        <li>
+          <strong>virtual:</strong> Method can be overridden in derived class,
+          Optional, Complete method
+        </li>
+        <li>
+          <strong>override:</strong> Parent has virtual/abstract/override method
+          and then child override it
+        </li>
+        <li>
+          <strong>abstract:</strong> Must implement in child; abstract class
+          can't be instantiated; abstract method is incomplete, exists only in
+          abstract class
+        </li>
+        <li>
+          <strong>sealed:</strong> Prevent inheritance (class) or further
+          overriding (method)
+        </li>
+        <li>
+          <strong>new:</strong> Method hiding; hides parent method (not true
+          polymorphism)
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Class vs Abstract vs Interface:</strong></p>
+      <ul>
+        <li>
+          <strong>Class</strong> → Instantiable and contains complete
+          implementation; supports single inheritance
+        </li>
+        <li>
+          <strong>Abstract Class</strong> → Not instantiable; provides complete
+          shared base logic with abstract methods; single inheritance
+        </li>
+        <li>
+          <strong>Interface</strong> → Not instantiable; defines a contract with
+          no implementation; supports multiple inheritance
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Static:</strong></p>
+      <ul>
+        <li>
+          <strong>Static Class:</strong> Cannot instantiate; contains only
+          static members; No inheritance; utility classes
+        </li>
+        <li>
+          <strong>Static Members:</strong> Shared across all instances; accessed
+          via class name
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Constructor:</strong></p>
+      <ul>
+        <li>
+          <strong>Types:</strong> Default (Parameter less), Parameterized, Copy,
+          Static, Private (Singleton)
+        </li>
+        <li>
+          <strong>Constructor Chaining:</strong> Use <code>this()</code> or
+          <code>base()</code> to call other constructors
+        </li>
+      </ul>
+    </div>
+
+    <h2>SECTION 3: Modern C# Features</h2>
+    <div class="note">
+      <p>
+        <strong>Generics:</strong> Generics allow writing reusable code that
+        works with any data type safely
+      </p>
+      <ul>
+        <li>
+          <strong>Generic Collection Classes:</strong>
+          <code>List&lt;T&gt;</code>,
+          <code>Dictionary&lt;TKey, TValue&gt;</code>,
+          <code>Stack&lt;T&gt;</code> (<strong>LIFO</strong>),
+          <code>Queue&lt;T&gt;</code> (<strong>FIFO</strong>)
+        </li>
+        <li><strong>Generic Delegates:</strong> Action, Func, Predicate</li>
+        <li>
+          <strong>Generic Constraints:</strong> Limit which types are allowed in
+          generics <code>where T : class</code> <code>where T : struct</code>
+        </li>
+      </ul>
+    </div>
+
+    <h3>Other features:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>What it is</th>
+          <th>Why it's needed</th>
+          <th>Small Syntax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Partial Class</strong></td>
+          <td>One class split into multiple files</td>
+          <td>
+            Keep large or auto-generated code organized. Many Devs can work on
+            same class
+          </td>
+          <td><code>partial class Employee { }</code></td>
+        </tr>
+        <tr>
+          <td><strong>Struct</strong></td>
+          <td>Lightweight value type; Lighter class version</td>
+          <td>Better performance for small data</td>
+          <td><code>struct Point { public int X,Y; }</code></td>
+        </tr>
+        <tr>
+          <td><strong>Enum</strong></td>
+          <td>Fixed list of named values</td>
+          <td>Improves readability, avoids magic numbers</td>
+          <td><code>enum Color { Red, Green }</code></td>
+        </tr>
+        <tr>
+          <td><strong>Reflection</strong></td>
+          <td>
+            Reads type info at runtime; Types are not known at compile time
+          </td>
+          <td>Build dynamic frameworks (DI, serializers)</td>
+          <td><code>typeof(Emp).GetMethods()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Lazy Loading</strong></td>
+          <td>Creates object on first use; Load on demand</td>
+          <td>Saves memory and startup time</td>
+          <td><code>Lazy&lt;User&gt; u = new(() =&gt; new User())</code></td>
+        </tr>
+        <tr>
+          <td><strong>Extension Method</strong></td>
+          <td>Adds method to existing type</td>
+          <td>Extend classes without modifying them</td>
+          <td><code>Method(this int n)</code></td>
+        </tr>
+        <tr>
+          <td><strong>Record</strong></td>
+          <td>Immutable with value-based equality; Reference type</td>
+          <td>Class: Mutable with reference equality</td>
+          <td><code>record Person(string N,int A)</code></td>
+        </tr>
+        <tr>
+          <td><strong>Tuple</strong></td>
+          <td>Group multiple values, Heterogenous</td>
+          <td>Method return multiple values easily</td>
+          <td><code>(int Id, string Name)</code></td>
+        </tr>
+        <tr>
+          <td><strong>Tuple Deconstruction</strong></td>
+          <td>Extract tuple values</td>
+          <td>Cleaner variable assignment</td>
+          <td><code>var (id, name) = emp;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Switch Expression</strong></td>
+          <td>Expression-based switch</td>
+          <td>Shorter, cleaner logic</td>
+          <td><code>x switch {1=&gt;"one",_=&gt;"other"}</code></td>
+        </tr>
+        <tr>
+          <td><strong>Null Handling Operators</strong></td>
+          <td>Safe null access & defaults</td>
+          <td>Avoid null exceptions; Fallback values; Lazy init</td>
+          <td>
+            <code>obj?.Prop</code>, <code>val ?? def</code>,
+            <code>val ??= def</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 4: Exception Handling & Resources Cleanup</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>try/catch/finally</strong></td>
+          <td>
+            Handle exceptions; finally always executes (cleanup resources)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>throw vs throw ex</strong></td>
+          <td>
+            throw preserves stack trace; throw ex resets it; Both rethrows the
+            original exception
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Custom Exception</strong></td>
+          <td>Inherit from Exception; add custom properties/messages</td>
+        </tr>
+        <tr>
+          <td><strong>Exception Filters</strong></td>
+          <td>
+            Condition to catch block
+            <code>catch (Exception ex) when (ex.Message.Contains("..."))</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>IDisposable</strong></td>
+          <td>
+            Interface for <strong>manual resource cleanup</strong>; implements
+            <code>Dispose()</code>; Release immediately, avoid waiting for GC
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Destructor/Finalize</strong></td>
+          <td>
+            Special method executed by GC to
+            <strong>automatic resource cleanup</strong> which are unmanaged
+            <code>~MyClass() { /* cleanup */ }</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>using statement</strong></td>
+          <td>
+            Auto-dispose; calls Dispose() at end of block
+            <code>using (){}</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>using declaration</strong></td>
+          <td>Disposes at scope end; <code>using var file = ...;</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 5: Delegates & Events</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>What it is</th>
+          <th>Syntax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Delegate</strong></td>
+          <td>
+            A type-safe reference to a method; Delegates and events let methods
+            <br />
+            be passed as arguments, combined, triggered dynamically
+          </td>
+          <td><code>delegate void Log(string msg);</code></td>
+        </tr>
+        <tr>
+          <td><strong>Single & Multicast</strong></td>
+          <td>
+            A delegate that points to & calls single/multiple methods in order
+          </td>
+          <td><code>log += Method1; log -= Method2;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Action</strong></td>
+          <td>Built-in delegate that returns nothing (<code>void</code>)</td>
+          <td>
+            <code>Action&lt;int&gt; a = x =&gt; Console.WriteLine(x);</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Func&lt;T, TResult&gt;</strong></td>
+          <td>Built-in delegate that returns a value (last type is return)</td>
+          <td><code>Func&lt;int,int&gt; f = x =&gt; x * 2;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Predicate&lt;T&gt;</strong></td>
+          <td>Delegate that returns <code>bool</code> for a condition</td>
+          <td><code>Predicate&lt;int&gt; p = x =&gt; x &gt; 0;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Lambda</strong></td>
+          <td>Short, anonymous function</td>
+          <td><code>(x) =&gt; x * 2</code></td>
+        </tr>
+        <tr>
+          <td><strong>Event</strong></td>
+          <td>
+            Allows one class to notify other classes when something happens.
+          </td>
+          <td><code>event CustomDelegate Clicked;</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 6: Async Programming</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>Description</th>
+          <th>Small Syntax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>async / await</strong></td>
+          <td>Runs long tasks in background without blocking the thread</td>
+          <td>
+            <code
+              >async Task GetData(CancellationToken ct){ await CallApi(ct);
+              }</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Task vs Thread</strong></td>
+          <td>
+            <strong>Task:</strong> Lightweight, .NET-managed, automatic managed
+            (like assigning work to a company)<br />
+            <strong>Thread:</strong> Heavyweight, OS-level, manually managed
+            (like hiring a dedicated worker)
+          </td>
+
+          <td>
+            <code>Task.Run(() =&gt; Work());</code><br /><code
+              >new Thread(Work).Start();</code
+            >
+          </td>
+        </tr>
+        <tr>
+          <td><strong>ConfigureAwait(false)</strong></td>
+          <td>
+            Don't come back to the same thread after await task; Used in
+            libraries to prevent deadlocks
+          </td>
+          <td><code>await CallApi().ConfigureAwait(false);</code></td>
+        </tr>
+        <tr>
+          <td><strong>CancellationToken</strong></td>
+          <td>Allows stopping async work safely</td>
+          <td><code>CancellationToken ct</code></td>
+        </tr>
+        <tr>
+          <td><strong>lock</strong></td>
+          <td>
+            Prevents multiple threads from accessing shared data at same time
+          </td>
+          <td><code>lock(obj){ /* code */ }</code></td>
+        </tr>
+        <tr>
+          <td><strong>Multithreading</strong></td>
+          <td>
+            Async for waiting without blocking, Multithreading for doing work in
+            parallel
+          </td>
+          <td><code>Parallel.For(...)</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 7: Memory & Performance</h2>
+    <div class="note">
+      <p>
+        <strong>Garbage Collection (GC):</strong> GC cleans memory by moving
+        objects from Gen 0 → Gen 2 based on how long they live in 3 steps
+      </p>
+      <ul>
+        <li>
+          <strong>Gen 0:</strong> Short-lived objects; collected most frequently
+        </li>
+        <li>
+          <strong>Gen 1:</strong> Medium-lived; survived one Gen 0 collection
+        </li>
+        <li>
+          <strong>Gen 2:</strong> Long-lived objects; rarely collected; most
+          expensive
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Boxing/Unboxing:</strong></p>
+      <ul>
+        <li>
+          <strong>Boxing:</strong> Value type → Reference type (heap
+          allocation); performance hit
+        </li>
+        <li>
+          <strong>Unboxing:</strong> Reference type → Value type (requires
+          explicit cast)
+        </li>
+        <li><strong>Impact:</strong> Avoid in loops; use generics instead</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>String vs StringBuilder:</strong></p>
+      <ul>
+        <li>
+          <strong>String:</strong> Immutable; creates new object on every
+          modification; Bad for memory
+        </li>
+        <li>
+          <strong>StringBuilder:</strong> Mutable buffer; efficient for
+          concatenations in loops
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <ul>
+        <li>
+          <strong>yield return:</strong> Returns one item at a time instead of
+          whole collection, Memory efficient for large datasets, lazy
+          evaluation.
+        </li>
+        <li>
+          <strong>Memory Leaks:</strong> Happen when objects are kept in memory
+          longer than needed, commonly due to unsubscribed events, static
+          references, not disposing <code>IDisposable</code> objects, captured
+          closures, or long-running timers/threads.
+        </li>
+      </ul>
+    </div>
+
+    <h2>SECTION 8: SOLID & Design Patterns</h2>
+    <div class="note">
+      <p>
+        <strong>SOLID Principles:</strong> 5 principles/rules that make code
+        easier to maintain, extend, and test
+      </p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Principle</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S</strong>RP</td>
+          <td>Single Responsibility; one class, one reason to change</td>
+        </tr>
+        <tr>
+          <td><strong>O</strong>CP</td>
+          <td>Open/Closed; open for extension, closed for modification</td>
+        </tr>
+        <tr>
+          <td><strong>L</strong>SP</td>
+          <td>
+            Liskov Substitution; child must be substitutable for parent type
+            without breaking behavior
+          </td>
+        </tr>
+        <tr>
+          <td><strong>I</strong>SP</td>
+          <td>
+            Interface Segregation; many small interfaces over one large; Do not
+            force class to implement new methods
+          </td>
+        </tr>
+        <tr>
+          <td><strong>D</strong>IP</td>
+          <td>
+            Dependency Inversion; depend on abstractions (Interface), not
+            concrete classes
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <p><strong>Dependency Injection (DI):</strong></p>
+      <ul>
+        <li>
+          Inject dependencies via constructor, property, or method instead of
+          creating them
+        </li>
+        <li><strong>Lifetimes:</strong> Singleton, Scoped, Transient</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p>
+        <strong>Design Patterns:</strong> Proven ways to solve common design or
+        coding problems cleanly
+      </p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Common Patterns</th>
+          <th>What problem they solve (easy)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Creational</strong></td>
+          <td>Singleton, Factory</td>
+          <td>Decide <strong>how and when objects are created</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Structural</strong></td>
+          <td>Adapter, Decorator</td>
+          <td>
+            Decide
+            <strong
+              >how classes and objects are connected or wrapped together</strong
+            >
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Behavioral</strong></td>
+          <td>Strategy, Repository</td>
+          <td>
+            Decide
+            <strong>how objects talk to each other and share work</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <p><strong>Common Patterns:</strong></p>
+      <ul>
+        <li>
+          <strong>Singleton:</strong> Single instance throughout application
+        </li>
+        <li>
+          <strong>Factory:</strong> Create objects without exposing object
+          creational logic
+        </li>
+        <li>
+          <strong>Adapter:</strong> Makes incompatible interfaces work together
+        </li>
+        <li><strong>Strategy:</strong> Switch algorithms at runtime</li>
+        <li><strong>Repository:</strong> Abstract data access layer</li>
+      </ul>
+    </div>
+
+    <h2>SECTION 9: LINQ</h2>
+    <div class="note">
+      <p><strong>Query vs Method Syntax:</strong></p>
+      <ul>
+        <li>
+          <strong>Query:</strong>
+          <code>from x in list where x &gt; 5 select x</code> (SQL-like,
+          readable)
+        </li>
+        <li>
+          <strong>Method:</strong>
+          <code>list.Where(x =&gt; x &gt; 5)</code> (fluent, more flexible)
+        </li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Deferred vs Immediate Execution:</strong></p>
+      <ul>
+        <li>
+          <strong>Deferred:</strong> Query not executed until iterated (Where,
+          Select, OrderBy); query is reusable
+        </li>
+        <li>
+          <strong>Immediate:</strong> Executes immediately (ToList, ToArray,
+          Count, First); creates snapshot
+        </li>
+      </ul>
+    </div>
+
+    <h3>LINQ Operators:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Operators</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Filtering</strong></td>
+          <td>Where, OfType</td>
+          <td>Filter based on condition</td>
+        </tr>
+        <tr>
+          <td><strong>Projection</strong></td>
+          <td>Select, SelectMany</td>
+          <td>Transform data; flatten collections</td>
+        </tr>
+        <tr>
+          <td><strong>Sorting</strong></td>
+          <td>OrderBy, ThenBy, Reverse</td>
+          <td>Sort ascending/descending</td>
+        </tr>
+        <tr>
+          <td><strong>Grouping</strong></td>
+          <td>GroupBy, ToLookup</td>
+          <td>Group by key</td>
+        </tr>
+        <tr>
+          <td><strong>Joining</strong></td>
+          <td>Join, GroupJoin</td>
+          <td>Combine collections</td>
+        </tr>
+        <tr>
+          <td><strong>Aggregation</strong></td>
+          <td>Count, Sum, Average, Min, Max</td>
+          <td>Compute values</td>
+        </tr>
+        <tr>
+          <td><strong>Element</strong></td>
+          <td>First, Single, Last, ElementAt (add OrDefault)</td>
+          <td>Get specific element</td>
+        </tr>
+        <tr>
+          <td><strong>Quantifiers</strong></td>
+          <td>Any, All, Contains</td>
+          <td>Boolean checks</td>
+        </tr>
+        <tr>
+          <td><strong>Set</strong></td>
+          <td>Distinct, Union, Intersect, Except</td>
+          <td>Set operations</td>
+        </tr>
+        <tr>
+          <td><strong>Partitioning</strong></td>
+          <td>Skip, Take, SkipWhile, TakeWhile</td>
+          <td>Pagination</td>
+        </tr>
+        <tr>
+          <td><strong>Conversion</strong></td>
+          <td>ToList, ToArray, ToDictionary, AsEnumerable</td>
+          <td>Convert to different types</td>
+        </tr>
+      </tbody>
+    </table>
+    <script src="../change.js"></script>
+  </body>
+</html>

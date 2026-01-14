@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style.css" />
+    <title>ASP.NET Core Web API Notes</title>
+  </head>
+  <body>
+    <h1>3. ASP.NET CORE WEB API</h1>
+
+    <h2>SECTION 1: REST & HTTP Fundamentals</h2>
+    <ul>
+      <li>
+        <strong>REST Principles:</strong> Stateless, resource-based URLs,
+        standard HTTP verb methods, JSON response, gives status codes
+      </li>
+      <li>
+        <strong>REST vs Soap:</strong> REST is lightweight, follows REST
+        principles, mainly uses JSON, and is best suited for modern web apps and
+        microservices. <br />
+        SOAP is XML-based, heavyweight, has strict standards, and is commonly
+        used in enterprise systems requiring strong security and transactions.
+      </li>
+      <li>
+        <strong>HTTP Methods:</strong> <code>GET</code> (read),
+        <code>POST</code> (create), <code>PUT</code> (full update),
+        <code>PATCH</code> (partial update), <code>DELETE</code> (remove)
+      </li>
+      <li>
+        <strong>Content Negotiation:</strong> Client request header:
+        <code>Accept: application/json</code>; API response:
+        <code>Content-Type</code>; <strong>Content Format</strong>
+      </li>
+    </ul>
+
+    <h2>SECTION 2: Controllers & Routing</h2>
+    <ul>
+      <li>
+        <strong>ApiController attribute:</strong> Auto model validation,
+        automatic 400 responses, auto model binding (source inference)
+        <code>[ApiController]</code>
+      </li>
+      <li>
+        <strong>Action Results:</strong>
+        <code>ActionResult&lt;T&gt;</code> (data + statusCode)
+        <code>CreatedAtAction()</code>, <code>Ok(student)</code>,
+        <code>NoContent()</code>, <code>NotFound()</code>,
+        <code>BadRequest()</code>
+      </li>
+      <li>
+        <strong>Minimal APIs:</strong> Modern Web API style using
+        <code>app.MapGet/Post/Put/Delete</code>; no controllers; cleaner and
+        lightweight for simple APIs; <code>Map()</code> branches request
+        pipeline based on URL path.
+      </li>
+    </ul>
+
+    <h2>SECTION 3: Entity Framework Core Integration</h2>
+    <ul>
+      <li>
+        <strong>DbContext / DbSet:</strong> DbContext represents DB & it tracks
+        DB session; <code>DbSet&lt;T&gt;</code> represents a table
+      </li>
+      <li>
+        <strong>LINQ Queries:</strong> Use LINQ queries <code>Where</code>,
+        <code>Select</code>, <code>Join</code>;
+        <code>FromSqlRaw("EXEC usp_GetStudent, @id", param)</code>
+      </li>
+      <li>
+        <strong>Async Operations:</strong> Use <code>ToListAsync()</code>,
+        <code>FirstOrDefaultAsync()</code>, <code>SaveChangesAsync()</code> in
+        I/O code.
+      </li>
+      <li>
+        <strong>Change Tracking & AsNoTracking():</strong> EF by default tracks
+        for updates; Use <code>AsNoTracking</code> for read-only queries, fast
+        performance
+      </li>
+      <li>
+        <strong>Eager Loading & avoiding N+1 Problem:</strong> One query loads
+        main data and <strong>N extra queries load related data</strong>; Ex.
+        Students and Subjects. <br />
+        Use <code>Include()</code> / <code>ThenInclude()</code> to load related
+        data in 1 query; Avoid Lazy loading.
+      </li>
+      <li>
+        <strong>Relationships & keys:</strong> Configure one-to-many,
+        many-to-many Entity relations, PKs, FKs and cascade rules.
+      </li>
+      <li>
+        <strong>Indexes & Basic query tuning:</strong> Apply index on hot
+        columns by, Fluent API <code>HasIndex(...)</code> or Data annotation
+        attribute <code>[Index(nameof(Email), IsUnique = true)]</code>; Reduce
+        unnecessary database work by writing good queries in API.
+      </li>
+      <li>
+        <strong>Pagination:</strong> Use
+        <code
+          >OrderBy(...).Skip((pageNumber - 1) * pageSize).Take(pageSize)</code
+        >
+        for large result sets.
+      </li>
+      <li>
+        <strong>Transactions & Concurrency:</strong> Use explicit transactions
+        for multi-step work <code>BeginTransactionAsync</code>,
+        <code>CommitAsync</code>, <code>RollbackAsync</code>; Use
+        <code>[Timestamp]</code>/<code>RowVersion</code> for optimistic
+        concurrency.
+      </li>
+      <li>
+        <strong>Global Query Filters:</strong> Conditions defined at the model
+        level using <code>HasQueryFilter(...)</code>. EF Core automatically
+        applies them to every query, commonly used for soft delete and
+        multi-tenant filtering. To ignore it use
+        <code>IgnoreQueryFilters()</code>
+      </li>
+      <li>
+        <strong>Compiled Queries:</strong> EF translates LINQ queries to SQL
+        each time they run; compiled queries should be used for frequently
+        executed queries to reduce translation overhead.
+        <code>EF.CompileQuery()</code>
+      </li>
+    </ul>
+
+    <div class="note">
+      <p><strong>EF Optimization:</strong></p>
+      <p>
+        Use <code>AsNoTracking</code> for reads, load only required data, add
+        indexes on hot columns, avoid N+1 with <code>Include</code>/projection,
+        use pagination, handle concurrency with <code>RowVersion</code>, apply
+        global query filters for soft delete/tenants, and use compiled queries
+        only for high-frequency paths.
+      </p>
+    </div>
+
+    <div class="note">
+      <p><strong>DB First:</strong></p>
+      <p>
+        Create Database (Tables, SPs) → Install EF Core packages in Web API →
+        Configure connection string in <code>config.json</code> → Run
+        <code>Scaffold-DbContext</code> (select required tables) → EF
+        automatically generates <code>DbContext</code> & entity models →
+        Register <code>DbContext</code> in <code>Program.cs</code> → Use
+        <code>DbContext</code> via Repository pattern → Handler CQRS →
+        Controller; <strong><em>Later changes:</em></strong> Alter DB using SQL,
+        then update EDMX file (visual model diagram) in EF
+      </p>
+    </div>
+
+    <div class="note">
+      <p><strong>Code First:</strong></p>
+      <p>
+        Create Web API project → Install EF Core packages → Configure connection
+        string in <code>appsettings.json</code> → Create Entity classes (Models)
+        → Create <code>DbContext</code> → Register <code>DbContext</code> in
+        <code>Program.cs</code> → Create first migration
+        (<code>Add-Migration</code>) → Apply migration to DB
+        (<code>Update-Database</code>) → Use <code>DbContext</code> via
+        Repository pattern → Handler CQRS → Controller;
+        <strong><em>Later changes:</em></strong> Update entity class, add
+        migration, run Update-Database migration
+      </p>
+    </div>
+
+    <h2>SECTION 4: Life Cycles</h2>
+    <p>
+      <strong>Angular:</strong> Browser → index.html → main.ts → AppModule →
+      AppComponent → Other Components → API calls → UI Render
+    </p>
+
+    <p>
+      <strong>Web API:</strong> Client calls Web API → API Middleware → Routing
+      → Controller & Action method → Service / DB → Controller → Middleware →
+      Response to Client
+    </p>
+
+    <p>
+      <strong>MVC:</strong> Browser → MVC Middleware Pipeline → Routing →
+      Controller & Action → API / DB → Controller → View (HTML) → Middleware →
+      Browser
+    </p>
+
+    <div class="note">
+      <p><strong>Authorization & Authentication:</strong></p>
+      <ul>
+        <li>
+          <strong>Identity manager(cookie create):</strong> Claims (Age: 30,
+          Role: Admin) → Identity (Pan card) → Principal (Shubham) →
+          HttpContext.User
+        </li>
+        <li>
+          <strong>User registers MVC</strong> → UserManager creates user &
+          RoleManager assigns Role → Store in DB;
+        </li>
+        <li>
+          <strong>User Logins MVC</strong> → SignInManager validates user →
+          Authentication cookie is created and sent to browser → Browser store
+          it and send to MVC with each request → MVC uses
+          <code>[Authorize(Roles=…)]</code> to validate it
+        </li>
+        <li>
+          <strong>User Logins Angular</strong> → LoginComponent calls
+          AuthService → AuthService calls <strong>API</strong> → API validates
+          credentials by calling db → API creates JWT & returned to Angular →
+          Angular stores token in browser;
+        </li>
+        <li>
+          <strong>Next time request</strong> →
+          <strong>Route Guards</strong> call AuthService to check auth & roles;
+          <strong>If component calls API then Interceptor add token</strong> to
+          every outgoing API request → API validates JWT & returns data →
+          Angular displays data on UI;
+        </li>
+      </ul>
+    </div>
+
+    <h2>SECTION 5: Authentication & Authorization</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>Purpose</th>
+          <th>Steps</th>
+          <th>Configuration Location</th>
+          <th>Key Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Refresh Token</strong></td>
+          <td>Handle JWT expiry</td>
+          <td>
+            API issues two tokens to MVC: JWT Access token (short-lived) and
+            Refresh token (long-lived)
+          </td>
+          <td>
+            MVC sends Access token with API calls; on expiry API returns
+            <code>401</code>
+          </td>
+          <td>
+            MVC calls refresh API using Refresh token to get a new Access token,
+            then retries the original API call, no re-login
+          </td>
+        </tr>
+        <tr>
+          <td><strong>JWT Authentication</strong></td>
+          <td>Stateless user authentication</td>
+          <td>
+            Install JwtBearer, configure Issuer, Audience, SigningKey in
+            Config.json
+          </td>
+          <td>
+            <code>AddAuthentication</code>, <code>AddJwtBearer()</code> in
+            <code>Program.cs</code>
+          </td>
+          <td>
+            Must call <code>UseAuthentication()</code> before
+            <code>UseAuthorization()</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>JWT Token Generation</strong></td>
+          <td>Issue token after login</td>
+          <td>
+            Create Login API → Validate credentials → Create Claims → Generate
+            <code>JwtSecurityToken</code>
+          </td>
+          <td>
+            Auth/Login Controller <br />
+            JWT => Header + Payload + Signature
+          </td>
+          <td>Token contains user identity & role</td>
+        </tr>
+        <tr>
+          <td><strong>JWT Token Usage</strong></td>
+          <td>Authenticate each request</td>
+          <td>
+            Client stores token → Send via
+            <code>Authorization: Bearer &lt;token&gt;</code>
+          </td>
+          <td>Client → API headers</td>
+          <td>API validates token on every request</td>
+        </tr>
+        <tr>
+          <td><strong>Role/Policy Based Authorization</strong></td>
+          <td>Control access by role</td>
+          <td>
+            <code>[Authorize]</code>, <code>[Authorize(Roles="Admin")]</code>,
+            <code>[Authorize(Policy = "AdultAdmin")]</code>
+          </td>
+          <td>Controller / Action</td>
+          <td>Role read from JWT claims; 403 if role missing</td>
+        </tr>
+        <tr>
+          <td><strong>OAuth</strong> (Oauth Service Scope)</td>
+          <td>token-based, No creds exposed</td>
+          <td>
+            MVC sends OAuth token to api and API validates it; Configure API to
+            validate both ways
+          </td>
+          <td>Token issued by external auth server</td>
+          <td>MVC sends username/password or OAuth to API</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 6: Cache</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Cache Type</th>
+          <th>Stored Where</th>
+          <th>Purpose</th>
+          <th>Setup (Program.cs)</th>
+          <th>When to Use</th>
+          <th>Key Point</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>In-Memory Cache</strong></td>
+          <td>App RAM</td>
+          <td>Cache data (DB results, config)</td>
+          <td><code>AddMemoryCache()</code></td>
+          <td>Single server apps</td>
+          <td>Fast, lost on app restart, crash, No share across servers</td>
+        </tr>
+        <tr>
+          <td><strong>Distributed Cache (Redis, SQL)</strong></td>
+          <td>External store</td>
+          <td>Shared cache across servers</td>
+          <td><code>AddStackExchangeRedisCache()</code></td>
+          <td>Load-balanced apps</td>
+          <td>Scalable, shared across servers</td>
+        </tr>
+        <tr>
+          <td><strong>Output Cache</strong></td>
+          <td>Server</td>
+          <td>Cache full action output</td>
+          <td>
+            <code>AddOutputCache()</code>
+            <code>[OutputCache(Duration = 60)]</code>
+          </td>
+          <td>Modern MVC / API apps</td>
+          <td><strong>Cache actual method response</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Response Cache</strong></td>
+          <td>Client / Proxy</td>
+          <td>Cache HTTP GET responses</td>
+          <td>
+            <code>AddResponseCaching()</code>
+            <code>[ResponseCache(Duration = 60)]</code>
+          </td>
+          <td>Public read-only APIs</td>
+          <td><strong>Cache Response Headers only, same as below</strong></td>
+        </tr>
+        <tr>
+          <td><strong>HTTP Browser Cache</strong></td>
+          <td>Browser</td>
+          <td>Avoid re-downloading data</td>
+          <td>Response headers</td>
+          <td>Static / semi-static data</td>
+          <td>Tells browser to cache</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 7: Performance & Optimization</h2>
+    <ul>
+      <li>
+        <strong>DTO Shaping:</strong> Return only required fields, avoid sending
+        full entities to reduce JSON size
+      </li>
+      <li>
+        <strong>Avoid Over-Serialization:</strong> Send only required data to
+        client using DTOs; disable lazy loading and avoid circular references.
+      </li>
+      <li>
+        <strong>Pagination & Filtering:</strong> Pagination limits result size,
+        while filtering narrows down results based on criteria
+        <code>AsQueryable()</code>
+      </li>
+      <li>
+        <strong>API-Level Caching:</strong> Cache expensive responses using
+        response, In-Memory, distributed cache (Redis)
+      </li>
+      <li>
+        <strong>Compression:</strong> Uses
+        <code>UseResponseCompression</code> middleware (Gzip/Brotli) to reduce
+        API response size and improve performance.
+      </li>
+      <li>
+        <strong>Health Checks:</strong> Endpoints used to determine whether app
+        & its dependencies like database/cache are running correctly; Config in
+        <code>Program.cs</code>. Load balancer uses it to check API
+        availability.
+      </li>
+      <li>
+        <strong>Use async/await:</strong> Avoid thread blocking calls like
+        <code>.Result</code> or <code>.Wait()</code>
+      </li>
+      <li>
+        <strong>Rate Limiting:</strong> Limits client requests to protect API;
+        Define rate-limit <strong>policy</strong> in <code>Program.cs</code>,
+        Using rate-limit middleware <code>app.UseRateLimiter()</code> and apply
+        using <strong><code>[EnableRateLimiting]</code> attribute</strong>;
+        returns
+        <strong><code>429 Too Many Requests</code></strong>
+      </li>
+    </ul>
+
+    <h2>SECTION 8: Setups</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>Purpose</th>
+          <th>How to Implement</th>
+          <th>Where to Register</th>
+          <th>Key Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Custom Error Handling Middleware</strong></td>
+          <td>Centralized exception handling</td>
+          <td>
+            Create middleware with <code>RequestDelegate</code>, implement
+            <code>InvokeAsync()</code> with <code>try—catch</code>
+          </td>
+          <td>
+            <code>app.UseMiddleware&lt;ExceptionMiddleware&gt;()</code> in
+            <code>Program.cs</code>
+          </td>
+          <td>Handles all unhandled exceptions; place early in pipeline</td>
+        </tr>
+        <tr>
+          <td><strong>Global Exception Filter</strong></td>
+          <td>Filter limited to controllers; Middleware handle globally</td>
+          <td>
+            Implement <code>IExceptionFilter</code> or inherit
+            <code>ExceptionFilterAttribute</code>
+          </td>
+          <td>
+            <code
+              >AddControllersWithViews(options =&gt;
+              options.Filters.Add&lt;...&gt;())</code
+            >
+          </td>
+          <td>Applies only to MVC pipeline, not middleware</td>
+        </tr>
+        <tr>
+          <td><strong>AutoMapper</strong></td>
+          <td>Map Entity ↔ DTO automatically</td>
+          <td>
+            Install AutoMapper, create class inheriting <code>Profile</code>,
+            define <code>CreateMap&lt;,&gt;()</code>
+          </td>
+          <td>
+            <code>builder.Services.AddAutoMapper()</code> in
+            <code>Program.cs</code>
+          </td>
+          <td>Removes manual mapping; improves readability</td>
+        </tr>
+        <tr>
+          <td><strong>Serilog</strong></td>
+          <td>Structured & persistent logging</td>
+          <td>
+            Install Serilog + sinks, configure sinks & levels in
+            <code>appsettings.json</code>
+          </td>
+          <td>
+            <code>builder.Host.UseSerilog()</code> in <code>Program.cs</code>
+          </td>
+          <td>
+            Use <code>ILogger&lt;T&gt;</code> in app; supports file, console,
+            Seq
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Swagger</strong></td>
+          <td>API documentation & testing</td>
+          <td>Install Swashbuckle, configure in Program.cs & Config.json</td>
+          <td>
+            <code>app.UseSwagger()</code> & <code>app.UseSwaggerUI()</code>
+          </td>
+          <td>Add Bearer security definition for JWT</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 9: Microservices Essentials</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Monolith</strong></td>
+          <td>
+            Everything is under 1 unit, Hard to scale, deploy, maintain; Big
+            failure; Same technology for all
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Architecture</strong></td>
+          <td>
+            Small, independent services built around business capabilities
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Single Responsibility</strong></td>
+          <td>One service, one job; loose coupling and independent changes</td>
+        </tr>
+        <tr>
+          <td><strong>Database per Service</strong></td>
+          <td>Each service owns its data; no shared databases</td>
+        </tr>
+        <tr>
+          <td><strong>Communication</strong></td>
+          <td>
+            Services communicate via REST/gRPC (synchronous) or messaging/events
+            (asynchronous: RabbitMQ, Kafka)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>RabbitMQ</strong></td>
+          <td>
+            Queue-based async communication between APIs for background tasks
+            (Order API → RabbitMQ → Email API)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Observability</strong></td>
+          <td>
+            Centralized logging (Serilog) and distributed tracing across
+            services (CorrelationId)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Security</strong></td>
+          <td>JWT-based auth; service-to-service security via Api Gateway</td>
+        </tr>
+        <tr>
+          <td><strong>Containers</strong></td>
+          <td>Docker for packaging; Kubernetes for orchestration</td>
+        </tr>
+        <tr>
+          <td><strong>CI/CD</strong></td>
+          <td>Automated builds and independent deployments per service</td>
+        </tr>
+        <tr>
+          <td><strong>When NOT to Use</strong></td>
+          <td>
+            Small apps, low complexity, tight timelines, weak DevOps maturity
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Resilience (Polly)</strong></td>
+          <td>
+            Polly Resilience library (Retry, timeout, circuit breaker functions)
+            that helps to handle transient failures
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 10: Miscellaneous</h2>
+    <ul>
+      <li>
+        <strong>launchSettings.json:</strong> Local app launch configs; Defines
+        environment, URLs, profiles, and <code>ASPNETCORE_ENVIRONMENT</code>
+      </li>
+      <li>
+        <strong>HTTP Status Codes:</strong> <code>200 OK</code>,
+        <code>201 Created</code>, <code>204 NoContent</code>,
+        <code>400 BadRequest</code>, <code>404 NotFound</code>
+      </li>
+      <li>
+        <strong>API Versioning:</strong> Maintain multiple API versions for
+        clients (e.g. <code>/api/v1/users</code>); Install versioning package,
+        configure in
+        <code>Program.cs</code>
+      </li>
+      <li>
+        <strong>HTTPS:</strong> Secures client—server communication by
+        encrypting data using SSL/TLS certificates
+      </li>
+      <li>
+        <strong>Layered Architecture:</strong> Thin Controller → Request Handler
+        (CQRS) → Service/Repository → DbContext → Database
+      </li>
+      <li>
+        <strong>CORS:</strong> Security feature controlling which frontend apps
+        can access APIs; Configured in <code>Program.cs</code>, config files
+      </li>
+      <li>
+        <strong>FluentValidation:</strong> External library that define
+        validation rules in separate classes; More powerful, cleaner complex
+        rules; Alternative to data annotations.
+      </li>
+      <li>
+        <strong>ProblemDetails:</strong> Standard API error response with
+        consistent format: title, status, detail, errors
+      </li>
+      <li>
+        <strong>Correlation ID:</strong> Unique request ID used to trace logs &
+        calls across services; Set via HTTP headers, middleware,
+        <code>Guild()</code>
+      </li>
+      <li>
+        <strong>Idempotency:</strong> Repeating the same request multiple times
+        gives the same result; MVC sends Idempotency-Key in request header; API
+        processes request once & returns same response for retries, Preventing
+        duplicate actions; API use
+        <code>Dictinary&lt;Key, Response&gt;</code> to store it in Cache (Redis
+        or SQL).
+      </li>
+      <li>
+        <strong>API Gateway:</strong> A separate service that sits between MVC
+        and backend APIs, acting as a single entry point and routing requests
+        while handling auth, rate limiting, and logging. MVC → API Gateway
+        (Handles everything) → All Backend APIs
+      </li>
+    </ul>
+
+    <h2 class="collapsible" onclick="toggleSection()">
+      SECTION 11: Scenario-Based Questions
+      <span class="toggle-icon" id="toggleIcon">▼</span>
+    </h2>
+
+    <div class="scenario-content" id="scenarioContent">
+      <div class="scenario-item">
+        <h3>1. N+1 Query Problem in Production</h3>
+        <p>
+          Your API endpoint returns a list of orders with customer details. It
+          works fine with 10 records but takes 30 seconds with 1000 records.
+          Database logs show thousands of separate queries being executed. How
+          do you identify and fix this N+1 query problem?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            The N+1 problem occurs when related data is loaded separately for
+            each record, causing many unnecessary database queries. I identify
+            it by checking database logs or query counts during testing. To fix
+            it, I load related data in a single query using eager loading with
+            <code>Include()</code> or using projection with
+            <code>Select()</code> to get only needed fields. This dramatically
+            improves performance for large datasets by reducing database round
+            trips.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>2. JWT Token Expiration Handling</h3>
+        <p>
+          Users complain they get logged out randomly and see 401 Unauthorized
+          errors in the middle of using the application. Your JWT tokens expire
+          after 15 minutes. How do you implement token refresh without forcing
+          users to re-login?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            JWT access tokens expire quickly for security, which causes 401
+            errors during active sessions. I solve this by using a refresh token
+            mechanism. The API issues a short-lived access token (15 minutes)
+            and a long-lived refresh token (7-30 days). When the access token
+            expires, the client sends the refresh token to get a new access
+            token without forcing the user to log in again. This keeps the user
+            session active while maintaining security.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>3. Concurrent Update Conflict (Optimistic Concurrency)</h3>
+        <p>
+          Two users try to update the same product record simultaneously. User A
+          sets price to $100, User B sets it to $120. The last save wins and
+          User A's change is lost without any warning. How do you handle
+          concurrency conflicts?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            This issue occurs when multiple users update the same data and the
+            last update silently overwrites earlier changes. I handle this using
+            optimistic concurrency by adding a row version field (like a
+            timestamp or version number) to the entity. During update, I check
+            if the row version matches. If it doesn't match, it means someone
+            else already updated the record, so the API returns a 409 Conflict
+            response. The client can then refresh the data and ask the user to
+            try again with the latest information.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>4. API Performance Degradation Under Load</h3>
+        <p>
+          Your API works perfectly with 10 concurrent users but becomes
+          extremely slow with 100+ users. Response times go from 200ms to 10+
+          seconds. How do you diagnose and fix this performance bottleneck?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            When an API becomes slow under load, it usually means there's a
+            scalability issue, not a logic issue. The problem is often database
+            contention, blocking synchronous code, or missing caching. I
+            diagnose it using load testing tools, application logs, and database
+            performance metrics. To fix it, I optimize database queries with
+            proper indexing, use async/await correctly to avoid blocking
+            threads, add caching for read-heavy data, and reduce response
+            payload size by returning only necessary fields.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>5. Memory Leak from Unclosed DbContext</h3>
+        <p>
+          Your API's memory usage keeps increasing over days and eventually
+          crashes. Monitoring shows DbContext instances are not being disposed
+          properly. How do you identify and fix this memory leak?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Memory leaks occur when DbContext instances are not disposed
+            properly, often due to incorrect lifetime configuration in
+            dependency injection. I fix this by registering DbContext as scoped
+            (not singleton) in the DI container, so it's automatically created
+            and disposed per request. I also ensure DbContext is not stored in
+            static fields or used across multiple requests. Scoped lifetime
+            ensures each request gets a fresh DbContext that's properly disposed
+            after the request completes.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>6. CORS Policy Blocking Frontend Requests</h3>
+        <p>
+          Your Angular frontend running on
+          <code>http://localhost:4200</code> cannot call your API on
+          <code>http://localhost:5000</code>. Browser console shows "CORS
+          policy: No 'Access-Control-Allow-Origin' header is present." How do
+          you fix CORS issues?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            CORS errors happen because the browser blocks requests when the
+            frontend and API are on different origins (different domains or
+            ports). I fix this by configuring a CORS policy in the Web API to
+            allow requests from the frontend URL. In ASP.NET Core, I add CORS
+            middleware with <code>AddCors()</code> and specify allowed origins.
+            For development, I allow the local frontend URL, and for production,
+            I allow the deployed frontend domain. Once configured, the browser
+            allows the frontend to call the API safely.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>7. Model Validation Returns 400 Without Clear Errors</h3>
+        <p>
+          Your API returns <code>400 Bad Request</code> when validation fails,
+          but the response body is empty or unclear. Clients don't know which
+          fields are invalid or why. How do you return proper validation error
+          messages?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            A 400 response without details makes it hard for clients to fix the
+            request. I return clear validation errors by using model validation
+            attributes like <code>[Required]</code> and
+            <code>[StringLength]</code>, then returning ModelState errors in the
+            response using <code>BadRequest(ModelState)</code>. When using the
+            <code>[ApiController]</code> attribute, ASP.NET Core automatically
+            returns a detailed validation response with all field errors, making
+            it easy for clients to understand what went wrong.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>8. Mass Assignment / Over-Posting Vulnerability</h3>
+        <p>
+          Your user update endpoint accepts a User model. An attacker adds
+          <code>"IsAdmin": true</code> to the JSON payload and promotes
+          themselves to admin. How do you prevent mass assignment attacks?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Mass assignment happens when the API accepts extra fields sent by
+            the client and updates sensitive properties that shouldn't be
+            changed. I prevent this by using DTOs (Data Transfer Objects) that
+            expose only allowed fields, and by never binding database entities
+            directly in API requests. For example, I create a
+            <code>UpdateUserDto</code> with only Name and Email properties, so
+            even if the attacker sends IsAdmin, it's ignored. APIs should accept
+            DTOs, not database entities.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>9. Exception Handling Inconsistency</h3>
+        <p>
+          Your API returns different error formats from different endpoints:
+          sometimes JSON error objects, sometimes HTML error pages, sometimes
+          just status codes. How do you implement centralized exception
+          handling?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            When error handling is spread across controllers, APIs return
+            inconsistent responses that confuse clients. I fix this by using
+            centralized exception handling middleware that catches all unhandled
+            exceptions and returns a standard JSON error response format. I
+            implement this using a custom middleware or by using
+            <code>UseExceptionHandler</code> in ASP.NET Core. This ensures all
+            errors follow the same format with consistent fields like error
+            message, status code, and optional details.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>10. Rate Limiting for API Abuse Prevention</h3>
+        <p>
+          A single client is hammering your public API with 10,000 requests per
+          minute, causing performance issues for legitimate users. How do you
+          implement rate limiting to prevent API abuse?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            To prevent API abuse, I implement rate limiting to restrict how many
+            requests a client can make in a given time window (for example, 100
+            requests per minute). I use middleware or libraries like
+            AspNetCoreRateLimit to track request counts per client IP or API
+            key. When a client exceeds the limit, the API returns a 429 Too Many
+            Requests response. This protects the system from overload and
+            ensures fair usage for all users.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>11. Caching Strategy for Read-Heavy Endpoints</h3>
+        <p>
+          Your API has an endpoint returning product categories. It's called
+          thousands of times per minute but data changes only once per day.
+          Without caching, database load is very high. How do you implement
+          effective caching?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            For read-heavy endpoints with rarely changing data, I use caching to
+            reduce database load significantly. I implement a cache-aside
+            pattern where data is first checked in the cache (Redis or in-memory
+            cache), and only loaded from the database if it's not found in
+            cache. I set an appropriate expiration time based on how often data
+            changes, and clear the cache when the data is updated. This approach
+            works best for data that is read often but changes rarely.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>12. Slow Pagination on Large Datasets</h3>
+        <p>
+          Your pagination endpoint works fine for pages 1-10 but becomes
+          extremely slow on page 1000+ when using
+          <code>Skip(10000).Take(20)</code>. How do you optimize pagination for
+          large datasets?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Offset pagination using Skip becomes very slow because the database
+            must scan and skip thousands of rows before returning results. I fix
+            this by using keyset pagination (also called cursor-based
+            pagination), where records are fetched using a filter on the last
+            seen value instead of skipping rows. For example, instead of
+            <code>Skip(10000).Take(20)</code>, I use
+            <code>Where(x => x.Id > lastSeenId).Take(20)</code>. This approach
+            scales well even for millions of records.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>13. Database Connection Pool Exhaustion</h3>
+        <p>
+          During peak hours, your API throws "Timeout expired. The timeout
+          period elapsed prior to obtaining a connection from the pool." Users
+          cannot access the application. How do you fix connection pool issues?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Connection pool exhaustion happens when database connections are not
+            released fast enough under high load. I fix this by ensuring
+            DbContext is registered as scoped (not singleton), using async
+            database calls with <code>await</code> to avoid blocking threads,
+            reducing unnecessary queries, and optimizing slow database
+            operations. I also check for connection leaks where connections
+            aren't being disposed. Only after fixing the root cause, I consider
+            adjusting the connection pool size if needed.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>14. Idempotency for Payment Processing</h3>
+        <p>
+          Users sometimes double-click the "Pay Now" button, creating duplicate
+          charges. How do you implement idempotency to ensure the same payment
+          request is processed only once even if called multiple times?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            To ensure idempotency, I require clients to send a unique
+            idempotency key (like a GUID) with each payment request. Before
+            processing, the API checks if a payment with that key already
+            exists. If it does, the API returns the existing payment result
+            instead of creating a duplicate. If it doesn't exist, the payment is
+            processed and stored with the idempotency key. This ensures the same
+            request produces the same result even if called multiple times,
+            preventing duplicate charges.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>15. API Versioning Without Breaking Clients</h3>
+        <p>
+          You need to change the response structure of
+          <code>/api/products</code>, but mobile apps using the old format won't
+          be updated for 6 months. How do you implement API versioning without
+          breaking existing clients?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            To avoid breaking existing clients, I implement API versioning so
+            old and new versions can coexist. I use URL versioning like
+            <code>/api/v1/products</code> and <code>/api/v2/products</code>, or
+            header-based versioning. The v1 endpoint continues returning the old
+            format for existing clients, while v2 returns the new format. I
+            maintain both versions until all clients migrate to the new version.
+            This allows gradual migration without forcing immediate updates.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>16. Null Reference Exception in Production</h3>
+        <p>
+          Your API frequently throws <code>NullReferenceException</code> in
+          production but works fine in development. Stack traces don't clearly
+          show where nulls are coming from. How do you handle null safety and
+          prevent these errors?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Null reference exceptions happen when code tries to access
+            properties or methods on null objects. I prevent these by using
+            nullable reference types in C# 8+, checking for null before
+            accessing properties, using null-conditional operators like
+            <code>?.</code>, and returning default values with <code>??</code>.
+            I also validate inputs at API boundaries and return proper 400
+            errors for missing required data. Good logging with detailed context
+            helps identify where nulls originate in production.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>17. Secure Configuration and Secrets Management</h3>
+        <p>
+          Your database connection strings and API keys are hardcoded in
+          <code>appsettings.json</code> and accidentally committed to GitHub.
+          How do you securely manage secrets across different environments (dev,
+          staging, production)?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Hardcoded secrets in configuration files are a major security risk.
+            I fix this by never storing secrets in appsettings.json or source
+            control. For local development, I use User Secrets (right-click
+            project > Manage User Secrets). For production, I use environment
+            variables or secure vaults like Azure Key Vault, AWS Secrets
+            Manager, or HashiCorp Vault. The API reads secrets from these secure
+            sources at runtime. I also add appsettings.json to .gitignore if it
+            contains sensitive data, or use appsettings.Development.json only
+            for non-sensitive local config.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>18. API Response Time Monitoring and Logging</h3>
+        <p>
+          Clients complain about slow responses, but you have no visibility into
+          which endpoints are slow or why. How do you implement effective
+          logging and monitoring to track API performance?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            To track API performance, I implement structured logging using
+            Serilog or NLog, logging request details, response times, and
+            errors. I use middleware to log every request with duration and
+            status code. For monitoring, I integrate with Application
+            Performance Monitoring (APM) tools like Application Insights, New
+            Relic, or Datadog to get real-time dashboards and alerts. I also log
+            slow queries and add correlation IDs to trace requests across
+            services. This gives complete visibility into which endpoints are
+            slow and helps identify bottlenecks.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>19. File Upload Size Limit and Validation</h3>
+        <p>
+          Users upload very large files (500MB+) to your API, causing timeouts
+          and memory issues. Some users upload executable files (.exe) disguised
+          as images. How do you handle file uploads securely with proper size
+          limits and validation?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Large file uploads can crash the API or consume too much memory. I
+            fix this by setting a maximum file size limit in the API
+            configuration and rejecting files that exceed it early in the
+            request pipeline. I validate file types by checking the actual file
+            content (magic bytes), not just the extension, to prevent disguised
+            executables. I also stream files directly to disk or cloud storage
+            instead of loading them entirely into memory. For security, I scan
+            uploaded files for malware and store them outside the web root with
+            restricted access.
+          </p>
+        </div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>20. Handling Long-Running Background Tasks</h3>
+        <p>
+          Your API endpoint needs to process a large report that takes 5
+          minutes. Clients timeout waiting for the response. How do you handle
+          long-running tasks in Web API without blocking the client?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Long-running tasks should not block API responses. I implement an
+            async pattern where the API immediately returns 202 Accepted with a
+            task ID, and the actual work runs in the background using a
+            background service, Hangfire, or Azure Functions. The client can
+            poll a status endpoint like <code>/api/reports/{id}/status</code> to
+            check progress, or the API can send a notification when complete.
+            This keeps the API responsive and allows the client to handle the
+            long operation gracefully without timeouts.
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="../change.js"></script>
+  </body>
+</html>

@@ -1,0 +1,421 @@
+/* ================================================
+   CONSOLIDATED CSS FILE
+   Contains all styles from multiple HTML files
+   ================================================ */
+
+/* ================================================
+   1. HEADER STYLES (from header.css)
+   ================================================ */
+
+/* Header container */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #0f0f0f;
+  border-bottom: 1px solid #1f1f1f;
+  padding: 12px 24px;
+  transition: transform 0.3s ease;
+}
+
+/* Hide header when scrolling down */
+.app-header.hide {
+  transform: translateY(-100%);
+}
+
+/* Navigation */
+.app-header nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Links */
+.app-header a {
+  color: #e6e6e6;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.app-header a:hover {
+  color: #ffffff;
+}
+
+.app-header a.active {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Push right-side content */
+.nav-right {
+  margin-left: auto;
+}
+
+/* Dropdown button */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  background: transparent;
+  border: none;
+  color: #e6e6e6;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 36px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+/* Dropdown links */
+.dropdown-menu a {
+  padding: 8px 14px;
+  color: #e6e6e6;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background: #2a2a2a;
+}
+
+.dropdown-menu hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 6px 0;
+}
+
+/* Show dropdown */
+.dropdown.open .dropdown-menu {
+  display: flex;
+}
+
+/* Text animation for multiple technologies */
+.swap-text {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.swap-text span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  white-space: nowrap;
+  animation: rotateText 9s infinite;
+}
+
+.swap-text span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.swap-text span:nth-child(2) {
+  animation-delay: 3s;
+}
+
+.swap-text span:nth-child(3) {
+  animation-delay: 6s;
+}
+
+@keyframes rotateText {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ================================================
+   2. BASE/RESET STYLES (Common across all files)
+   ================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================================================
+   3. BODY & LAYOUT
+   ================================================ */
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  color: black;
+  padding-top: 56px;
+  zoom: 1.4;
+}
+
+/* ================================================
+   4. TYPOGRAPHY
+   ================================================ */
+
+h1 {
+  font-size: 28px;
+  margin: 30px 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid black;
+  text-align: center;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 25px 0 15px 0;
+  padding: 8px 10px;
+  background: #4a4a4a;
+  color: white;
+}
+
+h3 {
+  font-size: 14px;
+  margin: 15px 0 10px 0;
+  font-weight: bold;
+}
+
+p,
+li {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+ul,
+ol {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+/* ================================================
+   5. TABLES
+   ================================================ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 11px;
+}
+
+th {
+  background: #666666;
+  color: white;
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #999;
+  font-weight: bold;
+}
+
+td {
+  padding: 6px 8px;
+  border: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background: #f5f5f5;
+}
+
+/* ================================================
+   6. CODE BLOCKS
+   ================================================ */
+
+code {
+  background: #f0f0f0;
+  padding: 2px 5px;
+  border: 1px solid #ddd;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+}
+
+pre {
+  background: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  overflow-x: auto;
+  margin: 15px 0;
+  line-height: 1.4;
+}
+
+/* ================================================
+   7. NOTE BOXES
+   ================================================ */
+
+.note {
+  margin: 15px 0;
+  padding: 10px;
+  border-left: 3px solid #4a4a4a;
+  background: #f9f9f9;
+}
+
+/* ================================================
+   8. ANGULAR-SPECIFIC STYLES
+   (Collapsible sections and scenario items)
+   ================================================ */
+
+/* Collapsible Section Styles */
+h2.collapsible {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+h2.collapsible:hover {
+  background: #333;
+}
+
+.toggle-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+  font-weight: normal;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.scenario-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.scenario-content.expanded {
+  max-height: 15000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.scenario-item {
+  margin: 20px 0;
+  padding: 15px;
+  border-left: 3px solid #4a4a4a;
+  background: #f9f9f9;
+}
+
+.scenario-item h3 {
+  font-size: 13px;
+  margin: 0 0 12px 0;
+  color: #333;
+  line-height: 1.4;
+}
+
+.scenario-item .answer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.scenario-item .answer strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #4a4a4a;
+}
+
+.related-note {
+  margin: 8px 0 0 0;
+  padding: 8px 10px;
+  background: #fff;
+  border-left: 2px solid #999;
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* ================================================
+   9. GITDOCKER-SPECIFIC STYLES
+   (Flow diagrams)
+   ================================================ */
+
+.flow-diagram {
+  background: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin: 15px 0;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+/* ================================================
+   10. PRINT STYLES
+   ================================================ */
+
+@media print {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    page-break-before: always;
+  }
+
+  h1:first-child {
+    page-break-before: avoid;
+  }
+
+  h2 {
+    page-break-after: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  /* Print-specific overrides for interactive elements */
+  h2.collapsible {
+    cursor: default;
+  }
+
+  .scenario-content {
+    max-height: none !important;
+  }
+
+  .toggle-icon {
+    display: none;
+  }
+}

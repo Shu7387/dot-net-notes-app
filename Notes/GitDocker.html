@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style.css" />
+    <title>GIT, CI/CD & Docker Notes</title>
+  </head>
+  <body>
+    <h1>8. GIT, CI/CD & Docker</h1>
+
+    <h2>SECTION 1: Git Essentials</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Git basics</strong></td>
+          <td>
+            <code>clone</code>, <code>stage</code>, <code>commit</code>,
+            <code>push</code>, <code>pull</code>, <code>stash</code>,
+            <code>fetch</code>; Basic operations to manage code in a repository.
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Branching</strong></td>
+          <td>Create, switch, and merge branches to manage parallel work.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Feature branching workflow</strong></td>
+          <td>
+            Use separate branches for features to avoid conflicts in main
+            branch.
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Resolving merge conflicts</strong></td>
+          <td>
+            Handling conflicts when changes from different branches overlap.
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Pull Requests & Code Reviews</strong></td>
+          <td>Submit changes for review and merge after approval.</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>.gitignore</strong></td>
+          <td>Specify files/folders that Git should ignore.</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Rebase vs Merge</strong></td>
+          <td>
+            Rebase rewrites commit history; merge combines histories without
+            rewriting.
+          </td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>Git stash & cherry-pick</strong></td>
+          <td>
+            Stash saves work temporarily; cherry-pick applies specific commits
+            to a branch.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 2: CI/CD Flow & Concepts</h2>
+    <h3>Flow:</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 10%; text-align: center">Step</th>
+          <th style="width: 90%">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center">1</td>
+          <td>
+            <strong>👨‍💻 Developer writes .NET API</strong><br />Project includes
+            Dockerfile & YAML
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">2</td>
+          <td>
+            <strong>🐳 Define Build Instructions</strong><br />Dockerfile
+            defines how to package the API & YAML defines how to build, run,
+            test the pipeline
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">3</td>
+          <td>
+            <strong>💻 Push to Repository</strong><br />Code is pushed to DevOps
+            Main repository
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">4</td>
+          <td>
+            <strong>📄 Pipeline Triggers</strong><br />YAML Pipeline in Azure
+            DevOps triggers automatically
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">5</td>
+          <td>
+            <strong>⚙️ Build Pipeline Steps:</strong><br />
+            • 🔧 Restore & build the project<br />
+            • ✅ Run tests<br />
+            • 🐳 Create Docker Image from Dockerfile
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">6</td>
+          <td>
+            <strong>📦 Push to Registry</strong><br />Docker image is pushed to
+            Azure Container Registry (ACR)
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">7</td>
+          <td>
+            <strong>🚀 Deployment Pipeline</strong><br />Release/Deployment
+            Pipeline starts
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">8</td>
+          <td>
+            <strong>⬇️ Pull Image</strong><br />Deployment pulls the image from
+            ACR
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">9</td>
+          <td>
+            <strong>🖥️ Create Containers</strong><br />Azure creates containers
+            from the pulled image
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">10</td>
+          <td>
+            <strong>☁️ Deploy to Cloud:</strong><br />
+            • Azure App Service<br />
+            • Azure Kubernetes Service (AKS)<br />
+            • Azure Container Instances (ACI)
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">11</td>
+          <td><strong>🏃 Run API</strong><br />Container runs the API</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">12</td>
+          <td>
+            <strong>🗄️ Database Connection</strong><br />API connects to cloud
+            database (SQL/Azure SQL)
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">13</td>
+          <td>
+            <strong>🔐 Secrets Management</strong><br />Secrets (DB connection
+            string, keys) managed by Azure Key Vault
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center">14</td>
+          <td>
+            <strong>🧠 Orchestration</strong><br />Azure DevOps orchestrates
+            everything end-to-end
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Concept</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>YAML file</strong></td>
+          <td>
+            Tells Azure DevOps when to run, which machine to use, and the steps
+            to build, test app & create a Docker image, and push it to ACR
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Pipeline triggers</strong></td>
+          <td>
+            CI, PR triggers, or scheduled triggers decide when the pipeline
+            runs.
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Build pipeline</strong></td>
+          <td>Compiles code and packages it into a deployable artifact.</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Automated testing</strong></td>
+          <td>Tests run automatically during build to catch issues early.</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Publishing artifacts</strong></td>
+          <td>
+            Artifacts are the build outputs for deployment, which can be
+            compiled binaries, Docker images, configuration files, exe, dll,
+            .jar or test reports.
+          </td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Deployment pipeline</strong></td>
+          <td>
+            Deploys artifacts step-by-step to Dev, Staging, and Production.
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Secrets management</strong></td>
+          <td>
+            Ensures passwords, keys, and tokens are secure using Key Vault or
+            pipeline secret stores.
+          </td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>Azure DevOps Pipelines</strong></td>
+          <td>Orchestrates the entire CI/CD process.</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>CI/CD purpose</strong></td>
+          <td>
+            Explains why this automation process exists and why it matters.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SECTION 3: Docker Basics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>What is Docker & why it exists</strong></td>
+          <td>
+            Docker packs an app and its dependencies into a container so it runs
+            the same on any machine.
+          </td>
+          <td><code>docker build -t app .</code></td>
+        </tr>
+        <tr>
+          <td><strong>Containers vs Virtual Machines</strong></td>
+          <td>
+            Containers share OS and are lightweight; VMs have full OS and are
+            heavy.
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>Images vs Containers</strong></td>
+          <td>Image = template; Container = running instance.</td>
+          <td><code>docker images</code> / <code>docker ps</code></td>
+        </tr>
+        <tr>
+          <td><strong>Basic commands</strong></td>
+          <td>Build, run, stop, and monitor containers.</td>
+          <td><code>docker run -d -p 80:80 img</code></td>
+        </tr>
+        <tr>
+          <td><strong>Dockerfile basics</strong></td>
+          <td>Instructions to build an image.</td>
+          <td>
+            <code>FROM</code>, <code>COPY</code>, <code>RUN</code>,
+            <code>CMD</code>, <code>ENTRYPOINT</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Multi-stage builds</strong></td>
+          <td>Build app in one image, run it in a smaller image.</td>
+          <td><code>FROM sdk AS build</code></td>
+        </tr>
+        <tr>
+          <td><strong>Debugging containers</strong></td>
+          <td>View logs and go inside running containers.</td>
+          <td>
+            <code>docker logs id</code> / <code>docker exec -it id sh</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Containerizing .NET API</strong></td>
+          <td>Build & run .NET API inside Docker.</td>
+          <td><code>docker run -p 5000:80 api-img</code></td>
+        </tr>
+        <tr>
+          <td><strong>Environment variables</strong></td>
+          <td>Pass configuration values to containers.</td>
+          <td><code>docker run -e KEY=VAL img</code></td>
+        </tr>
+        <tr>
+          <td><strong>docker-compose.yml</strong></td>
+          <td>Run multiple containers together.</td>
+          <td><code>docker-compose up -d</code></td>
+        </tr>
+        <tr>
+          <td><strong>Volumes & Bind mounts</strong></td>
+          <td>Persist container data outside container.</td>
+          <td><code>-v data:/var/lib/data</code></td>
+        </tr>
+        <tr>
+          <td><strong>Container registry</strong></td>
+          <td>Store and share Docker images.</td>
+          <td><code>docker push repo/img:tag</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Dockerfile Example:</h3>
+    <pre>FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build  <span style="color: #666;">// Image used to build and compile the .NET application</span>
+WORKDIR /src                                    <span style="color: #666;">// Set working directory inside the container</span>
+COPY . .                                        <span style="color: #666;">// Copy all project files into the container</span>
+RUN dotnet publish -c Release -o /app           <span style="color: #666;">// Build the app and produce optimized output files</span>
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0       <span style="color: #666;">// Lightweight image used only to run the app</span>
+WORKDIR /app                                   <span style="color: #666;">// Directory where the app will run</span>
+COPY --from=build /app .                       <span style="color: #666;">// Copy compiled files from the build stage</span>
+ENTRYPOINT ["dotnet","YourApp.dll"]            <span style="color: #666;">// Command to start the application</span></pre>
+
+    <script src="../change.js"></script>
+  </body>
+</html>
