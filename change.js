@@ -35,10 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="dropdown">
             <button class="dropdown-btn">☰ Shubham</button>
             <div class="dropdown-menu">
-              <a href="https://github.com/Shu7387/Notes/blob/master/Angular.md">Angular deep</a>
-              <a href="#">Azure deep</a>
+              <a href="#">Azure</a>
               <hr />
-              <a href="https://github.com/Shu7387/Notes">Github</a>
+              <a href="https://github.com/Shu7387">Github</a>
             </div>
           </div>
         </div>
