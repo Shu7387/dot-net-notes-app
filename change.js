@@ -16,16 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerHTML = `
     <header class="app-header">
       <nav>
-        <a href="/Notes/SQL.html">SQL</a>
-        <a href="/Notes/CSharp.html">C#</a>
-        <a href="/Notes/WebAPI.html">Web API</a>
-        <a href="/Notes/MVC.html">MVC</a>
-        <a href="/Notes/JS.html">Javascript</a>
-        <a href="/Notes/TS.html">Typescript</a>
-        <a href="/Notes/Angular.html">Angular</a>
+        <a href="dot-net-notes-app/Notes/SQL.html">SQL</a>
+        <a href="dot-net-notes-app/Notes/CSharp.html">C#</a>
+        <a href="dot-net-notes-app/Notes/WebAPI.html">Web API</a>
+        <a href="dot-net-notes-app/Notes/MVC.html">MVC</a>
+        <a href="dot-net-notes-app/Notes/JS.html">Javascript</a>
+        <a href="dot-net-notes-app/Notes/TS.html">Typescript</a>
+        <a href="dot-net-notes-app/Notes/Angular.html">Angular</a>
 
         <!-- Rotating navbar text (CSS-only). Add/remove <span> to change technologies -->
-        <a href="/Notes/GitDocker.html" class="swap-text">
+        <a href="dot-net-notes-app/Notes/GitDocker.html" class="swap-text">
           <span>Git</span>
           <span>CI / CD</span>
           <span>Docker</span>
