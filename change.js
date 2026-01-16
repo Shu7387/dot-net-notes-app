@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerHTML = `
     <header class="app-header">
       <nav>
-        <a href="Notes/SQL.html">SQL</a>
+        <a href="SQL.html">SQL</a>
         <a href="dot-net-notes-app/Notes/CSharp.html">C#</a>
         <a href="dot-net-notes-app/Notes/WebAPI.html">Web API</a>
         <a href="dot-net-notes-app/Notes/MVC.html">MVC</a>
