@@ -23,13 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="JS.html">Javascript</a>
         <a href="TS.html">Typescript</a>
         <a href="Angular.html">Angular</a>
-
-        <!-- Rotating navbar text (CSS-only). Add/remove <span> to change technologies -->
-        <a href="GitDocker.html" class="swap-text">
-          <span>Git</span>
-          <span>CI / CD</span>
-          <span>Docker</span>
-        </a>
+        <a href="GitDocker.html">DevOps</a>
 
         <div class="nav-right">
           <div class="dropdown">
