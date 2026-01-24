@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="TS.html">Typescript</a>
         <a href="Angular.html">Angular</a>
         <a href="GitDocker.html">DevOps</a>
-
+ 
         <div class="nav-right">
           <div class="dropdown">
             <button class="dropdown-btn">☰ Shubham</button>
