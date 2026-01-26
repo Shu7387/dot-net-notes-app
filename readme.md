@@ -5,7 +5,7 @@
 </h2>
 
 <!-- Use this pattern for animated header links in index.html. Text changes automatically; update only the span content. -->
-<a href="Notes/GitDocker.html" class="topic-card">
+<a href="Notes/DevOps.html" class="topic-card">
   <h3>DevOps</h3>
   <p class="swap-text" style="width: auto; height: auto; display: block">
     <span>Git workflows & version control</span>

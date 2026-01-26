@@ -7,7 +7,7 @@
     <title>ASP.NET Core Web API Notes</title>
   </head>
   <body>
-    <h1>3. ASP.NET CORE WEB API</h1>
+    <h1>3.1. ASP.NET CORE WEB API</h1>
 
     <h2>SECTION 1: REST & HTTP Fundamentals</h2>
     <ul>
@@ -163,23 +163,124 @@
       </p>
     </div>
 
-    <h2>SECTION 4: Life Cycles</h2>
-    <p>
-      <strong>Angular:</strong> Browser → index.html → main.ts → AppModule →
-      AppComponent → Other Components → API calls → UI Render
-    </p>
+    <h2>SECTION 4: ADO.NET</h2>
+    <ul>
+      <li>
+        <strong>What is ADO.NET:</strong> A simple .NET library to talk to a
+        database: open a connection, run SQL or stored procedures, read results,
+        and keep data in memory (like
+        <code>DataTable</code>/<code>DataSet</code>).
+      </li>
+      <li>
+        <strong>Core classes:</strong> <code>SqlConnection</code>,
+        <code>SqlCommand</code>, <code>SqlDataReader</code>,
+        <code>SqlDataAdapter</code>, <code>DataTable</code>,
+        <code>DataSet</code>, <code>SqlParameter</code>,
+        <code>SqlTransaction</code>.
+      </li>
+      <li>
+        <strong>Connected vs Disconnected:</strong> Use
+        <code>SqlDataReader</code> when you only need to read fast, one row at a
+        time (connection stays open). <br />
+        Use <code>DataAdapter</code> + <code>DataTable</code>/<code
+          >DataSet</code
+        >
+        when you want to edit data in memory and save later (connection can be
+        closed).
+      </li>
+      <li>
+        <strong>Execute methods:</strong>
+        <code>ExecuteScalar()</code> → one value (COUNT/SUM),
+        <code>ExecuteNonQuery()</code> → number of rows changed
+        (INSERT/UPDATE/DELETE), <code>ExecuteReader()</code> → many rows
+        (<code>SqlDataReader</code>).
+      </li>
+      <li>
+        <strong>Parameters & SQL injection:</strong> Always use parameters. Do
+        NOT build SQL by joining strings with user input. <br />
+        Example:
+        <code>cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;</code>
+      </li>
+      <li>
+        <strong>Using / disposal:</strong> Use <code>using</code> (or
+        <code>await using</code>) so <code>SqlConnection</code>,
+        <code>SqlCommand</code>, and <code>SqlDataReader</code> are closed and
+        returned to the pool.
+      </li>
+      <li>
+        <strong>Connection pooling:</strong> ADO.NET handles pooling
+        automatically. You can tune it in the connection string:
+        <code>Pooling=true;Min Pool Size=5;Max Pool Size=100;</code>. Open late,
+        close early so connections are reused.
+      </li>
+      <li>
+        <strong>Transactions & isolation:</strong> Use
+        <code>BeginTransaction()</code> / <code>Commit()</code> /
+        <code>Rollback()</code> or <code>TransactionScope</code> for group
+        operations. Know common isolation levels like
+        <code>ReadCommitted</code>, <code>RepeatableRead</code>,
+        <code>Serializable</code>.
+      </li>
+      <li>
+        <strong>Disconnected editing:</strong> Load data with
+        <code>SqlDataAdapter.Fill(table)</code>, edit rows in the
+        <code>DataTable</code> (Added/Modified/Deleted), set
+        <code>InsertCommand/UpdateCommand/DeleteCommand</code>, then call
+        <code>adapter.Update(table)</code> to save changes.
+      </li>
+      <li>
+        <strong>Bulk operations:</strong> Use <code>SqlBulkCopy</code> to insert
+        many rows fast (from a <code>DataTable</code> or
+        <code>IDataReader</code>) into db.
+      </li>
+      <li>
+        <strong>Stored procedures:</strong> Set
+        <code>cmd.CommandType = CommandType.StoredProcedure</code>, add
+        input/output parameters, then use <code>ExecuteNonQuery()</code> or
+        <code>ExecuteReader()</code>.
+      </li>
+      <li>
+        <strong>Async API:</strong> Use async I/O methods in modern apps:
+        <code>OpenAsync()</code>, <code>ExecuteReaderAsync()</code>,
+        <code>ExecuteNonQueryAsync()</code>, <code>ExecuteScalarAsync()</code>.
+      </li>
+    </ul>
 
-    <p>
-      <strong>Web API:</strong> Client calls Web API → API Middleware → Routing
-      → Controller & Action method → Service / DB → Controller → Middleware →
-      Response to Client
-    </p>
+    <div class="note">
+      <p><strong>Best practices: </strong></p>
+      <p>
+        - Select only columns you need; avoid <code>SELECT *</code>.<br />
+        - Use parameters for all inputs.<br />
+        - Always close connections (use <code>using</code>) so pool can reuse
+        them.<br />
+        - Use <code>SqlDataReader</code> for fast reads; use
+        <code>DataTable</code> only when user edits data or for UI binding.<br />
+        - Use <code>SqlBulkCopy</code> for big imports.<br />
+        - Keep transactions short; index hot columns for speed.<br />
+        - Use async methods in web/API code.
+      </p>
+    </div>
 
-    <p>
-      <strong>MVC:</strong> Browser → MVC Middleware Pipeline → Routing →
-      Controller & Action → API / DB → Controller → View (HTML) → Middleware →
-      Browser
-    </p>
+    <h2>SECTION 5: Life Cycles & Authentication & Authorization</h2>
+    <div class="note">
+      <p><strong>Life Cycles:</strong></p>
+      <p>
+        <strong>Angular:</strong> Browser → index.html → main.ts → AppModule →
+        AppComponent → Other Components → API calls → UI Render
+      </p>
+
+      <p>
+        <strong>Web API:</strong> Client calls Web API → API Middleware →
+        Routing → Controller & Action method → Service / DB → Controller →
+        Middleware → Response to Client
+      </p>
+
+      <p>
+        <strong>MVC:</strong> Browser → MVC Middleware Pipeline → Routing →
+        Controller & Action → API / DB → Controller → View (HTML) → Middleware →
+        Browser
+      </p>
+    </div>
 
     <div class="note">
       <p><strong>Authorization & Authentication:</strong></p>
@@ -215,7 +316,6 @@
       </ul>
     </div>
 
-    <h2>SECTION 5: Authentication & Authorization</h2>
     <table>
       <thead>
         <tr>

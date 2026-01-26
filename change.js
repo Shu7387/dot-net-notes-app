@@ -16,15 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerHTML = `
     <header class="app-header">
       <nav>
-        <a href="SQL.html">SQL</a>
-        <a href="CSharp.html">C#</a>
-        <a href="WebAPI.html">Web API</a>
-        <a href="MVC.html">MVC</a>
-        <a href="JS.html">Javascript</a>
-        <a href="TS.html">Typescript</a>
-        <a href="Angular.html">Angular</a>
-        <a href="GitDocker.html">DevOps</a>
- 
+        <a href="/Notes/SQL.html">SQL</a>
+        <a href="/Notes/CSharp.html">C#</a>
+        <a href="/Notes/WebAPI.html">Web API</a>
+        <a href="/Notes/MVC.html">MVC</a>
+        <a href="/Notes/JS.html">Javascript</a>
+        <a href="/Notes/TS.html">Typescript</a>
+        <a href="/Notes/Angular.html">Angular</a>
+        <a href="/Notes/DevOps.html">DevOps</a>
+
         <div class="nav-right">
           <div class="dropdown">
             <button class="dropdown-btn">☰ Shubham</button>
