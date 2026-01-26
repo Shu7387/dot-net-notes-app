@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="JS.html">Javascript</a>
         <a href="TS.html">Typescript</a>
         <a href="Angular.html">Angular</a>
-        <a href="/Notes/DevOps.html">DevOps</a>
+        <a href="DevOps.html">DevOps</a>
 
         <div class="nav-right">
           <div class="dropdown">
