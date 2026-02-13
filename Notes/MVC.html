@@ -1213,6 +1213,7 @@
 
         <div class="answer">
           <strong>Answer:</strong>
+
           <p>
             <strong>How JWT Token is Created:</strong>
             When a user logs in, MVC or Angular calls the Login API. The API
@@ -1224,6 +1225,8 @@
             API stores the JWT inside an HttpOnly secure cookie. The browser
             saves this cookie and automatically sends it with every request.
           </p>
+
+          <hr />
 
           <p>
             <strong>How MVC Handles the JWT Cookie:</strong>
@@ -1237,6 +1240,8 @@
             information using User.Identity and User.Claims.
           </p>
 
+          <hr />
+
           <p>
             <strong>How Angular Works with JWT Cookie:</strong>
             In Angular, the browser also sends the HttpOnly cookie automatically
@@ -1248,6 +1253,8 @@
             the API returns 403 Forbidden.
           </p>
 
+          <hr />
+
           <p>
             <strong>Cache vs Session:</strong>
             Cache is used to store frequently used or expensive data to improve
@@ -1258,6 +1265,8 @@
             or distributed types.
           </p>
 
+          <hr />
+
           <p>
             <strong>Backend Caching in MVC:</strong>
             On the MVC/backend side, to cache expensive API responses, we use
@@ -1267,6 +1276,8 @@
             return the cached data instead of hitting the database.
           </p>
 
+          <hr />
+
           <p>
             <strong>Frontend Caching in Angular:</strong>
             On the Angular side, we cache responses mainly for UI performance
@@ -1274,6 +1285,9 @@
             localStorage, or NgRx store. Backend caching improves overall system
             performance, while frontend caching mainly improves user experience.
           </p>
+
+          <hr />
+
           <p>
             <strong>MVC → Web API (App to App authentication):</strong>
             App-to-app authentication ensures that only trusted applications can
@@ -1289,15 +1303,17 @@
             and OAuth acts as the token issuer.
           </p>
 
+          <hr />
+
           <p>
             <strong>Refresh Token (MVC and Angular):</strong>
             Refresh tokens are used to obtain a new access token when the
             current JWT access token expires, without forcing the user or
             application to log in again. In Angular (user authentication), after
-            login the API issues a short- lived access token (stored in an
+            login the API issues a short-lived access token (stored in an
             HttpOnly cookie) and a longer-lived refresh token. When the access
             token expires, Angular calls a refresh endpoint, and the backend
-            validates the refresh token and issues a new JWT. In MVC app-to- app
+            validates the refresh token and issues a new JWT. In MVC app-to-app
             authentication, OAuth also provides an access token and refresh
             token. MVC uses the access token to call Web APIs, and when it
             expires, the refresh token is used to request a new access token
