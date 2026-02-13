@@ -1393,8 +1393,45 @@
           </p>
         </div>
       </div>
-    </div>
 
+      <div class="scenario-item">
+        <h3>26. Reverse Proxy and Load Balancer Flow</h3>
+        <p>
+          In a normal production ASP.NET MVC, Angular, or Microservices
+          application, how are the Client, Reverse Proxy, Load Balancer, and
+          Application Servers connected?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+
+          <p><strong>1. Monolithic (ASP.NET MVC)</strong></p>
+          <p>
+            Client → Load Balancer (Reverse Proxy) → Application Servers →
+            Database / Redis
+          </p>
+
+          <p><strong>2. Angular + ASP.NET Core API</strong></p>
+          <p>
+            Browser → Load Balancer (Reverse Proxy) → API Servers → Database /
+            Redis
+          </p>
+          <p>
+            Angular runs in the browser and communicates with backend APIs using
+            HTTP requests.
+          </p>
+
+          <p><strong>3. Microservices Architecture</strong></p>
+          <p>
+            Client → API Gateway (Reverse Proxy) → Load Balancer → Microservices
+            → Database
+          </p>
+          <p>
+            In microservices, the API Gateway acts as a Reverse Proxy and routes
+            requests to the appropriate service.
+          </p>
+        </div>
+      </div>
+    </div>
     <script src="../change.js"></script>
   </body>
 </html>
