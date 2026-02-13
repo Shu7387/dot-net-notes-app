@@ -1288,6 +1288,22 @@
             to obtain a new one. The JWT may contain scopes for authorization,
             and OAuth acts as the token issuer.
           </p>
+
+          <p>
+            <strong>Refresh Token (MVC and Angular):</strong>
+            Refresh tokens are used to obtain a new access token when the
+            current JWT access token expires, without forcing the user or
+            application to log in again. In Angular (user authentication), after
+            login the API issues a short- lived access token (stored in an
+            HttpOnly cookie) and a longer-lived refresh token. When the access
+            token expires, Angular calls a refresh endpoint, and the backend
+            validates the refresh token and issues a new JWT. In MVC app-to- app
+            authentication, OAuth also provides an access token and refresh
+            token. MVC uses the access token to call Web APIs, and when it
+            expires, the refresh token is used to request a new access token
+            from the OAuth server. This improves security by keeping access
+            tokens short-lived while maintaining seamless authentication.
+          </p>
         </div>
       </div>
 

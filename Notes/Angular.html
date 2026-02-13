@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -1807,31 +1807,6 @@
             receive the same cached response. The first subscriber triggers the
             request, and subsequent subscribers get the cached value without
             making new calls.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>21. Authentication Flow in Angular (JWT)</h3>
-        <p>
-          In an Angular application, the client calls a Web API to authenticate
-          the user and receives a JWT. How is this token stored and sent with
-          subsequent API requests?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Angular sends user's login credentials an authentication API (like
-            OAuth API), After successful authentication, the API returns an
-            access token (JWT) and usually a refresh token. Angular stores the
-            access token in the browser (preferably in memory) and uses an HTTP
-            interceptor to automatically attach it to every outgoing request.
-            The refresh token is also stored in the browser, ideally in an
-            <code>HttpOnly</code> cookie. When the access token expires, Angular
-            calls the refresh API and continues without logging the user out. In
-            Angular applications, JWT is used for authentication, and it can
-            also carry roles or scopes that are used by the API for
-            authorization.
           </p>
         </div>
       </div>
