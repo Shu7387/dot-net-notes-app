@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -1204,7 +1204,7 @@
       </div>
 
       <div class="scenario-item">
-        <h3>22. Authentication Flow in ASP.NET MVC</h3>
+        <h3>22. Authentication Flow in ASP.NET MVC & Angular</h3>
         <p>
           A user logs in to an ASP.NET MVC application that consumes a Web API.
           The browser does not call the API directly. How does authentication
@@ -1214,23 +1214,79 @@
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            <strong>MVC User Login:</strong>
-            MVC validates credentials, creates claims/identity/principal, stores
-            user data in a server session, and sends a session ID in a cookie.
-            The browser sends this cookie on every request. This is cookie-based
-            authentication with role-based authorization.
+            <strong>How JWT Token is Created:</strong>
+            When a user logs in, MVC or Angular calls the Login API. The API
+            validates the username and password from the database and then
+            creates a JWT token. The JWT contains three parts: header, payload,
+            and signature. The payload includes user information such as user
+            id, claims, and role, along with expiry time. The token is signed
+            using a secret key to ensure it is not modified. After creation, the
+            API stores the JWT inside an HttpOnly secure cookie. The browser
+            saves this cookie and automatically sends it with every request.
           </p>
 
           <p>
-            <strong>MVC → Web API:</strong>
-            With Basic Auth, MVC sends username and password on every request,
-            which is insecure and not recommended. With OAuth, MVC sends the
-            username and password only once to an OAuth service. The OAuth
-            service issues a JWT access token and a refresh token. MVC uses the
-            JWT access token to call Web APIs. When the access token expires,
-            the refresh token is used to obtain a new JWT. The JWT may contain
-            scopes, which are used for authorization. OAuth acts as the token
-            issuer.
+            <strong>How MVC Handles the JWT Cookie:</strong>
+            When a user accesses any page, the browser sends the cookie to MVC
+            automatically. When MVC receives a request with the cookie, the
+            authentication middleware extracts the JWT from the cookie and
+            validates its signature and expiry. If the token is valid, it
+            creates a ClaimsPrincipal and sets HttpContext.User, which contains
+            all user information. Then the authorization middleware checks roles
+            if required. After that, the controller runs and can access user
+            information using User.Identity and User.Claims.
+          </p>
+
+          <p>
+            <strong>How Angular Works with JWT Cookie:</strong>
+            In Angular, the browser also sends the HttpOnly cookie automatically
+            with each outgoing API request. Angular cannot read the HttpOnly
+            cookie directly, so to display user details it calls the /UserInfo
+            API. That API reads the cookie, validates the JWT from the cookie,
+            and returns user information like name and role. For protected APIs,
+            we use [Authorize(Roles="Admin")], and if the role does not match,
+            the API returns 403 Forbidden.
+          </p>
+
+          <p>
+            <strong>Cache vs Session:</strong>
+            Cache is used to store frequently used or expensive data to improve
+            performance, and it is usually shared across all users. Session is
+            used to store user-specific temporary data like cart or multi-step
+            form state. Cache improves system speed, while session maintains
+            user state. Both cache and session can be implemented in in-memory
+            or distributed types.
+          </p>
+
+          <p>
+            <strong>Backend Caching in MVC:</strong>
+            On the MVC/backend side, to cache expensive API responses, we use
+            IMemoryCache for single-server applications or IDistributedCache
+            with Redis for multi-server environments. We store the response
+            using a key and set a TTL (expiration time). On the next request, we
+            return the cached data instead of hitting the database.
+          </p>
+
+          <p>
+            <strong>Frontend Caching in Angular:</strong>
+            On the Angular side, we cache responses mainly for UI performance
+            using an in-memory service, RxJS shareReplay, sessionStorage,
+            localStorage, or NgRx store. Backend caching improves overall system
+            performance, while frontend caching mainly improves user experience.
+          </p>
+          <p>
+            <strong>MVC → Web API (App to App authentication):</strong>
+            App-to-app authentication ensures that only trusted applications can
+            call backend APIs. User authentication proves who the user is, while
+            application authentication proves which application is making the
+            request. This is not for end users; it is for the MVC application
+            when calling backend Web APIs. Basic Auth sends username and
+            password on every request, which is insecure. With OAuth (client
+            credentials flow), MVC authenticates once with an OAuth server and
+            receives a JWT access token and refresh token. MVC uses the access
+            token to call APIs, and when it expires, the refresh token is used
+            to obtain a new one. The JWT may contain scopes for authorization,
+            and OAuth acts as the token issuer.
           </p>
         </div>
       </div>
