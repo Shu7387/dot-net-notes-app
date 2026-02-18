@@ -1,11 +1,6 @@
 /**
- * Header Management Script
- *
- * This script handles:
- * 1. Injecting header HTML into the page
- * 2. Highlighting the active navigation link
- * 3. Hiding/showing header on scroll
- * 4. Dropdown menu functionality
+ * CONSOLIDATED JAVASCRIPT FILE
+ * Contains all scripts for header management, navigation, and interactive elements
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="JS.html">Javascript</a>
         <a href="TS.html">Typescript</a>
         <a href="Angular.html">Angular</a>
+        <a href="Azure.html">Azure</a>
         <a href="DevOps.html">DevOps</a>
 
         <div class="nav-right">
@@ -99,21 +95,81 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", () => {
     dropdown.classList.remove("open");
   });
+
+  // ====================================
+  // 5. AZURE NOTES - COLLAPSIBLE SECTIONS
+  // ====================================
+
+  /**
+   * Toggle Section Behavior
+   * Only one section open at a time
+   */
+  window.toggleSection = function (headerElement) {
+    const content = headerElement.nextElementSibling;
+    const icon = headerElement.querySelector(".toggle-icon");
+
+    // Check if this section is already open
+    const isOpen = content.classList.contains("open");
+
+    // Close all sections
+    document.querySelectorAll(".section-content").forEach((el) => {
+      el.classList.remove("open");
+    });
+
+    document.querySelectorAll(".section-header").forEach((el) => {
+      el.classList.remove("active");
+      el.querySelector(".toggle-icon").classList.remove("rotated");
+    });
+
+    // If this section was closed, open it
+    if (!isOpen) {
+      content.classList.add("open");
+      headerElement.classList.add("active");
+      icon.classList.add("rotated");
+    }
+  };
 });
 
 // ====================================
-// 5. COLLAPSIBLE SECTION TOGGLE
+// 6. LEGACY COLLAPSIBLE SECTION TOGGLE
 // ====================================
+// Kept for backward compatibility with other pages
 
-function toggleSection() {
-  const content = document.getElementById("scenarioContent");
-  const icon = document.getElementById("toggleIcon");
+function toggleSection(headerElement) {
+  // If called without argument (old style)
+  if (!headerElement) {
+    const content = document.getElementById("scenarioContent");
+    const icon = document.getElementById("toggleIcon");
 
-  if (content.classList.contains("expanded")) {
-    content.classList.remove("expanded");
-    icon.classList.remove("rotated");
+    if (content && icon) {
+      if (content.classList.contains("expanded")) {
+        content.classList.remove("expanded");
+        icon.classList.remove("rotated");
+      } else {
+        content.classList.add("expanded");
+        icon.classList.add("rotated");
+      }
+    }
   } else {
-    content.classList.add("expanded");
-    icon.classList.add("rotated");
+    // New style (for Azure notes)
+    const content = headerElement.nextElementSibling;
+    const icon = headerElement.querySelector(".toggle-icon");
+
+    const isOpen = content.classList.contains("open");
+
+    document.querySelectorAll(".section-content").forEach((el) => {
+      el.classList.remove("open");
+    });
+
+    document.querySelectorAll(".section-header").forEach((el) => {
+      el.classList.remove("active");
+      el.querySelector(".toggle-icon").classList.remove("rotated");
+    });
+
+    if (!isOpen) {
+      content.classList.add("open");
+      headerElement.classList.add("active");
+      icon.classList.add("rotated");
+    }
   }
 }

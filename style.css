@@ -382,7 +382,128 @@ h2.collapsible:hover {
 }
 
 /* ================================================
-   10. PRINT STYLES
+   10. AZURE NOTES STYLES
+   (Collapsible Q&A sections for Azure interview notes)
+   ================================================ */
+
+.section-container {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.section-header {
+  background: #4a4a4a;
+  color: white;
+  padding: 15px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.section-header:hover {
+  background: #333;
+}
+
+.section-header.active {
+  background: #2c3e50;
+}
+
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  background: #fafafa;
+}
+
+.section-content.open {
+  max-height: 50000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.qa-item {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.qa-item:last-child {
+  border-bottom: none;
+}
+
+.question {
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.answer {
+  color: #333;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.answer p {
+  margin-bottom: 8px;
+}
+
+.answer ul {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.answer li {
+  margin-bottom: 5px;
+}
+
+.image-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.image-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #e8e8e8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.image-icon:hover {
+  background: #d0d0d0;
+  border-color: #999;
+  transform: scale(1.1);
+}
+
+.section-title {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.section-description {
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+/* ================================================
+   11. PRINT STYLES
    ================================================ */
 
 @media print {
@@ -417,5 +538,10 @@ h2.collapsible:hover {
 
   .toggle-icon {
     display: none;
+  }
+
+  /* Azure notes - show all sections when printing */
+  .section-content {
+    max-height: none !important;
   }
 }
