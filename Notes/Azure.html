@@ -7,7 +7,1340 @@
     <title>Azure Notes - Interview Master List</title>
   </head>
   <body>
-    <h1>🔷 Azure Interview Master List</h1>
+    <h1>🔷 Azure</h1>
+
+    <!-- SECTION 0: Azure Architecture & Implementation Reference -->
+    <div class="section-container">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div>
+          <div class="section-title">
+            SECTION 0 — Azure Architecture & Implementation
+          </div>
+          <div class="section-description">
+            Quick reference guide for complete Azure architecture
+          </div>
+        </div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <!-- REFERENCE BLOCK 1 -->
+        <div class="reference-block">
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            1. FRONTEND HOSTING – AZURE STATIC WEB APPS
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Managed service to host frontend applications (Angular, React,
+              Vue) with global CDN and automatic HTTPS.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Automatic HTTPS</li>
+              <li>Global CDN</li>
+              <li>CI/CD integration</li>
+              <li>Easy deployment</li>
+              <li>Secure frontend hosting</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Build Angular project → generates dist/ folder</li>
+              <li>2. Azure Portal → Create Static Web App</li>
+              <li>3. Connect GitHub or Azure DevOps repository</li>
+              <li>
+                4. Configure build settings: App location: /, Output location:
+                dist/project-name
+              </li>
+              <li>5. Deploy automatically using CI/CD pipeline</li>
+              <li>6. Configure environment.prod.ts with API base URL</li>
+              <li>
+                7. Enable CORS in backend to allow requests from UI domain
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FLOW:</strong>
+            <p>User Browser → Static Web App → Backend API</p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🌐</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📦</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 2 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            2. BACKEND HOSTING – AZURE APP SERVICE
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Fully managed hosting platform for web apps and APIs. Supports
+              .NET, Node.js, Java, and other runtimes with automatic scaling.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Fully managed runtime</li>
+              <li>Automatic scaling</li>
+              <li>Easy deployment</li>
+              <li>Integrated monitoring</li>
+              <li>Supports multiple frameworks</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">APP SERVICE PLAN:</strong>
+            <p>
+              Defines compute resources: CPU, RAM, pricing tier, and scaling
+              rules. Multiple APIs can share the same App Service Plan.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Publish .NET API → creates publish folder</li>
+              <li>2. Azure Portal → Create App Service</li>
+              <li>3. Select runtime (.NET, Node.js, etc.)</li>
+              <li>
+                4. Deploy using: Azure DevOps Pipeline, Zip Deploy, or Visual
+                Studio Publish
+              </li>
+              <li>5. Enable HTTPS only in security settings</li>
+              <li>6. Configure scaling rules if required</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50"
+              >CONFIGURATION SOURCES (Priority Order):</strong
+            >
+            <ul>
+              <li>
+                1. Environment Variables (highest priority - override
+                everything)
+              </li>
+              <li>2. App Service → Configuration</li>
+              <li>3. appsettings.json (lowest priority)</li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🖥️</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >⚙️</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 3 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            3. DATABASE – AZURE SQL DATABASE
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Managed cloud SQL Server database with automatic backups, high
+              availability, and auto-patching.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Managed backups</li>
+              <li>High availability</li>
+              <li>Automatic patching</li>
+              <li>Scaling support</li>
+              <li>Reduced maintenance overhead</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Export local database as .bacpac file</li>
+              <li>2. Azure Portal → Create Azure SQL Database</li>
+              <li>
+                3. Import .bacpac file using: Azure Portal import or SSMS →
+                Import Data-tier Application
+              </li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🗄️</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >💾</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 4 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            4. SECRETS MANAGEMENT – AZURE KEY VAULT + MANAGED IDENTITY
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Secure storage for secrets (connection strings, API keys) with
+              centralized management and role-based access control.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>No secrets in code</li>
+              <li>Centralized secret management</li>
+              <li>Secure access control</li>
+              <li>Audit logging</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Create Azure Key Vault in Portal</li>
+              <li>2. Add secrets (connection strings, API keys)</li>
+              <li>3. Enable Managed Identity on App Service</li>
+              <li>
+                4. In Key Vault, assign access role to the App Service's Managed
+                Identity
+              </li>
+              <li>
+                5. In App Service Configuration, reference secrets using Key
+                Vault connection string
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FLOW:</strong>
+            <p>
+              Managed Identity (enabled) → Key Vault access role → App Service
+              reads secrets securely → No hardcoded secrets
+            </p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔑</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔒</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 5 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            5. API GATEWAY – AZURE API MANAGEMENT (APIM)
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Gateway service in front of microservices providing centralized
+              security, rate limiting, JWT validation, and API versioning.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Centralized security policies</li>
+              <li>Rate limiting</li>
+              <li>JWT validation</li>
+              <li>API versioning</li>
+              <li>Comprehensive logging and monitoring</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Create APIM service in Azure Portal</li>
+              <li>2. Add backend APIs to APIM</li>
+              <li>
+                3. Configure XML policies: validate-jwt, rate-limit-by-key, CORS
+                policy
+              </li>
+              <li>
+                4. Configure API versioning (path-based preferred: /v1/, /v2/)
+              </li>
+              <li>
+                5. Update Angular frontend to call APIM endpoint instead of
+                direct API
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FLOW:</strong>
+            <p>Angular → APIM Gateway → Microservices</p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔐</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >⚖️</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 6 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            6. MONITORING – APPLICATION INSIGHTS
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Azure monitoring service for tracking application performance,
+              errors, dependencies, and custom metrics across backend and
+              frontend.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Track performance metrics</li>
+              <li>Monitor errors and exceptions</li>
+              <li>Track SQL and external API calls</li>
+              <li>Create actionable alerts</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >BACKEND (.NET API)</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >HOW TO ENABLE:</strong
+            >
+            <ul>
+              <li>
+                Option 1: Turn on Application Insights in App Service settings
+              </li>
+              <li>
+                Option 2: Install NuGet:
+                Microsoft.ApplicationInsights.AspNetCore, Add:
+                builder.Services.AddApplicationInsightsTelemetry();
+              </li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >TRACKS:</strong
+            >
+            <ul>
+              <li>API requests and response times</li>
+              <li>Exceptions and errors</li>
+              <li>SQL database calls and performance</li>
+              <li>External API dependencies</li>
+              <li>Custom logs via ILogger</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >FRONTEND (Angular)</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >HOW TO ENABLE:</strong
+            >
+            <ul>
+              <li>Install npm: @microsoft/applicationinsights-web</li>
+              <li>Add Application Insights connection string</li>
+              <li>Enable automatic route tracking</li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >TRACKS:</strong
+            >
+            <ul>
+              <li>Page views and navigation</li>
+              <li>JavaScript errors</li>
+              <li>Performance metrics</li>
+              <li>Custom user events</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">LOG ANALYSIS:</strong>
+            <p>
+              Azure Portal → Application Insights → Logs. Query using KQL:
+              requests, exceptions, pageViews, dependencies
+            </p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📊</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📈</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 7 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            7. CI/CD – AZURE DEVOPS PIPELINES
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Automated system to build, test, and deploy applications with
+              environment separation (Dev/QA/Prod).
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Automated builds</li>
+              <li>Faster deployments</li>
+              <li>Consistent releases</li>
+              <li>Environment separation</li>
+              <li>Reduces manual errors</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >CONTINUOUS INTEGRATION (CI)</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >PURPOSE:</strong
+            >
+            <p>
+              Automatically build, test, and validate code when changes are
+              pushed to repository.
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >TRIGGER:</strong
+            >
+            <p>
+              Code push to repository → YAML pipeline automatically triggers
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >YAML PIPELINE INCLUDES:</strong
+            >
+            <ul>
+              <li>Pull latest code from repository</li>
+              <li>Restore NuGet packages / npm packages</li>
+              <li>Build project</li>
+              <li>Run unit tests</li>
+              <li>Create Docker image from Dockerfile</li>
+              <li>
+                Push Docker image to container registry (ACR / Docker Hub)
+              </li>
+              <li>Push build artifacts to artifact store</li>
+              <li>Run code quality checks</li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >OUTPUT:</strong
+            >
+            <p>Build artifact (compiled code ready for deployment)</p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >CONTINUOUS DEPLOYMENT (CD)</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >PURPOSE:</strong
+            >
+            <p>Deploy built artifact to Azure environments automatically.</p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >MY PROJECT DEPLOYMENT PROCESS:</strong
+            >
+            <p>
+              Select Release → Select Pipeline → Choose Build Version → Select
+              Environments → Automatically deploy
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >DEPLOYMENT STEPS:</strong
+            >
+            <ul>
+              <li>1. Take build artifact from CI pipeline</li>
+              <li>2. Deploy to App Service (.NET API)</li>
+              <li>3. Deploy to Static Web Apps (Angular)</li>
+              <li>4. Verify deployment in target environment</li>
+              <li>5. Run smoke tests to confirm deployment success</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">ARTIFACTS:</strong>
+            <p>
+              Compiled output used for deployment: Angular → dist/ folder, .NET
+              API → publish/ folder. Build once → Deploy same artifact to all
+              environments
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">SECRETS MANAGEMENT:</strong>
+            <p>
+              Never hardcode secrets. Store using: Pipeline Variables (marked as
+              secret), Variable Groups, Azure Key Vault integration
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FLOW:</strong>
+            <p>
+              Developer Pushes Code → CI Pipeline (Build + Test + Artifact) → CD
+              Pipeline (Deploy to Azure)
+            </p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔄</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🚀</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 8 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            8. AZURE STORAGE ACCOUNT
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Main container for data services including: Blob Storage, Queue
+              Storage, Table Storage, File Storage
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >BLOB STORAGE</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >WHAT IT IS:</strong
+            >
+            <p>
+              Object storage for files (images, PDFs, videos, documents) with
+              scalable and reliable storage.
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >WHY USE IT:</strong
+            >
+            <ul>
+              <li>Store and serve files at scale</li>
+              <li>Separate file storage from database</li>
+              <li>Cost-effective for large files</li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >CONTAINER TYPES:</strong
+            >
+            <ul>
+              <li>Private (recommended) – requires authentication</li>
+              <li>
+                Public Blob – individual blob accessible without authentication
+              </li>
+              <li>
+                Public Container – all blobs accessible without authentication
+              </li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >UPLOAD FLOW:</strong
+            >
+            <p>
+              Angular → API Endpoint → Upload to Blob Storage → Save metadata in
+              SQL
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >DOWNLOAD FLOW:</strong
+            >
+            <p>
+              Angular → Send fileId to API → API generates SAS URL → Angular
+              downloads directly from Blob
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >SAS URL:</strong
+            >
+            <p>
+              Temporary secure access token for limited-time access without
+              exposing storage keys.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >AZURE QUEUE STORAGE</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >WHAT IT IS:</strong
+            >
+            <p>
+              A simple service in Azure used to store messages so different
+              parts of an application can communicate with each other without
+              waiting.
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >WHY USE IT:</strong
+            >
+            <ul>
+              <li>Background processing</li>
+              <li>Decouple services</li>
+              <li>Avoid long API wait times</li>
+              <li>Asynchronous task processing</li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >FLOW:</strong
+            >
+            <p>
+              User → API (Upload Blob) → API sends message to Queue → Azure
+              Function listens (auto-triggered) → Process message
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >FAILURE HANDLING:</strong
+            >
+            <ul>
+              <li>Automatic retry for failed messages</li>
+              <li>After max retries → message sent to Poison Queue</li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📁</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📨</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >☁️</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 9 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            9. AZURE FUNCTIONS
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              A serverless service in Azure that runs your code automatically
+              when an event happens, without needing to manage servers.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Event-driven processing</li>
+              <li>No server management</li>
+              <li>Automatic scaling</li>
+              <li>Pay only for execution time</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">TRIGGER TYPES:</strong>
+            <ul>
+              <li>Queue Trigger – triggered by message in Queue Storage</li>
+              <li>Service Bus Trigger – triggered by Service Bus message</li>
+              <li>HTTP Trigger – triggered by HTTP request</li>
+              <li>Timer Trigger – triggered on schedule (Cron expression)</li>
+              <li>Blob Trigger – triggered when file uploaded/modified</li>
+              <li>
+                Durable Function Triggers: Durable Client Trigger, Orchestration
+                Trigger, Activity Trigger
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50; display: block; margin-bottom: 10px"
+              >SECURITY (HTTP Trigger Authorization)</strong
+            >
+            <strong style="color: #333; display: block; margin-bottom: 5px"
+              >WHAT IT IS:</strong
+            >
+            <p>
+              Function Key is used to protect HTTP-triggered Azure Functions
+              from unauthorized access. It acts like an API password and ensures
+              only authorized users can call the function.
+            </p>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >Function Key can be passed via:</strong
+            >
+            <ul>
+              <li>Query string → ?code=FUNCTION_KEY</li>
+              <li>Header → x-functions-key: FUNCTION_KEY</li>
+            </ul>
+            <strong style="color: #333; display: block; margin: 10px 0 5px 0"
+              >Authorization Types:</strong
+            >
+            <ul>
+              <li>Anonymous – No key required</li>
+              <li>Function – Requires Function Key (API key security)</li>
+              <li>Admin – Requires Master Key (full access)</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FAILURE HANDLING:</strong>
+            <ul>
+              <li>Automatic retry on failure</li>
+              <li>Poison queue handling after max retries</li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >⚡</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔧</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 10 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            10. AZURE SERVICE BUS
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              A messaging service in Azure that helps different applications or
+              services communicate with each other in a reliable way.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Reliable communication between microservices</li>
+              <li>Microservice decoupling</li>
+              <li>Advanced messaging scenarios</li>
+              <li>Guaranteed delivery</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">TYPES:</strong>
+            <ul>
+              <li>Queue (1-to-1) – one sender, one receiver</li>
+              <li>Topic (1-to-many) – one sender, multiple subscribers</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FEATURES:</strong>
+            <ul>
+              <li>Dead Letter Queue (DLQ) – stores failed messages</li>
+              <li>Message Ordering – guarantees order of processing</li>
+              <li>Retry Mechanism – automatic retry with backoff</li>
+              <li>Transactions – atomic operations across messages</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">NOTE:</strong>
+            <p>Often used with Azure Function Service Bus Trigger.</p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📨</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔗</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 11 -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            11. AZURE REDIS CACHE
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              A fast in-memory caching service in Azure that stores frequently
+              used data to improve application speed.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Reduce database load</li>
+              <li>Improve API response times</li>
+              <li>Cache frequently accessed data</li>
+              <li>Session storage</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>1. Create Azure Cache for Redis in Portal</li>
+              <li>
+                2. Install Redis client package in .NET API
+                (StackExchange.Redis)
+              </li>
+              <li>3. In API endpoint: check cache first</li>
+              <li>
+                4. If cache miss → fetch from database → store in Redis → return
+                data
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">CACHE HIT FLOW:</strong>
+            <p>Angular → API (check Redis) → Found → Return cached data</p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">CACHE MISS FLOW:</strong>
+            <p>
+              Angular → API (check Redis) → Not found → Query Database → Save in
+              Redis → Return data
+            </p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >⚡</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >💾</a
+            >
+          </div>
+        </div>
+
+        <!-- COMPLETE ARCHITECTURE FLOW -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: -15px -15px 15px -15px;
+              border-radius: 4px;
+            "
+          >
+            COMPLETE ARCHITECTURE FLOW
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">MAIN REQUEST FLOW:</strong>
+            <p>
+              Angular (Static Web App) → APIM → App Services (Microservices) →
+              Redis (Cache) → Azure SQL Database
+            </p>
+            <p style="margin: 8px 0 0 0; font-size: 12px; color: #666">
+              (Cache Hit → Return from Redis | Cache Miss → Fetch from SQL →
+              Store in Redis → Return)
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50"
+              >FILE & BACKGROUND PROCESSING FLOW:</strong
+            >
+            <p>
+              Angular → API → Blob Storage (+ SQL Metadata) → Queue / Service
+              Bus → Azure Function → Update SQL / Blob → Invalidate Redis
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">MONITORING:</strong>
+            <p>
+              Application Insights → Monitors Angular + APIM + App Services +
+              Azure Functions + SQL + Dependencies
+            </p>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🏗️</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📊</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔄</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 12 - AZURE ACTIVE DIRECTORY -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            12. AZURE ACTIVE DIRECTORY (MICROSOFT ENTRA ID)
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Cloud-based identity and access management service used to
+              authenticate users and secure applications using JWT tokens.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>Secure authentication (Login system)</li>
+              <li>Centralized identity management</li>
+              <li>Single Sign-On (SSO)</li>
+              <li>Role-based access control</li>
+              <li>Secure APIs using JWT tokens</li>
+              <li>Enterprise-grade security (MFA, Conditional Access)</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ul>
+              <li>
+                <strong
+                  >1. Register Backend API in Azure AD (App
+                  Registration).</strong
+                >
+                <ul>
+                  <li>Copy Tenant ID and API Client ID.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>2. Expose API in backend App Registration.</strong>
+                <ul>
+                  <li>
+                    Set Application ID URI →
+                    <code>api://&lt;API_CLIENT_ID&gt;</code>
+                  </li>
+                  <li>Create scope (e.g., <code>access_as_user</code>).</li>
+                </ul>
+              </li>
+              <li>
+                <strong
+                  >3. Register Angular application in Azure AD (SPA App
+                  Registration).</strong
+                >
+                <ul>
+                  <li>Copy Angular Client ID.</li>
+                  <li>
+                    Add Redirect URI (e.g.,
+                    <code>http://localhost:4200/</code>).
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong
+                  >4. Grant Angular permission to access API scope.</strong
+                >
+                <ul>
+                  <li>
+                    API Permissions → Add permission → Select API → Select
+                    scope.
+                  </li>
+                  <li>Grant admin consent.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>5. Configure JWT authentication in .NET API.</strong>
+                <ul>
+                  <li>Use Tenant ID and API Client ID (Audience).</li>
+                  <li>
+                    Configure <code>AddJwtBearer()</code> in
+                    <code>Program.cs</code>.
+                  </li>
+                  <li>Protect endpoints using <code>[Authorize]</code>.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>6. Use MSAL in Angular to authenticate user.</strong>
+                <ul>
+                  <li>Provide Tenant ID and Angular Client ID.</li>
+                  <li>
+                    Request scope
+                    <code>api://&lt;API_CLIENT_ID&gt;/access_as_user</code>.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>7. Send Access Token in API request header:</strong>
+                <code>Authorization: Bearer &lt;access_token&gt;</code>
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">AUTHENTICATION FLOW:</strong>
+            <p>User → Angular → Azure AD Login → JWT Access Token Issued</p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">API AUTHORIZATION FLOW:</strong>
+            <p>
+              Angular → API (Authorization: Bearer token) → API validates token
+              → Return secure data
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">TOKEN TYPES:</strong>
+            <ul>
+              <li>
+                <strong>ID Token</strong> – Used for user authentication
+                (frontend).
+              </li>
+              <li><strong>Access Token</strong> – Used to call secured API.</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">SECURITY FEATURES:</strong>
+            <ul>
+              <li>Token expiration validation</li>
+              <li>Digital signature verification</li>
+              <li>
+                Role-based authorization
+                (<code>[Authorize(Roles="Admin")]</code>)
+              </li>
+              <li>Multi-Factor Authentication (MFA) support</li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔐</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📝</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔑</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- SECTION 1: Azure App Service -->
     <div class="section-container">
