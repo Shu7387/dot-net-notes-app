@@ -1264,6 +1264,250 @@
           </div>
         </div>
 
+        <!-- REFERENCE BLOCK 13 - AZURE LOGIC APPS -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            13. AZURE LOGIC APPS
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              A low-code / no-code workflow service in Azure that lets you build
+              automated flows using a visual designer and connectors (Outlook,
+              Teams, SQL, Service Bus, HTTP, SharePoint, etc.). Flows follow a
+              pattern: Trigger → Actions → Conditions → End.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50"
+              >COMMON TRIGGERS (Workflow Start):</strong
+            >
+            <ul>
+              <li>When an HTTP request is received</li>
+              <li>Recurrence (schedule / CRON)</li>
+              <li>When message arrives in Service Bus</li>
+              <li>When file is created in Blob Storage</li>
+              <li>When new Email arrives</li>
+              <li>When item created in SharePoint</li>
+              <li>Event Grid trigger</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50"
+              >COMMON ACTIONS (What Logic App Does):</strong
+            >
+            <ul>
+              <li>Send Email (Outlook / Gmail)</li>
+              <li>Insert / Update row in SQL</li>
+              <li>Send message to Service Bus</li>
+              <li>Call external HTTP API</li>
+              <li>Create / Read file in Blob Storage</li>
+              <li>Post message in Teams</li>
+              <li>Condition (IF/ELSE)</li>
+              <li>Loop (For each)</li>
+              <li>Response (return HTTP status)</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHEN TO USE:</strong>
+            <ul>
+              <li>Integration between systems</li>
+              <li>Notification workflows</li>
+              <li>Approval processes</li>
+              <li>Automation without writing code</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">LOGIC APP vs AZURE FUNCTION:</strong>
+            <ul>
+              <li><strong>Logic App</strong> – No-code, integration focused</li>
+              <li>
+                <strong>Azure Function</strong> – Code-based, more control
+              </li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >⚙️</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔄</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🎯</a
+            >
+          </div>
+        </div>
+
+        <!-- REFERENCE BLOCK 14 - INFRASTRUCTURE AS CODE TERRAFORM -->
+        <div
+          class="reference-block"
+          style="
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+          "
+        >
+          <h3
+            style="
+              background: #4a4a4a;
+              color: white;
+              padding: 10px;
+              margin: 0 0 15px 0;
+              border-radius: 4px;
+            "
+          >
+            14. INFRASTRUCTURE AS CODE – TERRAFORM
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHAT IT IS:</strong>
+            <p>
+              Terraform is an Infrastructure as Code (IaC) tool used to create
+              and manage Azure resources using code instead of manually using
+              Azure Portal. Instead of clicking in Portal, you write
+              <code>.tf</code> files and Terraform creates Resource Group, App
+              Service, SQL, AKS, Redis, Networking, etc.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">WHY USE IT:</strong>
+            <ul>
+              <li>No manual resource creation</li>
+              <li>Infrastructure defined in code</li>
+              <li>Version control using Git</li>
+              <li>Repeatable environments (Dev / QA / Prod)</li>
+              <li>Reduces human errors</li>
+              <li>Easy to recreate infrastructure</li>
+              <li>Supports automation using CI/CD</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">IMPORTANT CONCEPT:</strong>
+            <p>
+              Terraform maintains a state file (<code>terraform.tfstate</code>)
+              which tracks what resources are created and their current
+              configuration.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">COMMON FILES:</strong>
+            <ul>
+              <li><code>provider.tf</code> – Defines Azure provider</li>
+              <li><code>main.tf</code> – Defines Azure resources</li>
+              <li><code>variables.tf</code> – Input variables</li>
+              <li><code>terraform.tfvars</code> – Environment values</li>
+              <li><code>outputs.tf</code> – Output values after deployment</li>
+              <li>
+                <code>terraform.tfstate</code> – Auto-generated state tracking
+                file
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">STEPS TO IMPLEMENT:</strong>
+            <ol>
+              <li>Install Terraform locally or use CI/CD pipeline</li>
+              <li>Create provider configuration (Azure provider)</li>
+              <li>Define Azure resources in <code>main.tf</code></li>
+              <li>Define input variables in <code>variables.tf</code></li>
+              <li>
+                Provide environment values in <code>terraform.tfvars</code>
+              </li>
+              <li>
+                CI/CD INTEGRATION: Developer Push Code → Pipeline Runs & Deploy
+                → Automatically Azure Resources Created
+              </li>
+            </ol>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50"
+              >REMOTE STATE (ENTERPRISE LEVEL):</strong
+            >
+            <p>
+              In production, <code>terraform.tfstate</code> file is stored in
+              Azure Storage Account (Remote Backend). This allows team
+              collaboration, state locking, and prevents conflicts between
+              developers.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="color: #2c3e50">FLOW:</strong>
+            <p>
+              Terraform Code → CI/CD Pipeline → Azure API → Infrastructure
+              Created → Visible in Azure Portal
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px">
+            <strong style="color: #2c3e50">WHEN TO USE:</strong>
+            <ul>
+              <li>Multiple environments</li>
+              <li>Enterprise projects</li>
+              <li>Microservices architecture</li>
+              <li>Production deployments</li>
+              <li>When infrastructure must be version controlled</li>
+            </ul>
+          </div>
+
+          <div class="image-icons">
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >📋</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🏗️</a
+            >
+            <a
+              href="https://via.placeholder.com/200"
+              target="_blank"
+              class="image-icon"
+              >🔧</a
+            >
+          </div>
+        </div>
+
         <!-- COMPLETE ARCHITECTURE FLOW -->
         <div
           class="reference-block"
