@@ -727,6 +727,16 @@
         while handling auth, rate limiting, and logging. MVC → API Gateway
         (Handles everything) → All Backend APIs
       </li>
+
+      <li>
+        <strong>Securing Web API:</strong> Configure JWT authentication using
+        AddJwtBearer in Program.cs to validate token signature, issuer,
+        audience, and expiry; enable UseAuthentication and UseAuthorization
+        middleware; apply the [Authorize] attribute to restrict access to
+        authenticated users; and enforce security using HTTPS, CORS
+        configuration, and rate limiting middlewares. Use azure key-vault for
+        secrets.
+      </li>
     </ul>
 
     <h2 class="collapsible" onclick="toggleSection()">
