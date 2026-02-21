@@ -9,511 +9,796 @@
   <body>
     <h1>6. TypeScript</h1>
 
-    <h2>SECTION 1: Type Fundamentals</h2>
-    <ul>
-      <li>
-        <strong>Basic Types:</strong> <code>string</code>, <code>number</code>,
-        <code>boolean</code>, <code>array</code>, <code>object</code>,
-        <code>enum</code>
-      </li>
-      <li>
-        <strong>Type Annotations:</strong> Mention explicit type on variables &
-        functions <code>let age: number = 3;</code>
-        <code>let cal: (a: number)=>string = (n)=> {String(n)}</code>
-      </li>
-      <li>
-        <strong>Type Inference:</strong> TypeScript auto-detects types based on
-        value when type not specified <code>let age = 30;</code>
-      </li>
-      <li>
-        <strong>Union Types:</strong> Variable can have multiple types
-        <code>let k: string | number</code>
-      </li>
-      <li>
-        <strong>Intersection Types:</strong> Combines multiple types into one
-        <code
-          >type A = { a: number }; type B = { b: string };
-          <strong>let x: A & B</strong></code
-        >
-      </li>
-      <li>
-        <strong>Literal Types:</strong> Exact values as types
-        <code>type c = "success" | "error" | 55</code>
-      </li>
-      <li>
-        <strong>any vs unknown:</strong> <code>any</code> disables type checks;
-        <code>unknown</code> requires type checking before use
-      </li>
-      <li>
-        <strong>Type Assertions:</strong> Tells TypeScript to treat a value as a
-        specific type <code>value as string</code>
-      </li>
-      <li>
-        <strong>Modules:</strong> a file, Used to organize code by exporting and
-        importing classes, functions, or variables between files using
-        <strong>named</strong> and <strong>default</strong> imports/exports.
-      </li>
-      <li>
-        <strong>Declaration Files:</strong> <code>.d.ts</code> files provide
-        <strong>type information for JavaScript libraries</strong> so TypeScript
-        can perform type checking. Commonly used via
-        <code>@types/*</code> packages or written using <code>declare</code>.
-      </li>
-      <li>
-        <strong>TS Benefits:</strong> Superset of JavaScript; Strongly-typed;
-        Catch errors at compile time; Features rich and improves code quality.
-      </li>
-    </ul>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: Type Fundamentals <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Basic Types</strong></td>
+            <td>Core TypeScript types</td>
+            <td>
+              <code>string</code>, <code>number</code>, <code>boolean</code>,
+              <code>array</code>, <code>object</code>, <code>enum</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Type Annotations</strong></td>
+            <td>Explicitly mention type on variables &amp; functions</td>
+            <td><code>let age: number = 3;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Type Inference</strong></td>
+            <td>
+              TypeScript auto-detects types based on value when type not
+              specified
+            </td>
+            <td><code>let age = 30;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Union Types</strong></td>
+            <td>Variable can hold multiple types</td>
+            <td><code>let k: string | number</code></td>
+          </tr>
+          <tr>
+            <td><strong>Intersection Types</strong></td>
+            <td>Combines multiple types into one</td>
+            <td><code>let x: A &amp; B</code></td>
+          </tr>
+          <tr>
+            <td><strong>Literal Types</strong></td>
+            <td>Exact values as types</td>
+            <td><code>type c = "success" | "error" | 55</code></td>
+          </tr>
+          <tr>
+            <td><strong>any vs unknown</strong></td>
+            <td>
+              <code>any</code> disables type checks;
+              <code>unknown</code> requires type checking before use
+            </td>
+            <td><code>let x: unknown</code></td>
+          </tr>
+          <tr>
+            <td><strong>Type Assertions</strong></td>
+            <td>Tell TypeScript to treat a value as a specific type</td>
+            <td><code>value as string</code></td>
+          </tr>
+          <tr>
+            <td><strong>Modules</strong></td>
+            <td>
+              Organize code by exporting and importing classes, functions, or
+              variables between files using named and default imports/exports
+            </td>
+            <td><code>export default</code>, <code>import { x }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Declaration Files</strong></td>
+            <td>
+              <code>.d.ts</code> files provide type information for JavaScript
+              libraries so TypeScript can perform type checking
+            </td>
+            <td><code>@types/*</code>, <code>declare</code></td>
+          </tr>
+          <tr>
+            <td><strong>TS Benefits</strong></td>
+            <td>
+              Superset of JavaScript; strongly-typed; catch errors at compile
+              time; improves code quality
+            </td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 2: Interfaces & Objects</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th>What it is</th>
-          <th>Why / Where Used</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Interface</strong></td>
-          <td>Object structure</td>
-          <td>API, models, props</td>
-          <td><code>interface User { id: number }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Optional Properties</strong></td>
-          <td>May or may not exist</td>
-          <td>Partial data</td>
-          <td><code>interface User { age?: number }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Readonly</strong></td>
-          <td>Cannot be changed</td>
-          <td>IDs, constants</td>
-          <td><code>interface User { readonly id: number }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Type Alias</strong></td>
-          <td>Name for any type</td>
-          <td>Unions, reuse</td>
-          <td><code>type Status = "success" | "error"</code></td>
-        </tr>
-        <tr>
-          <td><strong>Extending</strong></td>
-          <td>Inherit interface</td>
-          <td>Avoid duplication</td>
-          <td><code>interface IAdmin extends IUser {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Index Signature</strong></td>
-          <td>Dynamic keys</td>
-          <td>Objects with unknown keys</td>
-          <td><code>interface Obj { [key: string]: any }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Function Type</strong></td>
-          <td>Function structure</td>
-          <td>Callbacks, handlers</td>
-          <td><code>interface Fn { (a: number): number }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Class Implements</strong></td>
-          <td>Class follows interface</td>
-          <td>Enforce structure</td>
-          <td><code>class A implements User {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Intersection Type</strong></td>
-          <td>Combine multiple types</td>
-          <td>Mix features</td>
-          <td><code>type A = B & C</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 3: Functions</h2>
-    <ul>
-      <li>
-        <strong>Parameter Types:</strong> Type each parameter
-        <code
-          >function greet(name?: string, country: string = "Guest"):
-          string</code
-        >
-      </li>
-      <li><strong>Return Types:</strong> Specify what function returns</li>
-      <li>
-        <strong>Optional Parameters:</strong> Parameters with <code>?</code> can
-        be omitted
-      </li>
-      <li>
-        <strong>Default Parameters:</strong> Provide fallback values for
-        parameters
-      </li>
-      <li>
-        <strong>Rest Parameter:</strong> Allows any number of arguments and
-        group them into an array <code>...numbers: number[]</code>
-      </li>
-      <li>
-        <strong>Function Type Alias:</strong> Reusable function signature type
-        <code>type BinaryFn = (a: number, b: number) => number;</code>
-      </li>
-      <li>
-        <strong>void vs never:</strong> <code>void</code> returns nothing
-        useful; <code>never</code> never returns (throws error or infinite loop)
-      </li>
-      <li>
-        <strong>Decorators</strong> → <code>@</code> functions that add extra
-        behavior or metadata to classes, methods, or properties, mainly used by
-        Angular.
-      </li>
-    </ul>
-
-    <h2>SECTION 4: Arrays & Tuples</h2>
-    <ul>
-      <li>
-        <strong>Array Types:</strong> Two syntaxes: <code>number[]</code> or
-        <code>Array&lt;number&gt;</code>
-      </li>
-      <li>
-        <strong>Array of Objects:</strong> Type arrays containing objects
-        <code>User[]</code>
-      </li>
-      <li>
-        <strong>Tuple Types:</strong> Fixed-length heterogeneous array with
-        specific types at each position
-        <code>let pair: [string, number] = ["Age", 30];</code>
-      </li>
-      <li>
-        <strong>Readonly Arrays:</strong> Arrays that cannot be modified
-        <code>const ids: readonly number[] = [1,2,3];</code>
-      </li>
-    </ul>
-
-    <h2>SECTION 5: Type Guards & Narrowing</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>What it does</th>
-          <th>Use Case</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>typeof</strong></td>
-          <td>Checks primitive type</td>
-          <td>string, number, boolean</td>
-          <td><code>typeof x === "string"</code></td>
-        </tr>
-        <tr>
-          <td><strong>instanceof</strong></td>
-          <td>Checks class instance</td>
-          <td>Date, Error, custom classes</td>
-          <td><code>obj instanceof Date</code></td>
-        </tr>
-        <tr>
-          <td><strong>in operator</strong></td>
-          <td>Checks property exists</td>
-          <td>Union object narrowing</td>
-          <td><code>"role" in user</code></td>
-        </tr>
-        <tr>
-          <td><strong>Custom Type Guards</strong></td>
-          <td>User-defined type check function</td>
-          <td>Complex business logic</td>
-          <td><code>function isA(x): x is A {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Truthiness Check</strong></td>
-          <td>Check null / undefined in if()</td>
-          <td>Safe null handling</td>
-          <td><code>if (value) {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Equality Narrowing</strong></td>
-          <td>Narrows using === or !==</td>
-          <td>Literal & union checks</td>
-          <td><code>x === "admin"</code></td>
-        </tr>
-        <tr>
-          <td><strong>Discriminated Union</strong></td>
-          <td>Narrows using common property</td>
-          <td>State-based logic</td>
-          <td><code>if (obj.type === "success")</code></td>
-        </tr>
-        <tr>
-          <td><strong>Optional Chaining</strong></td>
-          <td>Safe property access</td>
-          <td>Nested optional values</td>
-          <td><code>user?.address?.city</code></td>
-        </tr>
-        <tr>
-          <td><strong>Non-null Assertion</strong></td>
-          <td>Forces value as non-null</td>
-          <td>Guaranteed non-null value</td>
-          <td><code>student.name!</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 6: Generics</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it is (short)</th>
-          <th>Why / Where Used</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Generic Function</strong></td>
-          <td>Function with type parameter</td>
-          <td>Utilities, helpers</td>
-          <td><code>function id&lt;T&gt;(v: T): string</code></td>
-        </tr>
-        <tr>
-          <td><strong>Generic Interface</strong></td>
-          <td>Interface with generic type</td>
-          <td>API responses, models</td>
-          <td><code>interface Api&lt;T&gt; { data: T }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Generic Class</strong></td>
-          <td>Class using generic type</td>
-          <td>Reusable data structures</td>
-          <td><code>class Box&lt;T&gt; { value: T }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Multiple Generics</strong></td>
-          <td>More than one type parameter</td>
-          <td>Key-value pairs</td>
-          <td><code>function map&lt;K, V&gt;(k: K, v: V)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Generic Constraints</strong></td>
-          <td>Restrict generic type</td>
-          <td>Ensure required properties</td>
-          <td><code>function fn&lt;T extends User&gt;(x: T)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Default Generic Type</strong></td>
-          <td>Default type for generic</td>
-          <td>Optional flexibility</td>
-          <td><code>interface Api&lt;T = string&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Generics with Arrays</strong></td>
-          <td>Generic array type</td>
-          <td>Type-safe collections</td>
-          <td><code>Array&lt;number&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Generics with Promise</strong></td>
-          <td>Promise result typing</td>
-          <td>Async code safety</td>
-          <td><code>Promise&lt;User&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>keyof</strong></td>
-          <td>Union of object keys</td>
-          <td>Safe property access</td>
-          <td><code>K extends keyof T</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 7: Utility Types</h2>
-    <div class="note">
-      <p>
-        <strong>Utility Type:</strong> We can
-        <strong>transform & reuse existing types</strong>
-        instead of writing new types again and again
-      </p>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Utility</th>
-          <th>Does what</th>
-          <th>Common Use</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Partial</strong></td>
-          <td>Makes all props optional</td>
-          <td>Update ops, partial forms</td>
-          <td><code>Partial&lt;User&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Required</strong></td>
-          <td>Makes all props required</td>
-          <td>Ensure complete data</td>
-          <td><code>Required&lt;User&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Readonly</strong></td>
-          <td>Makes all props readonly</td>
-          <td>Immutable configs, constants</td>
-          <td><code>Readonly&lt;User&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Pick</strong></td>
-          <td>Select specific props</td>
-          <td>Create subset types</td>
-          <td><code>Pick&lt;User, "id" | "name"&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Omit</strong></td>
-          <td>Remove specific props</td>
-          <td>Exclude sensitive fields</td>
-          <td><code>Omit&lt;User, "password"&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Record</strong></td>
-          <td>Key-value object type</td>
-          <td>Dictionaries, lookup tables</td>
-          <td><code>Record&lt;string, number&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>ReturnType</strong></td>
-          <td>Extract function return type</td>
-          <td>Reuse function result type</td>
-          <td><code>ReturnType&lt;typeof getUser&gt;</code></td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Interfaces &amp; Objects <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Topic</th>
+            <th>What it is</th>
+            <th>Why / Where Used</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Interface</strong></td>
+            <td>Defines object structure</td>
+            <td>API models, props</td>
+            <td><code>interface User { id: number }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Optional Properties</strong></td>
+            <td>May or may not exist</td>
+            <td>Partial data</td>
+            <td><code>interface User { age?: number }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Readonly</strong></td>
+            <td>Cannot be changed after assignment</td>
+            <td>IDs, constants</td>
+            <td><code>interface User { readonly id: number }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Type Alias</strong></td>
+            <td>Name for any type</td>
+            <td>Unions, reuse</td>
+            <td><code>type Status = "success" | "error"</code></td>
+          </tr>
+          <tr>
+            <td><strong>Extending</strong></td>
+            <td>Inherit another interface</td>
+            <td>Avoid duplication</td>
+            <td><code>interface IAdmin extends IUser {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Index Signature</strong></td>
+            <td>Dynamic keys with unknown names</td>
+            <td>Objects with unknown keys</td>
+            <td><code>interface Obj { [key: string]: any }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Function Type</strong></td>
+            <td>Define function structure</td>
+            <td>Callbacks, handlers</td>
+            <td><code>interface Fn { (a: number): number }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Class Implements</strong></td>
+            <td>Class must follow interface contract</td>
+            <td>Enforce structure</td>
+            <td><code>class A implements User {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Intersection Type</strong></td>
+            <td>Combine multiple types</td>
+            <td>Mix features from multiple types</td>
+            <td><code>type A = B &amp; C</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 8: Classes</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it does</th>
-          <th>Common Use</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Class</strong></td>
-          <td>Blueprint for objects</td>
-          <td>Create object instances</td>
-          <td><code>class User { }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Constructor</strong></td>
-          <td>Initializes object data</td>
-          <td>Set initial values</td>
-          <td><code>constructor(public name: string) {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Properties</strong></td>
-          <td>Variables inside class</td>
-          <td>Store object state</td>
-          <td><code>name: string</code></td>
-        </tr>
-        <tr>
-          <td><strong>Methods</strong></td>
-          <td>Functions inside class</td>
-          <td>Object behavior</td>
-          <td><code>getName(): string {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Access Modifiers</strong></td>
-          <td>Control visibility</td>
-          <td>Encapsulation</td>
-          <td><code>public / private / protected</code></td>
-        </tr>
-        <tr>
-          <td><strong>Readonly</strong></td>
-          <td>Prevent property change</td>
-          <td>IDs, constants</td>
-          <td><code>readonly id: number</code></td>
-        </tr>
-        <tr>
-          <td><strong>Inheritance</strong></td>
-          <td>Extend another class</td>
-          <td>Reuse functionality</td>
-          <td><code>class Admin extends User {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Method Overriding</strong></td>
-          <td>Redefine parent method</td>
-          <td>Custom behavior</td>
-          <td><code>override method() {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Abstract Class</strong></td>
-          <td>Base class without object</td>
-          <td>Enforce implementation</td>
-          <td><code>abstract class Shape {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Interface Implement</strong></td>
-          <td>Enforce class structure</td>
-          <td>Contract enforcement</td>
-          <td><code>class A implements I {}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Static Members</strong></td>
-          <td>Belong to class, not instance</td>
-          <td>Utilities, constants</td>
-          <td><code>static count = 0</code></td>
-        </tr>
-        <tr>
-          <td><strong>Getters & Setters</strong></td>
-          <td>Control property access</td>
-          <td>Validation, encapsulation</td>
-          <td><code>get name() / set name(v)</code></td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <h2>SECTION 9: Async & Promises</h2>
-    <ul>
-      <li>
-        <strong>Promise&lt;T&gt;:</strong> Promise in JavaScript is an object
-        that represents result of asynchronous operation. It has three states:
-        pending, resolve or reject; <br />
-        <code>let p: Promise&lt;number&gt; = Promise.Resolve(100);</code>
-      </li>
-      <li>
-        <strong>async / await:</strong> Write async code; built on Promises;
-        <code>async function getData() { return await api(); }</code>
-      </li>
-      <li>
-        <strong>Error handling:</strong> Use try / catch with async await;
-        <code>try { await api(); } catch (e) { }</code>
-      </li>
-      <li>
-        <strong>Promise.all()</strong> → Run tasks in parallel, wait for all to
-        complete; <code>await Promise.all([api1(), api2()]);</code>
-      </li>
-    </ul>
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Functions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Parameter Types</strong></td>
+            <td>Type each parameter explicitly</td>
+            <td><code>function greet(name: string): string</code></td>
+          </tr>
+          <tr>
+            <td><strong>Return Types</strong></td>
+            <td>Specify what the function returns</td>
+            <td><code>function add(): number</code></td>
+          </tr>
+          <tr>
+            <td><strong>Optional Parameters</strong></td>
+            <td>Parameters marked with <code>?</code> can be omitted</td>
+            <td><code>function fn(name?: string)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Default Parameters</strong></td>
+            <td>Provide fallback values for parameters</td>
+            <td><code>function fn(country = "India")</code></td>
+          </tr>
+          <tr>
+            <td><strong>Rest Parameter</strong></td>
+            <td>Accepts any number of arguments grouped into an array</td>
+            <td><code>...numbers: number[]</code></td>
+          </tr>
+          <tr>
+            <td><strong>Function Type Alias</strong></td>
+            <td>Reusable function signature type</td>
+            <td>
+              <code>type BinaryFn = (a: number, b: number) =&gt; number</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>void vs never</strong></td>
+            <td>
+              <code>void</code> returns nothing useful; <code>never</code> never
+              returns (throws or infinite loop)
+            </td>
+            <td><code>function log(): void</code></td>
+          </tr>
+          <tr>
+            <td><strong>Decorators</strong></td>
+            <td>
+              <code>@</code> functions that add extra behavior or metadata to
+              classes, methods, or properties — mainly used in Angular
+            </td>
+            <td><code>@Component({})</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 10: Essential Config (tsconfig.json)</h2>
-    <div class="note">
-      <pre><code>{
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Arrays &amp; Tuples <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Array Types</strong></td>
+            <td>Two syntaxes for typed arrays</td>
+            <td><code>number[]</code> or <code>Array&lt;number&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Array of Objects</strong></td>
+            <td>Type arrays that contain objects</td>
+            <td><code>User[]</code></td>
+          </tr>
+          <tr>
+            <td><strong>Tuple Types</strong></td>
+            <td>Fixed-length array with specific types at each position</td>
+            <td><code>let pair: [string, number] = ["Age", 30]</code></td>
+          </tr>
+          <tr>
+            <td><strong>Readonly Arrays</strong></td>
+            <td>Arrays that cannot be modified after creation</td>
+            <td><code>const ids: readonly number[] = [1, 2, 3]</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Type Guards &amp; Narrowing <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>What it does</th>
+            <th>Use Case</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>typeof</strong></td>
+            <td>Checks primitive type</td>
+            <td>string, number, boolean</td>
+            <td><code>typeof x === "string"</code></td>
+          </tr>
+          <tr>
+            <td><strong>instanceof</strong></td>
+            <td>Checks class instance</td>
+            <td>Date, Error, custom classes</td>
+            <td><code>obj instanceof Date</code></td>
+          </tr>
+          <tr>
+            <td><strong>in operator</strong></td>
+            <td>Checks if property exists on object</td>
+            <td>Union object narrowing</td>
+            <td><code>"role" in user</code></td>
+          </tr>
+          <tr>
+            <td><strong>Custom Type Guards</strong></td>
+            <td>User-defined type check function</td>
+            <td>Complex business logic</td>
+            <td><code>function isA(x): x is A {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Truthiness Check</strong></td>
+            <td>Check null / undefined in if block</td>
+            <td>Safe null handling</td>
+            <td><code>if (value) {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Equality Narrowing</strong></td>
+            <td>Narrows using === or !==</td>
+            <td>Literal and union checks</td>
+            <td><code>x === "admin"</code></td>
+          </tr>
+          <tr>
+            <td><strong>Discriminated Union</strong></td>
+            <td>Narrows using a common shared property</td>
+            <td>State-based logic</td>
+            <td><code>if (obj.type === "success")</code></td>
+          </tr>
+          <tr>
+            <td><strong>Optional Chaining</strong></td>
+            <td>Safe property access on nested optional values</td>
+            <td>Nested optional values</td>
+            <td><code>user?.address?.city</code></td>
+          </tr>
+          <tr>
+            <td><strong>Non-null Assertion</strong></td>
+            <td>Forces TypeScript to treat value as non-null</td>
+            <td>When you are sure value is not null</td>
+            <td><code>student.name!</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Generics <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Why / Where Used</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Generic Function</strong></td>
+            <td>Function with a type parameter</td>
+            <td>Utilities, helpers</td>
+            <td><code>function id&lt;T&gt;(v: T): T</code></td>
+          </tr>
+          <tr>
+            <td><strong>Generic Interface</strong></td>
+            <td>Interface with a generic type</td>
+            <td>API responses, models</td>
+            <td><code>interface Api&lt;T&gt; { data: T }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Generic Class</strong></td>
+            <td>Class using a generic type</td>
+            <td>Reusable data structures</td>
+            <td><code>class Box&lt;T&gt; { value: T }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Multiple Generics</strong></td>
+            <td>More than one type parameter</td>
+            <td>Key-value pairs</td>
+            <td><code>function map&lt;K, V&gt;(k: K, v: V)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Generic Constraints</strong></td>
+            <td>Restrict what types the generic can accept</td>
+            <td>Ensure required properties exist</td>
+            <td><code>function fn&lt;T extends User&gt;(x: T)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Default Generic Type</strong></td>
+            <td>Default type if none is provided</td>
+            <td>Optional flexibility</td>
+            <td><code>interface Api&lt;T = string&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Generics with Arrays</strong></td>
+            <td>Generic array type</td>
+            <td>Type-safe collections</td>
+            <td><code>Array&lt;number&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Generics with Promise</strong></td>
+            <td>Type the resolved value of a promise</td>
+            <td>Async code safety</td>
+            <td><code>Promise&lt;User&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>keyof</strong></td>
+            <td>Union of all keys of an object type</td>
+            <td>Safe property access</td>
+            <td><code>K extends keyof T</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: Utility Types <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Utility Types:</strong> Transform and reuse existing types
+          instead of writing new types from scratch every time.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Utility</th>
+            <th>Does what</th>
+            <th>Common Use</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Partial</strong></td>
+            <td>Makes all props optional</td>
+            <td>Update operations, partial forms</td>
+            <td><code>Partial&lt;User&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Required</strong></td>
+            <td>Makes all props required</td>
+            <td>Ensure complete data</td>
+            <td><code>Required&lt;User&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Readonly</strong></td>
+            <td>Makes all props readonly</td>
+            <td>Immutable configs, constants</td>
+            <td><code>Readonly&lt;User&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Pick</strong></td>
+            <td>Select specific props from a type</td>
+            <td>Create subset types</td>
+            <td><code>Pick&lt;User, "id" | "name"&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Omit</strong></td>
+            <td>Remove specific props from a type</td>
+            <td>Exclude sensitive fields like password</td>
+            <td><code>Omit&lt;User, "password"&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Record</strong></td>
+            <td>Key-value object type</td>
+            <td>Dictionaries, lookup tables</td>
+            <td><code>Record&lt;string, number&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>ReturnType</strong></td>
+            <td>Extract the return type of a function</td>
+            <td>Reuse function result type</td>
+            <td><code>ReturnType&lt;typeof getUser&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: Classes <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it does</th>
+            <th>Common Use</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Class</strong></td>
+            <td>Blueprint for objects</td>
+            <td>Create object instances</td>
+            <td><code>class User { }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Constructor</strong></td>
+            <td>Initializes object data on creation</td>
+            <td>Set initial values</td>
+            <td><code>constructor(public name: string) {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Properties</strong></td>
+            <td>Variables inside a class</td>
+            <td>Store object state</td>
+            <td><code>name: string</code></td>
+          </tr>
+          <tr>
+            <td><strong>Methods</strong></td>
+            <td>Functions inside a class</td>
+            <td>Object behavior</td>
+            <td><code>getName(): string {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Access Modifiers</strong></td>
+            <td>Control visibility of members</td>
+            <td>Encapsulation</td>
+            <td><code>public / private / protected</code></td>
+          </tr>
+          <tr>
+            <td><strong>Readonly</strong></td>
+            <td>Prevent property from being changed</td>
+            <td>IDs, constants</td>
+            <td><code>readonly id: number</code></td>
+          </tr>
+          <tr>
+            <td><strong>Inheritance</strong></td>
+            <td>Extend another class to reuse its members</td>
+            <td>Reuse functionality</td>
+            <td><code>class Admin extends User {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Method Overriding</strong></td>
+            <td>Redefine a parent class method in child</td>
+            <td>Custom behavior in child class</td>
+            <td><code>override method() {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Abstract Class</strong></td>
+            <td>Base class that cannot be instantiated directly</td>
+            <td>Enforce implementation in child classes</td>
+            <td><code>abstract class Shape {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Interface Implement</strong></td>
+            <td>Class must fulfill interface contract</td>
+            <td>Contract enforcement</td>
+            <td><code>class A implements I {}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Static Members</strong></td>
+            <td>Belong to the class itself, not instances</td>
+            <td>Utilities, counters, constants</td>
+            <td><code>static count = 0</code></td>
+          </tr>
+          <tr>
+            <td><strong>Getters &amp; Setters</strong></td>
+            <td>Control how properties are accessed and modified</td>
+            <td>Validation, encapsulation</td>
+            <td><code>get name() / set name(v)</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Async &amp; Promises <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Promise&lt;T&gt;</strong></td>
+            <td>
+              Represents the result of an async operation. Three states:
+              pending, resolved, rejected.
+            </td>
+            <td>
+              <code>let p: Promise&lt;number&gt; = Promise.resolve(100)</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>async / await</strong></td>
+            <td>
+              Write async code that reads like synchronous code — built on
+              Promises
+            </td>
+            <td>
+              <code>async function getData() { return await api(); }</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Error Handling</strong></td>
+            <td>Use try/catch with async/await to handle rejections cleanly</td>
+            <td><code>try { await api(); } catch (e) { }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Promise.all()</strong></td>
+            <td>
+              Run multiple async tasks in parallel and wait for all to complete
+            </td>
+            <td><code>await Promise.all([api1(), api2()])</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: Essential Config (tsconfig.json)
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <pre><code>{
   "compilerOptions": {
-    "target": "ES2020",          // JS version output
-    "module": "ESNext",          // module system
-    "strict": true,              // enable strict type checking
-    "noImplicitAny": true,       // disallow implicit any
-    "moduleResolution": "node",  // resolve modules like Node.js
-    "esModuleInterop": true,     // allow import compatibility
+    "target": "ES2020",           // JS version output
+    "module": "ESNext",           // module system
+    "strict": true,               // enable strict type checking
+    "noImplicitAny": true,        // disallow implicit any
+    "moduleResolution": "node",   // resolve modules like Node.js
+    "esModuleInterop": true,      // allow import compatibility
     "forceConsistentCasingInFileNames": true, // avoid case issues
-    "skipLibCheck": true         // faster build, skip lib checks
+    "skipLibCheck": true          // faster build, skip lib checks
   }
 }</code></pre>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>target</strong></td>
+            <td>
+              JavaScript version to compile output to — <code>ES2020</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>strict</strong></td>
+            <td>Enables all strict type-checking options at once</td>
+          </tr>
+          <tr>
+            <td><strong>noImplicitAny</strong></td>
+            <td>
+              Disallows variables that implicitly get type <code>any</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>esModuleInterop</strong></td>
+            <td>Allows default imports from CommonJS modules</td>
+          </tr>
+          <tr>
+            <td><strong>skipLibCheck</strong></td>
+            <td>Skips type checking of declaration files for faster builds</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
+
     <script src="../change.js"></script>
   </body>
 </html>

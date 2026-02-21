@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,1268 +9,1329 @@
   <body>
     <h1>1. SQL SERVER</h1>
 
-    <h2>SECTION 1: SQL Fundamentals</h2>
-    <ul>
-      <li><strong>Database & Table:</strong> <code>RENAME</code></li>
-      <li>
-        <strong>DDL:</strong> Data Defination Language, Structure/Column
-        operations <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>,
-        <code>TRUNCATE</code>
-      </li>
-      <li>
-        <strong>DML:</strong> Data Manipulation Language, Data/Row operations
-        <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>,
-        <code>DELETE</code>
-      </li>
-      <li>
-        <strong>Constraints:</strong> Validate data <code>PRIMARY KEY</code>,
-        <code>FOREIGN KEY</code> (4 Cascade Actions), <code>UNIQUE</code>,
-        <code>CHECK</code>, <code>DEFAULT</code>, <code>NOT NULL</code>
-      </li>
-      <li>
-        <strong>Cascade Actions:</strong>
-        <code>NO ACTION</code> (block parent change), <code>CASCADE</code> (auto
-        change child), <code>SET NULL</code> (remove relation),
-        <code>SET DEFAULT</code> (set default value)
-      </li>
-      <li>
-        <strong>Identity:</strong> Auto-incremented column
-        <code>Id INT IDENTITY(1,1)</code>;
-        <code>SCOPE_IDENTITY()</code> (current scope),
-        <code>@@IDENTITY</code> (session), <code>IDENT_CURRENT('table')</code>
-      </li>
-    </ul>
-
-    <h2>SECTION 2: Joins & Set Operations</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Join Type</th>
-          <th>Returns</th>
-          <th>Use Case</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>INNER JOIN</strong></td>
-          <td>Matching rows from both tables</td>
-          <td>
-            Default;
-            <code
-              >SELECT * FROM Orders o INNER JOIN Customers c ON o.CustomerId =
-              c.Id</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>LEFT JOIN</strong></td>
-          <td>All left + matching right (nulls if no match)</td>
-          <td>Keep all records from main table</td>
-        </tr>
-        <tr>
-          <td><strong>RIGHT JOIN</strong></td>
-          <td>All right + matching left</td>
-          <td>Rarely used (swap to LEFT)</td>
-        </tr>
-        <tr>
-          <td><strong>FULL JOIN</strong></td>
-          <td>All rows from both tables</td>
-          <td>Find unmatched records both sides</td>
-        </tr>
-        <tr>
-          <td><strong>CROSS JOIN</strong></td>
-          <td>Cartesian product (every combination)</td>
-          <td>Every student has every subject</td>
-        </tr>
-        <tr>
-          <td><strong>SELF JOIN</strong></td>
-          <td>Join table to itself</td>
-          <td>Hierarchical data, comparisons, Manager also Employee</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>Join vs Subquery:</strong> Join combine data from multiple
-        tables in one query. Subquery uses result of one query inside another
-        query for filtering or conditions.
-      </p>
-      <p>
-        <strong>Join vs Union:</strong> Joins adds column for more details;
-        <code>UNION</code> adds rows for more data (No duplicates),
-        <code>UNION ALL</code> duplicates
-      </p>
-    </div>
-
-    <h2>SECTION 3: Query Clauses</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Clauses / Keywords</th>
-          <th>Purpose</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Filtering</strong></td>
-          <td>
-            <code>WHERE</code>, <code>AND</code>, <code>OR</code>,
-            <code>IN</code>, <code>BETWEEN</code>, <code>LIKE</code>,
-            <code>IS NULL</code>
-          </td>
-          <td>Filter rows before grouping</td>
-        </tr>
-        <tr>
-          <td><strong>Sorting</strong></td>
-          <td>
-            <code>ORDER BY</code> (<code>ASC</code>/<code>DESC</code>),
-            <code>TOP</code>, <code>OFFSET...FETCH</code>
-          </td>
-          <td>Sort and limit results</td>
-        </tr>
-        <tr>
-          <td><strong>Grouping</strong></td>
-          <td><code>GROUP BY</code>, <code>HAVING</code></td>
-          <td>Aggregate data; <code>HAVING</code> filters groups</td>
-        </tr>
-        <tr>
-          <td><strong>Set Operations</strong></td>
-          <td>
-            <code>UNION</code>, <code>UNION ALL</code>, <code>INTERSECT</code>,
-            <code>EXCEPT</code>
-          </td>
-          <td>Combine/compare result sets</td>
-        </tr>
-        <tr>
-          <td><strong>Subqueries</strong></td>
-          <td>
-            <code>EXISTS</code>, <code>IN</code>, <code>ANY</code>,
-            <code>ALL</code>
-          </td>
-          <td>Nested queries for filtering</td>
-        </tr>
-        <tr>
-          <td><strong>Other</strong></td>
-          <td>
-            <code>DISTINCT</code>, <code>WITH</code> (CTE), <code>INTO</code>
-          </td>
-          <td>Remove duplicates, temp results</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 4: Functions</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Functions</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Aggregate</strong></td>
-          <td>
-            <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>,
-            <code>MIN</code>, <code>MAX</code>
-          </td>
-          <td>
-            <code>COUNT(*)</code> includes nulls,
-            <code>COUNT(col)</code> excludes; <code>DISTINCT</code> for unique
-            counts
-          </td>
-        </tr>
-        <tr>
-          <td><strong>String</strong></td>
-          <td>
-            <code>CONCAT</code>, <code>SUBSTRING</code>, <code>CHARINDEX</code>,
-            <code>LEN</code>, <code>TRIM</code>, <code>UPPER</code>
-          </td>
-          <td>String manipulation</td>
-        </tr>
-        <tr>
-          <td><strong>Date</strong></td>
-          <td>
-            <code>GETDATE</code>, <code>DATEADD</code>, <code>DATEDIFF</code>,
-            <code>DATEPART</code>, <code>YEAR</code>
-          </td>
-          <td>Date arithmetic and extraction</td>
-        </tr>
-        <tr>
-          <td><strong>Conversion</strong></td>
-          <td>
-            <code>CAST</code>, <code>CONVERT</code>, <code>TRY_CAST</code>
-          </td>
-          <td>Data type conversion</td>
-        </tr>
-        <tr>
-          <td><strong>Null Handling</strong></td>
-          <td>
-            <code>ISNULL</code>, <code>COALESCE</code>, <code>NULLIF</code>
-          </td>
-          <td><code>COALESCE</code> returns first non-null value</td>
-        </tr>
-        <tr>
-          <td><strong>Math</strong></td>
-          <td>
-            <code>ROUND</code>, <code>CEILING</code>, <code>FLOOR</code>,
-            <code>ABS</code>, <code>POWER</code>
-          </td>
-          <td>Numeric operations</td>
-        </tr>
-        <tr>
-          <td><strong>Window Functions</strong></td>
-          <td>
-            <code>ROW_NUMBER()</code>, <code>RANK()</code>,
-            <code>DENSE_RANK()</code>, <code>NTILE()</code>
-          </td>
-          <td>
-            <strong>ROW_NUMBER</strong> gives unique numbers (1 2 3 4),
-            <strong>RANK</strong> skips numbers on ties (1 2 2 4),
-            <strong>DENSE_RANK</strong> does not skip (1 2 2 3)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Window Clauses</strong></td>
-          <td>
-            <code>PARTITION BY</code>, <code>ORDER BY</code>, <code>DESC</code>,
-            <code>ROWS</code>/<code>RANGE</code>
-          </td>
-          <td>
-            <strong>PARTITION BY</strong> restarts row ranks for each group;
-            <code
-              >ROW_NUMBER() OVER (PARTITION BY Department ORDER BY Salary
-              DESC)</code
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>User-Defined Functions:</strong> A custom SQL function used to
-        return calculated or filtered data.
-      </p>
-      <ul>
-        <li>
-          <strong>Scalar:</strong> Returns single value; used in
-          <code>SELECT</code>, <code>WHERE</code>
-        </li>
-        <li>
-          <strong>Inline Table-Valued:</strong> Returns table; single
-          <code>SELECT</code> statement; Fast & can be indexed
-        </li>
-        <li>
-          <strong>Multi-Statement Table:</strong> Returns table; multiple
-          statements; cannot be indexed; slower than inline
-        </li>
-      </ul>
-    </div>
-
-    <h2>SECTION 5: Stored Procedures & Triggers</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Stored Procedures</strong></td>
-          <td>
-            Precompiled SQL; accepts parameters; returns int status; executes
-            via <code>EXEC</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Parameters</strong></td>
-          <td>
-            Input (<code>@param INT</code>), Output (<code
-              >@result INT OUTPUT</code
-            >), Return value (<code>RETURN 0</code>)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Benefits</strong></td>
-          <td>
-            Performance (cached plan), security (permissions), reusability,
-            reduced network traffic, centralize business logic, prevent sql
-            injection
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Error Handling</strong></td>
-          <td>
-            <code>TRY...CATCH</code> block; log errors to table;
-            <code>ROLLBACK</code> on failure
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Dynamic SQL</strong></td>
-          <td>
-            Build/execute SQL strings at run time; use
-            <code>sp_executesql</code> for parameterization
-          </td>
-        </tr>
-        <tr>
-          <td><strong>SP vs Inline SQL</strong></td>
-          <td>
-            SP: Better performance, security; Inline: Flexibility, easier
-            debugging
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>SP vs Functions:</strong> SP changes data and runs logic,
-        Function only returns data
-      </p>
-      <ul>
-        <li>
-          <strong>SP:</strong> Can read/modify data, return multiple result sets
-          and output parameters, support transactions, error handling, temp
-          tables, and dynamic SQL; executed using <code>EXEC</code>.
-        </li>
-        <li>
-          <strong>Function:</strong> Read-only, returns a single value or table,
-          used inside <code>SELECT</code>, must be deterministic, and cannot use
-          transactions or cause side effects.
-        </li>
-      </ul>
-    </div>
-
-    <h3>Triggers</h3>
-    <p>
-      <strong>Triggers:</strong> Trigger are special SP, runs automatically when
-      data is inserted, updated, or deleted.
-    </p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Fires On</th>
-          <th>Use Case</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>DML</strong></td>
-          <td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
-          <td>Audit trails, enforce business rules</td>
-        </tr>
-        <tr>
-          <td><strong>DDL</strong></td>
-          <td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></td>
-          <td>Track schema changes</td>
-        </tr>
-        <tr>
-          <td><strong>LOGON</strong></td>
-          <td>User login</td>
-          <td>Restrict access, log login attempts</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p><strong>Trigger Types:</strong></p>
-      <ul>
-        <li>
-          <strong>INSTEAD OF:</strong> Replaces DML operation; used on views;
-          <strong>Only trigger executed but not the underlying query</strong>
-        </li>
-        <li>
-          <strong>AFTER/FOR:</strong> Executes after DML completes; Can
-          rollback; <strong>Both executed</strong>
-        </li>
-      </ul>
-      <p>
-        <strong>Magic Tables:</strong> <code>inserted</code> (new data),
-        <code>deleted</code> (old data) available inside DML triggers
-      </p>
-    </div>
-
-    <h2>SECTION 6: Subqueries, CTEs & Derived Tables</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Description</th>
-          <th>Syntax Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Subquery</strong></td>
-          <td>Query nested inside another query</td>
-          <td><code>WHERE ID IN (SELECT...)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Correlated</strong></td>
-          <td>Dependent; References outer query; Executes per row</td>
-          <td>Slower; row-by-row execution</td>
-        </tr>
-        <tr>
-          <td><strong>Non-Correlated</strong></td>
-          <td>Independent; Executes once</td>
-          <td>Faster; one-time execution</td>
-        </tr>
-        <tr>
-          <td><strong>Scalar Subquery</strong></td>
-          <td>Returns single value</td>
-          <td><code>SELECT (SELECT MAX...)</code></td>
-        </tr>
-        <tr>
-          <td><strong>CTE</strong></td>
-          <td>
-            Named temporary result; Readable, reusable in single scope query
-          </td>
-          <td><code>WITH name AS (SELECT...)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Recursive CTE</strong></td>
-          <td>References itself; for hierarchies, graphs</td>
-          <td>Employee org chart</td>
-        </tr>
-        <tr>
-          <td><strong>Derived Table</strong></td>
-          <td>Inline subquery in FROM clause</td>
-          <td><code>FROM (SELECT...) AS dt</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p><strong>When to Use:</strong></p>
-      <ul>
-        <li>
-          <strong>CTE:</strong> Used for complex queries, recursion,
-          readability; Can be referenced multiple times in same query, Named
-          result set.
-        </li>
-        <li>
-          <strong>Derived Table:</strong> Simple one-time subquery within from
-          clause used inline; no name or reuse needed.
-        </li>
-        <li>
-          <strong>View:</strong> Saved select query, virtual table, reused by
-          many users; improves security by hiding columns and keeps logic
-          persistent.
-        </li>
-      </ul>
-    </div>
-
-    <h2>SECTION 7: Indexing</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Index Type</th>
-          <th>Description</th>
-          <th>Key Points</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Index Definition</strong></td>
-          <td>Like book index, helps SQL Server find data faster</td>
-          <td>
-            Applies on column, Index speeds up reads but slows down data changes
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Clustered Index</strong></td>
-          <td>
-            Physically stores & sorts actual table data based on index key
-            column
-          </td>
-          <td>
-            Only one per table; usually on the Primary Key; very fast for range
-            queries
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Non-Clustered Index</strong></td>
-          <td>
-            Stored as separate structure that contains index key with pointers
-            to actual table rows
-          </td>
-          <td>
-            Multiple allowed per table; fast for search and lookup operations
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Unique/Non Unique</strong></td>
-          <td>Enforces uniqueness on column(s)</td>
-          <td>Automatically created for PK, UNIQUE</td>
-        </tr>
-        <tr>
-          <td><strong>Composite/Covering</strong></td>
-          <td>Index on multiple columns</td>
-          <td>Order matters; use for multi-column filters</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>Benefits:</strong> Faster <code>SELECT</code>,
-        <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code>; Enforces
-        uniqueness
-      </p>
-      <p>
-        <strong>When NOT to Use:</strong> Small tables, frequent
-        <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code>, low
-        selectivity columns.
-      </p>
-      <p>
-        <strong>Index Maintenance:</strong> Write operations make index out of
-        order(fragmentation) causing slow read. This Keeps indexes fast by
-        fixing fragmentation and refreshing statistics.
-        <strong>Rebuild (&gt;30%)</strong> recreates the index,
-        <strong>Reorganize (5–30%)</strong> lightly fixes it, and
-        <strong>Update Statistics</strong> refreshes table and index statistics
-        so SQL Server can choose better execution plans.
-      </p>
-    </div>
-
-    <h2>SECTION 8: Transactions & Concurrency</h2>
-    <p>
-      <strong>Transaction:</strong> A group of database operations that all
-      succeed or fail together<br />
-      <code>BEGIN TRANSACTION</code> → operations → try
-      <code>COMMIT</code> (success) / catch <code>ROLLBACK</code> (failure)
-    </p>
-
-    <p><strong>ACID Properties:</strong></p>
-    <ul>
-      <li>
-        <strong>Atomicity:</strong> Transaction completes fully or not at all.
-      </li>
-      <li>
-        <strong>Consistency:</strong> Data stays valid before and after the
-        transaction.
-      </li>
-      <li>
-        <strong>Isolation:</strong> Transactions do not affect each other.
-      </li>
-      <li><strong>Durability:</strong> Committed data is saved permanently.</li>
-    </ul>
-
-    <p>
-      <strong>Concurrency:</strong> It allows multiple users to work on DB at
-      the same time without data conflicts
-    </p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Issue</th>
-          <th>Description</th>
-          <th>Solution</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Dirty Read</strong></td>
-          <td>Read uncommitted data from another transaction</td>
-          <td><code>READ COMMITTED</code> level</td>
-        </tr>
-        <tr>
-          <td><strong>Lost Update</strong></td>
-          <td>Concurrent updates overwrite each other</td>
-          <td>WITH (NOLOCK), <strong>RowVersion</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Non-Repeatable Read</strong></td>
-          <td>Same row search gives different values</td>
-          <td><code>REPEATABLE READ</code> level</td>
-        </tr>
-        <tr>
-          <td><strong>Phantom Read</strong></td>
-          <td>
-            New rows appear/disappear because another transaction
-            inserted/deleted
-          </td>
-          <td><code>SERIALIZABLE</code> level</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Isolation Levels</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Level</th>
-          <th>Prevents</th>
-          <th>Allows</th>
-          <th>Performance</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>READ UNCOMMITTED</strong></td>
-          <td>Nothing</td>
-          <td>Dirty, Non-repeatable, Phantom</td>
-          <td>Fastest</td>
-        </tr>
-        <tr>
-          <td><strong>READ COMMITTED</strong></td>
-          <td>Dirty Read</td>
-          <td>Non-repeatable, Phantom</td>
-          <td>Default</td>
-        </tr>
-        <tr>
-          <td><strong>REPEATABLE READ</strong></td>
-          <td>Dirty, Non-repeatable</td>
-          <td>Phantom Read</td>
-          <td>Slower</td>
-        </tr>
-        <tr>
-          <td><strong>SERIALIZABLE</strong></td>
-          <td>All issues</td>
-          <td>Nothing</td>
-          <td>Slowest</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>RowVersion:</strong> A column that automatically changes its
-        value whenever a row is updated, It ensures that no one overwrites
-        another user's update unknowingly <code>Lost Update</code>. Use it with
-        where clause, add a column <code>RowVersion ROWVERSION</code>;
-      </p>
-      <p>
-        <strong>Deadlock:</strong> Happens when two transactions block each
-        other by holding locks, so SQL Server kills one; Avoid it by short
-        transactions, proper indexes, and consistent table access order.
-        <strong>Fix =></strong> Identify session, analyze query, wait if
-        possible, kill as last option, then fix root cause.
-      </p>
-    </div>
-
-    <h2>SECTION 9: Advanced SQL Concepts</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Description</th>
-          <th>Key Points</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Views</strong></td>
-          <td>Saved <code>SELECT</code> query; Virtual table</td>
-          <td>
-            Simple (one table), Complex (Many tables), <br />
-            Indexed (Secure with <code>SCHEMABINDING</code>); Column security
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Temp Tables</strong></td>
-          <td>
-            <code>#Local</code> (session), <code>##Global</code> (all sessions)
-          </td>
-          <td>Stored in tempdb; dropped on disconnect</td>
-        </tr>
-        <tr>
-          <td><strong>Table Variables</strong></td>
-          <td><code>@TableVar</code>; in-memory (App RAM)</td>
-          <td>No statistics; use for small datasets; Fast</td>
-        </tr>
-        <tr>
-          <td><strong>PIVOT/UNPIVOT</strong></td>
-          <td>Transform rows ↔ columns</td>
-          <td>
-            <code>PIVOT</code> (row to col), <code>UNPIVOT</code> (col to row)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Normalization</strong></td>
-          <td>Organizing data to Reduce redundancy</td>
-          <td>
-            1NF (atomic), 2NF (no partial dependency), 3NF (no transitive
-            dependency)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>MERGE</strong></td>
-          <td>
-            <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code> in one
-            statement
-          </td>
-          <td>Sync source to target table</td>
-        </tr>
-        <tr>
-          <td><strong>SELECT INTO</strong></td>
-          <td>Create new table from query results</td>
-          <td><code>SELECT * INTO NewTable FROM OldTable</code></td>
-        </tr>
-        <tr>
-          <td><strong>CASE Expression</strong></td>
-          <td>Conditional logic in queries</td>
-          <td>
-            Use in <code>SELECT</code>, <code>WHERE</code>,
-            <code>ORDER BY</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p><strong>Temp Tables vs Table Variables vs CTEs:</strong></p>
-      <ul>
-        <li>
-          <strong>Temp Tables:</strong> Best for large datasets, support
-          indexes, supports statistics; Stored in Tempdb & Removed when session
-          ends
-        </li>
-        <li>
-          <strong>Table Variables:</strong> Small datasets (&lt;1000 rows), no
-          statistics, faster for simple operations; Stored in App RAM & Removed
-          when scope ends
-        </li>
-        <li>
-          <strong>CTEs:</strong> Readability, single-query scope, no physical
-          storage
-        </li>
-      </ul>
-      <p>
-        <strong>System Tables:</strong> <code>INFORMATION_SCHEMA.TABLES</code>,
-        <code>SYS.TABLES</code>, <code>SYS.COLUMNS</code>,
-        <code>SYS.INDEXES</code> (metadata queries)<br />
-        Database existence → <code>DB_ID()</code>, Table / SP / View existence →
-        <code>IF OBJECT_ID('dbo.vw_Students', 'V') IS NOT NULL</code>
-      </p>
-    </div>
-
-    <h2>SECTION 10: SQL Query Optimization</h2>
-    <ul>
-      <li>
-        <strong>Execution Plan:</strong> Shows how SQL Server executes a query;
-        Identify table/index scans, index seeks, key lookups, missing indexes,
-        high-cost steps. <strong>SQL Hints</strong> force SQL Server to execute
-        query in specific way when default plan is not optimal.
-        <code>WITH (NOLOCK)</code>, <code>FORCESEEK</code>,
-        <code>WITH (INDEX(IX_EmpId))</code>
-      </li>
-      <li>
-        <strong>Indexing Strategy:</strong> Index, Covering index on
-        <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code> hot
-        columns; avoid over-indexing (slows writes), Use index maintenance
-      </li>
-      <li>
-        <strong>Data Statistics:</strong> Describe table/index data distribution
-        to help optimizer choose best plan; Auto-updated or manually refreshed
-        using
-        <code>UPDATE STATISTICS</code>
-      </li>
-      <li>
-        <strong>Pagination & Filter:</strong> Use <code>OFFSET...FETCH</code> or
-        keyset pagination; avoid <code>TOP</code> with large offsets; Use where
-        clause properly.
-      </li>
-      <li>
-        <strong>Avoid SELECT *:</strong> Fetch only needed columns; reduces I/O
-        and memory
-      </li>
-      <li>
-        <strong>Avoid Cursors:</strong> Use set-based operations instead;
-        cursors are row-by-row (slow)
-      </li>
-      <li>
-        <strong>SP & Parameterized Queries:</strong> Use stored procedures or
-        parameterized SQL; prevents SQL injection, enables plan reuse
-      </li>
-      <li>
-        <strong>Transaction Scope:</strong> Keep short; releases locks faster,
-        reduces blocking/deadlocks
-      </li>
-      <li>
-        <strong>Query Patterns:</strong> Avoid functions on indexed columns in
-        <code>WHERE</code>
-      </li>
-      <li>
-        <strong>Avoid Implicit Conversions:</strong> Match data types in
-        <code>WHERE</code>/<code>JOIN</code> to avoid index scans
-      </li>
-      <li>
-        <strong>SQL Profiler:</strong> Tool to capture/monitor SQL activities
-        for debugging, performance tuning; workload fed to
-        <strong>Tuning Advisor</strong> for index/tuning recommendations
-      </li>
-    </ul>
-
-    <h2 class="collapsible" onclick="toggleSection()">
-      SECTION 11: Scenario-Based Questions
-      <span class="toggle-icon" id="toggleIcon">▼</span>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: SQL Fundamentals <span class="toggle-icon">▼</span>
     </h2>
+    <div class="section-content">
+      <ul>
+        <li><strong>Database &amp; Table:</strong> <code>RENAME</code></li>
+        <li>
+          <strong>DDL:</strong> Data Defination Language, Structure/Column
+          operations <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>,
+          <code>TRUNCATE</code>
+        </li>
+        <li>
+          <strong>DML:</strong> Data Manipulation Language, Data/Row operations
+          <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>,
+          <code>DELETE</code>
+        </li>
+        <li>
+          <strong>Constraints:</strong> Validate data <code>PRIMARY KEY</code>,
+          <code>FOREIGN KEY</code> (4 Cascade Actions), <code>UNIQUE</code>,
+          <code>CHECK</code>, <code>DEFAULT</code>, <code>NOT NULL</code>
+        </li>
+        <li>
+          <strong>Cascade Actions:</strong> <code>NO ACTION</code> (block parent
+          change), <code>CASCADE</code> (auto change child),
+          <code>SET NULL</code> (remove relation), <code>SET DEFAULT</code> (set
+          default value)
+        </li>
+        <li>
+          <strong>Identity:</strong> Auto-incremented column
+          <code>Id INT IDENTITY(1,1)</code>;
+          <code>SCOPE_IDENTITY()</code> (current scope),
+          <code>@@IDENTITY</code> (session), <code>IDENT_CURRENT('table')</code>
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql_commands.webp"
+        >
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <div class="scenario-content" id="scenarioContent">
-      <div class="scenario-item">
-        <h3>1. Missing Index Causing Slow Query</h3>
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Joins &amp; Set Operations <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Join Type</th>
+            <th>Returns</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>INNER JOIN</strong></td>
+            <td>Matching rows from both tables</td>
+            <td>
+              Default;
+              <code
+                >SELECT * FROM Orders o INNER JOIN Customers c ON o.CustomerId =
+                c.Id</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>LEFT JOIN</strong></td>
+            <td>All left + matching right (nulls if no match)</td>
+            <td>Keep all records from main table</td>
+          </tr>
+          <tr>
+            <td><strong>RIGHT JOIN</strong></td>
+            <td>All right + matching left</td>
+            <td>Rarely used (swap to LEFT)</td>
+          </tr>
+          <tr>
+            <td><strong>FULL JOIN</strong></td>
+            <td>All rows from both tables</td>
+            <td>Find unmatched records both sides</td>
+          </tr>
+          <tr>
+            <td><strong>CROSS JOIN</strong></td>
+            <td>Cartesian product (every combination)</td>
+            <td>Every student has every subject</td>
+          </tr>
+          <tr>
+            <td><strong>SELF JOIN</strong></td>
+            <td>Join table to itself</td>
+            <td>Hierarchical data, comparisons, Manager also Employee</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
         <p>
-          Your query
+          <strong>Join vs Subquery:</strong> Join combine data from multiple
+          tables in one query. Subquery uses result of one query inside another
+          query for filtering or conditions.
+        </p>
+        <p>
+          <strong>Join vs Union:</strong> Joins adds column for more details;
+          <code>UNION</code> adds rows for more data (No duplicates),
+          <code>UNION ALL</code> duplicates
+        </p>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Query Clauses <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Clauses / Keywords</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Filtering</strong></td>
+            <td>
+              <code>WHERE</code>, <code>AND</code>, <code>OR</code>,
+              <code>IN</code>, <code>BETWEEN</code>, <code>LIKE</code>,
+              <code>IS NULL</code>
+            </td>
+            <td>Filter rows before grouping</td>
+          </tr>
+          <tr>
+            <td><strong>Sorting</strong></td>
+            <td>
+              <code>ORDER BY</code> (<code>ASC</code>/<code>DESC</code>),
+              <code>TOP</code>, <code>OFFSET...FETCH</code>
+            </td>
+            <td>Sort and limit results</td>
+          </tr>
+          <tr>
+            <td><strong>Grouping</strong></td>
+            <td><code>GROUP BY</code>, <code>HAVING</code></td>
+            <td>Aggregate data; <code>HAVING</code> filters groups</td>
+          </tr>
+          <tr>
+            <td><strong>Set Operations</strong></td>
+            <td>
+              <code>UNION</code>, <code>UNION ALL</code>,
+              <code>INTERSECT</code>, <code>EXCEPT</code>
+            </td>
+            <td>Combine/compare result sets</td>
+          </tr>
+          <tr>
+            <td><strong>Subqueries</strong></td>
+            <td>
+              <code>EXISTS</code>, <code>IN</code>, <code>ANY</code>,
+              <code>ALL</code>
+            </td>
+            <td>Nested queries for filtering</td>
+          </tr>
+          <tr>
+            <td><strong>Other</strong></td>
+            <td>
+              <code>DISTINCT</code>, <code>WITH</code> (CTE), <code>INTO</code>
+            </td>
+            <td>Remove duplicates, temp results</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Functions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Functions</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Aggregate</strong></td>
+            <td>
+              <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>,
+              <code>MIN</code>, <code>MAX</code>
+            </td>
+            <td>
+              <code>COUNT(*)</code> includes nulls,
+              <code>COUNT(col)</code> excludes; <code>DISTINCT</code> for unique
+              counts
+            </td>
+          </tr>
+          <tr>
+            <td><strong>String</strong></td>
+            <td>
+              <code>CONCAT</code>, <code>SUBSTRING</code>,
+              <code>CHARINDEX</code>, <code>LEN</code>, <code>TRIM</code>,
+              <code>UPPER</code>
+            </td>
+            <td>String manipulation</td>
+          </tr>
+          <tr>
+            <td><strong>Date</strong></td>
+            <td>
+              <code>GETDATE</code>, <code>DATEADD</code>, <code>DATEDIFF</code>,
+              <code>DATEPART</code>, <code>YEAR</code>
+            </td>
+            <td>Date arithmetic and extraction</td>
+          </tr>
+          <tr>
+            <td><strong>Conversion</strong></td>
+            <td>
+              <code>CAST</code>, <code>CONVERT</code>, <code>TRY_CAST</code>
+            </td>
+            <td>Data type conversion</td>
+          </tr>
+          <tr>
+            <td><strong>Null Handling</strong></td>
+            <td>
+              <code>ISNULL</code>, <code>COALESCE</code>, <code>NULLIF</code>
+            </td>
+            <td><code>COALESCE</code> returns first non-null value</td>
+          </tr>
+          <tr>
+            <td><strong>Math</strong></td>
+            <td>
+              <code>ROUND</code>, <code>CEILING</code>, <code>FLOOR</code>,
+              <code>ABS</code>, <code>POWER</code>
+            </td>
+            <td>Numeric operations</td>
+          </tr>
+          <tr>
+            <td><strong>Window Functions</strong></td>
+            <td>
+              <code>ROW_NUMBER()</code>, <code>RANK()</code>,
+              <code>DENSE_RANK()</code>, <code>NTILE()</code>
+            </td>
+            <td>
+              <strong>ROW_NUMBER</strong> unique (1 2 3 4),
+              <strong>RANK</strong> skips ties (1 2 2 4),
+              <strong>DENSE_RANK</strong> no skip (1 2 2 3)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Window Clauses</strong></td>
+            <td>
+              <code>PARTITION BY</code>, <code>ORDER BY</code>,
+              <code>DESC</code>, <code>ROWS</code>/<code>RANGE</code>
+            </td>
+            <td>
+              <strong>PARTITION BY</strong> restarts row ranks for each group;
+              <code
+                >ROW_NUMBER() OVER (PARTITION BY Department ORDER BY Salary
+                DESC)</code
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p>
+          <strong>User-Defined Functions:</strong> A custom SQL function used to
+          return calculated or filtered data.
+        </p>
+        <ul>
+          <li>
+            <strong>Scalar:</strong> Returns single value; used in
+            <code>SELECT</code>, <code>WHERE</code>
+          </li>
+          <li>
+            <strong>Inline Table-Valued:</strong> Returns table; single
+            <code>SELECT</code> statement; Fast &amp; can be indexed
+          </li>
+          <li>
+            <strong>Multi-Statement Table:</strong> Returns table; multiple
+            statements; cannot be indexed; slower than inline
+          </li>
+        </ul>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Stored Procedures &amp; Triggers
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Topic</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stored Procedures</strong></td>
+            <td>
+              Precompiled SQL; accepts parameters; returns int status; executes
+              via <code>EXEC</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Parameters</strong></td>
+            <td>
+              Input (<code>@param INT</code>), Output (<code
+                >@result INT OUTPUT</code
+              >), Return value (<code>RETURN 0</code>)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Benefits</strong></td>
+            <td>
+              Performance (cached plan), security (permissions), reusability,
+              reduced network traffic, centralize business logic, prevent sql
+              injection
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Error Handling</strong></td>
+            <td>
+              <code>TRY...CATCH</code> block; log errors to table;
+              <code>ROLLBACK</code> on failure
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Dynamic SQL</strong></td>
+            <td>
+              Build/execute SQL strings at run time; use
+              <code>sp_executesql</code> for parameterization
+            </td>
+          </tr>
+          <tr>
+            <td><strong>SP vs Inline SQL</strong></td>
+            <td>
+              SP: Better performance, security; Inline: Flexibility, easier
+              debugging
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p>
+          <strong>SP vs Functions:</strong> SP changes data and runs logic,
+          Function only returns data
+        </p>
+        <ul>
+          <li>
+            <strong>SP:</strong> Can read/modify data, return multiple result
+            sets and output parameters, support transactions, error handling,
+            temp tables, and dynamic SQL; executed using <code>EXEC</code>.
+          </li>
+          <li>
+            <strong>Function:</strong> Read-only, returns a single value or
+            table, used inside <code>SELECT</code>, must be deterministic, and
+            cannot use transactions or cause side effects.
+          </li>
+        </ul>
+      </div>
+      <h3>Triggers</h3>
+      <p>
+        <strong>Triggers:</strong> Special SP, runs automatically when data is
+        inserted, updated, or deleted.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Fires On</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DML</strong></td>
+            <td>
+              <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>
+            </td>
+            <td>Audit trails, enforce business rules</td>
+          </tr>
+          <tr>
+            <td><strong>DDL</strong></td>
+            <td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></td>
+            <td>Track schema changes</td>
+          </tr>
+          <tr>
+            <td><strong>LOGON</strong></td>
+            <td>User login</td>
+            <td>Restrict access, log login attempts</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p><strong>Trigger Types:</strong></p>
+        <ul>
+          <li>
+            <strong>INSTEAD OF:</strong> Replaces DML operation; used on views;
+            <strong>Only trigger executed but not the underlying query</strong>
+          </li>
+          <li>
+            <strong>AFTER/FOR:</strong> Executes after DML completes; Can
+            rollback; <strong>Both executed</strong>
+          </li>
+        </ul>
+        <p>
+          <strong>Magic Tables:</strong> <code>inserted</code> (new data),
+          <code>deleted</code> (old data) available inside DML triggers
+        </p>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Subqueries, CTEs &amp; Derived Tables
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Syntax Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Subquery</strong></td>
+            <td>Query nested inside another query</td>
+            <td><code>WHERE ID IN (SELECT...)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Correlated</strong></td>
+            <td>Dependent; References outer query; Executes per row</td>
+            <td>Slower; row-by-row execution</td>
+          </tr>
+          <tr>
+            <td><strong>Non-Correlated</strong></td>
+            <td>Independent; Executes once</td>
+            <td>Faster; one-time execution</td>
+          </tr>
+          <tr>
+            <td><strong>Scalar Subquery</strong></td>
+            <td>Returns single value</td>
+            <td><code>SELECT (SELECT MAX...)</code></td>
+          </tr>
+          <tr>
+            <td><strong>CTE</strong></td>
+            <td>
+              Named temporary result; Readable, reusable in single scope query
+            </td>
+            <td><code>WITH name AS (SELECT...)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Recursive CTE</strong></td>
+            <td>References itself; for hierarchies, graphs</td>
+            <td>Employee org chart</td>
+          </tr>
+          <tr>
+            <td><strong>Derived Table</strong></td>
+            <td>Inline subquery in FROM clause</td>
+            <td><code>FROM (SELECT...) AS dt</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p><strong>When to Use:</strong></p>
+        <ul>
+          <li>
+            <strong>CTE:</strong> Complex queries, recursion, readability; can
+            be referenced multiple times in same query.
+          </li>
+          <li>
+            <strong>Derived Table:</strong> Simple one-time subquery within FROM
+            clause; no name or reuse needed.
+          </li>
+          <li>
+            <strong>View:</strong> Saved select query, virtual table, reused by
+            many users; improves security and keeps logic persistent.
+          </li>
+        </ul>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: Indexing <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Index Type</th>
+            <th>Description</th>
+            <th>Key Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Index Definition</strong></td>
+            <td>Like book index, helps SQL Server find data faster</td>
+            <td>
+              Applies on column; speeds up reads but slows down data changes
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Clustered Index</strong></td>
+            <td>
+              Physically stores &amp; sorts actual table data based on index key
+              column
+            </td>
+            <td>
+              Only one per table; usually on the Primary Key; very fast for
+              range queries
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Non-Clustered Index</strong></td>
+            <td>
+              Stored as separate structure with index key and pointers to actual
+              rows
+            </td>
+            <td>
+              Multiple allowed per table; fast for search and lookup operations
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Unique/Non Unique</strong></td>
+            <td>Enforces uniqueness on column(s)</td>
+            <td>Automatically created for PK, UNIQUE</td>
+          </tr>
+          <tr>
+            <td><strong>Composite/Covering</strong></td>
+            <td>Index on multiple columns</td>
+            <td>Order matters; use for multi-column filters</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p>
+          <strong>Benefits:</strong> Faster <code>SELECT</code>,
+          <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code>; Enforces
+          uniqueness
+        </p>
+        <p>
+          <strong>When NOT to Use:</strong> Small tables, frequent
+          <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code>, low
+          selectivity columns.
+        </p>
+        <p>
+          <strong>Index Maintenance:</strong>
+          <strong>Rebuild (&gt;30%)</strong> recreates the index,
+          <strong>Reorganize (5-30%)</strong> lightly fixes it,
+          <strong>Update Statistics</strong> refreshes stats so SQL Server can
+          choose better execution plans.
+        </p>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: Transactions &amp; Concurrency
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <p>
+        <strong>Transaction:</strong> A group of database operations that all
+        succeed or fail together<br /><code>BEGIN TRANSACTION</code> →
+        operations → try <code>COMMIT</code> (success) / catch
+        <code>ROLLBACK</code> (failure)
+      </p>
+      <p><strong>ACID Properties:</strong></p>
+      <ul>
+        <li>
+          <strong>Atomicity:</strong> Transaction completes fully or not at all.
+        </li>
+        <li>
+          <strong>Consistency:</strong> Data stays valid before and after the
+          transaction.
+        </li>
+        <li>
+          <strong>Isolation:</strong> Transactions do not affect each other.
+        </li>
+        <li>
+          <strong>Durability:</strong> Committed data is saved permanently.
+        </li>
+      </ul>
+      <p>
+        <strong>Concurrency:</strong> Allows multiple users to work on DB at the
+        same time without data conflicts
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Description</th>
+            <th>Solution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dirty Read</strong></td>
+            <td>Read uncommitted data from another transaction</td>
+            <td><code>READ COMMITTED</code> level</td>
+          </tr>
+          <tr>
+            <td><strong>Lost Update</strong></td>
+            <td>Concurrent updates overwrite each other</td>
+            <td>WITH (NOLOCK), <strong>RowVersion</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Non-Repeatable Read</strong></td>
+            <td>Same row search gives different values</td>
+            <td><code>REPEATABLE READ</code> level</td>
+          </tr>
+          <tr>
+            <td><strong>Phantom Read</strong></td>
+            <td>
+              New rows appear/disappear because another transaction
+              inserted/deleted
+            </td>
+            <td><code>SERIALIZABLE</code> level</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Isolation Levels</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Prevents</th>
+            <th>Allows</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>READ UNCOMMITTED</strong></td>
+            <td>Nothing</td>
+            <td>Dirty, Non-repeatable, Phantom</td>
+            <td>Fastest</td>
+          </tr>
+          <tr>
+            <td><strong>READ COMMITTED</strong></td>
+            <td>Dirty Read</td>
+            <td>Non-repeatable, Phantom</td>
+            <td>Default</td>
+          </tr>
+          <tr>
+            <td><strong>REPEATABLE READ</strong></td>
+            <td>Dirty, Non-repeatable</td>
+            <td>Phantom Read</td>
+            <td>Slower</td>
+          </tr>
+          <tr>
+            <td><strong>SERIALIZABLE</strong></td>
+            <td>All issues</td>
+            <td>Nothing</td>
+            <td>Slowest</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p>
+          <strong>RowVersion:</strong> A column that automatically changes its
+          value whenever a row is updated. Ensures no one overwrites another
+          user's update unknowingly. Add a column
+          <code>RowVersion ROWVERSION</code> and use it in the WHERE clause.
+        </p>
+        <p>
+          <strong>Deadlock:</strong> Happens when two transactions block each
+          other by holding locks, so SQL Server kills one. Avoid it by short
+          transactions, proper indexes, and consistent table access order.
+          <strong>Fix =&gt;</strong> Identify session, analyze query, wait if
+          possible, kill as last option, then fix root cause.
+        </p>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Advanced SQL Concepts <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Key Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Views</strong></td>
+            <td>Saved <code>SELECT</code> query; Virtual table</td>
+            <td>
+              Simple (one table), Complex (Many tables), Indexed (Secure with
+              <code>SCHEMABINDING</code>); Column security
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Temp Tables</strong></td>
+            <td>
+              <code>#Local</code> (session), <code>##Global</code> (all
+              sessions)
+            </td>
+            <td>Stored in tempdb; dropped on disconnect</td>
+          </tr>
+          <tr>
+            <td><strong>Table Variables</strong></td>
+            <td><code>@TableVar</code>; in-memory (App RAM)</td>
+            <td>No statistics; use for small datasets; Fast</td>
+          </tr>
+          <tr>
+            <td><strong>PIVOT/UNPIVOT</strong></td>
+            <td>Transform rows ↔ columns</td>
+            <td>
+              <code>PIVOT</code> (row to col), <code>UNPIVOT</code> (col to row)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Normalization</strong></td>
+            <td>Organizing data to Reduce redundancy</td>
+            <td>
+              1NF (atomic), 2NF (no partial dependency), 3NF (no transitive
+              dependency)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>MERGE</strong></td>
+            <td>
+              <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code> in one
+              statement
+            </td>
+            <td>Sync source to target table</td>
+          </tr>
+          <tr>
+            <td><strong>SELECT INTO</strong></td>
+            <td>Create new table from query results</td>
+            <td><code>SELECT * INTO NewTable FROM OldTable</code></td>
+          </tr>
+          <tr>
+            <td><strong>CASE Expression</strong></td>
+            <td>Conditional logic in queries</td>
+            <td>
+              Use in <code>SELECT</code>, <code>WHERE</code>,
+              <code>ORDER BY</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <p><strong>Temp Tables vs Table Variables vs CTEs:</strong></p>
+        <ul>
+          <li>
+            <strong>Temp Tables:</strong> Best for large datasets, support
+            indexes; Stored in Tempdb; Removed when session ends
+          </li>
+          <li>
+            <strong>Table Variables:</strong> Small datasets (&lt;1000 rows), no
+            statistics, faster for simple ops; Stored in App RAM; Removed when
+            scope ends
+          </li>
+          <li>
+            <strong>CTEs:</strong> Readability, single-query scope, no physical
+            storage
+          </li>
+        </ul>
+        <p>
+          <strong>System Tables:</strong>
+          <code>INFORMATION_SCHEMA.TABLES</code>, <code>SYS.TABLES</code>,
+          <code>SYS.COLUMNS</code>, <code>SYS.INDEXES</code><br />
+          Database existence → <code>DB_ID()</code>, Object existence →
+          <code>IF OBJECT_ID('dbo.vw_Students', 'V') IS NOT NULL</code>
+        </p>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: SQL Query Optimization <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Execution Plan:</strong> Shows how SQL Server executes a
+          query; Identify table/index scans, index seeks, key lookups, missing
+          indexes, high-cost steps. <strong>SQL Hints</strong> force specific
+          execution: <code>WITH (NOLOCK)</code>, <code>FORCESEEK</code>,
+          <code>WITH (INDEX(IX_EmpId))</code>
+        </li>
+        <li>
+          <strong>Indexing Strategy:</strong> Index, Covering index on
+          <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code> hot
+          columns; avoid over-indexing (slows writes)
+        </li>
+        <li>
+          <strong>Data Statistics:</strong> Describe data distribution to help
+          optimizer choose best plan; Auto-updated or manually refreshed using
+          <code>UPDATE STATISTICS</code>
+        </li>
+        <li>
+          <strong>Pagination &amp; Filter:</strong> Use
+          <code>OFFSET...FETCH</code> or keyset pagination; avoid
+          <code>TOP</code> with large offsets
+        </li>
+        <li>
+          <strong>Avoid SELECT *:</strong> Fetch only needed columns; reduces
+          I/O and memory
+        </li>
+        <li>
+          <strong>Avoid Cursors:</strong> Use set-based operations instead;
+          cursors are row-by-row (slow)
+        </li>
+        <li>
+          <strong>SP &amp; Parameterized Queries:</strong> Prevents SQL
+          injection, enables plan reuse
+        </li>
+        <li>
+          <strong>Transaction Scope:</strong> Keep short; releases locks faster,
+          reduces blocking/deadlocks
+        </li>
+        <li>
+          <strong>Query Patterns:</strong> Avoid functions on indexed columns in
+          <code>WHERE</code>
+        </li>
+        <li>
+          <strong>Avoid Implicit Conversions:</strong> Match data types in
+          <code>WHERE</code>/<code>JOIN</code> to avoid index scans
+        </li>
+        <li>
+          <strong>SQL Profiler:</strong> Tool to capture/monitor SQL activities
+          for debugging, performance tuning; workload fed to
+          <strong>Tuning Advisor</strong> for index/tuning recommendations
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 11: SCENARIOS ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 11: Scenario-Based Questions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="scenario-item">
+        <h3>1. Query is Slow — Missing Index</h3>
+        <p>
+          A query
           <code
             >SELECT * FROM orders WHERE customer_id = 123 AND status =
             'SHIPPED'</code
           >
-          runs very slowly despite having 10 million rows. How do you identify
-          missing indexes and create the optimal index?
+          runs very slowly on a table with millions of rows. How do you find and
+          fix the problem?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Slow queries often happen because the database has to scan the
-            entire table without an index. I identify missing indexes by
-            checking the execution plan, which shows if a table scan or index
-            scan is happening. To fix it, I create a composite index on the
-            columns used in WHERE clause:
+            When there is no index, SQL Server scans the entire table row by
+            row. I check the execution plan to confirm a table scan is
+            happening. Then I create a composite index on the columns used in
+            the WHERE clause:
             <code
               >CREATE INDEX idx_customer_status ON orders(customer_id,
               status)</code
-            >. The most selective column (customer_id) should come first in the
-            index. After creating the index, the query uses an index seek
-            instead of a table scan, making it much faster.
+            >. I put the most selective column first (customer_id). After this,
+            the query uses an index seek instead of a scan — much faster.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>2. Slow Pagination on Large Dataset</h3>
+        <h3>2. Slow Pagination on Large Table</h3>
         <p>
-          Your pagination query using <code>OFFSET 50000 LIMIT 20</code> takes
-          15+ seconds on a table with 1 million rows. The execution plan shows a
-          full table scan. How do you optimize deep pagination for large
-          datasets?
+          A pagination query using
+          <code>OFFSET 50000 FETCH NEXT 20 ROWS ONLY</code> takes 15+ seconds.
+          The execution plan shows a full table scan. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Offset pagination becomes very slow because the database must scan
-            and skip thousands of rows before returning results. I fix this by
-            using keyset pagination (also called cursor-based pagination).
-            Instead of <code>OFFSET 50000</code>, I filter using the last seen
-            value: <code>WHERE id > last_seen_id ORDER BY id LIMIT 20</code>.
-            This works well with an index on the id column and scales to
-            millions of records because it doesn't need to skip rows.
+            OFFSET pagination is slow because SQL Server must scan and skip all
+            rows before the offset. The fix is keyset pagination — filter using
+            the last seen ID:
+            <code
+              >WHERE id &gt; @last_seen_id ORDER BY id FETCH NEXT 20 ROWS
+              ONLY</code
+            >. This works great with an index on the id column and stays fast
+            even with millions of rows.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>3. Deadlock Between Concurrent Transactions</h3>
+        <h3>3. Deadlock Between Two Transactions</h3>
         <p>
-          Two users simultaneously update inventory. Transaction A locks Product
-          100 then tries to lock Product 101. Transaction B locks Product 101
-          then tries to lock Product 100. A deadlock occurs and one transaction
-          fails. How do you identify the cause and prevent deadlocks?
+          Transaction A locks Product 100 then waits for Product 101.
+          Transaction B locks Product 101 then waits for Product 100. A deadlock
+          happens and one transaction fails. How do you prevent this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Deadlocks happen when two transactions wait for each other's locks,
-            creating a circular dependency. I identify deadlocks by checking
-            database deadlock logs which show which queries were involved. To
-            prevent deadlocks, I ensure all transactions access resources in the
-            same order (always lock Product 100 before 101), keep transactions
-            short, use appropriate isolation levels, and consider using
-            row-level locks instead of table locks. Consistent ordering of
-            operations is the most important prevention strategy.
+            Deadlocks happen when two transactions are each waiting for a lock
+            the other holds. SQL Server detects this and kills one transaction.
+            To prevent it: always access resources in the same order in all
+            transactions (always lock Product 100 before 101), keep transactions
+            short, and use proper indexes to reduce lock time. Consistent
+            locking order is the most important fix.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>4. Race Condition in Seat Booking System</h3>
+        <h3>4. Two Users Booking the Same Seat</h3>
         <p>
-          Multiple users can book the same concert seat simultaneously because
-          your code checks availability and inserts booking in separate queries.
-          How do you ensure atomic seat booking without race conditions?
+          Two users try to book the same concert seat at the same time. Both
+          check availability, both see it's free, and both book it — double
+          booking occurs. How do you prevent this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Race conditions happen when the check and update happen in separate
-            steps, allowing multiple users to pass the check simultaneously. I
-            prevent this by making the operation atomic. I use a transaction
-            with proper locking:
-            <code>SELECT * FROM seats WHERE seat_id = 100 FOR UPDATE</code> to
-            lock the row, then check availability and insert the booking within
-            the same transaction. Alternatively, I use an UPDATE with a WHERE
-            condition:
+            This is a race condition — the check and insert are two separate
+            steps, allowing both users to pass the check simultaneously. The fix
+            is to make it atomic. I use an UPDATE with a condition:
             <code
               >UPDATE seats SET is_booked = 1 WHERE seat_id = 100 AND is_booked
               = 0</code
-            >, which succeeds for only one user. The database handles the
-            concurrency correctly.
+            >. This succeeds for only one user — the other gets 0 rows affected.
+            No separate check needed.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>5. Incorrect Aggregation with NULL Values</h3>
+        <h3>5. Reading Different Data in the Same Transaction</h3>
         <p>
-          Your query <code>SELECT AVG(salary) FROM employees</code> returns
-          unexpected results. Some employees have NULL salaries, and they're
-          affecting the calculation. How do you handle NULLs correctly in
-          aggregate functions?
+          User A reads a bank balance of $1000. User B transfers $500 out. User
+          A reads again and sees $500 — different result in the same
+          transaction. How do you stop this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Aggregate functions like AVG automatically ignore NULL values, but
-            this can give unexpected results if you're not aware. If you want to
-            include NULLs as zero, use
-            <code>SELECT AVG(COALESCE(salary, 0)) FROM employees</code>. To
-            explicitly exclude NULLs, add a WHERE clause:
-            <code
-              >SELECT AVG(salary) FROM employees WHERE salary IS NOT NULL</code
-            >. Always be aware of how NULLs are treated in calculations and
-            handle them explicitly based on business requirements.
+            This is a non-repeatable read — the same query returns different
+            results within one transaction because another transaction changed
+            the data in between. I fix this by using
+            <code>REPEATABLE READ</code> isolation level, which locks the rows
+            read so other transactions cannot change them until the first
+            transaction finishes. For stricter control, use
+            <code>SERIALIZABLE</code>, but it is slower.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>6. Transaction Isolation Level Issues</h3>
+        <h3>6. Soft Delete Breaking Unique Constraints</h3>
         <p>
-          User A reads an account balance of $1000. User B transfers $500 out.
-          User A reads again and sees $500, getting inconsistent results in the
-          same transaction. How do you use transaction isolation levels to
-          prevent this?
+          Your users table uses soft delete (an <code>is_deleted</code> flag). A
+          deleted user's email blocks a new user from registering with the same
+          email. How do you fix this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            This is called a non-repeatable read, where the same query returns
-            different results within a transaction. I prevent this by using a
-            higher isolation level. <code>REPEATABLE READ</code> ensures that
-            once data is read in a transaction, subsequent reads return the same
-            values even if other transactions modify the data. For even stricter
-            consistency, I use <code>SERIALIZABLE</code> isolation level.
-            However, higher isolation levels can impact performance and increase
-            locking, so I choose based on the application's needs. For most
-            cases, REPEATABLE READ is sufficient.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>7. Soft Delete Breaking Unique Constraints</h3>
-        <p>
-          Your users table has soft deletes (<code>is_deleted</code> flag). A
-          deleted user with email "john@example.com" prevents new registration
-          with the same email due to unique constraint. How do you handle unique
-          constraints with soft deletes?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            With soft deletes, unique constraints fail because deleted records
-            still exist in the table. I fix this by creating a partial unique
-            index that only applies to non-deleted records:
+            The unique constraint applies to all rows including soft-deleted
+            ones. I fix this with a filtered unique index that only covers
+            active rows:
             <code
               >CREATE UNIQUE INDEX idx_email_active ON users(email) WHERE
               is_deleted = 0</code
-            >. This allows the same email to exist multiple times if deleted,
-            but enforces uniqueness for active users. Alternatively, I can
-            append a timestamp or ID to deleted emails like
-            "john@example.com_deleted_20240101" to make them unique.
+            >. Now deleted users can share an email with new users, but active
+            users must still have unique emails.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>8. Long Table Lock During Schema Migration</h3>
+        <h3>7. Reports Slowing Down the Live System</h3>
         <p>
-          You need to add a NOT NULL column with default value to a 500GB table
-          with 1 billion rows. Running <code>ALTER TABLE</code> would lock the
-          table for hours, blocking all operations. How do you perform this
-          migration with minimal downtime?
+          A complex report query takes 10 minutes to run and locks important
+          tables, causing timeouts for normal users. How do you separate
+          reporting from production traffic?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Large ALTER TABLE operations lock the table and block all access. I
-            perform this migration in steps to minimize downtime. First, I add
-            the column as nullable:
-            <code>ALTER TABLE orders ADD new_column INT NULL</code> (fast
-            operation). Then, I update rows in batches:
-            <code
-              >UPDATE orders SET new_column = 0 WHERE new_column IS NULL LIMIT
-              10000</code
-            >, repeating until complete. Finally, I add the NOT NULL constraint:
-            <code>ALTER TABLE orders MODIFY new_column INT NOT NULL</code>. For
-            very large tables, I use tools like pt-online-schema-change that
-            create a shadow table and migrate data gradually.
+            Heavy reports should not run on the production database. The best
+            fix is to run reports on a read replica — a copy of the database
+            that handles only reads. This keeps the main database free for
+            normal operations. For a quick fix, use
+            <code>WITH (NOLOCK)</code> on report queries to avoid locking, but
+            be aware this may return slightly out-of-date data.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>9. Reporting Query Blocking Production Traffic</h3>
+        <h3>8. Subquery is Slow — Rewrite as JOIN</h3>
         <p>
-          A complex 10-minute analytical report query locks critical tables,
-          blocking order processing and causing timeouts for users. How do you
-          isolate reporting workloads from production operations?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Heavy reporting queries should not run on the production database
-            because they cause locks and consume resources. I fix this by
-            setting up a read replica (slave database) and running all reports
-            against the replica. This keeps the production database free for
-            normal operations. For immediate needs, I use
-            <code>WITH (NOLOCK)</code> hint in SQL Server or
-            <code>READ UNCOMMITTED</code> isolation level, though this may
-            return slightly stale data. For real-time reports, I use
-            materialized views or pre-aggregated summary tables that are updated
-            periodically.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>10. Subquery Performance vs JOIN</h3>
-        <p>
-          Your query uses a subquery:
+          This query is very slow:
           <code
             >SELECT * FROM orders WHERE customer_id IN (SELECT id FROM customers
             WHERE city = 'NYC')</code
-          >. It's very slow. How do you rewrite this for better performance?
+          >. How do you make it faster?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Subqueries with IN can be slow because they may execute the subquery
-            multiple times. I rewrite this using a JOIN which is usually faster:
+            Subqueries with <code>IN</code> can run the inner query many times.
+            Rewriting as a JOIN is usually faster because the optimizer can pick
+            a better execution plan and use indexes efficiently:
             <code
               >SELECT o.* FROM orders o INNER JOIN customers c ON o.customer_id
               = c.id WHERE c.city = 'NYC'</code
-            >. JOINs allow the database optimizer to choose the best execution
-            plan and use indexes efficiently. For EXISTS subqueries, I also
-            prefer JOINs for better performance. Always check the execution plan
-            to verify which approach is faster for your specific data.
+            >. Always check the execution plan after the change to confirm the
+            improvement.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>11. Recursive Query for Hierarchical Data</h3>
+        <h3>9. Get All Employees Under a Manager (Hierarchy)</h3>
         <p>
-          You need to find all employees reporting to a manager (including
-          indirect reports) in a self-referencing <code>employees</code> table
-          with <code>manager_id</code>. How do you write a recursive query to
-          traverse the entire hierarchy?
+          You have an <code>employees</code> table with a
+          <code>manager_id</code> column. How do you get all employees under a
+          manager, including indirect reports at all levels?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            For hierarchical data, I use a recursive Common Table Expression
-            (CTE). The CTE has two parts: an anchor query that selects the
-            starting point, and a recursive query that joins to find children.
-            Example:
+            I use a recursive CTE. It has two parts: the anchor (starting
+            manager) and the recursive part (joins to find reports, then
+            repeats):
             <code
-              >WITH RECURSIVE emp_hierarchy AS (SELECT id, name, manager_id FROM
-              employees WHERE id = 100 UNION ALL SELECT e.id, e.name,
-              e.manager_id FROM employees e INNER JOIN emp_hierarchy h ON
-              e.manager_id = h.id) SELECT * FROM emp_hierarchy</code
-            >. This traverses the entire tree starting from employee 100 and
-            returns all direct and indirect reports.
+              >WITH emp_hierarchy AS (SELECT id, name, manager_id FROM employees
+              WHERE id = 100 UNION ALL SELECT e.id, e.name, e.manager_id FROM
+              employees e INNER JOIN emp_hierarchy h ON e.manager_id = h.id)
+              SELECT * FROM emp_hierarchy</code
+            >. This keeps going until there are no more employees to find.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>12. Connection Pool Exhaustion During Peak Load</h3>
+        <h3>10. Two Users Updating the Same Record (Lost Update)</h3>
         <p>
-          During peak hours, your application throws "Timeout expired. The
-          timeout period elapsed prior to obtaining a connection from the pool."
-          Users cannot access the system. How do you diagnose and fix connection
-          pool issues?
+          User A reads a product price of $100. User B updates it to $120. User
+          A saves their change and overwrites User B's update without knowing.
+          How do you prevent this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Connection pool exhaustion happens when connections are not returned
-            to the pool fast enough. I diagnose this by checking if connections
-            are being closed properly and looking for long-running queries. To
-            fix it, I ensure all database connections are properly disposed
-            using <code>using</code> statements, optimize slow queries that hold
-            connections too long, and use async database operations to avoid
-            blocking threads. I also monitor active connections and increase the
-            pool size only if needed after fixing the root causes. Connection
-            leaks are usually the real problem, not pool size.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>13. Full-Text Search Performance Problem</h3>
-        <p>
-          Searching product descriptions using
-          <code>WHERE description LIKE '%laptop%'</code> is extremely slow on 10
-          million rows. The query scans the entire table. How do you implement
-          efficient full-text search?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            LIKE with wildcards on both sides cannot use indexes and always does
-            a full table scan. I fix this by implementing full-text search using
-            database features like <code>FULLTEXT INDEX</code> in MySQL or
-            Full-Text Search in SQL Server. Example:
-            <code>CREATE FULLTEXT INDEX ON products(description)</code>, then
-            query using <code>WHERE MATCH(description) AGAINST('laptop')</code>.
-            For more advanced search features, I use external search engines
-            like Elasticsearch or Azure Cognitive Search which are specifically
-            designed for fast text search with features like relevance scoring
-            and fuzzy matching.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>14. Optimistic Concurrency Control</h3>
-        <p>
-          User A reads a product with price $100 at 10:00 AM. User B updates the
-          price to $120 at 10:05 AM. User A saves changes at 10:10 AM,
-          unknowingly overwriting User B's update. How do you detect and handle
-          concurrent updates?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            This is a lost update problem where the last write wins and
-            overwrites earlier changes. I prevent this using optimistic
-            concurrency with a version column. Each row has a
-            <code>version</code> or <code>rowversion</code> field that
-            increments on every update. When updating, I check if the version
-            matches:
+            This is a lost update — the last write silently overwrites the
+            earlier one. I fix this with optimistic concurrency using a
+            <code>RowVersion</code> column. When saving, I check the version
+            still matches:
             <code
               >UPDATE products SET price = 100, version = version + 1 WHERE id =
               1 AND version = 5</code
-            >. If the version doesn't match (someone else updated it), the
-            update affects 0 rows and I return a conflict error, allowing the
-            user to refresh and try again.
+            >. If the version changed, 0 rows are affected and I return a
+            conflict error so the user can refresh and try again.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>15. Index Fragmentation Degrading Performance</h3>
+        <h3>11. Index Fragmentation Making Queries Slow Over Time</h3>
         <p>
-          Queries get progressively slower over weeks despite similar data
-          volume. Execution plans show high index fragmentation and page splits.
-          How do you identify, measure, and fix index fragmentation?
+          Queries that were fast a few weeks ago are now noticeably slower, even
+          though data volume is the same. The execution plan shows index
+          fragmentation. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Index fragmentation happens when data pages become scattered and not
-            contiguous, causing slower reads. I measure fragmentation using
-            <code>sys.dm_db_index_physical_stats</code> in SQL Server or
-            <code>ANALYZE TABLE</code> in MySQL. If fragmentation is above
-            10-30%, I rebuild or reorganize the index. For fragmentation above
-            30%, I use <code>ALTER INDEX REBUILD</code> which recreates the
-            index. For 10-30% fragmentation, I use
-            <code>ALTER INDEX REORGANIZE</code> which is less intensive. I
-            schedule regular index maintenance during off-peak hours to keep
-            indexes healthy.
+            Indexes get fragmented over time — data pages become scattered and
+            out of order. I check fragmentation using
+            <code>sys.dm_db_index_physical_stats</code>. If above 30%, I use
+            <code>ALTER INDEX REBUILD</code> to fully recreate the index. For
+            10-30%, I use <code>ALTER INDEX REORGANIZE</code> which is lighter.
+            I schedule this maintenance regularly during off-peak hours.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>16. Query Optimizer Choosing Wrong Execution Plan</h3>
+        <h3>12. Application Makes Too Many Queries (N+1 Problem)</h3>
         <p>
-          Your query has multiple indexes available, but the optimizer chooses a
-          suboptimal index, causing slow performance. Sometimes it uses the
-          right index, sometimes it doesn't. How do you guide the optimizer or
-          force index usage?
+          The app loads 100 customers and then runs a separate query for each
+          customer's orders — 101 queries total, page takes 30 seconds. How do
+          you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            The query optimizer sometimes makes poor choices due to outdated
-            statistics or parameter sniffing. I first update statistics using
-            <code>UPDATE STATISTICS table_name</code> to give the optimizer
-            accurate information. If that doesn't help, I can force index usage
-            with hints:
-            <code
-              >SELECT * FROM orders WITH (INDEX(idx_customer_id)) WHERE
-              customer_id = 123</code
-            >
-            in SQL Server, or <code>USE INDEX (idx_customer_id)</code> in MySQL.
-            However, forcing indexes should be a last resort because it prevents
-            the optimizer from adapting to data changes. Better to fix
-            statistics or rewrite the query.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>17. Partitioning Strategy for Time-Series Data</h3>
-        <p>
-          Your <code>sensor_readings</code> table has 500 million rows and grows
-          by 1 million daily. Queries filtering by date are getting slower
-          despite having an index. How do you implement table partitioning to
-          improve performance?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            For very large time-series tables, I use table partitioning to
-            divide the data into smaller, manageable pieces based on date
-            ranges. For example, I create monthly partitions where each
-            partition holds one month of data. Queries filtering by date only
-            scan relevant partitions instead of the entire table. This improves
-            query performance and makes maintenance easier (I can drop old
-            partitions instead of deleting millions of rows). Partitioning also
-            allows parallel query execution across partitions. However,
-            partitioning adds complexity, so I only use it for tables with
-            hundreds of millions of rows.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>18. N+1 Query Problem in ORM</h3>
-        <p>
-          Your application loads 100 customer records, then makes 100 separate
-          queries to fetch each customer's orders. The page takes 30 seconds to
-          load. Database logs show 101 queries executed. How do you identify and
-          fix this N+1 query problem?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            The N+1 problem happens when you fetch a list of records and then
-            loop through them to fetch related data, causing one query per
-            record. I identify it by enabling query logging and counting queries
-            executed. To fix it, I use eager loading to fetch all data in one or
-            two queries instead of N+1 queries. In Entity Framework, I use
-            <code>Include()</code>. In raw SQL, I use JOINs:
+            This is the N+1 problem — one query to get the list, then N more for
+            each item. I fix it by loading all data in one query using a JOIN:
             <code
               >SELECT c.*, o.* FROM customers c LEFT JOIN orders o ON c.id =
               o.customer_id</code
-            >. This reduces 101 queries to just 1 or 2 queries, dramatically
-            improving performance.
+            >. In Entity Framework I use <code>Include()</code> to do the same
+            thing. This reduces 101 queries down to 1.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷</button
+          ><button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
     </div>
+    <!-- end section-content scenarios -->
+
     <script src="../change.js"></script>
   </body>
 </html>

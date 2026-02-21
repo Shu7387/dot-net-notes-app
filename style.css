@@ -1,13 +1,37 @@
 /* ================================================
-   CONSOLIDATED CSS FILE
-   Contains all styles from multiple HTML files
+   style.css — CONSOLIDATED STYLES FOR ALL NOTES
    ================================================ */
 
 /* ================================================
-   1. HEADER STYLES (from header.css)
+   1. RESET
    ================================================ */
 
-/* Header container */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================================================
+   2. BODY & LAYOUT
+   ================================================ */
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  color: black;
+  padding-top: 56px;
+  zoom: 1.4;
+}
+
+/* ================================================
+   3. HEADER
+   ================================================ */
+
 .app-header {
   position: fixed;
   top: 0;
@@ -20,19 +44,16 @@
   transition: transform 0.3s ease;
 }
 
-/* Hide header when scrolling down */
 .app-header.hide {
   transform: translateY(-100%);
 }
 
-/* Navigation */
 .app-header nav {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-/* Links */
 .app-header a {
   color: #e6e6e6;
   text-decoration: none;
@@ -49,12 +70,14 @@
   border-bottom: 2px solid #ffffff;
 }
 
-/* Push right-side content */
 .nav-right {
   margin-left: auto;
 }
 
-/* Dropdown button */
+/* ================================================
+   4. DROPDOWN
+   ================================================ */
+
 .dropdown {
   position: relative;
 }
@@ -67,7 +90,6 @@
   cursor: pointer;
 }
 
-/* Dropdown menu */
 .dropdown-menu {
   position: absolute;
   right: 0;
@@ -81,7 +103,6 @@
   padding: 8px 0;
 }
 
-/* Dropdown links */
 .dropdown-menu a {
   padding: 8px 14px;
   color: #e6e6e6;
@@ -99,89 +120,12 @@
   margin: 6px 0;
 }
 
-/* Show dropdown */
 .dropdown.open .dropdown-menu {
   display: flex;
 }
 
-/* Text animation for multiple technologies */
-.swap-text {
-  position: relative;
-  display: inline-block;
-  width: 80px;
-  height: 20px;
-  line-height: 20px;
-  overflow: hidden;
-  vertical-align: middle;
-}
-
-.swap-text span {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  white-space: nowrap;
-  animation: rotateText 9s infinite;
-}
-
-.swap-text span:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.swap-text span:nth-child(2) {
-  animation-delay: 3s;
-}
-
-.swap-text span:nth-child(3) {
-  animation-delay: 6s;
-}
-
-@keyframes rotateText {
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  25% {
-    opacity: 1;
-  }
-  30% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 /* ================================================
-   2. BASE/RESET STYLES (Common across all files)
-   ================================================ */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* ================================================
-   3. BODY & LAYOUT
-   ================================================ */
-
-body {
-  font-family: "Arial", sans-serif;
-  line-height: 1.6;
-  padding: 20px;
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  color: black;
-  padding-top: 56px;
-  zoom: 1.4;
-}
-
-/* ================================================
-   4. TYPOGRAPHY
+   5. TYPOGRAPHY
    ================================================ */
 
 h1 {
@@ -229,7 +173,7 @@ hr {
 }
 
 /* ================================================
-   5. TABLES
+   6. TABLES
    ================================================ */
 
 table {
@@ -258,21 +202,24 @@ tr:nth-child(even) {
 }
 
 /* ================================================
-   6. CODE BLOCKS
+   7. CODE
    ================================================ */
 
 code {
   background: #f0f0f0;
   padding: 2px 5px;
   border: 1px solid #ddd;
+  border-radius: 3px;
   font-family: "Courier New", monospace;
   font-size: 11px;
+  color: #d63384;
 }
 
 pre {
   background: #f0f0f0;
   padding: 10px;
   border: 1px solid #ddd;
+  border-radius: 4px;
   font-family: "Courier New", monospace;
   font-size: 11px;
   overflow-x: auto;
@@ -281,7 +228,7 @@ pre {
 }
 
 /* ================================================
-   7. NOTE BOXES
+   8. NOTE BOX
    ================================================ */
 
 .note {
@@ -292,111 +239,26 @@ pre {
 }
 
 /* ================================================
-   8. ANGULAR-SPECIFIC STYLES
-   (Collapsible sections and scenario items)
+   9. TOGGLE ICON (shared)
    ================================================ */
-
-/* Collapsible Section Styles */
-h2.collapsible {
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background 0.2s ease;
-}
-
-h2.collapsible:hover {
-  background: #333;
-}
 
 .toggle-icon {
   font-size: 16px;
   transition: transform 0.3s ease;
   font-weight: normal;
+  display: inline-block;
 }
 
 .toggle-icon.rotated {
   transform: rotate(180deg);
 }
 
-.scenario-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
-}
-
-.scenario-content.expanded {
-  max-height: 15000px;
-  transition: max-height 0.5s ease-in;
-}
-
-.scenario-item {
-  margin: 20px 0;
-  padding: 15px;
-  border-left: 3px solid #4a4a4a;
-  background: #f9f9f9;
-}
-
-.scenario-item h3 {
-  font-size: 13px;
-  margin: 0 0 12px 0;
-  color: #333;
-  line-height: 1.4;
-}
-
-.scenario-item .answer {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
-
-.scenario-item .answer strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #4a4a4a;
-}
-
-.related-note {
-  margin: 8px 0 0 0;
-  padding: 8px 10px;
-  background: #fff;
-  border-left: 2px solid #999;
-  font-size: 11px;
-  font-style: italic;
-}
-
 /* ================================================
-   9. GITDOCKER-SPECIFIC STYLES
-   (Flow diagrams)
+   10. SECTION ACCORDION (used in SQL, Azure, etc.)
    ================================================ */
 
-.flow-diagram {
-  background: #f9f9f9;
-  padding: 15px;
-  border: 1px solid #ddd;
-  margin: 15px 0;
-  font-family: "Courier New", monospace;
-  font-size: 11px;
-  line-height: 1.8;
-}
-
-/* ================================================
-   10. AZURE NOTES STYLES
-   (Collapsible Q&A sections for Azure interview notes)
-   ================================================ */
-
-.section-container {
-  margin: 20px 0;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
+h2.section-header,
 .section-header {
-  background: #4a4a4a;
-  color: white;
-  padding: 15px;
   cursor: pointer;
   user-select: none;
   display: flex;
@@ -405,6 +267,7 @@ h2.collapsible:hover {
   transition: background 0.2s ease;
 }
 
+h2.section-header:hover,
 .section-header:hover {
   background: #333;
 }
@@ -422,88 +285,270 @@ h2.collapsible:hover {
 
 .section-content.open {
   max-height: 50000px;
-  transition: max-height 0.5s ease-in;
-}
-
-.qa-item {
-  padding: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.qa-item:last-child {
-  border-bottom: none;
-}
-
-.question {
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 12px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.answer {
-  color: #333;
-  font-size: 12px;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.answer p {
-  margin-bottom: 8px;
-}
-
-.answer ul {
-  margin-left: 20px;
-  margin-bottom: 8px;
-}
-
-.answer li {
-  margin-bottom: 5px;
-}
-
-.image-icons {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-.image-icon {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #e8e8e8;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.image-icon:hover {
-  background: #d0d0d0;
-  border-color: #999;
-  transform: scale(1.1);
-}
-
-.section-title {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.section-description {
-  font-size: 11px;
-  color: #666;
-  font-style: italic;
-  margin-bottom: 15px;
+  transition: max-height 0.6s ease-in;
 }
 
 /* ================================================
-   11. COLLAPSIBLE STEPS STYLING
+   11. SCENARIO SECTION (SQL-style)
+   ================================================ */
+
+.scenario-item {
+  margin: 20px 0;
+  padding: 15px;
+  border-left: 3px solid #4a4a4a;
+  background: #f9f9f9;
+}
+
+.scenario-item h3 {
+  font-size: 13px;
+  margin: 0 0 12px 0;
+  color: #333;
+  line-height: 1.4;
+}
+
+.scenario-item p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.scenario-item .answer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.scenario-item .answer strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #4a4a4a;
+  font-size: 12px;
+}
+
+.scenario-item .answer p {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+/* ================================================
+   12. IMAGE ICONS & PREVIEW
+   — Works in both scenario items AND service cards
+   ================================================ */
+
+/* Strip of small icon buttons */
+.image-icons {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Label before icons (optional) */
+.image-icons-label {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+  margin-right: 4px;
+  line-height: 32px;
+}
+
+/* Each icon button */
+.image-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: #333;
+  /* button reset */
+  font-family: inherit;
+  padding: 0;
+  line-height: 1;
+}
+
+.image-icon:hover {
+  background: #e0e0e0;
+  border-color: #888;
+  transform: scale(1.12);
+}
+
+/* Active (currently showing) icon */
+.image-icon.active {
+  background: #4a4a4a;
+  border-color: #4a4a4a;
+  color: white;
+  transform: scale(1.12);
+}
+
+/* Expanded image preview box */
+.image-preview-box {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease-out;
+  margin-top: 0;
+}
+
+.image-preview-box.open {
+  max-height: 2000px;
+  margin-top: 10px;
+  transition: max-height 0.4s ease-in;
+}
+
+.image-preview-box img {
+  display: block;
+  max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+/* Close button inside preview */
+.image-close-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: #4a4a4a;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s ease;
+}
+
+.image-close-btn:hover {
+  background: #333;
+}
+
+/* ================================================
+   13. SERVICE CARD (Azure-style, consistent look)
+   ================================================ */
+
+.section-container {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.service-card {
+  background: #fff;
+  margin: 15px 0;
+  border-left: 4px solid #4a4a4a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.service-header {
+  padding: 14px 16px;
+  background: #4a4a4a;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.service-header:hover {
+  background: #333;
+}
+
+.service-title {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  flex-grow: 1;
+}
+
+.service-body {
+  padding: 18px;
+  display: block;
+}
+
+/* ================================================
+   14. INFO / KEY CONCEPT / FLOW (Azure cards)
+   ================================================ */
+
+.info-section {
+  background: #f9f9f9;
+  border-left: 3px solid #4a4a4a;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 3px;
+}
+
+.info-section strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #333;
+}
+
+.info-section p,
+.info-section li {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.info-section ul {
+  margin: 6px 0 0 18px;
+}
+
+.key-concept {
+  background: #f5f5f5;
+  border-left: 3px solid #666;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 3px;
+}
+
+.key-concept strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #333;
+}
+
+.key-concept p {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.flow-container {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 12px 0;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  color: #333;
+  line-height: 1.8;
+  word-wrap: break-word;
+}
+
+.flow-arrow {
+  color: #4a4a4a;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+/* ================================================
+   15. STEPS (collapsible inside service cards)
    ================================================ */
 
 .steps-header {
@@ -512,149 +557,40 @@ h2.collapsible:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+  background: #666;
   color: white;
-  padding: 12px 16px;
-  margin: 15px 0 0 0;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 6px 6px 0 0;
-  transition: all 0.3s ease;
+  padding: 10px 14px;
+  margin: 14px 0 0 0;
+  font-size: 13px;
+  border-radius: 3px 3px 0 0;
+  transition: background 0.2s ease;
 }
 
 .steps-header:hover {
-  background: linear-gradient(135deg, #005a9e 0%, #003d7a 100%);
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.2);
+  background: #555;
 }
 
-.steps-header .toggle-steps {
-  font-size: 16px;
-  transition: transform 0.3s ease;
-  display: inline-block;
+.steps-header strong {
+  color: white;
+  font-size: 12px;
 }
 
-.steps-header .toggle-steps.collapsed {
-  transform: rotate(-180deg);
-}
-
-.steps-content {
-  max-height: 5000px;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
+.steps-body {
   background: white;
-  border-radius: 0 0 6px 6px;
-}
-
-.steps-content.collapsed {
-  max-height: 0;
-  transition: max-height 0.4s ease-in;
-}
-
-/* ================================================
-   12. ENHANCED UI CLASSES - MODERN DESIGN
-   ================================================ */
-
-/* Card Container for Reference Blocks */
-.reference-block {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fb 100%);
-  border-radius: 8px;
-  padding: 24px;
-  margin: 20px 0;
-  border-left: 4px solid #0078d4;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.reference-block:hover {
-  box-shadow: 0 4px 16px rgba(0, 120, 212, 0.15);
-  transform: translateY(-2px);
-}
-
-/* Info Section Styling - Clean and Readable */
-.info-section {
-  background: #f0f6ff;
-  border-left: 4px solid #0078d4;
-  padding: 14px 16px;
-  margin: 12px 0;
-  border-radius: 4px;
-}
-
-.info-section strong {
-  color: #003d7a;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  overflow: hidden;
+  margin: 0 0 14px 0;
+  list-style: decimal;
   display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.info-section p {
-  margin: 0;
-  color: #333;
-  line-height: 1.6;
-  font-size: 13px;
-}
-
-.info-section ul {
-  margin: 8px 0 0 20px;
-  padding: 0;
-}
-
-.info-section li {
-  margin-bottom: 6px;
-  color: #333;
-  font-size: 13px;
-}
-
-/* Feature List with Icons */
-.feature-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 12px 0;
-}
-
-.feature-item {
-  background: white;
-  padding: 10px 12px;
-  border-radius: 4px;
-  border-left: 3px solid #0078d4;
-  font-size: 13px;
-  color: #333;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-}
-
-.feature-item:hover {
-  background: #f0f6ff;
-  padding-left: 14px;
-}
-
-.feature-item::before {
-  content: "✓";
-  color: #0078d4;
-  font-weight: bold;
-  margin-right: 10px;
-  flex-shrink: 0;
-}
-
-/* Steps Container - Numbered and Clean */
-.steps-container {
-  background: white;
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 15px 0;
-  border: 1px solid #e8e8e8;
 }
 
 .step-item {
-  padding: 14px 16px;
-  border-bottom: 1px solid #e8e8e8;
-  border-left: 3px solid #0078d4;
-  font-size: 13px;
-  line-height: 1.6;
-  transition: background 0.2s ease;
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .step-item:last-child {
@@ -662,195 +598,259 @@ h2.collapsible:hover {
 }
 
 .step-item:nth-child(odd) {
-  background: #f9fafb;
+  background: #fafafa;
 }
 
 .step-item strong {
-  color: #0078d4;
-  margin-right: 6px;
+  color: #4a4a4a;
+  margin-right: 4px;
 }
 
-/* Title/Header Styling */
-.block-title {
-  background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
-  color: white;
-  padding: 13px 16px;
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 6px;
-  letter-spacing: 0.4px;
-}
+/* ================================================
+   16. PRIORITY / BADGE / ALERT BOXES
+   ================================================ */
 
-/* Flow Diagram - Code-like Display */
-.flow-container {
-  background: #f0f6ff;
-  border: 1px solid #b3d9ff;
-  padding: 15px;
-  border-radius: 6px;
-  margin: 15px 0;
-  font-family: "Courier New", monospace;
-  font-size: 12px;
-  color: #003d7a;
-  line-height: 1.8;
-  word-wrap: break-word;
-}
-
-.flow-arrow {
-  color: #0078d4;
-  font-weight: bold;
-  margin: 0 6px;
-}
-
-/* Icon Grid - Action Buttons */
-.icon-grid {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  flex-wrap: wrap;
-}
-
-.icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  border: 2px solid #0078d4;
-  background: #f0f6ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  color: #0078d4;
-}
-
-.icon-btn:hover {
-  background: #0078d4;
-  color: white;
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
-}
-
-/* Configuration Priority - Warning Style */
 .priority-list {
-  background: #fff3cd;
-  border-left: 4px solid #ffc107;
-  padding: 14px 16px;
+  background: #fffbee;
+  border-left: 3px solid #cca800;
+  padding: 12px 14px;
   margin: 12px 0;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .priority-item {
-  padding: 6px 0;
-  font-size: 13px;
-  color: #333;
+  padding: 4px 0;
+  font-size: 12px;
+  color: #444;
 }
 
-.priority-item strong {
-  color: #856404;
+.header-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  background: #4a4a4a;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 600;
 }
 
-/* Key Concept - Important Information */
-.key-concept {
-  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-  border-left: 4px solid #7b1fa2;
-  padding: 15px 16px;
-  margin: 15px 0;
-  border-radius: 4px;
+.badge-success {
+  background: #4caf50;
+}
+.badge-warning {
+  background: #ff9800;
+}
+.badge-danger {
+  background: #f44336;
 }
 
-.key-concept strong {
-  color: #4a148c;
+.note-box {
+  background: #f0f6ff;
+  border-left: 3px solid #4a4a4a;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 3px;
+}
+
+.note-box strong {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  font-size: 12px;
 }
 
-.key-concept p {
-  margin: 0;
-  font-size: 13px;
-  color: #4a148c;
-  line-height: 1.6;
-}
-
-/* Warning/Alert Box */
 .alert-box {
-  background: #fef5e7;
-  border-left: 4px solid #f39c12;
-  padding: 14px 16px;
-  margin: 15px 0;
-  border-radius: 4px;
+  background: #fff8ee;
+  border-left: 3px solid #cc7700;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 3px;
 }
 
 .alert-box strong {
-  color: #c0741c;
+  color: #7a4400;
   display: block;
   margin-bottom: 6px;
+  font-size: 12px;
 }
 
-/* Success/Confirmation Box */
 .success-box {
-  background: #e8f5e9;
-  border-left: 4px solid #4caf50;
-  padding: 14px 16px;
-  margin: 15px 0;
-  border-radius: 4px;
+  background: #f0fff4;
+  border-left: 3px solid #4caf50;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 3px;
 }
 
 .success-box strong {
   color: #2e7d32;
   display: block;
   margin-bottom: 6px;
-}
-
-/* Info/Note Box */
-.note-box {
-  background: #e1f5fe;
-  border-left: 4px solid #2196f3;
-  padding: 14px 16px;
-  margin: 15px 0;
-  border-radius: 4px;
-}
-
-.note-box strong {
-  color: #01579b;
-  display: block;
-  margin-bottom: 6px;
-}
-
-/* Code Block Enhancement */
-code {
-  background: #f5f5f5;
-  padding: 3px 6px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  font-family: "Courier New", monospace;
   font-size: 12px;
-  color: #d63384;
 }
 
-pre {
-  background: #f5f5f5;
-  padding: 12px 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: "Courier New", monospace;
+/* ================================================
+   17. HR INTERVIEW STYLES
+   ================================================ */
+
+.hr-interview-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+body.hr-interview-page {
+  background-color: #f5f5f5;
+  zoom: 1;
+}
+
+h1.hr-interview-title {
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom: 10px;
+  font-size: 32px;
+  border-bottom: 3px solid #999;
+  padding-bottom: 15px;
+}
+
+.hr-interview-subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.hr-interview-section {
+  margin: 20px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #fafafa;
+}
+
+.hr-interview-header {
+  background-color: #4a4a4a;
+  color: white;
+  padding: 14px 18px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.hr-interview-header:hover {
+  background-color: #333;
+}
+
+.hr-interview-header.active {
+  background-color: #222;
+}
+
+.hr-interview-section-title {
+  font-weight: 600;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.hr-interview-section-description {
   font-size: 12px;
-  overflow-x: auto;
-  margin: 15px 0;
-  line-height: 1.5;
+  opacity: 0.85;
+  margin-top: 3px;
+}
+
+.hr-interview-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  background-color: #fafafa;
+}
+
+.hr-interview-content.open {
+  max-height: 5000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.hr-qa-item {
+  padding: 18px;
+}
+
+.hr-answer {
   color: #333;
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-/* Two Column Layout */
+.hr-answer p {
+  margin-bottom: 10px;
+}
+
+.hr-answer ul {
+  margin-left: 22px;
+  margin-bottom: 10px;
+}
+
+.hr-answer li {
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.hr-answer strong {
+  color: #4a4a4a;
+  font-weight: 600;
+}
+
+.hr-highlight-box,
+.hr-stats {
+  background-color: #f0f0f0;
+  border-left: 3px solid #4a4a4a;
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 3px;
+}
+
+.hr-toggle-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.hr-toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* ================================================
+   18. FLOW DIAGRAM (DevOps/Git style)
+   ================================================ */
+
+.flow-diagram {
+  background: #f9f9f9;
+  padding: 14px;
+  border: 1px solid #ddd;
+  margin: 14px 0;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+/* ================================================
+   19. TWO COLUMN LAYOUT
+   ================================================ */
+
 .two-column {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin: 15px 0;
+  gap: 18px;
+  margin: 14px 0;
 }
 
 @media (max-width: 768px) {
@@ -859,178 +859,72 @@ pre {
   }
 }
 
-/* Section Divider */
-.section-divider {
-  border: none;
-  border-top: 2px solid #e8e8e8;
-  margin: 25px 0;
-}
-
-/* Header with Badge */
-.header-badge {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.badge {
-  background: #0078d4;
-  color: white;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  white-space: nowrap;
-}
-
-.badge-success {
-  background: #4caf50;
-}
-
-.badge-warning {
-  background: #ff9800;
-}
-
-.badge-danger {
-  background: #f44336;
-}
-
 /* ================================================
-   12. SERVICE CARD COLLAPSIBLE STYLES
+   20. SWAP TEXT ANIMATION (index.html)
    ================================================ */
 
-/* Service Card Container (Collapsible) */
-.service-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fb 100%);
-  border-radius: 8px;
-  margin: 15px 0;
-  border-left: 4px solid #0078d4;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+.swap-text {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
   overflow: hidden;
+  vertical-align: middle;
 }
 
-/* Service Header (Clickable to expand/collapse) */
-.service-header {
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 8px 8px 0 0;
-  user-select: none;
-  transition: background 0.2s ease;
+.swap-text span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  white-space: nowrap;
+  animation: rotateText 9s infinite;
 }
 
-.service-header:hover {
-  background: linear-gradient(135deg, #005a9e 0%, #003d7a 100%);
+.swap-text span:nth-child(1) {
+  animation-delay: 0s;
+}
+.swap-text span:nth-child(2) {
+  animation-delay: 3s;
+}
+.swap-text span:nth-child(3) {
+  animation-delay: 6s;
 }
 
-.service-title {
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.3px;
-  flex-grow: 1;
-}
-
-/* Service Body (Content that collapses/expands) */
-.service-body {
-  padding: 20px;
-  max-height: 50000px;
-  transition:
-    max-height 0.5s ease-in,
-    padding 0.5s ease;
-  display: block;
-}
-
-.service-body.collapsed {
-  max-height: 0;
-  padding: 0 20px;
-  overflow: hidden;
-  transition:
-    max-height 0.4s ease-out,
-    padding 0.4s ease;
-}
-
-/* Steps Header (Collapsible steps) */
-.steps-header {
-  padding: 12px 16px;
-  background: #f0f6ff;
-  border: 1px solid #b3d9ff;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  user-select: none;
-  margin: 15px 0;
-  transition: background 0.2s ease;
-}
-
-.steps-header:hover {
-  background: #e0ecff;
-}
-
-.steps-header strong {
-  color: #003d7a;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-/* Steps Body (List that collapses/expands) */
-.steps-body {
-  background: white;
-  border-radius: 0 0 6px 6px;
-  overflow: hidden;
-  margin: 0 0 15px 0;
-  padding: 0;
-  border: 1px solid #e8e8e8;
-  list-style: decimal-leading-zero;
-  display: block;
-  max-height: 50000px;
-  transition: max-height 0.5s ease-in;
-}
-
-.steps-body.collapsed {
-  display: none;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
-}
-
-/* Responsive Improvements */
-@media (max-width: 1024px) {
-  .reference-block {
-    padding: 18px;
+@keyframes rotateText {
+  0% {
+    opacity: 0;
   }
-
-  body {
-    padding: 15px;
+  10% {
+    opacity: 1;
   }
-}
-
-@media (max-width: 768px) {
-  .reference-block {
-    padding: 16px;
-    margin: 16px 0;
+  25% {
+    opacity: 1;
   }
-
-  .block-title {
-    font-size: 13px;
-    padding: 11px 14px;
+  30% {
+    opacity: 0;
   }
-
-  .info-section {
-    padding: 12px 14px;
+  100% {
+    opacity: 0;
   }
 }
 
 /* ================================================
-   12. PRINT STYLES
+   21. RELATED NOTE
+   ================================================ */
+
+.related-note {
+  margin: 8px 0 0 0;
+  padding: 8px 10px;
+  background: #fff;
+  border-left: 2px solid #999;
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* ================================================
+   22. PRINT STYLES
    ================================================ */
 
 @media print {
@@ -1042,40 +936,54 @@ pre {
   h1 {
     page-break-before: always;
   }
-
   h1:first-child {
     page-break-before: avoid;
   }
-
   h2 {
     page-break-after: avoid;
   }
-
   table {
     page-break-inside: avoid;
   }
 
-  .reference-block {
-    page-break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #ddd;
+  .app-header {
+    display: none;
   }
-
-  /* Print-specific overrides for interactive elements */
-  h2.collapsible {
-    cursor: default;
-  }
-
-  .scenario-content {
-    max-height: none !important;
-  }
-
   .toggle-icon {
     display: none;
   }
+  .image-icons {
+    display: none;
+  }
+  .image-preview-box {
+    display: none;
+  }
 
-  /* Azure notes - show all sections when printing */
-  .section-content {
+  .section-content,
+  .hr-interview-content {
     max-height: none !important;
+  }
+}
+
+/* ================================================
+   23. RESPONSIVE
+   ================================================ */
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    zoom: 1;
+  }
+
+  .hr-interview-container {
+    padding: 16px;
+  }
+
+  h1.hr-interview-title {
+    font-size: 22px;
+  }
+
+  .hr-interview-section-title {
+    font-size: 13px;
   }
 }

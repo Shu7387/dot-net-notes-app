@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,938 +9,1472 @@
   <body>
     <h1>2. C#</h1>
 
-    <h2>SECTION 1: C# Fundamentals</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Value vs Reference Type</strong></td>
-          <td>
-            Value (stack, int, bool, struct, enum); Reference (heap, class,
-            string, array)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Stack vs Heap</strong></td>
-          <td>
-            Stack: fast, fixed size, auto-cleanup; Heap: dynamic size, objects,
-            GC managed
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Nullable Types</strong></td>
-          <td>
-            <code>int?</code>, <code>Nullable&lt;T&gt;</code>; allows null for
-            value types
-          </td>
-        </tr>
-        <tr>
-          <td><strong>var vs dynamic vs object</strong></td>
-          <td>
-            <code>var</code>: compile-time type inference; <code>dynamic</code>:
-            runtime type; <code>object</code>: base type, needs casting
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Access Modifiers</strong></td>
-          <td>
-            <code>public</code>, <code>private</code>, <code>protected</code>,
-            <code>internal</code>, <code>protected internal</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Arrays</strong></td>
-          <td>Fixed-size collection; <code>int[] arr = new int[5]</code></td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: C# Fundamentals <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Value vs Reference Type</strong></td>
+            <td>
+              Value (stack, int, bool, struct, enum); Reference (heap, class,
+              string, array)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Stack vs Heap</strong></td>
+            <td>
+              Stack: fast, fixed size, auto-cleanup; Heap: dynamic size,
+              objects, GC managed
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Nullable Types</strong></td>
+            <td>
+              <code>int?</code>, <code>Nullable&lt;T&gt;</code> — allows null
+              for value types
+            </td>
+          </tr>
+          <tr>
+            <td><strong>var vs dynamic vs object</strong></td>
+            <td>
+              <code>var</code>: compile-time type inference;
+              <code>dynamic</code>: runtime type; <code>object</code>: base
+              type, needs casting
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Access Modifiers</strong></td>
+            <td>
+              <code>public</code>, <code>private</code>, <code>protected</code>,
+              <code>internal</code>, <code>protected internal</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Arrays</strong></td>
+            <td>Fixed-size collection — <code>int[] arr = new int[5]</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="note">
-      <p><strong>Collections Interfaces:</strong></p>
-      <ul>
-        <li>
-          <strong>IEnumerable:</strong> LINQ to Objects; Data is loaded first &
-          filtering happens in memory. In-memory operations.
-        </li>
-        <li>
-          <strong>IQueryable:</strong> LINQ to SQL/EF; Query is executed and
-          filtered on the database server. For DB queries. Faster.
-        </li>
-        <li>
-          <strong>ICollection:</strong> Non Indexed access; Count, Add, Remove,
-          Clear
-        </li>
-        <li><strong>IList:</strong> Indexed access; Insert, RemoveAt</li>
-      </ul>
-    </div>
+      <div class="note">
+        <p><strong>Collections Interfaces:</strong></p>
+        <ul>
+          <li>
+            <strong>IEnumerable:</strong> LINQ to Objects; data loaded first,
+            filtering in memory
+          </li>
+          <li>
+            <strong>IQueryable:</strong> LINQ to SQL/EF; query filtered on the
+            DB server — faster for DB queries
+          </li>
+          <li>
+            <strong>ICollection:</strong> Non-indexed; Count, Add, Remove, Clear
+          </li>
+          <li><strong>IList:</strong> Indexed access; Insert, RemoveAt</li>
+        </ul>
+      </div>
 
-    <div class="note">
-      <p><strong>Type Conversion:</strong></p>
-      <ul>
-        <li>
-          <strong>Parse:</strong> Throws exception if invalid
-          <code>int k = int.Parse("123")</code>
-        </li>
-        <li>
-          <strong>TryParse:</strong> Returns bool; safe conversion
-          <code>bool ok = int.TryParse("123", out x)</code>
-        </li>
-        <li>
-          <strong>Cast:</strong> Explicit type conversion
-          <code>(int)value</code>
-        </li>
-        <li>
-          <strong>Convert:</strong> Handles null;
-          <code>Convert.ToInt32(a)</code>
-        </li>
-      </ul>
-    </div>
+      <div class="note">
+        <p><strong>Type Conversion:</strong></p>
+        <ul>
+          <li>
+            <strong>Parse:</strong> Throws if invalid —
+            <code>int.Parse("123")</code>
+          </li>
+          <li>
+            <strong>TryParse:</strong> Returns bool; safe —
+            <code>int.TryParse("123", out x)</code>
+          </li>
+          <li><strong>Cast:</strong> Explicit — <code>(int)value</code></li>
+          <li>
+            <strong>Convert:</strong> Handles null —
+            <code>Convert.ToInt32(a)</code>
+          </li>
+        </ul>
+      </div>
 
-    <div class="note">
-      <p><strong>Control Flow:</strong></p>
-      <ul>
-        <li>
-          <strong>Loops:</strong> <code>foreach</code>, <code>for</code>,
-          <code>while</code>, <code>do-while</code>
-        </li>
-        <li>
-          <strong>Conditionals:</strong> <code>if-else</code>, ternary
-          <code>(?:)</code>, <code>switch</code>
-        </li>
-      </ul>
-    </div>
+      <div class="note">
+        <p><strong>Keywords:</strong></p>
+        <ul>
+          <li><strong>const:</strong> Compile-time constant; always static</li>
+          <li>
+            <strong>readonly:</strong> Set at declaration or in constructor; can
+            be static or instance
+          </li>
+          <li>
+            <strong>as:</strong> Safe cast; returns null if fails —
+            <code>obj as Employee</code>
+          </li>
+          <li>
+            <strong>is:</strong> Type check + pattern match —
+            <code>if (obj is Employee e)</code>
+          </li>
+        </ul>
+      </div>
 
-    <div class="note">
-      <p><strong>Keywords:</strong></p>
-      <ul>
-        <li>
-          <strong>const:</strong> Compile-time constant; value fixed at compile
-          time; <strong>always static</strong>
-        </li>
-        <li>
-          <strong>readonly:</strong> Runtime constant; value set at declaration
-          or constructor; <strong>can be static or instance</strong>
-        </li>
-        <li>
-          <strong>as:</strong> Safe cast; returns null if fails
-          <code>obj as Employee;</code>
-        </li>
-        <li>
-          <strong>is:</strong> Type checking; pattern matching
-          <code>if (obj is Employee e)</code>
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p><strong>Pattern Matching:</strong></p>
-      <ul>
-        <li>
-          <strong>Type pattern (is):</strong> Check type, then cast & assign to
-          variable in one step
-          <code>if (obj is Employee e)</code>
-        </li>
-
-        <li>
-          <strong>Switch expression:</strong> Replace long if-else with clean
-          rules
-          <code
-            >result = input switch { int n => "Num", string s => "Str", _ =>
-            "Other" }</code
-          >
-        </li>
-
-        <li>
-          <strong>When guard:</strong> Add condition to a pattern
-          <code>if (obj is int n when n &gt; 0)</code>
-        </li>
-
-        <li>
-          <strong>Relational pattern:</strong> Compare values using operators
-          <code>marks switch { &gt;=90 => "A", _ => "Fail" }</code>
-        </li>
-
-        <li>
-          <strong>Property pattern:</strong> Match object properties directly
-          <code>if (user is { Role: "Admin", IsActive: true })</code>
-        </li>
-
-        <li>
-          <strong>Null pattern:</strong> Explicit null check in pattern matching
-          <code>if (obj is null)</code>
-        </li>
-
-        <li>
-          <strong>Tuple pattern:</strong> Match multiple values together
-          <code>(role, active) switch { ("Admin", true) => "Access" }</code>
-        </li>
-
-        <li>
-          <strong>Discard (_):</strong> Ignore unmatched values (default case)
-          <code>_ => "Default"</code>
-        </li>
-      </ul>
-    </div>
-
-    <h2>SECTION 2: OOP Principles</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Pillar</th>
-          <th>Description</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Abstraction</strong></td>
-          <td>Show only essentials; Hide complexity</td>
-          <td>
-            Interface, abstract class, public properties, method declaration
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Encapsulation</strong></td>
-          <td>Data hiding</td>
-          <td>class, private fields, method implementation</td>
-        </tr>
-        <tr>
-          <td><strong>Inheritance</strong></td>
-          <td>Code reuse; Extend functionality; IS-A relationship</td>
-          <td>
-            <code>class B : A</code>; Single, Multilevel, Hierarchical level
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Polymorphism</strong></td>
-          <td>Same method, different behavior</td>
-          <td>
-            Method Overloading (compile-time), Method Overriding (runtime)
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <ul>
-        <li>
-          <strong>Method Overloading:</strong> Same method name,
-          <strong>different parameters</strong>, resolved at
-          <strong>compile time</strong>.
-        </li>
-        <li>
-          <strong>Method Overriding:</strong> Child class
-          <strong>provides its own implementation</strong> of a parent method;
-          decided at <strong>runtime</strong>.
-        </li>
-        <li>
-          <strong>Method Hiding:</strong> Child
-          <strong>hides base method using <code>new</code> keyword</strong>.
-          Method called depends on <strong>reference type</strong>, not runtime.
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p>
-        <strong>Association:</strong> A relationship between two independent
-        classes where one uses the other.
-      </p>
-      <ul>
-        <li>
-          <strong>Composition:</strong> Strong ownership; child dies with parent
-          (Car → Engine); <strong>owns-a (strong)</strong>
-        </li>
-        <li>
-          <strong>Aggregation:</strong> Weak ownership; child exists
-          independently (Department → Employee); <strong>has-a (weak)</strong>
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p>
-        <strong>Method Parameters:</strong>
-        <code>int a = 5; int b = 3; int c</code>
-        <code>ChangeValue(a, ref b, out c);</code> Default is Value.
-      </p>
-      <ul>
-        <li>
-          <strong>Value:</strong> A copy is passed, so changes inside the called
-          method do not affect the original value.
-          <code>a</code>
-        </li>
-        <li>
-          <strong>ref:</strong> A reference is passed; variable must be
-          initialized before calling, and changes affect the original variable
-          value. <code>b</code>
-        </li>
-        <li>
-          <strong>out:</strong> A reference is passed; called method must assign
-          a value, commonly used to return multiple values. <code>c</code>
-        </li>
-        <li>
-          <strong>params:</strong> Allows passing multiple values as arguments
-          array; must be the last parameter <code>params int[] numbers</code>
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p><strong>Keywords:</strong></p>
-      <ul>
-        <li>
-          <strong>virtual:</strong> Method can be overridden in derived class,
-          Optional, Complete method
-        </li>
-        <li>
-          <strong>override:</strong> Parent has virtual/abstract/override method
-          and then child override it
-        </li>
-        <li>
-          <strong>abstract:</strong> Must implement in child; abstract class
-          can't be instantiated; abstract method is incomplete, exists only in
-          abstract class
-        </li>
-        <li>
-          <strong>sealed:</strong> Prevent inheritance (class) or further
-          overriding (method)
-        </li>
-        <li>
-          <strong>new:</strong> Method hiding; hides parent method (not true
-          polymorphism)
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p><strong>Class vs Abstract vs Interface:</strong></p>
-      <ul>
-        <li>
-          <strong>Class</strong> → Instantiable and contains complete
-          implementation; supports single inheritance
-        </li>
-        <li>
-          <strong>Abstract Class</strong> → Not instantiable; provides complete
-          shared base logic with abstract methods; single inheritance
-        </li>
-        <li>
-          <strong>Interface</strong> → Not instantiable; defines a contract with
-          no implementation; supports multiple inheritance
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p><strong>Static:</strong></p>
-      <ul>
-        <li>
-          <strong>Static Class:</strong> Cannot instantiate; contains only
-          static members; No inheritance; utility classes
-        </li>
-        <li>
-          <strong>Static Members:</strong> Shared across all instances; accessed
-          via class name
-        </li>
-      </ul>
-    </div>
-
-    <div class="note">
-      <p><strong>Constructor:</strong></p>
-      <ul>
-        <li>
-          <strong>Types:</strong> Default (Parameter less), Parameterized, Copy,
-          Static, Private (Singleton)
-        </li>
-        <li>
-          <strong>Constructor Chaining:</strong> Use <code>this()</code> or
-          <code>base()</code> to call other constructors
-        </li>
-      </ul>
-    </div>
-
-    <h2>SECTION 3: Modern C# Features</h2>
-    <div class="note">
-      <p>
-        <strong>Generics:</strong> Generics allow writing reusable code that
-        works with any data type safely
-      </p>
-      <ul>
-        <li>
-          <strong>Generic Collection Classes:</strong>
-          <code>List&lt;T&gt;</code>,
-          <code>Dictionary&lt;TKey, TValue&gt;</code>,
-          <code>Stack&lt;T&gt;</code> (<strong>LIFO</strong>),
-          <code>Queue&lt;T&gt;</code> (<strong>FIFO</strong>)
-        </li>
-        <li><strong>Generic Delegates:</strong> Action, Func, Predicate</li>
-        <li>
-          <strong>Generic Constraints:</strong> Limit which types are allowed in
-          generics <code>where T : class</code> <code>where T : struct</code>
-        </li>
-      </ul>
-    </div>
-
-    <h3>Other features:</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Feature</th>
-          <th>What it is</th>
-          <th>Why it's needed</th>
-          <th>Small Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Partial Class</strong></td>
-          <td>One class split into multiple files</td>
-          <td>
-            Keep large or auto-generated code organized. Many Devs can work on
-            same class
-          </td>
-          <td><code>partial class Employee { }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Struct</strong></td>
-          <td>Lightweight value type; Lighter class version</td>
-          <td>Better performance for small data</td>
-          <td><code>struct Point { public int X,Y; }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Enum</strong></td>
-          <td>Fixed list of named values</td>
-          <td>Improves readability, avoids magic numbers</td>
-          <td><code>enum Color { Red, Green }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Reflection</strong></td>
-          <td>
-            Reads type info at runtime; Types are not known at compile time
-          </td>
-          <td>Build dynamic frameworks (DI, serializers)</td>
-          <td><code>typeof(Emp).GetMethods()</code></td>
-        </tr>
-        <tr>
-          <td><strong>Lazy Loading</strong></td>
-          <td>Creates object on first use; Load on demand</td>
-          <td>Saves memory and startup time</td>
-          <td><code>Lazy&lt;User&gt; u = new(() =&gt; new User())</code></td>
-        </tr>
-        <tr>
-          <td><strong>Extension Method</strong></td>
-          <td>Adds method to existing type</td>
-          <td>Extend classes without modifying them</td>
-          <td><code>Method(this int n)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Record</strong></td>
-          <td>Immutable with value-based equality; Reference type</td>
-          <td>Class: Mutable with reference equality</td>
-          <td><code>record Person(string N,int A)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Tuple</strong></td>
-          <td>Group multiple values, Heterogenous</td>
-          <td>Method return multiple values easily</td>
-          <td><code>(int Id, string Name)</code></td>
-        </tr>
-        <tr>
-          <td><strong>Tuple Deconstruction</strong></td>
-          <td>Extract tuple values</td>
-          <td>Cleaner variable assignment</td>
-          <td><code>var (id, name) = emp;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Switch Expression</strong></td>
-          <td>Expression-based switch</td>
-          <td>Shorter, cleaner logic</td>
-          <td><code>x switch {1=&gt;"one",_=&gt;"other"}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Null Handling Operators</strong></td>
-          <td>Safe null access & defaults</td>
-          <td>Avoid null exceptions; Fallback values; Lazy init</td>
-          <td>
-            <code>obj?.Prop</code>, <code>val ?? def</code>,
-            <code>val ??= def</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 4: Exception Handling & Resources Cleanup</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>try/catch/finally</strong></td>
-          <td>
-            Handle exceptions; finally always executes (cleanup resources)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>throw vs throw ex</strong></td>
-          <td>
-            throw preserves stack trace; throw ex resets it; Both rethrows the
-            original exception
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Custom Exception</strong></td>
-          <td>Inherit from Exception; add custom properties/messages</td>
-        </tr>
-        <tr>
-          <td><strong>Exception Filters</strong></td>
-          <td>
-            Condition to catch block
-            <code>catch (Exception ex) when (ex.Message.Contains("..."))</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>IDisposable</strong></td>
-          <td>
-            Interface for <strong>manual resource cleanup</strong>; implements
-            <code>Dispose()</code>; Release immediately, avoid waiting for GC
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Destructor/Finalize</strong></td>
-          <td>
-            Special method executed by GC to
-            <strong>automatic resource cleanup</strong> which are unmanaged
-            <code>~MyClass() { /* cleanup */ }</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>using statement</strong></td>
-          <td>
-            Auto-dispose; calls Dispose() at end of block
-            <code>using (){}</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>using declaration</strong></td>
-          <td>Disposes at scope end; <code>using var file = ...;</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 5: Delegates & Events</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it is</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Delegate</strong></td>
-          <td>
-            A type-safe reference to a method; Delegates and events let methods
-            <br />
-            be passed as arguments, combined, triggered dynamically
-          </td>
-          <td><code>delegate void Log(string msg);</code></td>
-        </tr>
-        <tr>
-          <td><strong>Single & Multicast</strong></td>
-          <td>
-            A delegate that points to & calls single/multiple methods in order
-          </td>
-          <td><code>log += Method1; log -= Method2;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Action</strong></td>
-          <td>Built-in delegate that returns nothing (<code>void</code>)</td>
-          <td>
-            <code>Action&lt;int&gt; a = x =&gt; Console.WriteLine(x);</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Func&lt;T, TResult&gt;</strong></td>
-          <td>Built-in delegate that returns a value (last type is return)</td>
-          <td><code>Func&lt;int,int&gt; f = x =&gt; x * 2;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Predicate&lt;T&gt;</strong></td>
-          <td>Delegate that returns <code>bool</code> for a condition</td>
-          <td><code>Predicate&lt;int&gt; p = x =&gt; x &gt; 0;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Lambda</strong></td>
-          <td>Short, anonymous function</td>
-          <td><code>(x) =&gt; x * 2</code></td>
-        </tr>
-        <tr>
-          <td><strong>Event</strong></td>
-          <td>
-            Allows one class to notify other classes when something happens.
-          </td>
-          <td><code>event CustomDelegate Clicked;</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 6: Async Programming</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Description</th>
-          <th>Small Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>async / await</strong></td>
-          <td>Runs long tasks in background without blocking the thread</td>
-          <td>
+      <div class="note">
+        <p><strong>Pattern Matching:</strong></p>
+        <ul>
+          <li>
+            <strong>Type pattern:</strong> Check type &amp; cast in one step —
+            <code>if (obj is Employee e)</code>
+          </li>
+          <li>
+            <strong>Switch expression:</strong> Clean if-else replacement —
             <code
-              >async Task GetData(CancellationToken ct){ await CallApi(ct);
-              }</code
+              >result = input switch { int n => "Num", string s => "Str", _ =>
+              "Other" }</code
             >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Task vs Thread</strong></td>
-          <td>
-            <strong>Task:</strong> Lightweight, .NET-managed, automatic managed
-            (like assigning work to a company)<br />
-            <strong>Thread:</strong> Heavyweight, OS-level, manually managed
-            (like hiring a dedicated worker)
-          </td>
+          </li>
+          <li>
+            <strong>When guard:</strong> Add condition to pattern —
+            <code>if (obj is int n when n > 0)</code>
+          </li>
+          <li>
+            <strong>Property pattern:</strong> Match on object properties —
+            <code>if (user is { Role: "Admin", IsActive: true })</code>
+          </li>
+          <li>
+            <strong>Tuple pattern:</strong> Match multiple values —
+            <code>(role, active) switch { ("Admin", true) => "Access" }</code>
+          </li>
+          <li>
+            <strong>Discard (_):</strong> Default/fallthrough case —
+            <code>_ => "Default"</code>
+          </li>
+        </ul>
+      </div>
 
-          <td>
-            <code>Task.Run(() =&gt; Work());</code><br /><code
-              >new Thread(Work).Start();</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>ConfigureAwait(false)</strong></td>
-          <td>
-            Don't come back to the same thread after await task; Used in
-            libraries to prevent deadlocks
-          </td>
-          <td><code>await CallApi().ConfigureAwait(false);</code></td>
-        </tr>
-        <tr>
-          <td><strong>CancellationToken</strong></td>
-          <td>Allows stopping async work safely</td>
-          <td><code>CancellationToken ct</code></td>
-        </tr>
-        <tr>
-          <td><strong>lock</strong></td>
-          <td>
-            Prevents multiple threads from accessing shared data at same time
-          </td>
-          <td><code>lock(obj){ /* code */ }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Multithreading</strong></td>
-          <td>
-            Async for waiting without blocking, Multithreading for doing work in
-            parallel
-          </td>
-          <td><code>Parallel.For(...)</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 7: Memory & Performance</h2>
-    <div class="note">
-      <p>
-        <strong>Garbage Collection (GC):</strong> GC cleans memory by moving
-        objects from Gen 0 → Gen 2 based on how long they live in 3 steps
-      </p>
-      <ul>
-        <li>
-          <strong>Gen 0:</strong> Short-lived objects; collected most frequently
-        </li>
-        <li>
-          <strong>Gen 1:</strong> Medium-lived; survived one Gen 0 collection
-        </li>
-        <li>
-          <strong>Gen 2:</strong> Long-lived objects; rarely collected; most
-          expensive
-        </li>
-      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <div class="note">
-      <p><strong>Boxing/Unboxing:</strong></p>
-      <ul>
-        <li>
-          <strong>Boxing:</strong> Value type → Reference type (heap
-          allocation); performance hit
-        </li>
-        <li>
-          <strong>Unboxing:</strong> Reference type → Value type (requires
-          explicit cast)
-        </li>
-        <li><strong>Impact:</strong> Avoid in loops; use generics instead</li>
-      </ul>
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: OOP Principles <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Pillar</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Abstraction</strong></td>
+            <td>Show only essentials; hide complexity</td>
+            <td>Interface, abstract class, public properties</td>
+          </tr>
+          <tr>
+            <td><strong>Encapsulation</strong></td>
+            <td>Hide internal data</td>
+            <td>Private fields with public methods</td>
+          </tr>
+          <tr>
+            <td><strong>Inheritance</strong></td>
+            <td>Code reuse; IS-A relationship</td>
+            <td><code>class B : A</code>; Single, Multilevel, Hierarchical</td>
+          </tr>
+          <tr>
+            <td><strong>Polymorphism</strong></td>
+            <td>Same method, different behavior</td>
+            <td>Overloading (compile-time), Overriding (runtime)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <ul>
+          <li>
+            <strong>Method Overloading:</strong> Same name,
+            <strong>different parameters</strong>, resolved at
+            <strong>compile time</strong>
+          </li>
+          <li>
+            <strong>Method Overriding:</strong> Child provides its own
+            implementation of a parent virtual/abstract method; decided at
+            <strong>runtime</strong>
+          </li>
+          <li>
+            <strong>Method Hiding:</strong> Child hides parent method using
+            <code>new</code> keyword; depends on
+            <strong>reference type</strong>, not runtime object
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Association:</strong></p>
+        <ul>
+          <li>
+            <strong>Composition:</strong> Strong ownership; child dies with
+            parent — Car → Engine (<strong>owns-a</strong>)
+          </li>
+          <li>
+            <strong>Aggregation:</strong> Weak ownership; child exists
+            independently — Department → Employee (<strong>has-a</strong>)
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Method Parameters:</strong>
+          <code>ChangeValue(a, ref b, out c);</code>
+        </p>
+        <ul>
+          <li><strong>Value:</strong> Copy passed; original unchanged</li>
+          <li>
+            <strong>ref:</strong> Reference passed; must be initialized before
+            call; changes affect original
+          </li>
+          <li>
+            <strong>out:</strong> Reference passed; method must assign a value;
+            used to return multiple values
+          </li>
+          <li>
+            <strong>params:</strong> Pass multiple values as array —
+            <code>params int[] numbers</code>
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Keywords:</strong></p>
+        <ul>
+          <li>
+            <strong>virtual:</strong> Method can optionally be overridden in
+            child
+          </li>
+          <li>
+            <strong>override:</strong> Child provides its own implementation of
+            parent virtual/abstract method
+          </li>
+          <li>
+            <strong>abstract:</strong> Must be implemented in child; abstract
+            class can't be instantiated
+          </li>
+          <li>
+            <strong>sealed:</strong> Prevents inheritance (class) or further
+            overriding (method)
+          </li>
+          <li>
+            <strong>new:</strong> Hides parent method — not true polymorphism
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Class vs Abstract vs Interface:</strong></p>
+        <ul>
+          <li>
+            <strong>Class</strong> → Instantiable; complete implementation;
+            single inheritance
+          </li>
+          <li>
+            <strong>Abstract Class</strong> → Not instantiable; shared base
+            logic + abstract methods; single inheritance
+          </li>
+          <li>
+            <strong>Interface</strong> → Contract only; no implementation;
+            supports multiple inheritance
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Static &amp; Constructors:</strong></p>
+        <ul>
+          <li>
+            <strong>Static Class:</strong> Cannot instantiate; only static
+            members; no inheritance — utility classes
+          </li>
+          <li>
+            <strong>Static Members:</strong> Shared across all instances;
+            accessed via class name
+          </li>
+          <li>
+            <strong>Constructor Types:</strong> Default, Parameterized, Copy,
+            Static, Private (Singleton)
+          </li>
+          <li>
+            <strong>Constructor Chaining:</strong> <code>this()</code> or
+            <code>base()</code> to call another constructor
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <div class="note">
-      <p><strong>String vs StringBuilder:</strong></p>
-      <ul>
-        <li>
-          <strong>String:</strong> Immutable; creates new object on every
-          modification; Bad for memory
-        </li>
-        <li>
-          <strong>StringBuilder:</strong> Mutable buffer; efficient for
-          concatenations in loops
-        </li>
-      </ul>
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Modern C# Features <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Generics:</strong> Write reusable code that works with any
+          type safely.
+        </p>
+        <ul>
+          <li>
+            <strong>Generic Collections:</strong> <code>List&lt;T&gt;</code>,
+            <code>Dictionary&lt;TKey, TValue&gt;</code>,
+            <code>Stack&lt;T&gt;</code> (LIFO),
+            <code>Queue&lt;T&gt;</code> (FIFO)
+          </li>
+          <li><strong>Generic Delegates:</strong> Action, Func, Predicate</li>
+          <li>
+            <strong>Generic Constraints:</strong> Limit allowed types —
+            <code>where T : class</code>, <code>where T : struct</code>
+          </li>
+        </ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>What it is</th>
+            <th>Why it's needed</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Partial Class</strong></td>
+            <td>One class split across multiple files</td>
+            <td>Organize large or auto-generated code</td>
+            <td><code>partial class Employee { }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Struct</strong></td>
+            <td>Lightweight value type</td>
+            <td>Better performance for small data</td>
+            <td><code>struct Point { public int X, Y; }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Enum</strong></td>
+            <td>Fixed list of named values</td>
+            <td>Readability; avoids magic numbers</td>
+            <td><code>enum Color { Red, Green }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Reflection</strong></td>
+            <td>Read type info at runtime</td>
+            <td>Dynamic frameworks (DI, serializers)</td>
+            <td><code>typeof(Emp).GetMethods()</code></td>
+          </tr>
+          <tr>
+            <td><strong>Lazy Loading</strong></td>
+            <td>Create object on first use</td>
+            <td>Save memory and startup time</td>
+            <td><code>Lazy&lt;User&gt; u = new(() =&gt; new User())</code></td>
+          </tr>
+          <tr>
+            <td><strong>Extension Method</strong></td>
+            <td>Add method to existing type</td>
+            <td>Extend classes without modifying them</td>
+            <td><code>static void Method(this int n) { }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Record</strong></td>
+            <td>Immutable with value-based equality; reference type</td>
+            <td>
+              Safer data objects; Class is mutable with reference equality
+            </td>
+            <td><code>record Person(string Name, int Age)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Tuple</strong></td>
+            <td>Group multiple values together</td>
+            <td>Return multiple values from a method</td>
+            <td><code>(int Id, string Name) result = (1, "Ali");</code></td>
+          </tr>
+          <tr>
+            <td><strong>Null Handling</strong></td>
+            <td>Safe null access &amp; defaults</td>
+            <td>Avoid null exceptions; provide fallback values</td>
+            <td>
+              <code>obj?.Prop</code>, <code>val ?? def</code>,
+              <code>val ??= def</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <div class="note">
-      <ul>
-        <li>
-          <strong>yield return:</strong> Returns one item at a time instead of
-          whole collection, Memory efficient for large datasets, lazy
-          evaluation.
-        </li>
-        <li>
-          <strong>Memory Leaks:</strong> Happen when objects are kept in memory
-          longer than needed, commonly due to unsubscribed events, static
-          references, not disposing <code>IDisposable</code> objects, captured
-          closures, or long-running timers/threads.
-        </li>
-      </ul>
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Exception Handling &amp; Resource Cleanup
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>try / catch / finally</strong></td>
+            <td>Handle exceptions; finally always runs for cleanup</td>
+          </tr>
+          <tr>
+            <td><strong>throw vs throw ex</strong></td>
+            <td>
+              <code>throw</code> preserves stack trace;
+              <code>throw ex</code> resets it — always use <code>throw</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Custom Exception</strong></td>
+            <td>
+              Inherit from <code>Exception</code>; add custom
+              properties/messages
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Exception Filters</strong></td>
+            <td>
+              Condition on catch —
+              <code
+                >catch (Exception ex) when (ex.Message.Contains("..."))</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>IDisposable</strong></td>
+            <td>
+              Manual cleanup of unmanaged resources; implement
+              <code>Dispose()</code>; release immediately, don't wait for GC
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Destructor / Finalize</strong></td>
+            <td>
+              Auto-cleanup by GC for unmanaged resources —
+              <code>~MyClass() { }</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>using statement</strong></td>
+            <td>
+              Auto-calls <code>Dispose()</code> at end of block —
+              <code>using (var f = ...) { }</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>using declaration</strong></td>
+            <td>
+              Disposes at end of scope — <code>using var file = ...;</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <h2>SECTION 8: SOLID & Design Patterns</h2>
-    <div class="note">
-      <p>
-        <strong>SOLID Principles:</strong> 5 principles/rules that make code
-        easier to maintain, extend, and test
-      </p>
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Delegates &amp; Events <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Delegate</strong></td>
+            <td>Type-safe reference to a method; pass methods as arguments</td>
+            <td><code>delegate void Log(string msg);</code></td>
+          </tr>
+          <tr>
+            <td><strong>Multicast Delegate</strong></td>
+            <td>Points to and calls multiple methods in order</td>
+            <td><code>log += Method1; log -= Method2;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Action</strong></td>
+            <td>Built-in delegate that returns <code>void</code></td>
+            <td>
+              <code>Action&lt;int&gt; a = x =&gt; Console.WriteLine(x);</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Func&lt;T, TResult&gt;</strong></td>
+            <td>
+              Built-in delegate that returns a value (last type = return type)
+            </td>
+            <td><code>Func&lt;int,int&gt; f = x =&gt; x * 2;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Predicate&lt;T&gt;</strong></td>
+            <td>Delegate that returns <code>bool</code></td>
+            <td><code>Predicate&lt;int&gt; p = x =&gt; x &gt; 0;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Lambda</strong></td>
+            <td>Short anonymous function</td>
+            <td><code>(x) =&gt; x * 2</code></td>
+          </tr>
+          <tr>
+            <td><strong>Event</strong></td>
+            <td>Notify other classes when something happens</td>
+            <td><code>event CustomDelegate Clicked;</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Principle</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>S</strong>RP</td>
-          <td>Single Responsibility; one class, one reason to change</td>
-        </tr>
-        <tr>
-          <td><strong>O</strong>CP</td>
-          <td>Open/Closed; open for extension, closed for modification</td>
-        </tr>
-        <tr>
-          <td><strong>L</strong>SP</td>
-          <td>
-            Liskov Substitution; child must be substitutable for parent type
-            without breaking behavior
-          </td>
-        </tr>
-        <tr>
-          <td><strong>I</strong>SP</td>
-          <td>
-            Interface Segregation; many small interfaces over one large; Do not
-            force class to implement new methods
-          </td>
-        </tr>
-        <tr>
-          <td><strong>D</strong>IP</td>
-          <td>
-            Dependency Inversion; depend on abstractions (Interface), not
-            concrete classes
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Async Programming <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>async / await</strong></td>
+            <td>Run long tasks in background without blocking the thread</td>
+            <td>
+              <code
+                >async Task GetData(CancellationToken ct) { await CallApi(ct);
+                }</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Task vs Thread</strong></td>
+            <td>
+              <strong>Task:</strong> Lightweight, .NET-managed (assign work to
+              company)<br /><strong>Thread:</strong> Heavyweight, OS-level,
+              manually managed (hire a dedicated worker)
+            </td>
+            <td>
+              <code>Task.Run(() =&gt; Work());</code><br /><code
+                >new Thread(Work).Start();</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ConfigureAwait(false)</strong></td>
+            <td>
+              Don't resume on original thread after await; prevents deadlocks in
+              libraries
+            </td>
+            <td><code>await CallApi().ConfigureAwait(false);</code></td>
+          </tr>
+          <tr>
+            <td><strong>CancellationToken</strong></td>
+            <td>Safely stop async work on request</td>
+            <td><code>CancellationToken ct</code></td>
+          </tr>
+          <tr>
+            <td><strong>lock</strong></td>
+            <td>
+              Prevent multiple threads from accessing shared data at the same
+              time
+            </td>
+            <td><code>lock(obj) { /* code */ }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Multithreading</strong></td>
+            <td>
+              Async = waiting without blocking; Multithreading = parallel CPU
+              work
+            </td>
+            <td><code>Parallel.For(...)</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="note">
-      <p><strong>Dependency Injection (DI):</strong></p>
-      <ul>
-        <li>
-          Inject dependencies via constructor, property, or method instead of
-          creating them
-        </li>
-        <li><strong>Lifetimes:</strong> Singleton, Scoped, Transient</li>
-      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <div class="note">
-      <p>
-        <strong>Design Patterns:</strong> Proven ways to solve common design or
-        coding problems cleanly
-      </p>
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: Memory &amp; Performance <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Garbage Collection (GC):</strong> Automatically frees memory
+          by collecting objects from Gen 0 → Gen 2 based on how long they live.
+        </p>
+        <ul>
+          <li>
+            <strong>Gen 0:</strong> Short-lived objects; collected most
+            frequently
+          </li>
+          <li><strong>Gen 1:</strong> Survived one Gen 0 collection</li>
+          <li>
+            <strong>Gen 2:</strong> Long-lived objects; rarely collected; most
+            expensive
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Boxing / Unboxing:</strong></p>
+        <ul>
+          <li>
+            <strong>Boxing:</strong> Value type → Reference type (heap
+            allocation); performance hit
+          </li>
+          <li>
+            <strong>Unboxing:</strong> Reference type → Value type (requires
+            explicit cast)
+          </li>
+          <li>
+            <strong>Impact:</strong> Avoid in loops; use generics instead of
+            <code>object</code> or <code>ArrayList</code>
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>String vs StringBuilder:</strong></p>
+        <ul>
+          <li>
+            <strong>String:</strong> Immutable; every modification creates a new
+            object; bad for loops
+          </li>
+          <li>
+            <strong>StringBuilder:</strong> Mutable buffer; efficient for
+            concatenation in loops
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <ul>
+          <li>
+            <strong>yield return:</strong> Returns one item at a time; memory
+            efficient for large datasets; lazy evaluation
+          </li>
+          <li>
+            <strong>Memory Leaks:</strong> Objects kept alive longer than needed
+            — unsubscribed events, static references, not disposing
+            <code>IDisposable</code>, captured closures, long-running timers
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Common Patterns</th>
-          <th>What problem they solve (easy)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Creational</strong></td>
-          <td>Singleton, Factory</td>
-          <td>Decide <strong>how and when objects are created</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Structural</strong></td>
-          <td>Adapter, Decorator</td>
-          <td>
-            Decide
-            <strong
-              >how classes and objects are connected or wrapped together</strong
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Behavioral</strong></td>
-          <td>Strategy, Repository</td>
-          <td>
-            Decide
-            <strong>how objects talk to each other and share work</strong>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: SOLID &amp; Design Patterns <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Principle</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>S</strong>RP</td>
+            <td>Single Responsibility — one class, one reason to change</td>
+          </tr>
+          <tr>
+            <td><strong>O</strong>CP</td>
+            <td>Open/Closed — open for extension, closed for modification</td>
+          </tr>
+          <tr>
+            <td><strong>L</strong>SP</td>
+            <td>
+              Liskov Substitution — child must replace parent without breaking
+              behavior
+            </td>
+          </tr>
+          <tr>
+            <td><strong>I</strong>SP</td>
+            <td>
+              Interface Segregation — many small interfaces; don't force unused
+              methods
+            </td>
+          </tr>
+          <tr>
+            <td><strong>D</strong>IP</td>
+            <td>
+              Dependency Inversion — depend on abstractions (interfaces), not
+              concrete classes
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="note">
-      <p><strong>Common Patterns:</strong></p>
-      <ul>
-        <li>
-          <strong>Singleton:</strong> Single instance throughout application
-        </li>
-        <li>
-          <strong>Factory:</strong> Create objects without exposing object
-          creational logic
-        </li>
-        <li>
-          <strong>Adapter:</strong> Makes incompatible interfaces work together
-        </li>
-        <li><strong>Strategy:</strong> Switch algorithms at runtime</li>
-        <li><strong>Repository:</strong> Abstract data access layer</li>
-      </ul>
+      <div class="note">
+        <p>
+          <strong>Dependency Injection (DI):</strong> Inject dependencies via
+          constructor, property, or method instead of creating them inside the
+          class. Lifetimes: Singleton, Scoped, Transient.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Pattern</th>
+            <th>What problem it solves</th>
+            <th>Real-world use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="3">
+              <strong>Creational</strong><br /><small
+                >How objects are created</small
+              >
+            </td>
+            <td><strong>Singleton</strong></td>
+            <td>Only one instance for the whole app</td>
+            <td>Config, logging, cache service</td>
+          </tr>
+          <tr>
+            <td><strong>Factory</strong></td>
+            <td>Create objects without exposing creation logic</td>
+            <td>
+              Create the right DB provider (SQL, PostgreSQL) based on config
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Builder</strong></td>
+            <td>Build complex objects step by step with optional parts</td>
+            <td>
+              Construct an email or HTTP request with optional headers, body,
+              attachments
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="3">
+              <strong>Structural</strong><br /><small
+                >How classes are connected</small
+              >
+            </td>
+            <td><strong>Adapter</strong></td>
+            <td>Make incompatible interfaces work together</td>
+            <td>Wrap a third-party library to match your own interface</td>
+          </tr>
+          <tr>
+            <td><strong>Decorator</strong></td>
+            <td>Add behavior to an object without changing its class</td>
+            <td>Add logging or caching on top of an existing service</td>
+          </tr>
+          <tr>
+            <td><strong>Facade</strong></td>
+            <td>One simple interface over a complex subsystem</td>
+            <td>
+              OrderService calling payment, inventory, and shipping internally
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="4">
+              <strong>Behavioral</strong><br /><small
+                >How objects communicate</small
+              >
+            </td>
+            <td><strong>Strategy</strong></td>
+            <td>Swap algorithms at runtime without changing the caller</td>
+            <td>Different discount types or payment methods</td>
+          </tr>
+          <tr>
+            <td><strong>Repository</strong></td>
+            <td>Abstract data access; decouple business logic from DB</td>
+            <td>
+              <code>IUserRepository</code> with SQL or mock implementation
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Observer</strong></td>
+            <td>Notify multiple objects when something changes</td>
+            <td>Order placed → notify email, SMS, inventory services</td>
+          </tr>
+          <tr>
+            <td><strong>Chain of Responsibility</strong></td>
+            <td>
+              Pass request through a chain of handlers until one handles it
+            </td>
+            <td>Middleware pipeline, multi-level approval workflow</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <h2>SECTION 9: LINQ</h2>
-    <div class="note">
-      <p><strong>Query vs Method Syntax:</strong></p>
-      <ul>
-        <li>
-          <strong>Query:</strong>
-          <code>from x in list where x &gt; 5 select x</code> (SQL-like,
-          readable)
-        </li>
-        <li>
-          <strong>Method:</strong>
-          <code>list.Where(x =&gt; x &gt; 5)</code> (fluent, more flexible)
-        </li>
-      </ul>
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: LINQ <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p><strong>Query vs Method Syntax:</strong></p>
+        <ul>
+          <li>
+            <strong>Query:</strong>
+            <code>from x in list where x &gt; 5 select x</code> — SQL-like,
+            readable
+          </li>
+          <li>
+            <strong>Method:</strong> <code>list.Where(x =&gt; x &gt; 5)</code> —
+            fluent, more flexible
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>Deferred vs Immediate Execution:</strong></p>
+        <ul>
+          <li>
+            <strong>Deferred:</strong> Query runs only when iterated (Where,
+            Select, OrderBy); reusable
+          </li>
+          <li>
+            <strong>Immediate:</strong> Runs right away and creates a snapshot
+            (ToList, ToArray, Count, First)
+          </li>
+        </ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Operators</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Filtering</strong></td>
+            <td>Where, OfType</td>
+            <td>Filter based on condition</td>
+          </tr>
+          <tr>
+            <td><strong>Projection</strong></td>
+            <td>Select, SelectMany</td>
+            <td>Transform data; flatten nested collections</td>
+          </tr>
+          <tr>
+            <td><strong>Sorting</strong></td>
+            <td>OrderBy, ThenBy, Reverse</td>
+            <td>Sort ascending/descending</td>
+          </tr>
+          <tr>
+            <td><strong>Grouping</strong></td>
+            <td>GroupBy, ToLookup</td>
+            <td>Group by key</td>
+          </tr>
+          <tr>
+            <td><strong>Joining</strong></td>
+            <td>Join, GroupJoin</td>
+            <td>Combine two collections</td>
+          </tr>
+          <tr>
+            <td><strong>Aggregation</strong></td>
+            <td>Count, Sum, Average, Min, Max</td>
+            <td>Compute a single value</td>
+          </tr>
+          <tr>
+            <td><strong>Element</strong></td>
+            <td>First, Single, Last, ElementAt (+OrDefault variants)</td>
+            <td>Get a specific element</td>
+          </tr>
+          <tr>
+            <td><strong>Quantifiers</strong></td>
+            <td>Any, All, Contains</td>
+            <td>Boolean checks on collection</td>
+          </tr>
+          <tr>
+            <td><strong>Set</strong></td>
+            <td>Distinct, Union, Intersect, Except</td>
+            <td>Set operations</td>
+          </tr>
+          <tr>
+            <td><strong>Partitioning</strong></td>
+            <td>Skip, Take, SkipWhile, TakeWhile</td>
+            <td>Pagination and slicing</td>
+          </tr>
+          <tr>
+            <td><strong>Conversion</strong></td>
+            <td>ToList, ToArray, ToDictionary, AsEnumerable</td>
+            <td>Convert to different collection types</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <div class="note">
-      <p><strong>Deferred vs Immediate Execution:</strong></p>
-      <ul>
-        <li>
-          <strong>Deferred:</strong> Query not executed until iterated (Where,
-          Select, OrderBy); query is reusable
-        </li>
-        <li>
-          <strong>Immediate:</strong> Executes immediately (ToList, ToArray,
-          Count, First); creates snapshot
-        </li>
-      </ul>
-    </div>
+    <!-- ===================== SECTION 10: SCENARIOS ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: Scenario-Based Questions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="scenario-item">
+        <h3>1. Value Type vs Reference Type Confusion</h3>
+        <p>
+          You pass an <code>int</code> to a method and modify it — the caller's
+          value is unchanged. But passing a <code>List&lt;int&gt;</code> and
+          modifying it changes the caller's list. Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>int</code> is a value type — a copy is passed, so the original
+            stays untouched. <code>List&lt;int&gt;</code> is a reference type —
+            the reference to the same heap object is passed, so changes inside
+            the method affect the original. To pass a list safely, create a
+            copy: <code>new List&lt;int&gt;(originalList)</code>.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
 
-    <h3>LINQ Operators:</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Operators</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Filtering</strong></td>
-          <td>Where, OfType</td>
-          <td>Filter based on condition</td>
-        </tr>
-        <tr>
-          <td><strong>Projection</strong></td>
-          <td>Select, SelectMany</td>
-          <td>Transform data; flatten collections</td>
-        </tr>
-        <tr>
-          <td><strong>Sorting</strong></td>
-          <td>OrderBy, ThenBy, Reverse</td>
-          <td>Sort ascending/descending</td>
-        </tr>
-        <tr>
-          <td><strong>Grouping</strong></td>
-          <td>GroupBy, ToLookup</td>
-          <td>Group by key</td>
-        </tr>
-        <tr>
-          <td><strong>Joining</strong></td>
-          <td>Join, GroupJoin</td>
-          <td>Combine collections</td>
-        </tr>
-        <tr>
-          <td><strong>Aggregation</strong></td>
-          <td>Count, Sum, Average, Min, Max</td>
-          <td>Compute values</td>
-        </tr>
-        <tr>
-          <td><strong>Element</strong></td>
-          <td>First, Single, Last, ElementAt (add OrDefault)</td>
-          <td>Get specific element</td>
-        </tr>
-        <tr>
-          <td><strong>Quantifiers</strong></td>
-          <td>Any, All, Contains</td>
-          <td>Boolean checks</td>
-        </tr>
-        <tr>
-          <td><strong>Set</strong></td>
-          <td>Distinct, Union, Intersect, Except</td>
-          <td>Set operations</td>
-        </tr>
-        <tr>
-          <td><strong>Partitioning</strong></td>
-          <td>Skip, Take, SkipWhile, TakeWhile</td>
-          <td>Pagination</td>
-        </tr>
-        <tr>
-          <td><strong>Conversion</strong></td>
-          <td>ToList, ToArray, ToDictionary, AsEnumerable</td>
-          <td>Convert to different types</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="scenario-item">
+        <h3>2. Interface vs Abstract Class — Which to Use?</h3>
+        <p>
+          You're building a payment system with <code>CreditCard</code>,
+          <code>PayPal</code>, and <code>Crypto</code>. All need a
+          <code>Pay()</code> method. Some share logging logic. What do you
+          choose?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use both. Define an <code>IPayment</code> interface with
+            <code>Pay()</code> as the contract. Create an abstract class
+            <code>BasePayment</code> with the shared logging logic. Concrete
+            classes inherit <code>BasePayment</code> and implement the
+            interface. Interface for the contract, abstract class for shared
+            behavior.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>3. async/await Causing a Deadlock</h3>
+        <p>
+          Your app hangs forever when calling <code>.Result</code> or
+          <code>.Wait()</code> on an async method. No exception — just freezes.
+          Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>.Result</code> / <code>.Wait()</code> blocks the current
+            thread. The async method then tries to resume on that same blocked
+            thread — deadlock. Fix: always <code>await</code> all the way up the
+            call chain. If you must go sync, add
+            <code>ConfigureAwait(false)</code> inside the async method so it
+            doesn't need to return to the original thread.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>4. Memory Leak from Unsubscribed Events</h3>
+        <p>
+          App memory grows continuously. Objects that should be garbage
+          collected keep staying alive. How can events cause this?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            When you subscribe (<code>btn.Click += Handler</code>), the
+            publisher holds a reference to the subscriber. If the subscriber
+            goes out of scope but never unsubscribes, GC cannot collect it. Fix:
+            unsubscribe (<code>btn.Click -= Handler</code>) in
+            <code>Dispose()</code>. Use <code>WeakReference</code> for
+            long-lived publishers with short-lived subscribers.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>5. Database Connections Not Being Released</h3>
+        <p>
+          Your app opens DB connections and file streams but runs out of
+          resources over time. Connections aren't being freed. How do you fix
+          it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Unmanaged resources (DB connections, file handles) are not released
+            by GC — you must do it explicitly. Wrap them in a
+            <code>using</code> block:
+            <code>using (var conn = new SqlConnection(...)) { }</code>. This
+            calls <code>Dispose()</code> automatically, even if an exception
+            occurs. For custom classes that hold such resources, implement
+            <code>IDisposable</code>.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>6. Singleton Holding a Scoped Service</h3>
+        <p>
+          You inject a <code>Scoped</code> service into a
+          <code>Singleton</code>. The app throws at startup or behaves strangely
+          across requests. Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Singleton lives for the entire app. Scoped lives per request.
+            Injecting Scoped into Singleton permanently captures it — it becomes
+            a de-facto Singleton, sharing state across requests. ASP.NET Core
+            detects this and throws at startup. Fix: never inject Scoped into
+            Singleton. If needed, inject <code>IServiceScopeFactory</code> and
+            create a scope manually inside the method.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>7. String Concatenation in a Loop is Slow</h3>
+        <p>
+          Building a large string by concatenating in a loop gets noticeably
+          slower with each iteration. Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>string</code> is immutable — every <code>+</code> creates a
+            brand new string and copies all previous content. In N iterations
+            this becomes O(N²) work. Fix: use <code>StringBuilder</code> which
+            appends in-place: <code>sb.Append(value)</code>, then
+            <code>sb.ToString()</code> once at the end.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>8. LINQ Query Hitting the Database Twice</h3>
+        <p>
+          You define one LINQ query and use it in two places. The database gets
+          called twice. How do you fix it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            LINQ uses deferred execution — the query runs every time it's
+            iterated, not when it's defined. Using the same variable in two
+            loops hits the DB twice. Fix: call <code>.ToList()</code> or
+            <code>.ToArray()</code> once to materialize the result into memory,
+            then reuse it freely.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>9. Shared Counter is Wrong with Multiple Threads</h3>
+        <p>
+          Multiple threads increment a shared <code>counter</code>. The final
+          count is lower than expected. Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>counter++</code> is not atomic — it's read, add, write. Two
+            threads can read the same value simultaneously and both write the
+            same result, losing one increment. Fix: use
+            <code>lock(obj) { counter++; }</code> to serialize access, or
+            <code>Interlocked.Increment(ref counter)</code> which is atomic and
+            faster for simple increments.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>10. Boxing Causing Excessive Heap Allocations</h3>
+        <p>
+          A tight loop stores integers in an <code>ArrayList</code>. Profiling
+          shows massive heap allocations and GC pressure. What's the cause?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>ArrayList</code> stores everything as <code>object</code>.
+            Adding an <code>int</code> boxes it — wraps it in a heap-allocated
+            object. In a tight loop this creates millions of short-lived
+            allocations. Fix: use <code>List&lt;int&gt;</code> — generics store
+            the value directly with no boxing, because the type is known at
+            compile time.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>11. Adding New Discount Types Keeps Breaking Existing Code</h3>
+        <p>
+          Your checkout has an <code>if/else</code> chain for Seasonal, Member,
+          and Coupon discounts. Every new type requires editing the same file.
+          How do you fix this?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            This violates OCP. Use the <strong>Strategy pattern</strong>: create
+            an <code>IDiscountStrategy</code> interface with a
+            <code>Calculate(decimal price)</code> method. Each discount type is
+            its own class. Inject the right strategy at runtime. Adding a new
+            discount = adding a new class — no existing code changes. Store
+            strategies in a dictionary keyed by discount type for clean lookup.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>12. Stack Trace Lost After Rethrowing Exception</h3>
+        <p>
+          You catch an exception, log it, and rethrow. The outer handler's stack
+          trace points to your catch block — not the original error. Why?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>throw ex;</code> resets the stack trace to the current line —
+            the original location is lost. Use <code>throw;</code> (no variable)
+            to rethrow with the original trace intact. To wrap it:
+            <code>throw new AppException("message", ex);</code> — the original
+            becomes the inner exception and the full trace is preserved.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>13. Order Placed — Need to Notify Email, SMS, and Inventory</h3>
+        <p>
+          When an order is placed, you call email, SMS, and inventory services
+          directly from the order service. It's getting messy and tightly
+          coupled. How do you decouple it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use the <strong>Observer pattern</strong>. The order service is the
+            publisher — it raises an <code>OrderPlaced</code> event. Email, SMS,
+            and inventory services each subscribe independently and react on
+            their own. Adding a new notification (e.g. push notification) means
+            adding a new subscriber — zero changes to the order service.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>14. Constructing a Complex Email with Optional Parts</h3>
+        <p>
+          You need to build an email with optional CC, BCC, attachments, and
+          HTML body. A constructor with 10 parameters is messy. How do you clean
+          it up?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use the <strong>Builder pattern</strong>. Create an
+            <code>EmailBuilder</code> with fluent methods — <code>.To()</code>,
+            <code>.Subject()</code>, <code>.Body()</code>,
+            <code>.Attach()</code>, <code>.Build()</code>. Each method sets one
+            optional part and returns <code>this</code> for chaining. The caller
+            only sets what they need — no bloated constructors, no null
+            parameters.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>15. Adding Caching and Logging Without Changing the Service</h3>
+        <p>
+          You have a <code>ProductService</code> that fetches data. You want to
+          add caching and logging but don't want to modify the service class.
+          How?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use the <strong>Decorator pattern</strong>. Create a
+            <code>CachedProductService</code> that wraps
+            <code>IProductService</code> — checks cache first, falls back to the
+            real service, stores result. Stack a
+            <code>LoggedProductService</code> on top for logging. Each decorator
+            adds one responsibility. The original service is untouched and
+            behaviors can be composed freely.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+    </div>
+    <!-- end section-content scenarios -->
+
     <script src="../change.js"></script>
   </body>
 </html>

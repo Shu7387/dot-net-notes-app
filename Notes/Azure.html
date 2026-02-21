@@ -3,2158 +3,1656 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Azure Architecture & Implementation Guide</title>
+    <title>Azure Notes</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
-    <!-- SECTION 0: Azure Architecture & Implementation Reference -->
-    <div class="section-container">
-      <div class="section-header" onclick="toggleSection(this)">
-        <div>
-          <div class="section-title">Azure Architecture & Implementation</div>
-          <div class="section-description">
-            Complete reference guide for Azure services and deployment patterns
-          </div>
-        </div>
-        <span class="toggle-icon">▼</span>
+    <h1>8. Azure</h1>
+
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: Frontend Hosting – Azure Static Web Apps
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Managed service to host Angular, React,
+          or Vue apps. Provides automatic HTTPS, global CDN, and auto-deploy on
+          GitHub push.
+        </p>
       </div>
 
-      <div class="section-content">
-        <!-- ==================== SECTION 1: FRONTEND ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              1. Frontend Hosting – Azure Static Web Apps
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A managed service to host your Angular, React, or Vue web
-                applications. It automatically provides HTTPS (secure
-                connection), fast global delivery using CDN, and easy automatic
-                deployment when you push code to GitHub.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ Automatic HTTPS (secure by default)</li>
-                <li>✓ Global CDN for fast loading worldwide</li>
-                <li>✓ Auto-deploy when you push code to GitHub</li>
-                <li>✓ Built-in security and backups</li>
-                <li>✓ No server management needed</li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Build your Angular project on your
-                computer → creates dist/ folder
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Open Azure Portal → Click "Create" →
-                Search "Static Web App" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Sign in to GitHub and authorize Azure
-                to access your repository
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Select your GitHub repository and
-                branch (usually "main")
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Set App location: / and Output
-                location: dist/project-name (example: dist/my-angular-app)
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Azure automatically deploys whenever
-                you push code to GitHub
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> In your Angular app, update
-                environment.prod.ts with your API base URL (example:
-                https://your-api.azurewebsites.net)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> In your backend API, enable CORS to
-                allow requests from your Static Web App domain
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              User Browser <span class="flow-arrow">→</span> Static Web App
-              (Fast CDN) <span class="flow-arrow">→</span> Backend API
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🌐</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📦</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚡</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 2: BACKEND HOSTING ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              2. Backend Hosting – Azure App Service
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A fully managed platform to host your .NET, Node.js, Java, or
-                Python web applications and APIs. Azure automatically handles
-                server maintenance, updates, and scales up or down based on
-                traffic demand.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ No server management – Azure handles everything</li>
-                <li>
-                  ✓ Automatic scaling – handles traffic spikes automatically
-                </li>
-                <li>✓ Easy deployment from Visual Studio or Azure DevOps</li>
-                <li>✓ Built-in monitoring and health checks</li>
-                <li>
-                  ✓ Supports multiple languages (.NET, Node.js, Java, Python)
-                </li>
-                <li>✓ Multiple APIs can share same resource to save costs</li>
-              </ul>
-            </div>
-
-            <div class="key-concept">
-              <strong>What is App Service Plan?</strong>
-              <p>
-                An App Service Plan defines your compute resources (CPU, RAM,
-                pricing tier, and auto-scaling rules). Think of it as the "power
-                level" of your server. Multiple APIs can share the same App
-                Service Plan to save costs without affecting each other.
-              </p>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Publish your .NET API in Visual Studio
-                → right-click project → Publish → creates publish folder
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Open Azure Portal → Click "Create" →
-                Search "App Service" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Fill in details: Resource Group, App
-                name (example: my-api), Runtime stack (.NET 6.0)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Select App Service Plan or create new
-                one with your preferred pricing tier
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> After deployment, go to App Service →
-                Deployment Center → Connect GitHub or Azure DevOps
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Configure auto-deployment so code
-                pushes automatically deploy
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Go to App Service → SSL Settings →
-                Enable "HTTPS Only" for security
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Optional: Configure auto-scaling rules
-                based on CPU/memory usage
-              </li>
-            </ol>
-
-            <div class="priority-list">
-              <div class="header-badge">
-                <span class="badge">Configuration Priority (Important!)</span>
-              </div>
-              <div class="priority-item">
-                <strong>1. Environment Variables</strong> (highest priority –
-                overrides everything)
-              </div>
-              <div class="priority-item">
-                <strong>2. App Service Configuration</strong> (in Azure Portal
-                settings)
-              </div>
-              <div class="priority-item">
-                <strong>3. appsettings.json</strong> (lowest priority)
-              </div>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🖥️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚙️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📈</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 3: DATABASE ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">3. Database – Azure SQL Database</div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A managed cloud SQL Server database that automatically backs up
-                your data every day, provides high availability (keeps running
-                even if hardware fails), and applies security patches
-                automatically.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ Automatic daily backups (never lose data)</li>
-                <li>
-                  ✓ High availability and disaster recovery (always available)
-                </li>
-                <li>✓ Automatic security patches (no manual updates needed)</li>
-                <li>
-                  ✓ Easy scaling (increase storage/performance when needed)
-                </li>
-                <li>
-                  ✓ No database maintenance overhead (Azure handles everything)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Export your local database as .bacpac
-                file (right-click database in SSMS → Tasks → Export)
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Open Azure Portal → Click "Create" →
-                Search "SQL Database" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Fill in details: Resource Group,
-                Database name, Server (create new or select existing)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Choose pricing tier based on your needs
-                (Standard, Premium, etc.)
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> After creation, open SQL Server
-                Management Studio (SSMS) on your computer
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> In SSMS, right-click database → Tasks →
-                Import Data-tier Application
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Select your .bacpac file and follow the
-                wizard to import your data
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Go to Azure Portal → SQL Database →
-                Firewall settings → Allow your IP address to connect
-              </li>
-            </ol>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🗄️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >💾</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔒</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 4: SECRETS & SECURITY ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              4. Secrets Management – Azure Key Vault + Managed Identity
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A secure vault to store secrets like database passwords, API
-                keys, and connection strings. Never hardcode secrets in your
-                code! Managed Identity allows your App Service to securely
-                access the Key Vault without storing passwords.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ No secrets in your code (safe and secure)</li>
-                <li>
-                  ✓ Centralized secret management (one place to manage all
-                  secrets)
-                </li>
-                <li>
-                  ✓ Secure access control (only authorized services can access)
-                </li>
-                <li>✓ Audit logs (see who accessed what and when)</li>
-                <li>
-                  ✓ Easy secret rotation (update secrets without redeploying)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Key Vault" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group, Vault
-                name (example: my-keyvault)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Open Key Vault → Click "Secrets" →
-                Click "Generate/Import"
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Add your secrets (database connection
-                string, API keys, etc.)
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Go to your App Service → Identity →
-                Enable "System Assigned" Managed Identity
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Copy the Managed Identity Object ID
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Go to Key Vault → Access Policies →
-                Click "Add Access Policy"
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Select Secret permissions (Get, List) →
-                Select Principal (paste Object ID) → Click Add
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> In App Service → Configuration → Add
-                Key Vault references like
-                @Microsoft.KeyVault(VaultName=my-keyvault;SecretName=DbPassword)
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              App Service (Managed Identity enabled)
-              <span class="flow-arrow">→</span> Key Vault access role
-              <span class="flow-arrow">→</span> Reads secrets securely
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔑</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔒</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🛡️</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 5: API GATEWAY ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              5. API Gateway – Azure API Management (APIM)
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A gateway service that sits in front of all your microservices.
-                It provides centralized security, rate limiting (prevents
-                spam/abuse), JWT token validation, and API versioning. All API
-                traffic goes through APIM first.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Centralized security policies (manage security in one place)
-                </li>
-                <li>✓ Rate limiting (prevent spam and abuse)</li>
-                <li>✓ JWT token validation (verify user is authenticated)</li>
-                <li>
-                  ✓ API versioning (support multiple API versions
-                  simultaneously)
-                </li>
-                <li>
-                  ✓ Comprehensive logging and monitoring (track all API calls)
-                </li>
-                <li>✓ CORS handling (allow cross-origin requests safely)</li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "API Management" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group, API
-                Management name (example: my-apim)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Select pricing tier (Developer is
-                cheapest for testing)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Click "Review + Create" → Click
-                "Create" (takes 20-30 minutes)
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> After creation, go to APIM → APIs →
-                Click "Add API"
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Select "Manual" → Enter API name
-                (example: ProductApi) and Web service URL (your App Service URL)
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Click "Create" to add the API
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Go to Inbound policies → Add "JWT
-                Validate" policy to check tokens
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Add "Rate Limit" policy to prevent
-                abuse (example: 100 calls per 1 minute)
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> In your Angular app, change API URL
-                from your App Service to APIM endpoint (example:
-                https://my-apim.azure-api.net/productapi)
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              Angular UI <span class="flow-arrow">→</span> APIM Gateway
-              <span class="flow-arrow">→</span> Microservices (App Service,
-              Functions)
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔐</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚖️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🚪</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 6: FILE STORAGE ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              6. File Storage – Azure Blob Storage
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                Object storage service for storing files (images, PDFs, videos,
-                documents) at scale. Don't store files in your database – store
-                them in Blob Storage which is cheaper and faster. Each file has
-                a unique URL for download.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ Store and serve files at massive scale</li>
-                <li>
-                  ✓ Separate file storage from database (database stays small
-                  and fast)
-                </li>
-                <li>
-                  ✓ Cost-effective for large files (much cheaper than database
-                  storage)
-                </li>
-                <li>✓ Fast global delivery (files cached worldwide)</li>
-                <li>
-                  ✓ Easy permission control (public, private, or time-limited
-                  access)
-                </li>
-              </ul>
-            </div>
-
-            <div class="key-concept">
-              <strong>Container Access Levels:</strong>
-              <p>
-                <strong>Private:</strong> Requires authentication (recommended).
-                <strong>Public Blob:</strong> Individual file accessible without
-                login. <strong>Public Container:</strong> All files in container
-                accessible.
-              </p>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Storage Account" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group,
-                Storage account name (example: mystorageaccount)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Select replication (Locally-redundant
-                is cheapest)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Go to Storage Account → Containers →
-                Click "Add Container"
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Enter container name (example:
-                documents) → Select "Private" access level → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> In your .NET API, install NuGet
-                package: Azure.Storage.Blobs
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Create API endpoint to upload files
-                (receives file → saves to Blob → returns URL)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Create API endpoint to download files
-                (generates SAS URL with time limit → returns to user)
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> In Angular, call API to
-                upload/download files using the returned URLs
-              </li>
-            </ol>
-
-            <div class="info-section">
-              <strong>Upload Flow:</strong>
-              <p>
-                Angular UI <span class="flow-arrow">→</span> API Endpoint
-                <span class="flow-arrow">→</span> Upload to Blob Storage
-                <span class="flow-arrow">→</span> Save file metadata in SQL
-                Database
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Download Flow:</strong>
-              <p>
-                Angular UI <span class="flow-arrow">→</span> Request file from
-                API <span class="flow-arrow">→</span> API generates SAS URL
-                <span class="flow-arrow">→</span> Angular downloads directly
-                from Blob
-              </p>
-            </div>
-
-            <div class="note-box">
-              <strong>What is SAS URL?</strong>
-              <p>
-                A temporary secure access token that allows limited-time access
-                to files without exposing storage account keys. Example: You
-                generate a SAS URL that expires in 1 hour, so user can download
-                the file only for 1 hour.
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📁</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >☁️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >💾</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 7: MESSAGE QUEUES ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              7. Message Queues – Azure Queue Storage
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A messaging service that lets different parts of your
-                application communicate asynchronously. Instead of waiting for a
-                task to complete, you add a message to a queue and an Azure
-                Function processes it later. User gets instant response while
-                background processing happens.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ Background processing (long tasks run in background)</li>
-                <li>
-                  ✓ Decouple services (parts don't need to wait for each other)
-                </li>
-                <li>
-                  ✓ Avoid long API wait times (user gets instant response)
-                </li>
-                <li>
-                  ✓ Asynchronous task processing (tasks complete when ready)
-                </li>
-                <li>
-                  ✓ Automatic retry if processing fails (messages not lost)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Go to Storage Account → Queues → Click
-                "Add Queue"
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Enter queue name (example:
-                image-processing-queue) → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> In your .NET API, install NuGet
-                package: Azure.Storage.Queues
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Create API endpoint that receives file
-                upload → saves to Blob → adds message to queue → returns success
-                to user immediately
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Create Azure Function with "Queue
-                Trigger" (listens for new messages in queue)
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Azure Function receives message →
-                processes file → updates database
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> If processing fails, message
-                automatically retries (configurable max retries)
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> After max retries, message moves to
-                Poison Queue for manual inspection
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              User <span class="flow-arrow">→</span> API (Upload)
-              <span class="flow-arrow">→</span> Queue (Message Added)
-              <span class="flow-arrow">→</span> Azure Function (Processes)
-              <span class="flow-arrow">→</span> Database Update
-            </div>
-
-            <div class="alert-box">
-              <strong>Failure Handling:</strong>
-              <p>
-                Messages are automatically retried if processing fails (default:
-                5 times). After max retries, messages move to Poison Queue for
-                inspection. You can manually retry or delete them.
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📨</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⏳</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔄</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 8: SERVERLESS FUNCTIONS ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              8. Serverless Computing – Azure Functions
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A serverless service that runs your code automatically when an
-                event happens (message arrives, file uploaded, timer triggers,
-                HTTP request, etc.). No server management needed – Azure scales
-                automatically and you pay only for the time your code runs (per
-                millisecond).
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Event-driven processing (code runs when events happen)
-                </li>
-                <li>✓ No server management (Azure handles everything)</li>
-                <li>✓ Automatic scaling (handles any load automatically)</li>
-                <li>✓ Pay only for execution time (no cost when idle)</li>
-                <li>✓ Perfect for background jobs and async tasks</li>
-              </ul>
-            </div>
-
-            <div class="info-section">
-              <strong>Trigger Types (What starts the function):</strong>
-              <ul class="feature-list">
-                <li>✓ Queue Trigger – triggered by message in Queue Storage</li>
-                <li>
-                  ✓ Service Bus Trigger – triggered by Service Bus message
-                </li>
-                <li>
-                  ✓ HTTP Trigger – triggered by HTTP request (like API endpoint)
-                </li>
-                <li>
-                  ✓ Timer Trigger – triggered on schedule (Cron expression like
-                  "0 0 * * * *")
-                </li>
-                <li>
-                  ✓ Blob Trigger – triggered when file uploaded/modified in Blob
-                  Storage
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Function App" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group,
-                Function App name (example: my-functions), Runtime (.NET 6.0)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Select hosting plan (Consumption plan
-                is cheapest)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Open Function App → Click "Add" or use
-                Visual Studio to create new function
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Select trigger type (example: Queue
-                trigger) and connect to your queue
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Write your function code (example:
-                process image, send email, update database)
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Test locally using Azure Functions Core
-                Tools or deploy to Azure
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> For HTTP triggers, set authorization
-                level (Anonymous = no key, Function = requires key)
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Go to Function App → Configuration →
-                Add connection strings for Blob Storage, SQL Database, etc.
-              </li>
-            </ol>
-
-            <div class="key-concept">
-              <strong>HTTP Trigger Security:</strong>
-              <p>
-                <strong>Function Key:</strong> Acts like an API password. Pass
-                via query string: <code>?code=FUNCTION_KEY</code> or Header:
-                <code>x-functions-key: FUNCTION_KEY</code>.
-                <strong>Authorization Levels:</strong> Anonymous (no key),
-                Function (function key required), Admin (master key).
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚡</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔧</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📝</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 9: ENTERPRISE MESSAGING ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              9. Enterprise Messaging – Azure Service Bus
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A reliable messaging service for different microservices or
-                applications to communicate with guaranteed delivery. Unlike
-                simple Queue Storage, Service Bus provides advanced features
-                like guaranteed ordering, dead-letter queues, and transactions.
-                Perfect for enterprise applications.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Reliable communication between services (guaranteed
-                  delivery)
-                </li>
-                <li>
-                  ✓ Decouple microservices (parts don't need to know each other)
-                </li>
-                <li>
-                  ✓ Advanced messaging scenarios (pub/sub, transactions,
-                  ordering)
-                </li>
-                <li>✓ Guaranteed delivery (messages never lost)</li>
-                <li>✓ Automatic retry and dead-letter handling</li>
-              </ul>
-            </div>
-
-            <div class="info-section">
-              <strong>Types of Service Bus:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Queue (1-to-1) – one sender, one receiver gets each message
-                </li>
-                <li>
-                  ✓ Topic (1-to-many) – one sender, multiple subscribers get
-                  same message
-                </li>
-              </ul>
-            </div>
-
-            <div class="info-section">
-              <strong>Features:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Dead Letter Queue (DLQ) – stores failed messages for
-                  inspection
-                </li>
-                <li>
-                  ✓ Message Ordering – guarantees messages processed in order
-                </li>
-                <li>
-                  ✓ Automatic retry with backoff (waits longer between retries)
-                </li>
-                <li>
-                  ✓ Atomic transactions – multiple operations succeed or all
-                  fail together
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Service Bus" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group,
-                Namespace name (example: my-servicebus)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Select pricing tier (Basic is cheapest)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Go to Service Bus Namespace → Click
-                "Queues" → Click "Add Queue"
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Enter queue name and configure Dead
-                Letter and Retry settings → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> In your .NET API, install NuGet
-                package: Azure.Messaging.ServiceBus
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Create sender code to send messages to
-                Service Bus queue/topic
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Create Azure Function with "Service Bus
-                Trigger" to receive and process messages
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Go to Service Bus Namespace → Shared
-                access policies → Copy connection string for API and Function
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              Microservice 1 <span class="flow-arrow">→</span> Service Bus
-              Queue/Topic <span class="flow-arrow">→</span> Microservice 2 & 3
-              (receive same message if Topic)
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📨</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔗</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚙️</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 10: CACHING ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              10. Performance Caching – Azure Redis Cache
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A fast in-memory cache that stores frequently accessed data.
-                Instead of querying database every time, you store data in Redis
-                (memory), which is 1000x faster. Perfect for data that doesn't
-                change often (product lists, user profiles, configuration).
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Reduce database load (database doesn't get hammered with
-                  same queries)
-                </li>
-                <li>
-                  ✓ Improve API response times (in-memory access is blazingly
-                  fast)
-                </li>
-                <li>
-                  ✓ Cache frequently accessed data (products, settings, user
-                  preferences)
-                </li>
-                <li>✓ Session storage (remember user login across requests)</li>
-                <li>
-                  ✓ Reduce costs (fewer database calls = lower database charges)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Azure Cache for Redis" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group, Cache
-                name (example: my-cache), Pricing tier (Basic is cheapest)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Go to Redis Cache → Settings → Access
-                Keys → Copy Primary Connection String
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> In your .NET API, install NuGet
-                package: StackExchange.Redis
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Create API endpoint with cache logic:
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Check if data exists in Redis → If yes,
-                return immediately (Cache Hit - fast!)
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> If not, query database → store result
-                in Redis with TTL (Time To Live, example: 1 hour)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Return data to user
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> When data changes (update/delete),
-                clear cache so next query fetches fresh data
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              Cache Hit: Angular calls API
-              <span class="flow-arrow">→</span> Found in Redis
-              <span class="flow-arrow">→</span> Return immediately (fast!)<br />
-              Cache Miss: Not in Redis <span class="flow-arrow">→</span> Query
-              Database <span class="flow-arrow">→</span> Save in Redis
-              <span class="flow-arrow">→</span> Return
-            </div>
-
-            <div class="key-concept">
-              <strong>Cache Strategy:</strong>
-              <p>
-                <strong>TTL (Time To Live):</strong> Set how long data stays in
-                cache (example: 1 hour). After TTL expires, next request will
-                fetch fresh data from database. This balances between
-                performance (fast cached data) and freshness (not too stale).
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚡</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >💾</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🚀</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 11: AUTHENTICATION ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              11. User Authentication – Azure Active Directory (AAD/Entra ID)
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                Azure's identity service that manages user login and controls
-                who can access what. Users login with username/password, Azure
-                validates them, and gives your app a JWT token. Your API checks
-                the token to verify user is authenticated before returning data.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Secure user login system (don't store passwords yourself)
-                </li>
-                <li>
-                  ✓ Centralized identity management (one place to manage all
-                  users)
-                </li>
-                <li>
-                  ✓ Single Sign-On (SSO) (login once, access multiple apps)
-                </li>
-                <li>
-                  ✓ Role-based access control (Admin, User, Manager roles)
-                </li>
-                <li>
-                  ✓ Multi-Factor Authentication (MFA) (extra security with 2FA)
-                </li>
-                <li>
-                  ✓ Works with Office 365 accounts (users can login with their
-                  work email)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Azure Active
-                Directory" → Click "App registrations" → Click "New
-                registration"
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Enter app name (example: My-API) →
-                Click "Register"
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Copy and save Tenant ID and Client ID
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Go to "Expose an API" → Click "Set"
-                next to Application ID URI
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Set URI to:
-                api://[CLIENT_ID]/access_as_user → Click Save
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Click "Add a scope" → Enter scope name:
-                access_as_user → Click "Add scope"
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Create another app registration for
-                your Angular app → Select "Single Page Application" → Add
-                Redirect URI: http://localhost:4200/
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Copy Angular App Client ID
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> In Angular app registration → Click
-                "API permissions" → Click "Add a permission"
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Select your Backend API → Select
-                "access_as_user" scope → Click "Add permissions"
-              </li>
-              <li class="step-item">
-                <strong>Step 11:</strong> In .NET API, install NuGet package:
-                Microsoft.Identity.Web
-              </li>
-              <li class="step-item">
-                <strong>Step 12:</strong> Configure in Program.cs:
-                builder.AddMicrosoftIdentityWebApiAuthentication(configuration)
-              </li>
-              <li class="step-item">
-                <strong>Step 13:</strong> Add [Authorize] attribute to protected
-                endpoints
-              </li>
-              <li class="step-item">
-                <strong>Step 14:</strong> In Angular, install MSAL: npm install
-                @azure/msal-angular @azure/msal-browser
-              </li>
-              <li class="step-item">
-                <strong>Step 15:</strong> Configure MSAL with Tenant ID and
-                Client ID → Login users
-              </li>
-              <li class="step-item">
-                <strong>Step 16:</strong> When calling API, include token in
-                Authorization header: Authorization: Bearer [TOKEN]
-              </li>
-            </ol>
-
-            <div class="flow-container">
-              User <span class="flow-arrow">→</span> Angular Login
-              <span class="flow-arrow">→</span> Azure AD validates
-              <span class="flow-arrow">→</span> JWT Token Issued<br />
-              Angular <span class="flow-arrow">→</span> API (with Token in
-              header) <span class="flow-arrow">→</span> API validates token
-              <span class="flow-arrow">→</span> Return secure data
-            </div>
-
-            <div class="info-section">
-              <strong>Token Types:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ ID Token – for user authentication (shows who user is)
-                </li>
-                <li>
-                  ✓ Access Token – for calling secured APIs (proves user
-                  permission to access)
-                </li>
-              </ul>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔐</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📝</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔑</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 12: MONITORING ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              12. Monitoring & Logging – Application Insights
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                Azure's monitoring service that tracks everything happening in
-                your application. It monitors API requests, errors, database
-                queries, performance, and external dependencies. You can see
-                what's happening in real-time and get alerts when problems
-                occur.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ Track performance metrics (response times, throughput)
-                </li>
-                <li>
-                  ✓ Monitor errors and exceptions (see crashes immediately)
-                </li>
-                <li>✓ Track database calls and API calls (see what's slow)</li>
-                <li>✓ Create alerts (get notified when problems happen)</li>
-                <li>
-                  ✓ Monitor both frontend and backend (complete visibility)
-                </li>
-                <li>✓ Dependency tracking (see which services call which)</li>
-              </ul>
-            </div>
-
-            <div class="key-concept">
-              <strong>Backend (.NET API):</strong>
-              <p>
-                <strong>Enable:</strong> Option 1: In App Service, enable
-                Application Insights in settings. Option 2: Install NuGet
-                package Microsoft.ApplicationInsights.AspNetCore, add
-                builder.Services.AddApplicationInsightsTelemetry(); in
-                Program.cs.
-              </p>
-              <p>
-                <strong>Tracks:</strong> API requests and response times,
-                exceptions and errors, SQL database calls and performance,
-                external API dependencies, custom logs via ILogger.
-              </p>
-            </div>
-
-            <div class="key-concept">
-              <strong>Frontend (Angular):</strong>
-              <p>
-                <strong>Enable:</strong> npm install
-                @microsoft/applicationinsights-web, add connection string to
-                your environment configuration, enable automatic route tracking.
-              </p>
-              <p>
-                <strong>Tracks:</strong> Page views and navigation, JavaScript
-                errors, performance metrics, custom user events.
-              </p>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Go to your App Service → Click
-                "Application Insights" in left menu
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Click "Enable" → Click "Apply" → Wait
-                for Azure to create Application Insights instance
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Go to Application Insights resource →
-                Click "Logs" to view data
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> In Logs, run KQL queries: requests,
-                exceptions, pageViews, dependencies
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Create custom dashboards to monitor
-                important metrics
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Go to "Alerts" → Click "Create alert
-                rule" → Set conditions (example: error rate > 5%)
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Set action (email, SMS, webhook) to get
-                notified of problems
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> For Angular, copy Application Insights
-                connection string from Portal
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> In Angular environment.prod.ts, add
-                instrumentationKey: '[YOUR_KEY]'
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Install and configure MSAL in Angular
-                to track authenticated user activities
-              </li>
-            </ol>
-
-            <div class="info-section">
-              <strong>View Logs:</strong>
-              <p>
-                Azure Portal → Application Insights → Logs. Query using KQL
-                (Kusto Query Language):
-              </p>
-              <ul class="feature-list">
-                <li>✓ <code>requests</code> – all API requests</li>
-                <li>✓ <code>exceptions</code> – all errors and crashes</li>
-                <li>✓ <code>pageViews</code> – user page navigations</li>
-                <li>
-                  ✓ <code>dependencies</code> – external API calls, SQL queries
-                </li>
-              </ul>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📊</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📈</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔔</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 13: CI/CD ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">13. CI/CD – Azure DevOps Pipelines</div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                An automated system that builds your code, runs tests, creates
-                Docker images, and deploys everything to Azure automatically
-                when you push code to GitHub/Azure DevOps. No manual deployment
-                needed – push code → automated deployment happens → your app is
-                live in seconds.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ Automated builds (code is compiled automatically)</li>
-                <li>
-                  ✓ Faster deployments (deploy in seconds instead of manual
-                  hours)
-                </li>
-                <li>✓ Consistent releases (same process every time)</li>
-                <li>✓ Separate environments (Dev/QA/Prod are isolated)</li>
-                <li>✓ Reduces manual errors (no human mistakes)</li>
-                <li>✓ Automatic testing (run unit tests before deploy)</li>
-              </ul>
-            </div>
-
-            <div class="key-concept">
-              <strong>Continuous Integration (CI):</strong>
-              <p>
-                <strong>Purpose:</strong> Automatically build, test, and
-                validate code when changes are pushed. <br /><strong
-                  >Trigger:</strong
-                >
-                Code push to repository → YAML pipeline automatically triggers
-                <br /><strong>What happens:</strong> Pull latest code → Restore
-                NuGet packages → Build project → Run unit tests → Create Docker
-                image → Push to Azure Container Registry
-              </p>
-            </div>
-
-            <div class="key-concept">
-              <strong>Continuous Deployment (CD):</strong>
-              <p>
-                <strong>Purpose:</strong> Deploy the built artifact to Azure
-                environments automatically. <br /><strong>Process:</strong> Take
-                build artifact from CI → Deploy to App Service for APIs → Deploy
-                to Static Web Apps for Angular → Run smoke tests to verify
-                deployment
-              </p>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Go to Azure DevOps → Click "Pipelines"
-                → Click "Create Pipeline"
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Select your GitHub/Azure DevOps
-                repository
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Select "ASP.NET Core" or "Node.js"
-                template (based on your project)
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Pipeline generates azure-pipelines.yml
-                file with build steps
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Add Docker steps to create Docker image
-                (if using Docker)
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Add steps to push Docker image to Azure
-                Container Registry (ACR)
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Click "Save and run" → Pipeline runs
-                and builds your code
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> After CI completes, create Release
-                pipeline (or use Deployment jobs in YAML)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Configure deployment stages: Dev → QA →
-                Production
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Each stage deploys artifact to
-                corresponding Azure environment
-              </li>
-              <li class="step-item">
-                <strong>Step 11:</strong> Add approval gates (manual approval
-                before production deployment)
-              </li>
-              <li class="step-item">
-                <strong>Step 12:</strong> Configure secrets in pipeline
-                (connection strings, API keys) using Azure Key Vault
-              </li>
-            </ol>
-
-            <div class="priority-list">
-              <div class="header-badge">
-                <span class="badge">Docker Deployment Flow</span>
-              </div>
-              <div class="priority-item">
-                1. Developer pushes code to GitHub
-              </div>
-              <div class="priority-item">
-                2. CI Pipeline triggers automatically
-              </div>
-              <div class="priority-item">
-                3. Build Docker image from Dockerfile
-              </div>
-              <div class="priority-item">
-                4. Push Docker image to Azure Container Registry (ACR)
-              </div>
-              <div class="priority-item">
-                5. CD Pipeline triggers automatically
-              </div>
-              <div class="priority-item">
-                6. Update App Service with new image tag
-              </div>
-              <div class="priority-item">
-                7. App Service pulls image from ACR
-              </div>
-              <div class="priority-item">8. App Service runs container</div>
-              <div class="priority-item">9. New version is live!</div>
-            </div>
-
-            <div class="flow-container">
-              Developer Pushes Code <span class="flow-arrow">→</span> GitHub
-              <span class="flow-arrow">→</span> CI Pipeline (Build)
-              <span class="flow-arrow">→</span> CD Pipeline (Deploy)
-              <span class="flow-arrow">→</span> Live on Azure
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔄</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🚀</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📦</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 14: AUTOMATION ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              14. Workflow Automation – Azure Logic Apps
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                A no-code/low-code service to build automated workflows using a
-                visual designer. No programming needed – just drag and drop
-                triggers and actions. Perfect for integration between systems
-                and automating repetitive tasks.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>✓ No-code automation (no programming skills needed)</li>
-                <li>✓ Visual designer (easy to understand)</li>
-                <li>✓ Built-in connectors (100+ pre-built integrations)</li>
-                <li>✓ Triggers and actions (when this happens, do that)</li>
-                <li>✓ Save time and money (automate manual tasks)</li>
-              </ul>
-            </div>
-
-            <div class="info-section">
-              <strong>Common Triggers (What starts the workflow):</strong>
-              <ul class="feature-list">
-                <li>✓ When HTTP request arrives</li>
-                <li>
-                  ✓ On schedule (Cron expression like "0 9 * * MON" = every
-                  Monday at 9 AM)
-                </li>
-                <li>✓ When message arrives in Service Bus</li>
-                <li>✓ When file created in Blob Storage</li>
-                <li>✓ When email arrives in Outlook</li>
-                <li>✓ When item created in SharePoint</li>
-                <li>
-                  ✓ When record created in SQL Database (using SQL trigger)
-                </li>
-              </ul>
-            </div>
-
-            <div class="info-section">
-              <strong>Common Actions (What the workflow does):</strong>
-              <ul class="feature-list">
-                <li>✓ Send Email (via Outlook or Gmail)</li>
-                <li>✓ Insert/Update database rows (via SQL)</li>
-                <li>✓ Send message to Service Bus or Queue</li>
-                <li>✓ Call external APIs (HTTP POST/GET)</li>
-                <li>✓ Create/Read files in Blob Storage</li>
-                <li>✓ Post message in Teams or Slack</li>
-                <li>
-                  ✓ Conditions (IF/ELSE – do different things based on
-                  conditions)
-                </li>
-                <li>✓ Loops (For each – repeat action for multiple items)</li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Open Azure Portal → Click "Create" →
-                Search "Logic App" → Click Create
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Fill in details: Resource Group, Logic
-                App name (example: my-automation)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Click "Review + Create" → Click
-                "Create"
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Open Logic App → Click "Logic app
-                designer"
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Click "Start with a common trigger" →
-                Select trigger type (example: "When an email arrives")
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Configure trigger (example: trigger on
-                email from specific sender)
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Click "Next step" → Add action
-                (example: "Send approval email")
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> Add more actions as needed (send email
-                to manager, insert record in database, etc.)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Add conditions if needed (IF approver
-                says yes, do X, else do Y)
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Click "Save" → Logic App is ready to
-                run automatically
-              </li>
-            </ol>
-
-            <div class="success-box">
-              <strong>When to use Logic Apps:</strong>
-              <p>
-                System integration (connect multiple systems), notification
-                workflows (send alerts), approval processes (get manager
-                approval before proceeding), or any automation without writing
-                code.
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >⚙️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔄</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🎯</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== SECTION 15: INFRASTRUCTURE AS CODE ==================== -->
-        <div class="service-card">
-          <div class="service-header" onclick="toggleService(this)">
-            <div class="service-title">
-              15. Infrastructure as Code – Terraform
-            </div>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="service-body">
-            <div class="info-section">
-              <strong>What it is:</strong>
-              <p>
-                Instead of clicking in Azure Portal manually, you write code
-                files (.tf) that automatically create all your resources (App
-                Services, databases, storage accounts, etc.). Code is
-                version-controlled in Git, so you have history of all
-                infrastructure changes.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Why use it:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ No manual resource creation (faster and less error-prone)
-                </li>
-                <li>
-                  ✓ Infrastructure defined in code (version controlled in Git)
-                </li>
-                <li>
-                  ✓ Version control history (see who changed what and when)
-                </li>
-                <li>
-                  ✓ Easy to recreate environments (code creates same environment
-                  reliably)
-                </li>
-                <li>✓ Reduces human errors (code is consistent)</li>
-                <li>
-                  ✓ Supports CI/CD automation (deploy infrastructure
-                  automatically)
-                </li>
-                <li>
-                  ✓ Easy team collaboration (everyone sees infrastructure code)
-                </li>
-              </ul>
-            </div>
-
-            <div class="key-concept">
-              <strong>Key Concept - State File:</strong>
-              <p>
-                Terraform maintains a <code>terraform.tfstate</code> file that
-                tracks what resources exist and their current configuration.
-                This file is crucial – never delete it! In production, store
-                this file in Azure Storage Account (Remote Backend) so team
-                members can access it.
-              </p>
-            </div>
-
-            <div class="info-section">
-              <strong>Common Files:</strong>
-              <ul class="feature-list">
-                <li>
-                  ✓ provider.tf – Defines Azure provider and configuration
-                </li>
-                <li>
-                  ✓ main.tf – Defines actual Azure resources (App Service, SQL
-                  Database, etc.)
-                </li>
-                <li>
-                  ✓ variables.tf – Input variables (like function parameters)
-                </li>
-                <li>
-                  ✓ terraform.tfvars – Actual values for variables per
-                  environment
-                </li>
-                <li>
-                  ✓ outputs.tf – Output values after deployment (like function
-                  return values)
-                </li>
-              </ul>
-            </div>
-
-            <div class="steps-header" onclick="toggleSteps(this)">
-              <strong>How to implement (Step by step)</strong>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <ol class="steps-body">
-              <li class="step-item">
-                <strong>Step 1:</strong> Download and install Terraform from
-                terraform.io
-              </li>
-              <li class="step-item">
-                <strong>Step 2:</strong> Create new folder for Terraform code
-                (example: my-infrastructure)
-              </li>
-              <li class="step-item">
-                <strong>Step 3:</strong> Create provider.tf file with Azure
-                provider configuration
-              </li>
-              <li class="step-item">
-                <strong>Step 4:</strong> Create main.tf file and define your
-                resources (example: App Service, SQL Database)
-              </li>
-              <li class="step-item">
-                <strong>Step 5:</strong> Create variables.tf file with input
-                variables
-              </li>
-              <li class="step-item">
-                <strong>Step 6:</strong> Create terraform.tfvars file with
-                actual values for your environment
-              </li>
-              <li class="step-item">
-                <strong>Step 7:</strong> Create outputs.tf file to output
-                important values (API URL, database name, etc.)
-              </li>
-              <li class="step-item">
-                <strong>Step 8:</strong> In terminal, run: terraform init
-                (initializes Terraform)
-              </li>
-              <li class="step-item">
-                <strong>Step 9:</strong> Run: terraform plan (shows what
-                resources will be created)
-              </li>
-              <li class="step-item">
-                <strong>Step 10:</strong> Run: terraform apply (actually creates
-                resources in Azure)
-              </li>
-              <li class="step-item">
-                <strong>Step 11:</strong> Push code to Git → Add pipeline to
-                deploy infrastructure automatically
-              </li>
-              <li class="step-item">
-                <strong>Step 12:</strong> In future, to destroy all resources:
-                terraform destroy
-              </li>
-            </ol>
-
-            <div class="priority-list">
-              <div class="header-badge">
-                <span class="badge">Implementation Steps</span>
-              </div>
-              <div class="priority-item">1. Install Terraform locally</div>
-              <div class="priority-item">
-                2. Create provider configuration (Azure provider)
-              </div>
-              <div class="priority-item">3. Define resources in main.tf</div>
-              <div class="priority-item">
-                4. Define variables in variables.tf
-              </div>
-              <div class="priority-item">
-                5. Provide values in terraform.tfvars
-              </div>
-              <div class="priority-item">
-                6. Run terraform init, terraform plan, terraform apply
-              </div>
-              <div class="priority-item">
-                7. Push to Git → CI/CD deploys automatically
-              </div>
-            </div>
-
-            <div class="flow-container">
-              Terraform Code <span class="flow-arrow">→</span> Git Repository
-              <span class="flow-arrow">→</span> CI/CD Pipeline
-              <span class="flow-arrow">→</span> Azure API
-              <span class="flow-arrow">→</span> Infrastructure Created
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📋</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🏗️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔧</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== COMPLETE ARCHITECTURE ==================== -->
-        <div class="service-card">
-          <div
-            class="service-header"
-            onclick="toggleService(this)"
-            style="
-              background: linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%);
-            "
-          >
-            <div class="service-title">Complete Architecture Overview</div>
-            <span class="toggle-icon" style="color: white">▼</span>
-          </div>
-          <div
-            class="service-body"
-            style="
-              background: linear-gradient(135deg, #f0f6ff 0%, #f3e5f5 100%);
-              border-left: 4px solid #7b1fa2;
-            "
-          >
-            <div class="info-section" style="background: #fff8e1">
-              <strong>Main Request Flow (Read Operations):</strong>
-              <p>
-                Angular (Static Web App) <span class="flow-arrow">→</span> APIM
-                Gateway <span class="flow-arrow">→</span> App Services
-                (Microservices) <span class="flow-arrow">→</span> Redis Cache
-                <span class="flow-arrow">→</span> Azure SQL Database
-              </p>
-              <p style="margin-top: 8px; font-size: 12px; color: #666">
-                <strong>Cache Logic:</strong> Cache Hit (data in Redis) → Return
-                from Redis immediately (fast!) | Cache Miss (data not in Redis)
-                → Query from SQL → Store in Redis → Return to user
-              </p>
-            </div>
-
-            <div class="info-section" style="background: #f3e5f5">
-              <strong>File & Background Processing Flow:</strong>
-              <p>
-                Angular <span class="flow-arrow">→</span> API
-                <span class="flow-arrow">→</span> Blob Storage (file saved)
-                <span class="flow-arrow">→</span> Queue (message added)
-                <span class="flow-arrow">→</span> Azure Function (processes)
-                <span class="flow-arrow">→</span> Update Database
-              </p>
-            </div>
-
-            <div class="info-section" style="background: #e8f5e9">
-              <strong>Monitoring Everything:</strong>
-              <p>
-                Application Insights monitors Angular UI (frontend), APIM
-                (gateway), App Services (APIs), Azure Functions (background
-                jobs), SQL Database (data queries), and all external
-                dependencies. All data flows through monitoring for complete
-                visibility.
-              </p>
-            </div>
-
-            <div class="image-icons">
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🏗️</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >📊</a
-              >
-              <a
-                href="https://via.placeholder.com/200"
-                target="_blank"
-                class="image-icon"
-                >🔄</a
-              >
-            </div>
-          </div>
-        </div>
+      <ul>
+        <li>✓ Automatic HTTPS — secure by default</li>
+        <li>✓ Global CDN — fast loading worldwide</li>
+        <li>✓ Auto-deploy when you push to GitHub</li>
+        <li>✓ No server management needed</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Build your Angular project → creates <code>dist/</code> folder
+          </li>
+          <li>Azure Portal → Create → Search "Static Web App" → Create</li>
+          <li>
+            Sign in to GitHub → authorize Azure → select repository and branch
+          </li>
+          <li>
+            Set App location: <code>/</code> and Output location:
+            <code>dist/project-name</code>
+          </li>
+          <li>
+            Click "Review + Create" → Azure auto-deploys on every GitHub push
+          </li>
+          <li>
+            Update <code>environment.prod.ts</code> with your API base URL
+          </li>
+          <li>
+            Enable CORS in your backend to allow requests from the Static Web
+            App domain
+          </li>
+        </ol>
       </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> User Browser → Static Web App (CDN) → Backend
+          API
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
+
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Backend Hosting – Azure App Service
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Fully managed platform to host .NET,
+          Node.js, Java, or Python APIs. Azure handles server maintenance,
+          updates, and auto-scaling.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ No server management — Azure handles everything</li>
+        <li>✓ Auto-scaling — handles traffic spikes automatically</li>
+        <li>✓ Easy deployment from Visual Studio or Azure DevOps</li>
+        <li>✓ Multiple APIs can share one App Service Plan to save costs</li>
+      </ul>
+
+      <div class="note">
+        <p>
+          <strong>App Service Plan:</strong> Defines compute resources (CPU,
+          RAM, pricing tier, scaling rules). Think of it as the "power level" of
+          your server. Multiple APIs share one plan without affecting each
+          other.
+        </p>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Publish your .NET API in Visual Studio → right-click project →
+            Publish
+          </li>
+          <li>
+            Azure Portal → Create → "App Service" → fill in Resource Group, App
+            name, Runtime (.NET)
+          </li>
+          <li>Select or create an App Service Plan with your preferred tier</li>
+          <li>
+            After creation → Deployment Center → connect GitHub or Azure DevOps
+          </li>
+          <li>Enable HTTPS Only under SSL Settings</li>
+          <li>
+            Optionally configure auto-scaling rules based on CPU/memory usage
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p><strong>Configuration Priority (highest → lowest):</strong></p>
+        <ol>
+          <li><strong>Environment Variables</strong> — overrides everything</li>
+          <li>
+            <strong>App Service Configuration</strong> — in Azure Portal
+            settings
+          </li>
+          <li><strong>appsettings.json</strong> — lowest priority</li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Database – Azure SQL Database
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Managed cloud SQL Server database with
+          automatic daily backups, high availability, and automatic security
+          patches.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ Automatic daily backups — never lose data</li>
+        <li>✓ High availability — stays running even if hardware fails</li>
+        <li>✓ Automatic security patches — no manual updates</li>
+        <li>✓ Easy scaling — increase storage and performance as needed</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Export local database as <code>.bacpac</code> file (SSMS →
+            right-click DB → Tasks → Export)
+          </li>
+          <li>
+            Azure Portal → Create → "SQL Database" → fill in Resource Group,
+            Database name, Server
+          </li>
+          <li>Choose pricing tier → Review + Create</li>
+          <li>
+            In SSMS → right-click database → Tasks → Import Data-tier
+            Application → select <code>.bacpac</code>
+          </li>
+          <li>
+            Azure Portal → SQL Database → Firewall settings → allow your IP
+            address
+          </li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: NoSQL Database – Azure Cosmos DB
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Globally distributed NoSQL database that
+          stores data as JSON documents. Offers single-digit millisecond reads,
+          automatic global replication, and multiple consistency levels. Use
+          when you need flexible schema, massive scale, or globally distributed
+          data.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Database</strong></td>
+            <td>
+              Top-level container; like a SQL Server instance. Holds multiple
+              containers.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Container</strong></td>
+            <td>Like a SQL table but schema-free. Stores JSON documents.</td>
+          </tr>
+          <tr>
+            <td><strong>Item / Document</strong></td>
+            <td>
+              A single JSON record inside a container. Each has a unique
+              <code>id</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Partition Key</strong></td>
+            <td>
+              Property used to distribute data across partitions. Critical for
+              performance — choose high-cardinality values like
+              <code>userId</code>, <code>productId</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Throughput (RU/s)</strong></td>
+            <td>
+              Request Units per second — the "currency" for reads/writes. Set at
+              database or container level. Can be manual or autoscale.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Consistency Levels</strong></td>
+            <td>
+              Strong → Bounded Staleness → Session → Consistent Prefix →
+              Eventual. Session is default — reads your own writes.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>TTL (Time to Live)</strong></td>
+            <td>
+              Auto-delete documents after X seconds. Useful for session data,
+              logs, temp records.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Change Feed</strong></td>
+            <td>
+              Ordered stream of all inserts/updates in a container. Use with
+              Azure Functions to trigger on data changes.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Global Distribution</strong></td>
+            <td>
+              Replicate data to any Azure region with one click. Reads served
+              from nearest region.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>APIs Supported</strong></td>
+            <td>
+              NoSQL (native), MongoDB, Cassandra, Gremlin (graph), Table. Choose
+              at creation — cannot change later.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>SQL vs Cosmos DB — When to use which:</strong></p>
+        <ul>
+          <li>
+            <strong>Azure SQL:</strong> Structured relational data, complex
+            joins, transactions, strict schema — ERP, banking, HR systems
+          </li>
+          <li>
+            <strong>Cosmos DB:</strong> Flexible/changing schema, massive scale,
+            global distribution, high-speed reads — e-commerce catalogs,
+            real-time apps, IoT telemetry, user sessions
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Partition Key — Critical Rule:</strong> Every query should
+          include the partition key. Queries without it do a cross-partition
+          scan — expensive and slow. Bad key example: <code>status</code> (only
+          3 values). Good key example: <code>userId</code> (millions of values).
+        </p>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Azure Cosmos DB" → select API (NoSQL for
+            JSON documents)
+          </li>
+          <li>
+            Fill in Resource Group, Account name, Region → select Capacity mode
+            (Provisioned or Serverless)
+          </li>
+          <li>Review + Create → once deployed, open the account</li>
+          <li>
+            Go to Data Explorer → New Database → set Database name and
+            throughput (RU/s)
+          </li>
+          <li>
+            Create Container → set Container name and Partition key (e.g.
+            <code>/userId</code>)
+          </li>
+          <li>
+            In your .NET API, install NuGet: <code>Microsoft.Azure.Cosmos</code>
+          </li>
+          <li>
+            Register in <code>Program.cs</code>:
+            <code
+              >builder.Services.AddSingleton&lt;CosmosClient&gt;(new
+              CosmosClient(connectionString))</code
+            >
+          </li>
+          <li>
+            Inject <code>CosmosClient</code> → get container → call
+            <code>CreateItemAsync</code>, <code>ReadItemAsync</code>,
+            <code>GetItemQueryIterator</code>
+          </li>
+          <li>
+            Store connection string in Azure Key Vault — never hardcode it
+          </li>
+          <li>Enable TTL on container if documents should auto-expire</li>
+          <li>
+            Set up Change Feed + Azure Function to react to inserts/updates if
+            needed
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p><strong>Common Operations (.NET SDK):</strong></p>
+        <ul>
+          <li>
+            <strong>Create:</strong>
+            <code
+              >container.CreateItemAsync(item, new
+              PartitionKey(item.UserId))</code
+            >
+          </li>
+          <li>
+            <strong>Read:</strong>
+            <code
+              >container.ReadItemAsync&lt;T&gt;(id, new
+              PartitionKey(userId))</code
+            >
+          </li>
+          <li>
+            <strong>Query:</strong>
+            <code
+              >container.GetItemQueryIterator&lt;T&gt;(new
+              QueryDefinition("SELECT * FROM c WHERE c.userId = @id"))</code
+            >
+          </li>
+          <li>
+            <strong>Update:</strong>
+            <code
+              >container.UpsertItemAsync(item, new
+              PartitionKey(item.UserId))</code
+            >
+          </li>
+          <li>
+            <strong>Delete:</strong>
+            <code
+              >container.DeleteItemAsync&lt;T&gt;(id, new
+              PartitionKey(userId))</code
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> Angular → API → CosmosClient → Container → JSON
+          Documents stored/retrieved
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Secrets Management – Azure Key Vault + Managed Identity
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Secure vault for storing secrets (DB
+          passwords, API keys, connection strings). Managed Identity lets your
+          App Service access Key Vault without storing any passwords in code.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ No secrets in code — safe and secure</li>
+        <li>✓ Centralized secret management — one place for all secrets</li>
+        <li>✓ Audit logs — see who accessed what and when</li>
+        <li>✓ Easy secret rotation — update secrets without redeploying</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Key Vault" → fill in Resource Group, Vault
+            name
+          </li>
+          <li>
+            Open Key Vault → Secrets → Generate/Import → add secrets (DB
+            connection string, API keys)
+          </li>
+          <li>
+            Go to your App Service → Identity → enable "System Assigned" Managed
+            Identity → copy the Object ID
+          </li>
+          <li>
+            Go to Key Vault → Access Policies → Add Access Policy → Secret
+            permissions (Get, List) → select your App Service as Principal
+          </li>
+          <li>
+            In App Service → Configuration → add Key Vault reference:
+            <code
+              >@Microsoft.KeyVault(VaultName=my-keyvault;SecretName=DbPassword)</code
+            >
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> App Service (Managed Identity) → Key Vault
+          Access Policy → Reads secrets securely (no passwords in code)
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: API Gateway – Azure API Management (APIM)
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Gateway that sits in front of all your
+          microservices. Provides centralized security, rate limiting, JWT
+          validation, and API versioning. All traffic goes through APIM first.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ Centralized security policies — manage in one place</li>
+        <li>✓ Rate limiting — prevent spam and abuse</li>
+        <li>✓ JWT token validation — verify user is authenticated</li>
+        <li>✓ API versioning — support multiple versions simultaneously</li>
+        <li>✓ CORS handling — allow cross-origin requests safely</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "API Management" → fill in Resource Group,
+            APIM name, pricing tier
+          </li>
+          <li>
+            After creation (takes 20–30 min) → APIM → APIs → Add API → Manual
+          </li>
+          <li>Enter API name and Web service URL (your App Service URL)</li>
+          <li>Inbound policies → add "JWT Validate" policy to check tokens</li>
+          <li>Add "Rate Limit" policy — e.g. 100 calls per minute</li>
+          <li>
+            Update Angular API URL to point to APIM endpoint instead of App
+            Service directly
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> Angular UI → APIM Gateway → Microservices (App
+          Service / Functions)
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: File Storage – Azure Blob Storage
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Object storage for files (images, PDFs,
+          videos). Don't store files in your database — use Blob Storage which
+          is cheaper and faster. Each file gets a unique URL.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Private</strong></td>
+            <td>Requires authentication — recommended for sensitive files</td>
+          </tr>
+          <tr>
+            <td><strong>Public Blob</strong></td>
+            <td>
+              Individual file accessible without login (images, public assets)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Public Container</strong></td>
+            <td>All files in container accessible without login</td>
+          </tr>
+          <tr>
+            <td><strong>SAS URL</strong></td>
+            <td>
+              Temporary secure access token with expiry — e.g. 1-hour download
+              link without exposing storage keys
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Storage Account" → fill in Resource Group,
+            name, replication (Locally-redundant is cheapest)
+          </li>
+          <li>
+            Storage Account → Containers → Add Container → set name and
+            "Private" access level
+          </li>
+          <li>.NET API → install NuGet: <code>Azure.Storage.Blobs</code></li>
+          <li>
+            Create upload endpoint: receives file → saves to Blob → saves
+            metadata URL to SQL DB → returns URL
+          </li>
+          <li>
+            Create download endpoint: generates SAS URL with expiry → returns to
+            Angular → Angular downloads directly from Blob
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Upload Flow:</strong> Angular → API → Blob Storage → save file
+          URL in SQL DB
+        </p>
+        <p>
+          <strong>Download Flow:</strong> Angular → API generates SAS URL →
+          Angular downloads directly from Blob
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: Message Queues – Azure Queue Storage
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Simple messaging service for async
+          communication. Instead of waiting for a task, you add a message to a
+          queue and an Azure Function processes it in the background. User gets
+          instant response.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ Background processing — long tasks run async</li>
+        <li>✓ Decouple services — parts don't wait for each other</li>
+        <li>✓ Instant user response — no long API wait times</li>
+        <li>✓ Auto-retry if processing fails — messages not lost</li>
+        <li>✓ Poison queue — failed messages moved for manual inspection</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>Storage Account → Queues → Add Queue → enter queue name</li>
+          <li>.NET API → install NuGet: <code>Azure.Storage.Queues</code></li>
+          <li>
+            API endpoint: receive upload → save to Blob → add message to queue →
+            return success immediately
+          </li>
+          <li>
+            Create Azure Function with "Queue Trigger" → it listens for new
+            messages
+          </li>
+          <li>Function processes the message → updates database</li>
+          <li>
+            On failure: message auto-retries (default 5 times) → then moves to
+            Poison Queue
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> User → API (Upload) → Queue (message added) →
+          Azure Function (processes) → Database Updated
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Serverless Computing – Azure Functions
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Serverless service that runs your code
+          when an event happens. No server management — Azure scales
+          automatically. You pay only for execution time (per millisecond).
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Trigger Type</th>
+            <th>When it fires</th>
+            <th>Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Queue Trigger</strong></td>
+            <td>New message in Queue Storage</td>
+            <td>Background processing, image resize</td>
+          </tr>
+          <tr>
+            <td><strong>Service Bus Trigger</strong></td>
+            <td>Message in Service Bus queue/topic</td>
+            <td>Enterprise messaging between microservices</td>
+          </tr>
+          <tr>
+            <td><strong>HTTP Trigger</strong></td>
+            <td>HTTP request arrives</td>
+            <td>Lightweight API endpoints</td>
+          </tr>
+          <tr>
+            <td><strong>Timer Trigger</strong></td>
+            <td>On a schedule (Cron expression)</td>
+            <td>Nightly reports, cleanup jobs</td>
+          </tr>
+          <tr>
+            <td><strong>Blob Trigger</strong></td>
+            <td>File uploaded/modified in Blob Storage</td>
+            <td>Process images, scan documents</td>
+          </tr>
+          <tr>
+            <td><strong>Cosmos DB Trigger</strong></td>
+            <td>Change Feed — document inserted/updated</td>
+            <td>Sync data, send notifications on data change</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p>
+          <strong>HTTP Trigger Security:</strong> Function Key = API password.
+          Pass via query string <code>?code=FUNCTION_KEY</code> or header
+          <code>x-functions-key: KEY</code>. Authorization levels: Anonymous (no
+          key), Function (function key), Admin (master key).
+        </p>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Function App" → fill in Resource Group,
+            name, Runtime, hosting plan (Consumption = cheapest)
+          </li>
+          <li>
+            Open Function App → Add function → select trigger type → connect to
+            your queue/blob/timer
+          </li>
+          <li>
+            Write function code — process image, send email, update database,
+            etc.
+          </li>
+          <li>
+            Function App → Configuration → add connection strings for Storage,
+            SQL, Cosmos DB
+          </li>
+          <li>
+            Test locally using Azure Functions Core Tools or deploy to Azure
+          </li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: Enterprise Messaging – Azure Service Bus
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Reliable messaging for microservices with
+          guaranteed delivery. Unlike Queue Storage, Service Bus has guaranteed
+          ordering, dead-letter queues, transactions, and pub/sub. Built for
+          enterprise applications.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Queue (1-to-1)</strong></td>
+            <td>One sender, one receiver gets each message</td>
+          </tr>
+          <tr>
+            <td><strong>Topic (1-to-many)</strong></td>
+            <td>One sender, multiple subscribers all get the same message</td>
+          </tr>
+          <tr>
+            <td><strong>Dead Letter Queue (DLQ)</strong></td>
+            <td>
+              Stores failed messages after max retries — inspect and retry
+              manually
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Message Ordering</strong></td>
+            <td>Guarantees messages processed in the order they were sent</td>
+          </tr>
+          <tr>
+            <td><strong>Transactions</strong></td>
+            <td>Multiple operations succeed or all fail together (atomic)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p>
+          <strong>Queue Storage vs Service Bus — When to use which:</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Queue Storage:</strong> Simple background jobs, basic retry,
+            cheap — image processing, email sending
+          </li>
+          <li>
+            <strong>Service Bus:</strong> Guaranteed delivery, ordering,
+            pub/sub, transactions — order processing, microservice communication
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Service Bus" → fill in Resource Group,
+            Namespace name, pricing tier
+          </li>
+          <li>
+            Service Bus Namespace → Queues → Add Queue → configure Dead Letter
+            and Retry settings
+          </li>
+          <li>
+            .NET API → install NuGet: <code>Azure.Messaging.ServiceBus</code>
+          </li>
+          <li>Create sender: send messages to queue/topic from your API</li>
+          <li>
+            Create Azure Function with "Service Bus Trigger" to receive and
+            process messages
+          </li>
+          <li>
+            Service Bus Namespace → Shared Access Policies → copy connection
+            string
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> Microservice 1 → Service Bus Queue/Topic →
+          Microservice 2 &amp; 3 (both receive if Topic)
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 11 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 11: Caching – Azure Redis Cache <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Fast in-memory cache. Instead of querying
+          the database every time, store frequently accessed data in Redis
+          (memory) — which is 1000x faster. Perfect for data that doesn't change
+          often.
+        </p>
+      </div>
+
+      <ul>
+        <li>✓ Reduce database load — same queries don't hammer the DB</li>
+        <li>✓ Blazing fast API responses — in-memory access</li>
+        <li>✓ Session storage — remember user login across requests</li>
+        <li>✓ Reduce costs — fewer DB calls = lower charges</li>
+      </ul>
+
+      <div class="note">
+        <p><strong>Cache Logic:</strong></p>
+        <ul>
+          <li>
+            <strong>Cache Hit:</strong> Data found in Redis → return immediately
+            (fast!)
+          </li>
+          <li>
+            <strong>Cache Miss:</strong> Not in Redis → query database → store
+            in Redis with TTL → return to user
+          </li>
+          <li>
+            <strong>Cache Invalidation:</strong> On update/delete → clear cache
+            so next query fetches fresh data
+          </li>
+          <li>
+            <strong>TTL (Time To Live):</strong> How long data stays in cache
+            (e.g. 1 hour). Balances performance vs freshness.
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Azure Cache for Redis" → fill in Resource
+            Group, Cache name, pricing tier
+          </li>
+          <li>
+            Redis Cache → Settings → Access Keys → copy Primary Connection
+            String
+          </li>
+          <li>.NET API → install NuGet: <code>StackExchange.Redis</code></li>
+          <li>
+            Check Redis first → if hit, return; if miss, query DB → store in
+            Redis with TTL → return
+          </li>
+          <li>On data change → invalidate (delete) the relevant cache key</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> API → check Redis → Hit: return fast | Miss:
+          query SQL → save in Redis → return
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 12 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 12: User Authentication – Azure Active Directory (AAD / Entra ID)
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Azure's identity service. Users log in
+          with username/password, Azure validates them and issues a JWT token.
+          Your API checks the token before returning data. Supports SSO, roles,
+          and MFA.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ID Token</strong></td>
+            <td>Who the user is — for authentication</td>
+          </tr>
+          <tr>
+            <td><strong>Access Token</strong></td>
+            <td>Proves user has permission to call a secured API</td>
+          </tr>
+          <tr>
+            <td><strong>App Registration</strong></td>
+            <td>Register your app in AAD to get Client ID and Tenant ID</td>
+          </tr>
+          <tr>
+            <td><strong>SSO</strong></td>
+            <td>Login once, access multiple apps</td>
+          </tr>
+          <tr>
+            <td><strong>RBAC</strong></td>
+            <td>Role-based access control — Admin, User, Manager roles</td>
+          </tr>
+          <tr>
+            <td><strong>MFA</strong></td>
+            <td>Multi-Factor Authentication — extra security with 2FA</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Azure Active Directory → App Registrations → New
+            Registration (for API) → copy Tenant ID and Client ID
+          </li>
+          <li>
+            API registration → Expose an API → set URI → Add scope:
+            <code>access_as_user</code>
+          </li>
+          <li>
+            Create another App Registration for Angular (Single Page
+            Application) → add Redirect URI: <code>http://localhost:4200/</code>
+          </li>
+          <li>
+            Angular registration → API Permissions → Add your Backend API scope
+          </li>
+          <li>
+            .NET API → install NuGet: <code>Microsoft.Identity.Web</code> →
+            configure in <code>Program.cs</code>:
+            <code
+              >builder.AddMicrosoftIdentityWebApiAuthentication(configuration)</code
+            >
+          </li>
+          <li>Add <code>[Authorize]</code> attribute to protected endpoints</li>
+          <li>
+            Angular → install
+            <code>@azure/msal-angular @azure/msal-browser</code> → configure
+            MSAL with Tenant ID and Client ID
+          </li>
+          <li>
+            When calling API: include token in header —
+            <code>Authorization: Bearer [TOKEN]</code>
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> User → Angular Login → Azure AD validates → JWT
+          Token issued → Angular calls API with token → API validates token →
+          return secure data
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 13 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 13: Monitoring &amp; Logging – Application Insights
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Azure's monitoring service that tracks
+          everything in your app — API requests, errors, DB queries,
+          performance, and dependencies. Real-time visibility with alerting.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>What it tracks</th>
+            <th>Where</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>requests</strong> — all API requests and response times
+            </td>
+            <td>Backend (.NET)</td>
+          </tr>
+          <tr>
+            <td><strong>exceptions</strong> — all errors and crashes</td>
+            <td>Backend (.NET)</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>dependencies</strong> — SQL calls, external API calls
+            </td>
+            <td>Backend (.NET)</td>
+          </tr>
+          <tr>
+            <td><strong>pageViews</strong> — user page navigations</td>
+            <td>Frontend (Angular)</td>
+          </tr>
+          <tr>
+            <td><strong>custom events</strong> — user actions you define</td>
+            <td>Frontend (Angular)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement (.NET):</strong></p>
+        <ol>
+          <li>
+            App Service → Application Insights → Enable → Apply (Azure creates
+            instance automatically)
+          </li>
+          <li>
+            Or install NuGet:
+            <code>Microsoft.ApplicationInsights.AspNetCore</code> → add
+            <code>builder.Services.AddApplicationInsightsTelemetry()</code> in
+            <code>Program.cs</code>
+          </li>
+          <li>
+            Use <code>ILogger</code> for custom logs — automatically sent to App
+            Insights
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement (Angular):</strong></p>
+        <ol>
+          <li>
+            Install: <code>npm install @microsoft/applicationinsights-web</code>
+          </li>
+          <li>Add connection string to <code>environment.prod.ts</code></li>
+          <li>Enable automatic route tracking and JavaScript error capture</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>View Logs (KQL):</strong> Application Insights → Logs → query
+          with KQL: <code>requests</code>, <code>exceptions</code>,
+          <code>pageViews</code>, <code>dependencies</code>
+        </p>
+        <p>
+          <strong>Alerts:</strong> App Insights → Alerts → Create alert rule →
+          set condition (e.g. error rate &gt; 5%) → set action (email/SMS)
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 14 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 14: CI/CD – Azure DevOps Pipelines
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Automated system that builds code, runs
+          tests, creates Docker images, and deploys to Azure on every GitHub
+          push. No manual deployment — push code → app goes live automatically.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>What happens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CI (Continuous Integration)</strong></td>
+            <td>
+              Code push → pull code → restore packages → build → run tests →
+              create Docker image → push to Azure Container Registry (ACR)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>CD (Continuous Deployment)</strong></td>
+            <td>
+              Take build artifact → deploy to App Service (API) and Static Web
+              App (Angular) → run smoke tests
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Environments</strong></td>
+            <td>
+              Dev → QA → Production (staged deployments with approval gates
+              before Production)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure DevOps → Pipelines → Create Pipeline → select repository
+          </li>
+          <li>
+            Select template (ASP.NET Core or Node.js) → generates
+            <code>azure-pipelines.yml</code>
+          </li>
+          <li>Add Docker steps to build image and push to ACR</li>
+          <li>Save and Run → CI pipeline builds and validates code</li>
+          <li>
+            Create Release pipeline → configure Dev → QA → Production stages
+          </li>
+          <li>Add approval gates before Production deployment</li>
+          <li>Store secrets in Azure Key Vault — reference from pipeline</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Docker Deployment Flow:</strong> Developer pushes code → CI
+          pipeline builds Docker image → pushes to ACR → CD pipeline updates App
+          Service → App Service pulls new image → new version live
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 15 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 15: Workflow Automation – Azure Logic Apps
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> No-code/low-code service to build
+          automated workflows using a visual designer. Drag and drop triggers
+          and actions. 100+ built-in connectors. Perfect for system integration
+          and automating repetitive tasks.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Triggers (what starts the workflow)</th>
+            <th>Actions (what the workflow does)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HTTP request arrives</td>
+            <td>Send email (Outlook, Gmail)</td>
+          </tr>
+          <tr>
+            <td>On schedule (Cron expression)</td>
+            <td>Insert/update database rows</td>
+          </tr>
+          <tr>
+            <td>Message in Service Bus</td>
+            <td>Send message to Service Bus/Queue</td>
+          </tr>
+          <tr>
+            <td>File created in Blob Storage</td>
+            <td>Call external API (HTTP POST/GET)</td>
+          </tr>
+          <tr>
+            <td>Email arrives in Outlook</td>
+            <td>Post to Teams or Slack</td>
+          </tr>
+          <tr>
+            <td>Item created in SharePoint</td>
+            <td>Conditions (IF/ELSE) and Loops (For each)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p>
+          <strong>Use Logic Apps when:</strong> Integrating multiple systems,
+          sending notifications, approval workflows, or any automation without
+          writing code.
+        </p>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Logic App" → fill in Resource Group, name
+          </li>
+          <li>Open Logic App → Logic App Designer → select trigger type</li>
+          <li>Configure trigger → add actions step by step</li>
+          <li>Add conditions (IF/ELSE) and loops if needed → Save</li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 16 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 16: Infrastructure as Code – Terraform
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Instead of clicking in Azure Portal
+          manually, write <code>.tf</code> files that create all your Azure
+          resources automatically. Version-controlled in Git — full history of
+          infrastructure changes.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>provider.tf</strong></td>
+            <td>Defines Azure provider and configuration</td>
+          </tr>
+          <tr>
+            <td><strong>main.tf</strong></td>
+            <td>
+              Defines actual Azure resources (App Service, SQL, Storage, etc.)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>variables.tf</strong></td>
+            <td>Input variables (like function parameters)</td>
+          </tr>
+          <tr>
+            <td><strong>terraform.tfvars</strong></td>
+            <td>Actual values for variables per environment</td>
+          </tr>
+          <tr>
+            <td><strong>outputs.tf</strong></td>
+            <td>Output values after deploy (API URL, DB name, etc.)</td>
+          </tr>
+          <tr>
+            <td><strong>terraform.tfstate</strong></td>
+            <td>
+              Tracks what resources exist — never delete! Store in Azure Storage
+              for team access (Remote Backend)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Key Commands:</strong></p>
+        <ul>
+          <li><code>terraform init</code> — initialize Terraform</li>
+          <li>
+            <code>terraform plan</code> — preview what will be created/changed
+          </li>
+          <li>
+            <code>terraform apply</code> — create/update resources in Azure
+          </li>
+          <li><code>terraform destroy</code> — delete all resources</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>Install Terraform from terraform.io</li>
+          <li>
+            Create <code>provider.tf</code>, <code>main.tf</code>,
+            <code>variables.tf</code>, <code>terraform.tfvars</code>,
+            <code>outputs.tf</code>
+          </li>
+          <li>
+            Run <code>terraform init</code> → <code>terraform plan</code> →
+            <code>terraform apply</code>
+          </li>
+          <li>
+            Push code to Git → add CI/CD pipeline to deploy infrastructure
+            automatically
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Flow:</strong> Terraform code → Git → CI/CD Pipeline → Azure
+          API → Infrastructure created automatically
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 17: COMPLETE ARCHITECTURE ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 17: Complete Architecture Overview
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p><strong>Main Request Flow (Read Operations):</strong></p>
+        <p>
+          Angular (Static Web App) → APIM Gateway → App Services (Microservices)
+          → Redis Cache → Azure SQL / Cosmos DB
+        </p>
+        <ul>
+          <li>
+            <strong>Cache Hit:</strong> Data in Redis → return immediately
+            (fast!)
+          </li>
+          <li>
+            <strong>Cache Miss:</strong> Not in Redis → query DB → store in
+            Redis → return to user
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>File &amp; Background Processing Flow:</strong></p>
+        <p>
+          Angular → API → Blob Storage (file saved) → Queue (message added) →
+          Azure Function (processes) → Database updated
+        </p>
+      </div>
+
+      <div class="note">
+        <p><strong>Security Layer:</strong></p>
+        <p>
+          User → Angular (MSAL login) → Azure AD (issues JWT) → APIM (validates
+          JWT, rate limits) → App Service ([Authorize]) → Key Vault (secrets via
+          Managed Identity)
+        </p>
+      </div>
+
+      <div class="note">
+        <p>
+          <strong>Monitoring:</strong> Application Insights monitors Angular
+          (frontend), APIM (gateway), App Services (APIs), Azure Functions
+          (background jobs), SQL/Cosmos DB (data queries) — complete end-to-end
+          visibility.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Azure Service</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frontend</strong></td>
+            <td>Static Web Apps</td>
+            <td>Host Angular app with CDN</td>
+          </tr>
+          <tr>
+            <td><strong>Gateway</strong></td>
+            <td>API Management (APIM)</td>
+            <td>Security, rate limiting, versioning</td>
+          </tr>
+          <tr>
+            <td><strong>Backend</strong></td>
+            <td>App Service</td>
+            <td>Host .NET APIs</td>
+          </tr>
+          <tr>
+            <td><strong>Serverless</strong></td>
+            <td>Azure Functions</td>
+            <td>Background jobs, event-driven tasks</td>
+          </tr>
+          <tr>
+            <td><strong>SQL Database</strong></td>
+            <td>Azure SQL Database</td>
+            <td>Relational structured data</td>
+          </tr>
+          <tr>
+            <td><strong>NoSQL Database</strong></td>
+            <td>Cosmos DB</td>
+            <td>Flexible schema, global scale, high-speed reads</td>
+          </tr>
+          <tr>
+            <td><strong>Cache</strong></td>
+            <td>Redis Cache</td>
+            <td>In-memory fast data access</td>
+          </tr>
+          <tr>
+            <td><strong>File Storage</strong></td>
+            <td>Blob Storage</td>
+            <td>Store images, PDFs, documents</td>
+          </tr>
+          <tr>
+            <td><strong>Simple Queue</strong></td>
+            <td>Queue Storage</td>
+            <td>Basic background processing</td>
+          </tr>
+          <tr>
+            <td><strong>Enterprise Messaging</strong></td>
+            <td>Service Bus</td>
+            <td>Reliable microservice communication</td>
+          </tr>
+          <tr>
+            <td><strong>Secrets</strong></td>
+            <td>Key Vault + Managed Identity</td>
+            <td>Secure secrets — no passwords in code</td>
+          </tr>
+          <tr>
+            <td><strong>Identity</strong></td>
+            <td>Azure AD / Entra ID</td>
+            <td>Authentication, SSO, roles</td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring</strong></td>
+            <td>Application Insights</td>
+            <td>Logs, errors, performance, alerts</td>
+          </tr>
+          <tr>
+            <td><strong>CI/CD</strong></td>
+            <td>Azure DevOps Pipelines</td>
+            <td>Automated build and deployment</td>
+          </tr>
+          <tr>
+            <td><strong>Automation</strong></td>
+            <td>Logic Apps</td>
+            <td>No-code workflow automation</td>
+          </tr>
+          <tr>
+            <td><strong>Infrastructure</strong></td>
+            <td>Terraform</td>
+            <td>Infrastructure as Code</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
     <script src="../change.js"></script>
   </body>
 </html>

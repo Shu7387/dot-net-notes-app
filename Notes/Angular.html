@@ -9,1812 +9,1923 @@
   <body>
     <h1>7. Angular</h1>
 
-    <h2>SECTION 1: Components & Templates</h2>
-    <ul>
-      <li>
-        <strong>Component:</strong> A reusable UI building block with its own
-        template (HTML), styles (CSS), and logic (TypeScript)
-      </li>
-      <li>
-        <strong>Component Communication:</strong> <code>@Input</code> (parent →
-        child), <code>@Output</code> + <code>EventEmitter</code> (child →
-        parent)
-      </li>
-      <li>
-        <strong>Template Syntax:</strong> Interpolation <code>{{value}}</code>,
-        Property binding <code>[property]="value"</code>, Event binding
-        <code>(event)="handler()"</code>
-      </li>
-      <li>
-        <strong>Two-way Binding:</strong>
-        <code>[(ngModel)]="property"</code> syncs data between component and
-        template
-      </li>
-      <li>
-        <strong>Template Variables:</strong> <code>#varName</code> reference
-        elements; <code>&lt;input #email&gt;</code> then use
-        <code>email.value</code>
-      </li>
-      <li>
-        <strong>Safe Navigation:</strong>
-        <code>user?.address?.city</code> prevents errors on null/undefined
-      </li>
-      <li>
-        <strong>Async Pipe:</strong> <code>data$ | async</code> auto-subscribes
-        and unsubscribes Observables
-      </li>
-      <li>
-        <strong>Content Projection:</strong> Project parent content into child;
-        Child can access it via Single <code>&lt;ng-content&gt;</code>, Multi
-        <code>&lt;ng-content select=".class"&gt;</code>
-      </li>
-    </ul>
-
-    <h2>SECTION 2: Decorators</h2>
-    <div class="note">
-      <p>
-        <strong>Decorators:</strong> Special functions prefixed with
-        <code>@</code> that add metadata or behavior to classes, properties, and
-        methods
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Decorator</th>
-          <th>Applied To</th>
-          <th>Purpose</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>@Component</strong></td>
-          <td>Class</td>
-          <td>Define component</td>
-          <td><code>@Component({selector, template, styles})</code></td>
-        </tr>
-        <tr>
-          <td><strong>@Injectable</strong></td>
-          <td>Class</td>
-          <td>Mark service for DI</td>
-          <td><code>@Injectable({providedIn: 'root'})</code></td>
-        </tr>
-        <tr>
-          <td><strong>@Input</strong></td>
-          <td>Property</td>
-          <td>Child receive data from parent</td>
-          <td><code>@Input() username: string;</code></td>
-        </tr>
-        <tr>
-          <td><strong>@Output</strong></td>
-          <td>Property</td>
-          <td>Child send events to parent</td>
-          <td><code>@Output() clicked = new EventEmitter();</code></td>
-        </tr>
-        <tr>
-          <td><strong>@ViewChild</strong></td>
-          <td>Property</td>
-          <td>Access child element/component</td>
-          <td>
-            <code>@ViewChild('ref') element;</code
-            ><code>@ViewChildren('ref') elements!: </code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>@ContentChild</strong></td>
-          <td>Property</td>
-          <td>Access projected content passed via <code>ng-content</code></td>
-          <td>
-            <code
-              >@ContentChildren('ref') items!:
-              QueryList&lt;ElementRef&gt;;</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>@HostListener</strong></td>
-          <td>Method</td>
-          <td>Listens to events on the host element</td>
-          <td><code>@HostListener('click') onClick() { }</code></td>
-        </tr>
-
-        <tr>
-          <td><strong>@HostBinding</strong></td>
-          <td>Property</td>
-          <td>Binds class, style, attribute to the host element</td>
-          <td><code>@HostBinding('class.active') isActive = true;</code></td>
-        </tr>
-        <tr>
-          <td><strong>@Directive</strong></td>
-          <td>Class</td>
-          <td>Define custom directive</td>
-          <td><code>@Directive({selector: '[appHighlight]'})</code></td>
-        </tr>
-        <tr>
-          <td><strong>@Pipe</strong></td>
-          <td>Class</td>
-          <td>Define custom pipe</td>
-          <td><code>@Pipe({name: 'customFormat'})</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 3: Directives</h2>
-    <div class="note">
-      <p>
-        <strong>Directives:</strong> Special attributes used in templates to
-        modify the DOM’s structure, appearance, or behavior, or to add custom
-        logic.<code>&lt;p CustomDire&gt;Text&lt;/p&gt;</code>
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>What it does</th>
-          <th>Examples</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Structural</strong></td>
-          <td>Add/remove DOM elements</td>
-          <td>
-            <code>*ngIf="condition"</code>,
-            <code>*ngFor="let item of items"</code>, <code>*ngSwitch</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Attribute</strong></td>
-          <td>Change appearance/behavior</td>
-          <td>
-            <code>[ngClass]="{'active': isActive}"</code>,
-            <code>[ngStyle]="{'color': textColor}"</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>New Control Flow</strong></td>
-          <td>Modern syntax (v17+)</td>
-          <td>
-            <code>@if (condition) {}</code>,
-            <code>@for (item of items; track item.id) {}</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Custom Directive</strong></td>
-          <td>Reusable behavior</td>
-          <td>
-            <code>@Directive({selector: '[appHighlight]'})</code> with
-            <code>@HostListener('mouseenter')</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 4: Lifecycle Hooks</h2>
-    <div class="note">
-      <p>
-        <strong>Lifecycle Hooks:</strong> Special methods that Angular calls at
-        specific moments in component's life cycle to execute custom logic
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Hook</th>
-          <th>When It Runs</th>
-          <th>Primary Use</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>ngOnInit</strong></td>
-          <td>After first change detection</td>
-          <td>Initialize component, fetch API data</td>
-        </tr>
-        <tr>
-          <td><strong>ngOnChanges</strong></td>
-          <td>When @Input properties change</td>
-          <td>
-            React to input changes
-            <code>ngOnChanges(changes: SimpleChanges) {}</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>ngAfterViewInit</strong></td>
-          <td>After view is initialized</td>
-          <td>Access @ViewChild, DOM manipulation</td>
-        </tr>
-        <tr>
-          <td><strong>ngOnDestroy</strong></td>
-          <td>Before component is destroyed</td>
-          <td>Cleanup resources, unsubscribe from Observables</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 5: Services & Dependency Injection</h2>
-    <div class="note">
-      <p>
-        <strong>Services:</strong> Classes that contain business logic, data
-        access, or shared functionality across components; Reusable logic
-      </p>
-    </div>
-
-    <ul>
-      <li>
-        <strong>@Injectable Decorator:</strong> Marks class as injectable
-        service; <code>@Injectable({providedIn: 'root'})</code>
-      </li>
-      <li>
-        <strong>providedIn: 'root':</strong> Creates singleton service,
-        available app-wide
-      </li>
-      <li>
-        <strong>Constructor Injection:</strong>
-        <code>constructor(private authService: AuthService) {}</code>
-        traditional way
-      </li>
-      <li>
-        <strong>inject() Function:</strong> Injects dependencies anywhere
-        without using a constructor;
-        <code>private authService = inject(AuthService);</code> Modern way
-      </li>
-      <li>
-        <strong>Service Scope:</strong> Root (singleton for app), Module (per
-        module), Component (per instance)
-      </li>
-      <li>
-        <strong>Use Cases:</strong> Share data, business logic, API calls, state
-        management
-      </li>
-    </ul>
-
-    <h3>Advanced DI:</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Purpose</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Provider Types</strong></td>
-          <td>Define how Angular creates or supplies a dependency</td>
-          <td>
-            <code
-              >providers: [{ provide: PaymentService, useClass:
-              OtherDifferentService }]</code
-            >
-            <code>useClass</code><code>useValue</code>, <code>useFactory</code>,
-            <code>useExisting</code>,
-            <code>multi</code>
-          </td>
-        </tr>
-
-        <tr>
-          <td><strong>DI Hierarchy</strong></td>
-          <td>Determines where Angular looks for dependencies</td>
-          <td>Child → Parent → Module → Root</td>
-        </tr>
-
-        <tr>
-          <td><strong>@Optional()</strong></td>
-          <td>
-            Optional dependency, Prevents error if dependency is not found
-          </td>
-          <td>
-            <code>constructor(@Optional() service: Service)</code>
-          </td>
-        </tr>
-
-        <tr>
-          <td><strong>@Self / @SkipSelf / @Inject</strong></td>
-          <td>
-            Control how Angular searches dependency in the injector hierarchy
-          </td>
-          <td>
-            <code>constructor(@Self() private log: LogService)</code><br />
-            <code>constructor(@Inject(TOKEN) name: string)</code> (which token
-            to use to resolve, type insufficient)
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 6: Routing</h2>
-    <div class="note">
-      <p>
-        <strong>Routing:</strong> Navigation system that maps URL paths to
-        components, enabling single-page application behavior
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it does</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Basic Routes</strong></td>
-          <td>Map URL to components</td>
-          <td>
-            <code>{ path: 'home', component: HomeComponent }</code><br />
-            <code>Router</code> (navigate), <code>ActivatedRoute</code> (read
-            params), <code>Routes</code> (define route configuration)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Route Params</strong></td>
-          <td>Pass dynamic values in URL</td>
-          <td><code>{path: 'user/:id', component: UserComponent}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Child Routes</strong></td>
-          <td>Nested navigation</td>
-          <td><code>children: [...]</code> array</td>
-        </tr>
-        <tr>
-          <td><strong>Lazy Loading</strong></td>
-          <td>Load modules on-demand</td>
-          <td>
-            <code
-              >{path: 'feature', loadChildren: () =>
-              import('./student/student.module').then(m =>
-              m.StudentModule)}</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Router Guards</strong></td>
-          <td>Protect routes (auth, roles)</td>
-          <td>
-            <code>canActivate: [AuthGuard]</code> <code>CanDeactivate</code>
-            <code>CanLoad</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Navigation</strong></td>
-          <td>
-            Template link or programmatic
-            <code>&lt;a routerLink="/home"&gt;</code>
-          </td>
-          <td>
-            <code
-              >this.router.navigate(['/search', userId], { queryParams: { name:
-              'Tim' }, fragment: 'results', state: { title: 'Search Page' }
-              })</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Router Outlet</strong></td>
-          <td>
-            Placeholder where Angular renders component that matches current
-            route
-          </td>
-          <td>
-            <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Read</strong></td>
-          <td>Use snapshot or subscribe</td>
-          <td>
-            <code
-              >route.queryParams.subscribe() or
-              route.snapshot.queryParamMap.get('page')</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Resolver</strong></td>
-          <td>Load data before route activates</td>
-          <td><code>resolve: {user: UserResolver}</code> pre-fetches data</td>
-        </tr>
-        <tr>
-          <td><strong>Route Data</strong></td>
-          <td>Static config like title, roles</td>
-          <td><code>data: {title: 'Home'}</code> for metadata</td>
-        </tr>
-        <tr>
-          <td><strong>Query Params</strong></td>
-          <td>Optional URL data</td>
-          <td>
-            <code>?page=2&amp;sort=name</code>; use
-            <code
-              >&lt;a [routerLink]="['/home', studentId]" [queryParams]="{ page:
-              2, sort: 'name' }"&gt;</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Fragment</strong></td>
-          <td>Anchor navigation</td>
-          <td><code>#section-id</code> for scrolling</td>
-        </tr>
-        <tr>
-          <td><strong>Router Events</strong></td>
-          <td>Angular provides routing events</td>
-          <td>
-            <code
-              >router.events.subscribe(event => { if (event instanceof
-              NavigationStart) { ... }})</code
-            >; <code>NavigationEnd</code>, <code>NavigationError</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Preload Strategy</strong></td>
-          <td>Load lazy modules in background</td>
-          <td>
-            <code>NoPreload</code>, <code>PreloadAllModules</code>,
-            <code>Custom Preloading</code>, <code>RouteReuseStrategy</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 7: Forms</h2>
-    <div class="note">
-      <p>
-        <strong>Forms:</strong> Angular provides two approaches to handle user
-        input through forms
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it is</th>
-          <th>Best for</th>
-          <th>Short Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Template-Driven Form</strong></td>
-          <td>HTML-based form using <code>ngModel</code></td>
-          <td>Very simple forms</td>
-          <td>
-            <code
-              >&lt;form #userForm="ngForm" (ngSubmit)="submit(userForm)"></code
-            ><br />
-            <code
-              >&lt;input #u="ngModel" [(ngModel)]="name" placeholder="
-              Name..."&gt;</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Reactive Form</strong></td>
-          <td>TS-based form model</td>
-          <td>Complex & dynamic forms</td>
-          <td><code>this.form = this.fb.group({...})</code></td>
-        </tr>
-        <tr>
-          <td><strong>FormBuilder (fb)</strong></td>
-          <td>Helper to create forms easily</td>
-          <td>Clean & less code</td>
-          <td><code>constructor(private fb: FormBuilder)</code></td>
-        </tr>
-        <tr>
-          <td><strong>FormControl</strong></td>
-          <td>Single form field</td>
-          <td>One input</td>
-          <td>
-            <code
-              >this.fb.control('', Validators.required, { updateOn: 'blur'
-              })</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FormGroup</strong></td>
-          <td>Group of controls</td>
-          <td>Related fields</td>
-          <td>
-            <code
-              >this.fb.group({ email: ['', [Validators.required,
-              Validators.email]] })</code
-            >; <code>this.fb.get("email") as FormControl</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>FormArray</strong></td>
-          <td>Dynamic list of controls</td>
-          <td>Add/remove rows</td>
-          <td><code>this.fb.array([])</code></td>
-        </tr>
-        <tr>
-          <td><strong>Read Error</strong></td>
-          <td>
-            <code>invalid</code>, <code>touched</code>, <code>error</code>,
-          </td>
-          <td>Error read in template</td>
-          <td>
-            <code
-              >&lt;small *ngIf="u.invalid && u.touched &&
-              u.errors?.['required']"&gt; Error...&lt;small /&gt;</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Validators</strong></td>
-          <td>Built-in/custom rules</td>
-          <td>Data validation</td>
-          <td>
-            <code>Validators.required</code>, <code>Validators.email</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Custom Validator</strong></td>
-          <td>User-defined validation; Directive, Sync, Async, Cross fields</td>
-          <td>Business rules</td>
-          <td>
-            <code
-              >(control: AbstractControl): ValidationErrors | null {
-              control.value ? null : { err:true };}</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>ValueChanges</strong></td>
-          <td>Listen to value change</td>
-          <td>Dynamic logic</td>
-          <td><code>control.valueChanges.subscribe()</code></td>
-        </tr>
-        <tr>
-          <td><strong>PatchValue vs SetValue</strong></td>
-          <td>Update form values</td>
-          <td>Partial vs full update</td>
-          <td><code>patchValue()</code> / <code>setValue()</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 8: HTTP & API Communication</h2>
-    <div class="note">
-      <p>
-        <strong>HttpClient:</strong> It is service which is used to make HTTP
-        requests (GET, POST, PUT, DELETE) to backend APIs
-      </p>
-    </div>
-
-    <ul>
-      <li>
-        <strong>HttpClient Service:</strong> Make API calls;
-        <code>http.get&lt;User[]&gt;('/api/users')</code>,
-        <code>http.post('/api/users', data)</code>
-      </li>
-      <li>
-        <strong>HTTP Methods:</strong> All return Observables; must subscribe to
-        execute
-      </li>
-
-      <li>
-        <strong>Request Options:</strong> Customize HTTP calls using
-        <code>responseType</code>: json, text, blob, <code>observe</code>:
-        response body, full response, or events <br />
-        <code
-          >this.http.post(url, body, { headers, params, responseType, observe,
-          reportProgress })</code
-        >
-      </li>
-
-      <li>
-        <strong>Interceptors:</strong> Middleware for managing auth tokens,
-        error handling, logs, loading states;
-        <code>intercept(req, next) { return next.handle(req); }</code>
-      </li>
-      <li>
-        <strong>Error Handling:</strong> Use <code>catchError</code> operator;
-        <code>catchError(error => { return throwError(() => error); })</code>
-      </li>
-      <li>
-        <strong>Loading States:</strong> Track request progress for UI feedback
-      </li>
-    </ul>
-
-    <h2>SECTION 9: RxJS</h2>
-    <div class="note">
-      <p>
-        <strong>RxJS:</strong> RxJS library provides Observables for handling
-        streams of async data over time, with operators to transform data,
-        subscriptions to listen, and the ability to cancel unlike Promises
-        (Which emits single value, eager loaded and not cancellable)
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>What it is</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Observable</strong></td>
-          <td>Emits stream of data over time</td>
-          <td>
-            <code
-              >const obs$ = new Observable(observer => { observer.next(1);
-              observer.complete();})</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Subscription</strong></td>
-          <td>Listen to Observable; must unsubscribe</td>
-          <td>
-            <code
-              >obs.subscribe({ next: val => console.log(val), error: err =>
-              console.log(err), complete: () => console.log('done') })</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Subjects</strong></td>
-          <td>Observable + Observer; Emit and Receive values</td>
-          <td>
-            <code>subject.next(value)</code> — Pushes a new value to all current
-            subscribers, Does not store latest value<br />
-            <code>BehaviorSubject</code> — Stores latest value and emits it
-            immediately to new subscribers<br />
-            <code>new ReplaySubject(2)</code> — Replays specified number of
-            previously emitted values to new subscribers<br />
-            <code>AsyncSubject</code> — Emits only the last value when the
-            observable completes
-          </td>
-        </tr>
-        <tr>
-          <td><strong>pipe()</strong></td>
-          <td>Chain operators</td>
-          <td><code>obs.pipe(map(x => x * 2), filter(x => x > 5))</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>RxJS Operators:</h3>
-    <div class="note">
-      <p>
-        <strong>RxJS Operators:</strong> Functions that transform, filter,
-        combine, or control Observable stream data
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Operator</th>
-          <th>What it does</th>
-          <th>Where to use</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>map</strong></td>
-          <td>Transform value</td>
-          <td>Convert API response to needed shape</td>
-          <td><code>pipe(map(u => u.name))</code></td>
-        </tr>
-        <tr>
-          <td><strong>filter</strong></td>
-          <td>Allow matching values</td>
-          <td>Skip inactive users</td>
-          <td><code>pipe(filter(u => u.active))</code></td>
-        </tr>
-        <tr>
-          <td><strong>switchMap</strong></td>
-          <td>Cancel previous & start new</td>
-          <td>Search API on typing</td>
-          <td><code>pipe(switchMap(t => api(t)))</code></td>
-        </tr>
-        <tr>
-          <td><strong>catchError</strong></td>
-          <td>Handle errors</td>
-          <td>Fallback when API fails</td>
-          <td><code>pipe(catchError(() => of([])))</code></td>
-        </tr>
-        <tr>
-          <td><strong>debounceTime</strong></td>
-          <td>Wait before emit</td>
-          <td>Emit latest value after user stops typing</td>
-          <td><code>pipe(debounceTime(300))</code></td>
-        </tr>
-        <tr>
-          <td><strong>distinctUntilChanged</strong></td>
-          <td>Skip duplicate values</td>
-          <td>Avoid same API call</td>
-          <td><code>pipe(distinctUntilChanged())</code></td>
-        </tr>
-        <tr>
-          <td><strong>takeUntil</strong></td>
-          <td>Auto unsubscribe when another signal emits</td>
-          <td>Component destroy cleanup</td>
-          <td><code>pipe(takeUntil(destroy$))</code></td>
-        </tr>
-        <tr>
-          <td><strong>combineLatest</strong></td>
-          <td>Combine latest values of multiple observables</td>
-          <td>Multiple filters together</td>
-          <td><code>combineLatest([api1$, api2$])</code></td>
-        </tr>
-        <tr>
-          <td><strong>forkJoin</strong></td>
-          <td>Wait for all to complete then emit final result</td>
-          <td>Load page initial data</td>
-          <td><code>forkJoin([api1$, api2$])</code></td>
-        </tr>
-        <tr>
-          <td><strong>shareReplay</strong></td>
-          <td>Cache result</td>
-          <td>Avoid repeated HTTP calls</td>
-          <td><code>pipe(shareReplay(1))</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 10: Signals (Angular 16+)</h2>
-    <div class="note">
-      <p>
-        <strong>Signals:</strong> New reactive primitive variables for
-        fine-grained reactivity; Alternative to RxJS for local state; Auto
-        updates UI
-      </p>
-    </div>
-
-    <ul>
-      <li>
-        <strong>signal():</strong> Create reactive variable;
-        <code>count = signal(0);</code> then <code>{{count()}}</code> in
-        template
-      </li>
-      <li>
-        <strong>computed():</strong> Derived value from signals, that
-        auto-recalculates, readonly;
-        <code>double = computed(() => this.count() * 2);</code>
-      </li>
-      <li>
-        <strong>effect():</strong> Funtion that automatically runs when signals
-        change;
-        <code>effect(() => { console.log(this.count()); });</code>
-      </li>
-      <li>
-        <strong>Methods:</strong> <code>signal.set(5)</code> replace,
-        <code>signal.update(v => v + 1)</code> transform
-      </li>
-      <li>
-        <strong>Benefits:</strong> Fine-grained reactivity, better performance,
-        simpler than RxJS;
-        <strong
-          >Signals are for simple UI state, RxJS is for async and complex data
-          handling.</strong
-        >
-      </li>
-      <li>
-        <strong>Use Cases:</strong> Local state, reactive UI, derived values;
-        Manual two-way binding:
-        <code>input [value]=name() (input)=name.set($event.target.value)</code>
-      </li>
-
-      <li>
-        Replace traditional <code>@Input()</code> /
-        <code>@Output()</code> decorators with
-        <strong>signal-based inputs</strong>
-        <code>name = input&lt;string&gt;()</code>; <code>ouput</code>
-        <code>count = model&lt;number&gt;(0)</code>
-      </li>
-    </ul>
-
-    <h2>SECTION 11: Pipes</h2>
-    <div class="note">
-      <p>
-        <strong>Pipes:</strong> Transform or format data in templates before
-        displaying without modifying underlying data. Reduces load on TS
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Pipe</th>
-          <th>What it does</th>
-          <th>Example Usage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>date</strong></td>
-          <td>Format dates</td>
-          <td><code>{{today | date:'short'}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>currency</strong></td>
-          <td>Format money</td>
-          <td><code>{{price | currency:'USD'}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>async</strong></td>
-          <td>Unwrap Observables/Promises</td>
-          <td><code>{{data$ | async as newVariable}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>uppercase</strong></td>
-          <td>Convert to uppercase</td>
-          <td><code>{{name | uppercase}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>json</strong></td>
-          <td>Debug objects</td>
-          <td><code>{{obj | json}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>slice</strong></td>
-          <td>Extract portion</td>
-          <td><code>{{items | slice:0:5}}</code></td>
-        </tr>
-        <tr>
-          <td><strong>Custom</strong></td>
-          <td><code>{{ name | uppercase | slice:0:5 }}</code></td>
-          <td>
-            <code>@Pipe({name: 'filter'})</code> with <code>transform()</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Pure vs Impure</strong></td>
-          <td>Pure(default) only run when input changes</td>
-          <td>Impure run on every change detection (slower)</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 12: State Management & Data Passing</h2>
-    <div class="note">
-      <p>
-        <strong>State Management Ways:</strong> Component state, Shared Service
-        with RxJS(Subjects), Signals, NgRx(Store), Router state, and Browser
-        storage.
-      </p>
-      <p>
-        <strong>NgRx:</strong> Action triggers effect → effect calls API →
-        success or error → reducer updates state in store → selectors give data
-        → UI automatically updates.
-      </p>
-    </div>
-    <h3>Data Passing:</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Direction</th>
-          <th>Techniques</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Component → Template</strong></td>
-          <td>Interpolation, Property Binding</td>
-          <td><code>{{value}}</code>, <code>[prop]="value"</code></td>
-        </tr>
-        <tr>
-          <td><strong>Template → Component</strong></td>
-          <td>Template variables (#f), Event binding, Forms, 2 way Binding</td>
-          <td>
-            <code>(click)="fn(f.value)"</code>, <code>[(ngModel)]="value"</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Component ↔ Component</strong></td>
-          <td>@Input / @Output, Shared Service + RxJS(Subject), Router</td>
-          <td>
-            <code>@Input() data</code>,
-            <code>@Output() event = new EventEmitter()</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>App State</strong></td>
-          <td>Service, Signals, NgRx</td>
-          <td>BehaviorSubject, signal(), Store</td>
-        </tr>
-        <tr>
-          <td><strong>Route → Component</strong></td>
-          <td>Route/Query Parameters, Route Data, Resolver</td>
-          <td>Pass URL values, Preload data</td>
-        </tr>
-        <tr>
-          <td><strong>Browser Storage</strong></td>
-          <td>Persist state across reloads or sessions</td>
-          <td>
-            <code>localStorage</code>,
-            <code>sessionStorage</code>
-            <code>cookie</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2>Section 13 — Change Detection</h2>
-    <div class="note">
-      <p>
-        <strong>Change detection: </strong> Angular watches for data changes and
-        updates the view.
-        <strong>
-          Use OnPush with signals, observables, async pipe, Manual
-          methods</strong
-        >
-      </p>
-    </div>
-    <ul>
-      <li>
-        <strong>Default strategy:</strong> Angular uses <code>Zone.js</code> to
-        check <em>entire</em> component tree on every event (click, HTTP,
-        timer). Unnecessary checks & Slow performance.
-      </li>
-
-      <li>
-        <strong>OnPush strategy:</strong> Checks that component only when @Input
-        reference changes, component event occurs, async/observable emits, CD
-        manually triggered
-      </li>
-
-      <li>
-        <strong>ChangeDetectorRef:</strong> Manual change detection control;
-        inject <code>ChangeDetectorRef</code> and use
-        <code>markForCheck()</code> (check in next cycle),
-        <code>detectChanges()</code> (run immediately),
-        <code>detach()</code> (stop checking component),
-        <code>attach()</code> (resume checking).
-      </li>
-      <li>
-        <strong>When to use</strong>: Use <code>OnPush</code> and manual
-        detection for performance-critical components: large lists, complex UIs,
-        or frequent updates.
-      </li>
-    </ul>
-    <h2>SECTION 14: Authentication & Guards</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Purpose</th>
-          <th>Implementation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>AuthService</strong></td>
-          <td>Handle login, store token, check auth</td>
-          <td><code>login(creds) { return http.post(...) }</code></td>
-        </tr>
-        <tr>
-          <td><strong>Token Storage</strong></td>
-          <td>Store JWT after login</td>
-          <td>
-            <code>localStorage.setItem('token', jwt)</code> or sessionStorage
-          </td>
-        </tr>
-        <tr>
-          <td><strong>AuthGuard</strong></td>
-          <td>Protect routes from unauthorized access; Check Auth, Roles</td>
-          <td>
-            <code
-              >canActivate(): boolean { return this.authService.isLoggedIn();
-              }</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Interceptor</strong></td>
-          <td>Auto-attach token to requests</td>
-          <td>
-            <code
-              >req.clone({setHeaders: {'Authorization': 'Bearer ' +
-              token}})</code
-            >
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Error Handling</strong></td>
-          <td>Redirect on 401/403</td>
-          <td>
-            <code>if (error.status === 401) router.navigate(['/login'])</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 15: Performance & Best Practices</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Concept</th>
-          <th>Why / Benefit</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>OnPush Change Detection</strong></td>
-          <td>Reduce unnecessary checks</td>
-          <td><code>changeDetection: ChangeDetectionStrategy.OnPush</code></td>
-        </tr>
-        <tr>
-          <td><strong>Lazy Loading</strong></td>
-          <td>Load feature only when needed</td>
-          <td>
-            <code>loadChildren: () => import('./feature/feature.module')</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Preloading Strategy</strong></td>
-          <td>Load lazy modules in background</td>
-          <td><code>PreloadAllModules</code></td>
-        </tr>
-        <tr>
-          <td><strong>trackBy in ngFor</strong></td>
-          <td>Prevent DOM re-render</td>
-          <td><code>*ngFor="let i of items; trackBy: trackById"</code></td>
-        </tr>
-        <tr>
-          <td><strong>Virtual Scrolling</strong></td>
-          <td>
-            Render only visible items; <strong>Use pagination, filter</strong>
-          </td>
-          <td><code>&lt;cdk-virtual-scroll-viewport&gt;</code></td>
-        </tr>
-        <tr>
-          <td><strong>Build Optimization</strong></td>
-          <td>
-            <strong>Use AOT, Tree shaking, Minification</strong>. Faster,
-            smaller build
-          </td>
-          <td><code>ng build --configuration production</code></td>
-        </tr>
-        <tr>
-          <td><strong>Pure Pipes</strong></td>
-          <td>Avoid impure pipe</td>
-          <td>Default pipe behavior in pure</td>
-        </tr>
-        <tr>
-          <td><strong>Avoid Functions in Template</strong></td>
-          <td>Reduce change detection cost</td>
-          <td>Use component properties</td>
-        </tr>
-        <tr>
-          <td><strong>Unsubscribe Pattern</strong></td>
-          <td>Prevent memory leaks</td>
-          <td><code>takeUntil(destroy$)</code></td>
-        </tr>
-        <tr>
-          <td><strong>shareReplay</strong></td>
-          <td>Cache HTTP response</td>
-          <td><code>pipe(shareReplay(1))</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Clean Architecture:</h3>
-    <ul>
-      <li>
-        <strong>Repository Layer:</strong> Pure data access (HTTP); Calls DB,
-        external api
-      </li>
-      <li>
-        <strong>Service Layer:</strong> Business logic, API orchestration; Calls
-        repository
-      </li>
-      <li>
-        <strong>Facade Layer:</strong> Coordinates state, services, NgRx, hide
-        complexity; Calls services, State
-      </li>
-      <li>
-        <strong>Component Layer:</strong> UI only, no business logic; Calls
-        Facade
-      </li>
-    </ul>
-
-    <h2>SECTION 16: Testing</h2>
-    <div class="note">
-      <p>
-        <strong>Testing:</strong> Automated tests ensure code works correctly
-      </p>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Tool/Concept</th>
-          <th>Purpose</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Jasmine</strong></td>
-          <td>Testing framework</td>
-          <td>
-            <code>describe('Test', () => { it('works', () => {...}) })</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>TestBed</strong></td>
-          <td>Setup testing module</td>
-          <td>
-            <code>TestBed.configureTestingModule({declarations: [Comp]})</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>ComponentFixture</strong></td>
-          <td>Wrapper for component in tests</td>
-          <td><code>fixture = TestBed.createComponent(Comp)</code></td>
-        </tr>
-        <tr>
-          <td><strong>spyOn()</strong></td>
-          <td>Mock service methods</td>
-          <td>
-            <code>spyOn(service, 'getData').and.returnValue(of([]))</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>detectChanges()</strong></td>
-          <td>Trigger change detection in tests</td>
-          <td><code>fixture.detectChanges()</code></td>
-        </tr>
-        <tr>
-          <td><strong>HttpTestingController</strong></td>
-          <td>Mock HTTP requests</td>
-          <td><code>httpMock.expectOne('/api/users')</code></td>
-        </tr>
-        <tr>
-          <td><strong>Important methods</strong></td>
-          <td>
-            <code>describe</code>, <code>it</code>, <code>beforeEach</code>,
-            <code>waitForAsync</code>
-          </td>
-          <td>
-            <code>fixture.detectChanges()</code>,
-            <code>fakeAsync + tick/flush</code>,
-            <code>jasmine.createSpyObj</code>, <code>discardPeriodicTasks</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 17: App Flow & CLI Commands</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>File</th>
-          <th>Purpose</th>
-          <th>Key Points</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>angular.json</strong><br /><small>(Step 0)</small></td>
-          <td>CLI build & workspace configuration</td>
-          <td>
-            where to find entry point (<code>main.ts</code>), output paths,
-            assets, styles;
-            <strong>first file read on <code>ng serve</code></strong>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>main.ts</strong><br /><small>(Step 1)</small></td>
-          <td>Application entry point</td>
-          <td>
-            Calls
-            <code>bootstrapApplication(AppComponent, appConfig)</code>;
-            <strong>first file executed</strong>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>app.config.ts</strong><br /><small>(Step 2)</small></td>
-          <td>App-level DI & configuration</td>
-          <td>
-            Registers <code>providers[]</code> (singleton services, router,
-            HTTP, animations); imports <code>app.routes.ts</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>app.routes.ts</strong><br /><small>(Step 3)</small></td>
-          <td>Route definitions</td>
-          <td>
-            <code>Routes[]</code> path–component mapping; loaded via
-            <code>provideRouter(routes)</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>index.html</strong><br /><small>(Step 4)</small></td>
-          <td>HTML shell loaded by browser</td>
-          <td>
-            Contains <code>&lt;app-root&gt;</code>; Angular replaces it with
-            rendered AppComponent
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>app.component.ts</strong><br /><small>(Step 5)</small>
-          </td>
-          <td>Root application component</td>
-          <td>
-            <code>selector: 'app-root'</code>; hosts
-            <code>&lt;router-outlet&gt;</code> for routes
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Child Components</strong><br /><small>(Step 6)</small>
-          </td>
-          <td>Route-based UI components</td>
-          <td>
-            Loaded dynamically inside <code>&lt;router-outlet&gt;</code>
-            based on active route
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Services</strong><br /><small>(Step 7)</small></td>
-          <td>Business logic & data layer</td>
-          <td>
-            Lazy-loaded via DI; handles HTTP, state, shared logic, component
-            communication
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      <p>
-        <strong>Angular CLI:</strong> Command-line interface for creating,
-        building, and managing Angular projects
-      </p>
-    </div>
-
-    <ul>
-      <li>
-        <code>ng new projectName</code>: create project | <code>ng serve</code>:
-        dev server (4200)
-      </li>
-      <li>
-        <code>ng g c</code>: component |
-        <code>ng g s services/loggerService</code>: logger service in services
-        folder
-      </li>
-      <li>
-        <code>ng g d / p</code>: directive/pipe | <code>ng build</code>: prod
-        build
-      </li>
-      <li>
-        <code>ng test</code>: unit tests | <code>g</code> = generate,
-        <code>c</code> = component, <code>s</code> = service
-      </li>
-    </ul>
-
-    <h2>SECTION 18: Miscellaneous</h2>
-    <ul>
-      <li>
-        <strong>Environments:</strong> Selected using CLI command, while
-        angular.json defines how file replacement happens
-        <code>ng build --configuration=production</code>
-      </li>
-      <li>
-        <strong>NgModules (Older Approach):</strong> Used to organize and group
-        related components, directives, pipes, services into single logical
-        unit; to use members from another module, module must export them and
-        consuming module must import that module (direct component/pipe import
-        not allowed).
-      </li>
-
-      <li>
-        <strong>Standalone Components:</strong> Build self-contained components
-        using <code>standalone: true</code>, import components/directives/pipes
-        directly in <code>imports</code>, and organize code via folder structure
-        and feature-based routing instead of NgModules, reducing boilerplate.
-      </li>
-      <li>
-        <strong>Error handle:</strong> At template <code>city?.name</code>,
-        component <code>try-catch</code>, service/HTTP
-        <code>catchError(error=>{})</code>, <br />RxJS operators
-        <code>catchError/retry/retryWhen/fallback</code>, HTTP interceptor,
-        <strong>global error handler</strong> to unhandled runtime app errors by
-        implementing <code>ErrorHandler</code>, show friendly error message or a
-        page.
-      </li>
-      <li>
-        <strong>Memory leaks:</strong> Mostly occur due to uncleaned
-        subscriptions, timers, event listeners, global references/long lived
-        objects, and missing ngOnDestroy cleanup
-      </li>
-      <li>
-        <strong>Browser storage:</strong> <code>localStorage</code> (stores
-        tokens or UI state, persists until manually cleared, long lived),
-        <code>sessionStorage</code> (temporary page state, cleared on browser
-        close, session expiry), <code>cookies</code> (mainly store auth/refresh
-        tokens, sent with http requests, cleared on browser close or expiry).
-      </li>
-    </ul>
-
-    <h2 class="collapsible" onclick="toggleSection()">
-      SECTION 19: Scenario-Based Questions
-      <span class="toggle-icon" id="toggleIcon">▼</span>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: Components &amp; Templates <span class="toggle-icon">▼</span>
     </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Component:</strong> Reusable UI building block with its own
+          template (HTML), styles (CSS), and logic (TypeScript)
+        </li>
+        <li>
+          <strong>Component Communication:</strong> <code>@Input</code> (parent
+          → child), <code>@Output</code> + <code>EventEmitter</code> (child →
+          parent)
+        </li>
+        <li>
+          <strong>Template Syntax:</strong> Interpolation
+          <code>{{value}}</code>, Property binding
+          <code>[property]="value"</code>, Event binding
+          <code>(event)="handler()"</code>
+        </li>
+        <li>
+          <strong>Two-way Binding:</strong>
+          <code>[(ngModel)]="property"</code> syncs data between component and
+          template
+        </li>
+        <li>
+          <strong>Template Variables:</strong> <code>#varName</code> reference
+          elements — <code>&lt;input #email&gt;</code> then use
+          <code>email.value</code>
+        </li>
+        <li>
+          <strong>Safe Navigation:</strong>
+          <code>user?.address?.city</code> prevents errors on null/undefined
+        </li>
+        <li>
+          <strong>Async Pipe:</strong>
+          <code>data$ | async</code> auto-subscribes and unsubscribes
+          Observables
+        </li>
+        <li>
+          <strong>Content Projection:</strong> Project parent content into child
+          — Single <code>&lt;ng-content&gt;</code>, Multi
+          <code>&lt;ng-content select=".class"&gt;</code>
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <div class="scenario-content" id="scenarioContent">
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Decorators <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Decorators:</strong> Special functions prefixed with
+          <code>@</code> that add metadata or behavior to classes, properties,
+          and methods
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Decorator</th>
+            <th>Applied To</th>
+            <th>Purpose</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>@Component</strong></td>
+            <td>Class</td>
+            <td>Define component</td>
+            <td><code>@Component({selector, template, styles})</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Injectable</strong></td>
+            <td>Class</td>
+            <td>Mark service for DI</td>
+            <td><code>@Injectable({providedIn: 'root'})</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Input</strong></td>
+            <td>Property</td>
+            <td>Child receive data from parent</td>
+            <td><code>@Input() username: string;</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Output</strong></td>
+            <td>Property</td>
+            <td>Child send events to parent</td>
+            <td><code>@Output() clicked = new EventEmitter();</code></td>
+          </tr>
+          <tr>
+            <td><strong>@ViewChild</strong></td>
+            <td>Property</td>
+            <td>Access child element/component after view init</td>
+            <td><code>@ViewChild('ref') element;</code></td>
+          </tr>
+          <tr>
+            <td><strong>@ContentChild</strong></td>
+            <td>Property</td>
+            <td>Access projected content via <code>ng-content</code></td>
+            <td>
+              <code
+                >@ContentChildren('ref') items!:
+                QueryList&lt;ElementRef&gt;;</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>@HostListener</strong></td>
+            <td>Method</td>
+            <td>Listen to events on the host element</td>
+            <td><code>@HostListener('click') onClick() { }</code></td>
+          </tr>
+          <tr>
+            <td><strong>@HostBinding</strong></td>
+            <td>Property</td>
+            <td>Bind class, style, attribute to the host element</td>
+            <td><code>@HostBinding('class.active') isActive = true;</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Directive</strong></td>
+            <td>Class</td>
+            <td>Define custom directive</td>
+            <td><code>@Directive({selector: '[appHighlight]'})</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Pipe</strong></td>
+            <td>Class</td>
+            <td>Define custom pipe</td>
+            <td><code>@Pipe({name: 'customFormat'})</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Directives <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Directives:</strong> Special attributes used in templates to
+          modify the DOM's structure, appearance, or behavior —
+          <code>&lt;p CustomDire&gt;Text&lt;/p&gt;</code>
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>What it does</th>
+            <th>Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Structural</strong></td>
+            <td>Add/remove DOM elements</td>
+            <td>
+              <code>*ngIf="condition"</code>,
+              <code>*ngFor="let item of items"</code>, <code>*ngSwitch</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Attribute</strong></td>
+            <td>Change appearance/behavior</td>
+            <td>
+              <code>[ngClass]="{'active': isActive}"</code>,
+              <code>[ngStyle]="{'color': textColor}"</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>New Control Flow</strong></td>
+            <td>Modern syntax (v17+)</td>
+            <td>
+              <code>@if (condition) {}</code>,
+              <code>@for (item of items; track item.id) {}</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Custom Directive</strong></td>
+            <td>Reusable behavior</td>
+            <td>
+              <code>@Directive({selector: '[appHighlight]'})</code> with
+              <code>@HostListener('mouseenter')</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Lifecycle Hooks <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Lifecycle Hooks:</strong> Special methods Angular calls at
+          specific moments in a component's life to execute custom logic
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Hook</th>
+            <th>When It Runs</th>
+            <th>Primary Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ngOnInit</strong></td>
+            <td>After first change detection</td>
+            <td>Initialize component, fetch API data</td>
+          </tr>
+          <tr>
+            <td><strong>ngOnChanges</strong></td>
+            <td>When @Input properties change</td>
+            <td>
+              React to input changes —
+              <code>ngOnChanges(changes: SimpleChanges) {}</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ngAfterViewInit</strong></td>
+            <td>After view is initialized</td>
+            <td>Access @ViewChild, DOM manipulation</td>
+          </tr>
+          <tr>
+            <td><strong>ngOnDestroy</strong></td>
+            <td>Before component is destroyed</td>
+            <td>Cleanup resources, unsubscribe from Observables</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Services &amp; Dependency Injection
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Services:</strong> Classes that contain business logic, data
+          access, or shared functionality across components
+        </p>
+      </div>
+
+      <ul>
+        <li>
+          <strong>@Injectable Decorator:</strong> Marks class as injectable
+          service — <code>@Injectable({providedIn: 'root'})</code>
+        </li>
+        <li>
+          <strong>providedIn: 'root':</strong> Creates singleton service
+          available app-wide
+        </li>
+        <li>
+          <strong>Constructor Injection:</strong>
+          <code>constructor(private authService: AuthService) {}</code> —
+          traditional way
+        </li>
+        <li>
+          <strong>inject() Function:</strong>
+          <code>private authService = inject(AuthService);</code> — modern way;
+          works anywhere, not just constructors
+        </li>
+        <li>
+          <strong>Service Scope:</strong> Root (singleton for app), Module (per
+          module), Component (per instance)
+        </li>
+        <li>
+          <strong>Use Cases:</strong> Share data, business logic, API calls,
+          state management
+        </li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Purpose</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Provider Types</strong></td>
+            <td>Define how Angular creates or supplies a dependency</td>
+            <td>
+              <code>useClass</code>, <code>useValue</code>,
+              <code>useFactory</code>, <code>useExisting</code>,
+              <code>multi</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>DI Hierarchy</strong></td>
+            <td>Where Angular looks for dependencies</td>
+            <td>Child → Parent → Module → Root</td>
+          </tr>
+          <tr>
+            <td><strong>@Optional()</strong></td>
+            <td>Prevents error if dependency not found</td>
+            <td><code>constructor(@Optional() service: Service)</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Self / @SkipSelf / @Inject</strong></td>
+            <td>
+              Control how Angular searches dependency in injector hierarchy
+            </td>
+            <td>
+              <code>constructor(@Self() private log: LogService)</code
+              ><br /><code>constructor(@Inject(TOKEN) name: string)</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Routing <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Routing:</strong> Navigation system that maps URL paths to
+          components, enabling single-page application behavior
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it does</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Basic Routes</strong></td>
+            <td>Map URL to components</td>
+            <td>
+              <code>{ path: 'home', component: HomeComponent }</code><br /><code
+                >Router</code
+              >
+              (navigate), <code>ActivatedRoute</code> (read params),
+              <code>Routes</code> (config)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Route Params</strong></td>
+            <td>Pass dynamic values in URL</td>
+            <td><code>{path: 'user/:id', component: UserComponent}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Child Routes</strong></td>
+            <td>Nested navigation</td>
+            <td><code>children: [...]</code> array</td>
+          </tr>
+          <tr>
+            <td><strong>Lazy Loading</strong></td>
+            <td>Load modules on-demand</td>
+            <td>
+              <code
+                >{path: 'feature', loadChildren: () =>
+                import('./student/student.module').then(m =>
+                m.StudentModule)}</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Router Guards</strong></td>
+            <td>Protect routes (auth, roles)</td>
+            <td>
+              <code>canActivate: [AuthGuard]</code>, <code>CanDeactivate</code>,
+              <code>CanLoad</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Navigation</strong></td>
+            <td>Template link or programmatic</td>
+            <td>
+              <code>&lt;a routerLink="/home"&gt;</code> or
+              <code
+                >this.router.navigate(['/search', userId], { queryParams: {
+                name: 'Tim' } })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Router Outlet</strong></td>
+            <td>Placeholder where Angular renders the matched component</td>
+            <td><code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Resolver</strong></td>
+            <td>Load data before route activates</td>
+            <td><code>resolve: {user: UserResolver}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Query Params</strong></td>
+            <td>Optional URL data</td>
+            <td>
+              <code>?page=2&amp;sort=name</code> — read via
+              <code>route.queryParams.subscribe()</code> or
+              <code>route.snapshot.queryParamMap.get('page')</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Preload Strategy</strong></td>
+            <td>Load lazy modules in background</td>
+            <td>
+              <code>NoPreload</code>, <code>PreloadAllModules</code>, Custom
+              Preloading
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: Forms <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Best for</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Template-Driven Form</strong></td>
+            <td>HTML-based form using <code>ngModel</code></td>
+            <td>Simple forms</td>
+            <td>
+              <code
+                >&lt;form #userForm="ngForm"
+                (ngSubmit)="submit(userForm)"&gt;</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Reactive Form</strong></td>
+            <td>TypeScript-based form model</td>
+            <td>Complex &amp; dynamic forms</td>
+            <td><code>this.form = this.fb.group({...})</code></td>
+          </tr>
+          <tr>
+            <td><strong>FormControl</strong></td>
+            <td>Single form field</td>
+            <td>One input</td>
+            <td>
+              <code
+                >this.fb.control('', Validators.required, { updateOn: 'blur'
+                })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>FormGroup</strong></td>
+            <td>Group of controls</td>
+            <td>Related fields</td>
+            <td>
+              <code
+                >this.fb.group({ email: ['', [Validators.required,
+                Validators.email]] })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>FormArray</strong></td>
+            <td>Dynamic list of controls</td>
+            <td>Add/remove rows</td>
+            <td><code>this.fb.array([])</code></td>
+          </tr>
+          <tr>
+            <td><strong>Read Error</strong></td>
+            <td>Check invalid, touched, error state</td>
+            <td>Template error display</td>
+            <td>
+              <code
+                >*ngIf="u.invalid &amp;&amp; u.touched &amp;&amp;
+                u.errors?.['required']"</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Custom Validator</strong></td>
+            <td>
+              User-defined validation; Directive, Sync, Async, Cross-field
+            </td>
+            <td>Business rules</td>
+            <td>
+              <code>(control: AbstractControl): ValidationErrors | null</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>PatchValue vs SetValue</strong></td>
+            <td>Update form values</td>
+            <td>Partial vs full update</td>
+            <td><code>patchValue()</code> / <code>setValue()</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: HTTP &amp; API Communication <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>HttpClient Service:</strong> Makes HTTP requests —
+          <code>http.get&lt;User[]&gt;('/api/users')</code>,
+          <code>http.post('/api/users', data)</code>; all methods return
+          Observables
+        </li>
+        <li>
+          <strong>Request Options:</strong> <code>responseType</code> (json,
+          text, blob), <code>observe</code> (body, response, events),
+          <code>headers</code>, <code>params</code>, <code>reportProgress</code>
+        </li>
+        <li>
+          <strong>Interceptors:</strong> Middleware for auth tokens, error
+          handling, logs, loading states —
+          <code>intercept(req, next) { return next.handle(req); }</code>
+        </li>
+        <li>
+          <strong>Error Handling:</strong> Use <code>catchError</code> operator
+          —
+          <code>catchError(error => { return throwError(() => error); })</code>
+        </li>
+        <li>
+          <strong>Loading States:</strong> Track request progress for UI
+          feedback (spinners, progress bars)
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: RxJS <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>RxJS:</strong> Provides Observables for handling streams of
+          async data over time — with operators to transform data, subscriptions
+          to listen, and the ability to cancel. Unlike Promises (single value,
+          eager, not cancellable)
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Observable</strong></td>
+            <td>Emits stream of data over time</td>
+            <td>
+              <code
+                >new Observable(observer => { observer.next(1);
+                observer.complete(); })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Subscription</strong></td>
+            <td>Listen to Observable; must unsubscribe</td>
+            <td>
+              <code
+                >obs.subscribe({ next: v => {}, error: e => {}, complete: () =>
+                {} })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Subject</strong></td>
+            <td>
+              Observable + Observer; emit and receive values; no stored value
+            </td>
+            <td><code>subject.next(value)</code></td>
+          </tr>
+          <tr>
+            <td><strong>BehaviorSubject</strong></td>
+            <td>
+              Stores latest value; emits it immediately to new subscribers
+            </td>
+            <td><code>new BehaviorSubject(initialValue)</code></td>
+          </tr>
+          <tr>
+            <td><strong>ReplaySubject</strong></td>
+            <td>Replays N previously emitted values to new subscribers</td>
+            <td><code>new ReplaySubject(2)</code></td>
+          </tr>
+          <tr>
+            <td><strong>AsyncSubject</strong></td>
+            <td>Emits only the last value when observable completes</td>
+            <td><code>new AsyncSubject()</code></td>
+          </tr>
+          <tr>
+            <td><strong>pipe()</strong></td>
+            <td>Chain operators</td>
+            <td><code>obs.pipe(map(x => x * 2), filter(x => x > 5))</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p>
+          <strong>RxJS Operators:</strong> Functions that transform, filter,
+          combine, or control Observable stream data
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Operator</th>
+            <th>What it does</th>
+            <th>Where to use</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>map</strong></td>
+            <td>Transform value</td>
+            <td>Convert API response to needed shape</td>
+            <td><code>pipe(map(u => u.name))</code></td>
+          </tr>
+          <tr>
+            <td><strong>filter</strong></td>
+            <td>Allow matching values only</td>
+            <td>Skip inactive users</td>
+            <td><code>pipe(filter(u => u.active))</code></td>
+          </tr>
+          <tr>
+            <td><strong>switchMap</strong></td>
+            <td>Cancel previous &amp; start new inner observable</td>
+            <td>Search API on typing</td>
+            <td><code>pipe(switchMap(t => api(t)))</code></td>
+          </tr>
+          <tr>
+            <td><strong>catchError</strong></td>
+            <td>Handle errors gracefully</td>
+            <td>Fallback when API fails</td>
+            <td><code>pipe(catchError(() => of([])))</code></td>
+          </tr>
+          <tr>
+            <td><strong>debounceTime</strong></td>
+            <td>Wait before emitting</td>
+            <td>Emit after user stops typing</td>
+            <td><code>pipe(debounceTime(300))</code></td>
+          </tr>
+          <tr>
+            <td><strong>distinctUntilChanged</strong></td>
+            <td>Skip duplicate consecutive values</td>
+            <td>Avoid same API call twice</td>
+            <td><code>pipe(distinctUntilChanged())</code></td>
+          </tr>
+          <tr>
+            <td><strong>takeUntil</strong></td>
+            <td>Auto-unsubscribe when signal emits</td>
+            <td>Component destroy cleanup</td>
+            <td><code>pipe(takeUntil(destroy$))</code></td>
+          </tr>
+          <tr>
+            <td><strong>combineLatest</strong></td>
+            <td>Combine latest values of multiple observables</td>
+            <td>Multiple filters together</td>
+            <td><code>combineLatest([api1$, api2$])</code></td>
+          </tr>
+          <tr>
+            <td><strong>forkJoin</strong></td>
+            <td>Wait for all to complete then emit all final results</td>
+            <td>Load page initial data in parallel</td>
+            <td><code>forkJoin([api1$, api2$])</code></td>
+          </tr>
+          <tr>
+            <td><strong>shareReplay</strong></td>
+            <td>Cache and share result across subscribers</td>
+            <td>Avoid repeated HTTP calls</td>
+            <td><code>pipe(shareReplay(1))</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: Signals (Angular 16+) <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Signals:</strong> New reactive primitive variables for
+          fine-grained reactivity; alternative to RxJS for local state;
+          auto-updates UI.
+          <strong
+            >Signals = simple UI state; RxJS = async and complex data
+            streams.</strong
+          >
+        </p>
+      </div>
+
+      <ul>
+        <li>
+          <strong>signal():</strong> Create reactive variable —
+          <code>count = signal(0);</code> then <code>{{count()}}</code> in
+          template
+        </li>
+        <li>
+          <strong>computed():</strong> Derived readonly value that
+          auto-recalculates —
+          <code>double = computed(() => this.count() * 2);</code>
+        </li>
+        <li>
+          <strong>effect():</strong> Function that automatically runs when
+          signals change —
+          <code>effect(() => { console.log(this.count()); });</code>
+        </li>
+        <li>
+          <strong>Methods:</strong> <code>signal.set(5)</code> replace,
+          <code>signal.update(v => v + 1)</code> transform
+        </li>
+        <li>
+          <strong>Signal Inputs/Outputs:</strong> Replace
+          <code>@Input()</code> / <code>@Output()</code> —
+          <code>name = input&lt;string&gt;()</code>,
+          <code>count = model&lt;number&gt;(0)</code>
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 11 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 11: Pipes <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Pipes:</strong> Transform or format data in templates before
+          displaying without modifying the underlying data
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Pipe</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>date</strong></td>
+            <td>Format dates</td>
+            <td><code>{{today | date:'short'}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>currency</strong></td>
+            <td>Format money</td>
+            <td><code>{{price | currency:'USD'}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>async</strong></td>
+            <td>Unwrap Observables/Promises; auto-unsubscribes</td>
+            <td><code>{{data$ | async as newVariable}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>uppercase / lowercase</strong></td>
+            <td>Convert case</td>
+            <td><code>{{name | uppercase}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>json</strong></td>
+            <td>Debug objects</td>
+            <td><code>{{obj | json}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>slice</strong></td>
+            <td>Extract portion of array/string</td>
+            <td><code>{{items | slice:0:5}}</code></td>
+          </tr>
+          <tr>
+            <td><strong>Custom Pipe</strong></td>
+            <td>User-defined transformation</td>
+            <td>
+              <code>@Pipe({name: 'filter'})</code> with <code>transform()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Pure vs Impure</strong></td>
+            <td>Pure (default) runs only when input reference changes</td>
+            <td>Impure runs on every change detection cycle (slower)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 12 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 12: State Management &amp; Data Passing
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>State Management Ways:</strong> Component state, Shared
+          Service with RxJS (Subjects), Signals, NgRx (Store), Router state,
+          Browser storage.
+        </p>
+        <p>
+          <strong>NgRx:</strong> Action triggers effect → effect calls API →
+          success/error → reducer updates store → selectors give data → UI
+          updates automatically.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Direction</th>
+            <th>Techniques</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Component → Template</strong></td>
+            <td>Interpolation, Property Binding</td>
+            <td><code>{{value}}</code>, <code>[prop]="value"</code></td>
+          </tr>
+          <tr>
+            <td><strong>Template → Component</strong></td>
+            <td>Template variables, Event binding, Forms, Two-way Binding</td>
+            <td>
+              <code>(click)="fn(f.value)"</code>,
+              <code>[(ngModel)]="value"</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Component ↔ Component</strong></td>
+            <td>@Input / @Output, Shared Service + RxJS Subject, Router</td>
+            <td>
+              <code>@Input() data</code>,
+              <code>@Output() event = new EventEmitter()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>App State</strong></td>
+            <td>Service, Signals, NgRx</td>
+            <td>BehaviorSubject, signal(), Store</td>
+          </tr>
+          <tr>
+            <td><strong>Route → Component</strong></td>
+            <td>Route/Query Parameters, Route Data, Resolver</td>
+            <td>Pass URL values, preload data</td>
+          </tr>
+          <tr>
+            <td><strong>Browser Storage</strong></td>
+            <td>Persist state across reloads or sessions</td>
+            <td>
+              <code>localStorage</code>, <code>sessionStorage</code>,
+              <code>cookie</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 13 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 13: Change Detection <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>Change Detection:</strong> Angular watches for data changes
+          and updates the view.
+          <strong
+            >Use OnPush with signals, observables, async pipe, or manual
+            methods.</strong
+          >
+        </p>
+      </div>
+
+      <ul>
+        <li>
+          <strong>Default Strategy:</strong> Angular uses
+          <code>Zone.js</code> to check the entire component tree on every event
+          (click, HTTP, timer). Causes unnecessary checks and slow performance
+          on large apps.
+        </li>
+        <li>
+          <strong>OnPush Strategy:</strong> Checks component only when @Input
+          reference changes, component event occurs, async/observable emits, or
+          CD is manually triggered. Much more performant.
+        </li>
+        <li>
+          <strong>ChangeDetectorRef:</strong> Manual control —
+          <code>markForCheck()</code> (check next cycle),
+          <code>detectChanges()</code> (run immediately),
+          <code>detach()</code> (stop checking), <code>attach()</code> (resume)
+        </li>
+        <li>
+          <strong>When to use:</strong> Use <code>OnPush</code> + manual
+          detection for large lists, complex UIs, or frequently updating
+          components
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 14 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 14: Authentication &amp; Guards <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Purpose</th>
+            <th>Implementation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>AuthService</strong></td>
+            <td>Handle login, store token, check auth</td>
+            <td><code>login(creds) { return http.post(...) }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Token Storage</strong></td>
+            <td>Store JWT after login</td>
+            <td>
+              <code>localStorage.setItem('token', jwt)</code> or HttpOnly cookie
+            </td>
+          </tr>
+          <tr>
+            <td><strong>AuthGuard</strong></td>
+            <td>
+              Protect routes from unauthorized access; check auth and roles
+            </td>
+            <td>
+              <code
+                >canActivate(): boolean { return this.authService.isLoggedIn();
+                }</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Interceptor</strong></td>
+            <td>Auto-attach token to every outgoing request</td>
+            <td>
+              <code
+                >req.clone({setHeaders: {'Authorization': 'Bearer ' +
+                token}})</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Error Handling</strong></td>
+            <td>Redirect on 401/403 responses</td>
+            <td>
+              <code>if (error.status === 401) router.navigate(['/login'])</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 15 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 15: Performance &amp; Best Practices
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Why / Benefit</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OnPush Change Detection</strong></td>
+            <td>Reduce unnecessary checks</td>
+            <td>
+              <code>changeDetection: ChangeDetectionStrategy.OnPush</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Lazy Loading</strong></td>
+            <td>Load feature only when needed</td>
+            <td>
+              <code
+                >loadChildren: () => import('./feature/feature.module')</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Preloading Strategy</strong></td>
+            <td>Load lazy modules silently in background after app starts</td>
+            <td><code>PreloadAllModules</code></td>
+          </tr>
+          <tr>
+            <td><strong>trackBy in ngFor</strong></td>
+            <td>Prevent unnecessary DOM re-renders on list changes</td>
+            <td><code>*ngFor="let i of items; trackBy: trackById"</code></td>
+          </tr>
+          <tr>
+            <td><strong>Virtual Scrolling</strong></td>
+            <td>Render only visible items in large lists</td>
+            <td><code>&lt;cdk-virtual-scroll-viewport&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Build Optimization</strong></td>
+            <td>
+              AOT, tree shaking, minification — faster &amp; smaller build
+            </td>
+            <td><code>ng build --configuration production</code></td>
+          </tr>
+          <tr>
+            <td><strong>Avoid Functions in Template</strong></td>
+            <td>Functions re-run on every change detection cycle</td>
+            <td>Use component properties instead</td>
+          </tr>
+          <tr>
+            <td><strong>Unsubscribe Pattern</strong></td>
+            <td>Prevent memory leaks from forgotten subscriptions</td>
+            <td><code>takeUntil(destroy$)</code> or <code>async</code> pipe</td>
+          </tr>
+          <tr>
+            <td><strong>shareReplay</strong></td>
+            <td>Cache HTTP response; avoid duplicate calls</td>
+            <td><code>pipe(shareReplay(1))</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Clean Architecture:</strong></p>
+        <ul>
+          <li>
+            <strong>Repository Layer:</strong> Pure data access (HTTP); calls
+            DB, external APIs
+          </li>
+          <li>
+            <strong>Service Layer:</strong> Business logic, API orchestration;
+            calls repository
+          </li>
+          <li>
+            <strong>Facade Layer:</strong> Coordinates state, services, NgRx;
+            hides complexity; calls services/state
+          </li>
+          <li>
+            <strong>Component Layer:</strong> UI only, no business logic; calls
+            Facade
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 16 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 16: Testing <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Tool / Concept</th>
+            <th>Purpose</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Jasmine</strong></td>
+            <td>Testing framework</td>
+            <td>
+              <code>describe('Test', () => { it('works', () => {...}) })</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>TestBed</strong></td>
+            <td>Setup testing module</td>
+            <td>
+              <code
+                >TestBed.configureTestingModule({declarations: [Comp]})</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ComponentFixture</strong></td>
+            <td>Wrapper for component in tests</td>
+            <td><code>fixture = TestBed.createComponent(Comp)</code></td>
+          </tr>
+          <tr>
+            <td><strong>spyOn()</strong></td>
+            <td>Mock service methods</td>
+            <td>
+              <code>spyOn(service, 'getData').and.returnValue(of([]))</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>detectChanges()</strong></td>
+            <td>Trigger change detection in tests</td>
+            <td><code>fixture.detectChanges()</code></td>
+          </tr>
+          <tr>
+            <td><strong>HttpTestingController</strong></td>
+            <td>Mock HTTP requests</td>
+            <td><code>httpMock.expectOne('/api/users')</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 17 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 17: App Flow &amp; CLI Commands <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Purpose</th>
+            <th>Key Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>angular.json</strong> <small>(Step 0)</small></td>
+            <td>CLI build &amp; workspace config</td>
+            <td>
+              Defines entry point (<code>main.ts</code>), output paths, assets,
+              styles — <strong>first file read on <code>ng serve</code></strong>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>main.ts</strong> <small>(Step 1)</small></td>
+            <td>Application entry point</td>
+            <td>
+              Calls <code>bootstrapApplication(AppComponent, appConfig)</code> —
+              <strong>first file executed</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>app.config.ts</strong> <small>(Step 2)</small></td>
+            <td>App-level DI &amp; configuration</td>
+            <td>
+              Registers <code>providers[]</code> (router, HTTP, animations);
+              imports <code>app.routes.ts</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>app.routes.ts</strong> <small>(Step 3)</small></td>
+            <td>Route definitions</td>
+            <td>
+              <code>Routes[]</code> path–component mapping via
+              <code>provideRouter(routes)</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>index.html</strong> <small>(Step 4)</small></td>
+            <td>HTML shell loaded by browser</td>
+            <td>
+              Contains <code>&lt;app-root&gt;</code>; Angular replaces it with
+              rendered AppComponent
+            </td>
+          </tr>
+          <tr>
+            <td><strong>app.component.ts</strong> <small>(Step 5)</small></td>
+            <td>Root application component</td>
+            <td>
+              <code>selector: 'app-root'</code>; hosts
+              <code>&lt;router-outlet&gt;</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Child Components</strong> <small>(Step 6)</small></td>
+            <td>Route-based UI components</td>
+            <td>
+              Loaded dynamically inside <code>&lt;router-outlet&gt;</code> based
+              on active route
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Services</strong> <small>(Step 7)</small></td>
+            <td>Business logic &amp; data layer</td>
+            <td>
+              Lazy-loaded via DI; handles HTTP, state, shared logic, component
+              communication
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Angular CLI:</strong></p>
+        <ul>
+          <li>
+            <code>ng new projectName</code> — create project |
+            <code>ng serve</code> — dev server (port 4200)
+          </li>
+          <li>
+            <code>ng g c componentName</code> — component |
+            <code>ng g s services/loggerService</code> — service in services
+            folder
+          </li>
+          <li>
+            <code>ng g d / p</code> — directive/pipe | <code>ng build</code> —
+            production build
+          </li>
+          <li>
+            <code>ng test</code> — run unit tests | <code>g</code> = generate,
+            <code>c</code> = component, <code>s</code> = service
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 18 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 18: Miscellaneous <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Environments:</strong> Selected via CLI —
+          <code>ng build --configuration=production</code>;
+          <code>angular.json</code> defines how file replacement happens
+        </li>
+        <li>
+          <strong>NgModules (Older):</strong> Groups related components,
+          directives, pipes, services; consuming module must import the
+          exporting module
+        </li>
+        <li>
+          <strong>Standalone Components:</strong> <code>standalone: true</code>;
+          import components/directives/pipes directly in <code>imports</code>;
+          no NgModules needed — reduces boilerplate
+        </li>
+        <li>
+          <strong>Error Handling:</strong> Template <code>city?.name</code>,
+          component <code>try-catch</code>, service/HTTP
+          <code>catchError</code>, global error handler via
+          <code>ErrorHandler</code> interface
+        </li>
+        <li>
+          <strong>Memory Leaks:</strong> Caused by uncleaned subscriptions,
+          timers, event listeners, global references, and missing
+          <code>ngOnDestroy</code> cleanup
+        </li>
+        <li>
+          <strong>Browser Storage:</strong> <code>localStorage</code> —
+          tokens/UI state; persists until cleared; <code>sessionStorage</code> —
+          temporary; clears on browser close; <code>cookies</code> — auth
+          tokens; sent with HTTP requests; expire based on config
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 19: SCENARIOS ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 19: Scenario-Based Questions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
       <div class="scenario-item">
         <h3>1. Memory Leak from Unsubscribed Observables</h3>
         <p>
-          Your application's memory usage keeps growing, and after using it for
-          a while, the browser becomes slow and unresponsive. Investigation
-          shows that HTTP subscriptions and event listeners are not being
-          cleaned up. How do you identify and fix memory leaks?
+          App memory grows steadily. After navigating between components for a
+          while, the browser becomes slow. Investigation shows HTTP
+          subscriptions are never cleaned up. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            I identify memory leaks using the Chrome DevTools Memory tab. I take
-            heap snapshots before and after navigating between components. If
-            component instances, observables, or listeners keep increasing and
-            are not released, it means there's a memory leak. To fix it, I
-            unsubscribe from observables in <code>ngOnDestroy</code>, use
-            <code>takeUntil</code> or the <code>async</code> pipe, and clear
-            timers or event listeners properly.
+            Every <code>subscribe()</code> call that is never unsubscribed keeps
+            the Observable alive even after the component is destroyed. Fix: use
+            <code>takeUntil(destroy$)</code> with a <code>Subject</code> that
+            emits in <code>ngOnDestroy</code>, or use the
+            <code>async</code> pipe which auto-unsubscribes. For single-value
+            HTTP calls, <code>take(1)</code> works too. Verify using Chrome
+            DevTools Memory tab — heap snapshots should not show growing
+            component instances.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>2. Multiple API Calls on Input Change</h3>
+        <h3>2. Search Box Fires API on Every Keystroke</h3>
         <p>
-          You have a search box that calls an API on every keystroke. When a
-          user types "Angular", it makes 7 separate API calls (A, An, Ang, Angu,
-          Angul, Angula, Angular). How do you optimize this to reduce
-          unnecessary API calls?
+          Typing "Angular" in a search box fires 7 separate API calls — one per
+          character. Old results from slower requests sometimes appear after
+          newer ones. How do you fix both problems?
         </p>
-        <div class="related-note">
-          <strong>Related:</strong> Race Condition in Search Results - Your
-          search page allows users to type quickly and switch searches.
-          Sometimes older search results appear after newer ones, showing wrong
-          data. For example, searching "Angular" then "React" sometimes shows
-          Angular results last.
-        </div>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            When a search box triggers multiple API calls on each keystroke, I
-            optimize it using RxJS operators. I use <code>debounceTime</code> to
-            wait until the user stops typing,
-            <code>distinctUntilChanged</code> to avoid duplicate calls when the
-            value hasn't changed, and <code>switchMap</code> to cancel previous
-            API requests and keep only the latest one. This reduces unnecessary
-            API calls and improves performance.
+            Two issues — excessive calls and race conditions. Fix both with RxJS
+            operators on the input's <code>valueChanges</code>:
+            <code>debounceTime(300)</code> waits until the user stops typing,
+            <code>distinctUntilChanged()</code> skips if the value hasn't
+            changed, and <code>switchMap()</code> cancels the previous in-flight
+            request and starts a fresh one. With <code>switchMap</code>, only
+            the latest request's result ever reaches the UI — race condition
+            eliminated.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>3. Change Detection Performance Issue</h3>
+        <h3>3. Page Freezes on Every Interaction with Large List</h3>
         <p>
-          Your product list page with 1000 items becomes extremely slow. Every
-          button click or input change causes the entire page to freeze for 2-3
-          seconds. How do you diagnose and fix this change detection performance
-          problem?
+          A product list with 1000 items freezes for 2–3 seconds on every button
+          click or keystroke. Angular is re-checking the entire tree each time.
+          How do you fix the performance?
         </p>
-        <div class="related-note">
-          <strong>Related:</strong> You have a dynamic form where users can add
-          unlimited rows (FormArray). After adding 500 rows, every keystroke
-          takes 2-3 seconds to respond. How do you optimize FormArray
-          performance?
-        </div>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            The performance issue happens because Angular's default change
-            detection checks the entire component tree on every event. I
-            diagnose it using Angular DevTools or Chrome's Performance tab. To
-            fix it, I use <code>OnPush</code> change detection strategy, add
-            <code>trackBy</code> function with <code>*ngFor</code>, move heavy
-            logic out of templates, use <code>async</code> pipe for observables,
-            and apply virtual scrolling for large lists.
+            Default change detection checks every component on every event. Fix:
+            switch the list component to
+            <code>ChangeDetectionStrategy.OnPush</code> — Angular only re-checks
+            it when an @Input reference changes, an event fires, or an
+            Observable emits. Also add <code>trackBy</code> to
+            <code>*ngFor</code> so Angular reuses DOM nodes instead of
+            recreating the full list. For very large lists, use
+            <code>cdk-virtual-scroll-viewport</code> to render only visible
+            rows.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>4. Stale Data After Navigation</h3>
+        <h3>4. OnPush Component Doesn't Update When Nested Object Mutates</h3>
         <p>
-          Users navigate from Product List to Product Detail and back. When they
-          return to the list, they see old data even though new products were
-          added. The API call doesn't happen on return. How do you handle
-          component data refresh?
+          You set <code>ChangeDetectionStrategy.OnPush</code> for performance.
+          You update <code>user.address.city = 'New York'</code> but the UI
+          doesn't reflect the change. Why?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            This happens because Angular reuses the component and
-            <code>ngOnInit</code> does not run again when navigating back. To
-            fix it, I reload data using router navigation events, or use a route
-            resolver to fetch fresh data before navigation completes. I can also
-            use a shared service with a Subject as a refresh trigger. When data
-            changes, the service emits an event and the list component reloads
-            the data automatically.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>5. Shared Service State Inconsistency</h3>
-        <p>
-          You have a UserService that stores current user data. Multiple
-          components show different user information at the same time, causing
-          confusion. Sometimes the profile page shows old data while the header
-          shows updated data. How do you ensure consistent state across
-          components?
-        </p>
-        <div class="related-note">
-          <strong>Related:</strong> You have a modal component used in multiple
-          places. Opening the modal in one place affects the state of the modal
-          in another place. For example, opening "Add Product" modal shows data
-          from previously opened "Edit Product" modal.
-        </div>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            To ensure consistent state, I store shared data in a service using a
-            reactive approach like <code>BehaviorSubject</code>. All components
-            subscribe to the same observable, and when the service updates the
-            data, every component receives the latest value automatically. This
-            avoids stale or inconsistent data across the application.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>6. Form Validation Not Triggering</h3>
-        <p>
-          You have a reactive form with validators, but validation errors don't
-          show until the user submits the form. You want real-time validation as
-          users type or leave a field. How do you implement proper validation
-          timing?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            By default, validation errors may appear only on submit because of
-            how the UI checks control state. To enable real-time validation, I
-            control validation timing using the <code>updateOn</code> option and
-            show errors based on <code>touched</code> or
-            <code>dirty</code> states. This allows validation to run on change
-            or blur instead of just on submit.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>7. Route Guard Not Preventing Navigation</h3>
-        <p>
-          You have a CanDeactivate guard to warn users about unsaved changes,
-          but users can still close the browser tab or use browser back button
-          without warning. How do you handle all navigation scenarios including
-          browser actions?
-        </p>
-        <div class="related-note">
-          <strong>Related:</strong> Users fill out a long registration form with
-          20 fields. They accidentally click a link or browser back button,
-          losing all their entered data. How do you prevent data loss and warn
-          users about unsaved changes?
-        </div>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            <code>CanDeactivate</code> guards only work for Angular route
-            navigation within the app. To handle browser refresh, close, or back
-            button, I also listen to the <code>beforeunload</code> browser event
-            using <code>@HostListener</code> decorator. Using both together
-            ensures users are warned about unsaved changes in all navigation
-            scenarios.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>8. JWT Token Expired During Active Session</h3>
-        <p>
-          Users are working in the application when their JWT token expires
-          after 30 minutes. All subsequent API calls return 401 errors and users
-          lose their work. How do you implement automatic token refresh and
-          handle expired tokens gracefully?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            When JWT expires during an active session, APIs return 401 errors. I
-            handle this using an HTTP interceptor that catches 401 responses,
-            calls a refresh token API, stores the new access token, and retries
-            the failed request automatically. This way, the user is not logged
-            out and does not lose their work.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>9. Child Component Not Receiving Updated Data</h3>
-        <p>
-          You pass data from parent to child using <code>@Input</code>. When
-          parent data changes, the child component doesn't update because it
-          uses the data in <code>ngOnInit</code> which only runs once. How do
-          you handle dynamic <code>@Input</code> changes?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            <code>ngOnInit</code> runs only once when the component initializes,
-            so it does not handle updated <code>@Input</code> values. To react
-            to dynamic input changes, I use <code>ngOnChanges</code> lifecycle
-            hook or an <code>@Input</code> setter, which Angular calls whenever
-            the input value changes. This ensures the child component always
-            stays in sync with the parent.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>10. Infinite Loop in Component Update</h3>
-        <p>
-          Your component updates a value, which triggers change detection, which
-          updates the value again, creating an infinite loop. The browser
-          becomes unresponsive and shows "Maximum call stack exceeded" error.
-          How do you identify and fix infinite loops?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Infinite loops happen when a component updates data during change
-            detection, which triggers change detection again in a cycle. I
-            identify it by UI freeze and stack overflow errors. To fix it, I
-            avoid updating state inside lifecycle hooks like
-            <code>ngAfterViewChecked</code>, move logic out of templates, guard
-            updates with conditions, and use <code>OnPush</code> change
-            detection properly. Never update component state during change
-            detection cycles.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>11. Slow Initial Load Time</h3>
-        <p>
-          Your application takes 15 seconds to load on first visit. The bundle
-          size is 10MB. Users on slow networks see a white screen for too long.
-          How do you optimize initial load performance?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Slow initial load happens because the browser downloads and executes
-            a large JavaScript bundle. I fix this by using lazy loading to split
-            the app into smaller bundles, removing unused libraries, building in
-            production mode with optimizations, and optionally using preloading
-            strategies. I also show loading indicators to avoid a white screen
-            for users.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>12. API Error Not Showing to User</h3>
-        <p>
-          When an API call fails, the application breaks silently. Users see
-          loading spinners forever or incomplete data without any error message.
-          How do you implement proper error handling and user feedback?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            When an API fails silently, it usually means error handling is
-            missing or inconsistent. I handle API errors centrally using an HTTP
-            interceptor to catch errors and display user-friendly messages. I
-            also ensure loaders are stopped in error scenarios at the component
-            level. This provides clear feedback to users and prevents the UI
-            from appearing broken or stuck.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>13. Multiple Form Submissions</h3>
-        <p>
-          Users click the submit button multiple times before the API responds
-          (slow network). This creates duplicate records in the database. How do
-          you prevent multiple submissions?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            To prevent multiple form submissions, I disable the submit button
-            while the API call is in progress. This ensures only one request is
-            sent even on slow networks. In reactive flows, I can also use
-            <code>exhaustMap</code> operator to ignore repeated submit clicks
-            until the first request completes.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>14. Route Parameters Not Updating Component</h3>
-        <p>
-          You have a user detail page at <code>/user/:id</code>. When navigating
-          from <code>/user/1</code> to <code>/user/2</code>, the component
-          doesn't refresh and still shows user 1's data. How do you handle
-          same-component navigation with different parameters?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            When navigating between routes with different parameters but the
-            same component, Angular reuses the component and
-            <code>ngOnInit</code> does not run again. To handle this, I
-            subscribe to <code>ActivatedRoute.paramMap</code> observable or use
-            a route resolver so data reloads whenever the route parameter
-            changes.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>15. Authentication State Not Persisting on Refresh</h3>
-        <p>
-          Users login successfully and can access protected pages. However, when
-          they refresh the browser, they get logged out and redirected to login
-          page. How do you persist authentication state across page refreshes?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Angular services lose data on browser refresh because memory is
-            cleared. To persist authentication, I store the token in browser
-            storage (localStorage or sessionStorage) and restore the auth state
-            when the application initializes. I then use route guards and a
-            reactive auth state using <code>isLoggedIn$</code> BehaviorSubject
-            in the service, so the user remains logged in across refreshes.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>16. Template Expression Changed After Checked Error</h3>
-        <p>
-          You see "ExpressionChangedAfterItHasBeenCheckedError" in console. The
-          component updates a value during change detection that was already
-          checked. How do you fix this Angular-specific error?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            This error occurs when a bound value is changed after Angular has
-            already completed change detection for that cycle. During one change
-            detection cycle, data should NOT change. I fix it by moving the
-            update to <code>ngOnInit</code>, deferring the change using
-            <code>setTimeout</code> to push it to the next cycle, or manually
-            triggering change detection using <code>ChangeDetectorRef</code>.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>17. Lazy Loaded Module Not Loading</h3>
-        <p>
-          You configured lazy loading for a feature module, but clicking the
-          route gives 404 error or loads the entire app bundle instead of
-          loading the module on demand. How do you troubleshoot lazy loading
-          issues?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Lazy loading issues usually happen due to incorrect routing or
-            module setup. I ensure the lazy feature module is NOT imported in
-            AppModule (if imported, it's not lazy anymore), use
-            <code>loadChildren</code> correctly in routes, and configure routes
-            using <code>RouterModule.forChild</code> in the lazy module (forRoot
-            is only for AppModule). I also verify chunk loading in the network
-            tab to confirm the module loads on demand as a separate file.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>18. OnPush Change Detection with Nested Object Mutation</h3>
-        <p>
-          You're using <code>OnPush</code> change detection strategy for better
-          performance. When you update a nested property like
-          <code>user.address.city = 'New York'</code>, the UI doesn't update
-          even though the data changed. Why doesn't OnPush detect this change?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            <code>OnPush</code> strategy only checks for reference changes, not
-            deep property mutations. When you mutate
-            <code>user.address.city</code>, the <code>user</code> object
-            reference stays the same, so Angular doesn't detect the change. To
-            fix this, I use immutable updates by creating new object references:
+            OnPush only triggers when the <strong>reference</strong> changes.
+            Mutating a nested property keeps the same object reference — Angular
+            sees no change. Fix: always create a new object reference —
             <code
               >this.user = {...this.user, address: {...this.user.address, city:
               'New York'}}</code
-            >. This creates a new reference, triggering OnPush change detection.
-            Alternatively, I can manually trigger detection using
-            <code>ChangeDetectorRef.markForCheck()</code>.
+            >. This immutable update creates a new reference, which OnPush
+            detects. Alternatively, call <code>cdr.markForCheck()</code> to
+            manually signal Angular to re-check that component.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>19. ViewChild Returns Undefined</h3>
+        <h3>5. 5 Components All Call the Same API on Load</h3>
         <p>
-          You're trying to access a child element using
-          <code>@ViewChild('inputElement') myInput</code>. In
-          <code>ngOnInit()</code>, when you log <code>this.myInput</code>, it
-          shows undefined. But you can see the element exists in the template.
-          Why is ViewChild undefined?
+          Your dashboard loads 5 components and each independently calls
+          <code>getUserProfile()</code>. You see 5 identical network requests
+          fire simultaneously. How do you prevent duplicate calls?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            <code>@ViewChild</code> is not available in
-            <code>ngOnInit</code> because the view hasn't been initialized yet.
-            Angular populates ViewChild references only after the view is fully
-            rendered. To access ViewChild, I use the
-            <code>ngAfterViewInit()</code> lifecycle hook instead. For
-            <code>@ContentChild</code> (content projection), I use
-            <code>ngAfterContentInit()</code>. If I need to access ViewChild
-            earlier, I can set
-            <code>@ViewChild('inputElement', {static: true})</code> for elements
-            that are always present (no *ngIf), making it available in ngOnInit.
+            Each <code>subscribe()</code> triggers the Observable from scratch —
+            so 5 subscribers = 5 HTTP calls. Fix: add
+            <code>shareReplay(1)</code> in the service —
+            <code>return this.http.get('/api/user').pipe(shareReplay(1));</code
+            >. The first subscriber fires the request; all others get the cached
+            response. The result is stored and replayed to any late subscribers.
+            One network call for the whole dashboard.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>20. Multiple Identical HTTP Calls on Page Load</h3>
+        <h3>6. @ViewChild Returns Undefined in ngOnInit</h3>
         <p>
-          Your dashboard loads 5 components simultaneously, and each component
-          calls the same API <code>getUserProfile()</code>. This results in 5
-          identical HTTP requests being sent at the same time, wasting bandwidth
-          and slowing down the app. How do you prevent duplicate API calls?
+          You access a child element with
+          <code>@ViewChild('inputElement') myInput</code> in
+          <code>ngOnInit()</code> but it's undefined. The element clearly exists
+          in the template. Why?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Multiple identical HTTP calls happen because each component
-            independently subscribes to the same Observable, triggering separate
-            requests. To fix this, I use the
-            <code>shareReplay(1)</code> operator in the service to cache and
-            share the result among all subscribers. Example:
-            <code
-              >getUserProfile() { return
-              this.http.get('/api/user').pipe(shareReplay(1)); }</code
-            >. This ensures the HTTP call is made only once, and all components
-            receive the same cached response. The first subscriber triggers the
-            request, and subsequent subscribers get the cached value without
-            making new calls.
+            <code>@ViewChild</code> is only populated after the view is fully
+            rendered — <code>ngOnInit</code> runs before that. Use
+            <code>ngAfterViewInit()</code> instead, which runs after the view is
+            ready. For elements that are always present (no <code>*ngIf</code>),
+            you can use
+            <code>@ViewChild('inputElement', {static: true})</code> which makes
+            it available in <code>ngOnInit</code>. Similarly,
+            <code>@ContentChild</code> requires
+            <code>ngAfterContentInit()</code>.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>7. Child Component Ignores Updated @Input</h3>
+        <p>
+          You pass data from parent to child via <code>@Input</code>. When the
+          parent updates the data, the child still shows the old value because
+          it processed the input only in <code>ngOnInit</code>. How do you fix
+          it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            <code>ngOnInit</code> runs once — it doesn't react to subsequent
+            <code>@Input</code> changes. Use
+            <code>ngOnChanges(changes: SimpleChanges)</code> which Angular calls
+            every time an @Input value changes, or use an
+            <code>@Input</code> setter which runs automatically on every new
+            value. Both ensure the child always stays in sync with whatever the
+            parent provides.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>8. Navigating to /user/2 from /user/1 Shows Wrong Data</h3>
+        <p>
+          On a user detail page (<code>/user/:id</code>), navigating from user 1
+          to user 2 doesn't refresh the data. Angular reuses the same component
+          and <code>ngOnInit</code> doesn't run again. How do you fix it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            When the same component handles a route change (same component,
+            different params), Angular doesn't destroy and recreate it — so
+            <code>ngOnInit</code> won't fire. Fix: subscribe to
+            <code>ActivatedRoute.paramMap</code> observable instead of using
+            <code>snapshot</code>. Whenever the route param changes, the
+            observable emits the new value and you reload data accordingly. Use
+            <code>switchMap</code> to cancel the previous request if navigation
+            happens quickly.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>9. JWT Expires During Active Session — API Returns 401</h3>
+        <p>
+          Users are actively working when their JWT access token expires. All
+          subsequent API calls fail with 401. Users lose their work and get
+          redirected to login. How do you handle this gracefully?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use an HTTP interceptor to catch 401 responses. When a 401 is
+            received, the interceptor calls the refresh token endpoint to get a
+            new access token, stores it, and retries the original failed request
+            automatically — the user never knows anything happened. If the
+            refresh token is also expired, redirect to login. Use a flag to
+            prevent multiple simultaneous refresh calls when several requests
+            fail at once.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>10. App Initial Load Takes 15 Seconds — 10MB Bundle</h3>
+        <p>
+          The app takes 15 seconds to load on first visit. The entire JavaScript
+          bundle is 10MB and downloaded upfront. Users on slow connections see a
+          blank screen. How do you reduce this?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            The entire app is bundled into one file — the browser must download
+            and parse all of it before rendering anything. Fix: implement
+            <strong>lazy loading</strong> — routes load their feature modules
+            only when the user navigates to them. Set a
+            <strong>preloading strategy</strong> (e.g.
+            <code>PreloadAllModules</code>) to silently load other modules in
+            the background after the initial load. Build with
+            <code>ng build --configuration production</code> for AOT
+            compilation, tree shaking, and minification. Show a skeleton/spinner
+            so users see something immediately.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>11. User Loses Form Data on Accidental Navigation</h3>
+        <p>
+          A user fills out a long registration form and accidentally clicks the
+          browser back button or a link — all data is lost. How do you warn
+          users about unsaved changes?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Use two mechanisms together: (1)
+            <strong>CanDeactivate guard</strong> — intercepts Angular route
+            navigation (links, <code>router.navigate()</code>) and shows a
+            confirm dialog if the form is dirty. (2)
+            <strong><code>@HostListener('window:beforeunload')</code></strong> —
+            catches browser-level navigation (browser back button, tab close,
+            refresh). Both together cover every exit path. Check
+            <code>form.dirty</code> to only warn when changes were actually
+            made.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>12. ExpressionChangedAfterItHasBeenCheckedError</h3>
+        <p>
+          The console shows "ExpressionChangedAfterItHasBeenCheckedError." A
+          value bound in the template is being changed during or after change
+          detection. How do you fix it?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Angular runs change detection then verifies values haven't changed —
+            if they have, it throws this error (dev mode only). Cause: you're
+            modifying a bound value inside <code>ngAfterViewChecked</code> or a
+            lifecycle hook that runs during/after CD. Fix: move the update to
+            <code>ngOnInit</code> if possible, or wrap it in
+            <code>setTimeout(() => { ... }, 0)</code> to defer it to the next
+            change detection cycle. Alternatively, use
+            <code>ChangeDetectorRef.detectChanges()</code> after the update.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
+      </div>
+
+      <div class="scenario-item">
+        <h3>13. Auth State Lost on Page Refresh</h3>
+        <p>
+          Users log in and can access protected routes. But refreshing the
+          browser logs them out and redirects them to the login page. How do you
+          persist auth state across refreshes?
+        </p>
+        <div class="answer">
+          <strong>Answer:</strong>
+          <p>
+            Angular services are in memory — they reset on every page refresh.
+            Fix: store the JWT in <code>localStorage</code> (or an HttpOnly
+            cookie for better security). On app startup, read the stored token
+            in the service and restore the auth state —
+            <code>isLoggedIn$</code> BehaviorSubject gets the correct initial
+            value. Route guards then check this state and allow or block access
+            correctly. If using HttpOnly cookies, the browser sends the token
+            automatically with every request without any manual restoration
+            needed.
+          </p>
+        </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
     </div>
+    <!-- end section-content scenarios -->
+
     <script src="../change.js"></script>
   </body>
 </html>

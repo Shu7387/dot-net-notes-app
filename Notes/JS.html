@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,325 +9,696 @@
   <body>
     <h1>5. JavaScript</h1>
 
-    <h2>SECTION 1: Fundamentals</h2>
-    <ul>
-      <li>
-        <strong>JavaScript:</strong> Scripting language used to make web pages
-        interactive & dynamic.
-      </li>
-      <li>
-        <strong>Primitive types:</strong> Primitives copy actual value,
-        <code>string</code>, <code>null</code>, <code>number</code>,
-        <code>boolean</code>
-      </li>
-      <li>
-        <strong>Reference types:</strong> Reference types copy address
-        <code>object</code>, <code>array</code>, <code>function</code> and value
-        is on heap
-      </li>
-      <li>
-        <strong>==</strong> → compares value only, <strong>===</strong> →
-        compares value & type (strict equality)
-      </li>
-      <li>
-        <strong>Truthy vs Falsy values:</strong> <code>false</code>,
-        <code>0</code>, <code>""</code>, <code>null</code>,
-        <code>undefined</code>, <code>NaN</code> Rest all truthy
-      </li>
-      <li>
-        <strong>typeof operator:</strong> Returns the data type of a value
-      </li>
-      <li>
-        <strong>Type casting:</strong> Implicit (automatic), Explicit → Manual
-        conversion using <code>Number()</code>, <code>parseInt()</code>,
-        <code>String()</code>, <code>toString()</code>
-      </li>
-      <li>
-        <strong>Hoisting:</strong> Moving declarations to the top of their scope
-        before code execution
-      </li>
-      <li>
-        <strong>var</strong> → function-scoped; redeclare & reassign allowed,
-        <strong>let</strong> → block-scoped; no redeclare, reassign allowed,
-        <strong>const</strong> → block-scoped; no redeclare & no reassign
-      </li>
-    </ul>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: Fundamentals <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>JavaScript</strong></td>
+            <td>
+              Scripting language used to make web pages interactive &amp;
+              dynamic
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Primitive Types</strong></td>
+            <td>
+              Copy actual value — <code>string</code>, <code>number</code>,
+              <code>boolean</code>, <code>null</code>, <code>undefined</code>,
+              <code>symbol</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Reference Types</strong></td>
+            <td>
+              Copy address, value is on heap — <code>object</code>,
+              <code>array</code>, <code>function</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>== vs ===</strong></td>
+            <td>
+              <code>==</code> compares value only; <code>===</code> compares
+              value &amp; type (strict equality)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Truthy vs Falsy</strong></td>
+            <td>
+              Falsy: <code>false</code>, <code>0</code>, <code>""</code>,
+              <code>null</code>, <code>undefined</code>, <code>NaN</code> —
+              everything else is truthy
+            </td>
+          </tr>
+          <tr>
+            <td><strong>typeof</strong></td>
+            <td>Returns the data type of a value</td>
+          </tr>
+          <tr>
+            <td><strong>Type Casting</strong></td>
+            <td>
+              Implicit (automatic) or Explicit using <code>Number()</code>,
+              <code>parseInt()</code>, <code>String()</code>,
+              <code>toString()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Hoisting</strong></td>
+            <td>
+              Moving declarations to the top of their scope before code
+              execution
+            </td>
+          </tr>
+          <tr>
+            <td><strong>var / let / const</strong></td>
+            <td>
+              <code>var</code>: function-scoped, redeclare &amp; reassign
+              allowed<br />
+              <code>let</code>: block-scoped, no redeclare, reassign allowed<br />
+              <code>const</code>: block-scoped, no redeclare, no reassign
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 2: Functions</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th>What it is</th>
-          <th>Why / Where Used</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Function Declaration vs Arrow Function</strong></td>
-          <td>
-            Normal functions have their own <code>this</code>(From caller
-            object) and are hoisted; arrow functions don't have their own
-            <code>this</code>(From parent scope) and are not hoisted
-          </td>
-          <td>
-            Normal → object methods, constructors function <br />
-            Arrow → callbacks, array methods
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong><code>this</code> keyword (call, apply, bind)</strong>
-          </td>
-          <td>
-            <strong><code>this</code> refers to the caller; </strong
-            ><code>call</code> and <code>apply</code> invoke immediately with
-            custom <code>this</code>, <code>bind</code> returns a new function
-            with fixed
-            <code>this</code>
-          </td>
-          <td>
-            Manually control what <code>this</code> should be;
-            <strong>call: args</strong>, <strong>apply: array</strong>,
-            <strong>bind: new function</strong>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Closures</strong></td>
-          <td>
-            Inner function that remembers variables from its outer scope even
-            after the outer function has finished
-          </td>
-          <td>
-            Counters, data hiding, event handling, maintaining state, caching,
-            async operations
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Callback Functions</strong></td>
-          <td>
-            A function passed to another function as argument and executed later
-          </td>
-          <td>
-            Async tasks (API calls, timers, events), array methods
-            (<code>map</code>, <code>filter</code>, <code>forEach</code>)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Default Parameters</strong></td>
-          <td>
-            Fallback values for function arguments
-            <code>function greet(name = "Guest")</code>
-          </td>
-          <td>Optional parameters, cleaner code</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <h2>SECTION 3: Arrays</h2>
-    <ul>
-      <li>
-        <strong>map:</strong> Transform array elements
-        <code>arr.map(x => x * 2)</code>
-      </li>
-      <li>
-        <strong>filter:</strong> Filter elements by condition
-        <code>arr.filter(x => x > 10)</code>
-      </li>
-      <li>
-        <strong>reduce:</strong> Reduce to single value
-        <code>arr.reduce((sum, x) => sum + x, 0)</code>
-      </li>
-      <li>
-        <strong>forEach:</strong> Iterate without return
-        <code>arr.forEach(x => console.log(x))</code>
-      </li>
-      <li>
-        <strong>find</strong> & <strong>findIndex:</strong> First matching
-        element & index <code>arr.find(x => x > 10)</code>
-      </li>
-      <li>
-        <strong>some</strong> & <strong>every:</strong> At least one match & all
-        match <code>arr.some(x => x > 10)</code>
-      </li>
-      <li>
-        <strong>push, pop, shift, unshift, splice, slice:</strong> Add/remove
-        array elements <code>arr.splice(startIndex, deleteCount, newItem)</code>
-      </li>
-    </ul>
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Functions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Why / Where Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Function Declaration vs Arrow Function</strong></td>
+            <td>
+              Normal functions have their own <code>this</code> (from caller
+              object) and are hoisted.<br />
+              Arrow functions don't have their own <code>this</code> (from
+              parent scope) and are not hoisted.
+            </td>
+            <td>
+              Normal → object methods, constructors<br />Arrow → callbacks,
+              array methods
+            </td>
+          </tr>
+          <tr>
+            <td><strong>this keyword (call, apply, bind)</strong></td>
+            <td>
+              <code>this</code> refers to the caller.<br />
+              <code>call</code> and <code>apply</code> invoke immediately with
+              custom <code>this</code>.<br />
+              <code>bind</code> returns a new function with fixed
+              <code>this</code>.
+            </td>
+            <td>
+              <strong>call:</strong> args list &nbsp;|&nbsp;
+              <strong>apply:</strong> array &nbsp;|&nbsp;
+              <strong>bind:</strong> new function
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Closures</strong></td>
+            <td>
+              Inner function that remembers variables from its outer scope even
+              after the outer function has finished
+            </td>
+            <td>
+              Counters, data hiding, event handling, maintaining state, caching,
+              async operations
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Callback Functions</strong></td>
+            <td>
+              A function passed to another function as argument and executed
+              later
+            </td>
+            <td>
+              Async tasks (API calls, timers, events), array methods
+              (<code>map</code>, <code>filter</code>, <code>forEach</code>)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Default Parameters</strong></td>
+            <td>
+              Fallback values for function arguments —
+              <code>function greet(name = "Guest")</code>
+            </td>
+            <td>Optional parameters, cleaner code</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 4: Objects</h2>
-    <ul>
-      <li>
-        <strong>Object creation:</strong> Created using object literals,
-        constructor functions, classes, Object.create, factory functions.
-      </li>
-      <li>
-        <strong>Dot notation vs Bracket notation:</strong> Dot is for static key
-        <code>obj.name</code>, Bracket is for dynamic key
-        <code>obj[keyName]</code>
-      </li>
-      <li>
-        <strong>Object.keys(), Object.values(), Object.entries():</strong> Get
-        object details as collection
-      </li>
-      <li>
-        <strong>Destructuring:</strong> Extract values from objects or arrays
-        into variables <code>const {name, age} = person</code>
-      </li>
-      <li>
-        <strong>Spread operator:</strong> Copies or merges values of
-        arrays/objects <code>{...obj}</code>
-      </li>
-    </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <h2>SECTION 5: Asynchronous JavaScript</h2>
-    <ul>
-      <li>
-        <strong>Synchronous vs Asyn:</strong> Sync blocks thread until task
-        complete, async runs task in background without blocking thread.
-      </li>
-      <li>
-        <strong>Callback hell:</strong> Callback hell is deeply nested callbacks
-        that reduce readability; Use promise or async/await
-      </li>
-      <li>
-        <strong>Promises:</strong> Handles asnc operation with
-        <code>new Promise((resolve, reject) => {})</code>, <code>.then()</code>,
-        <code>.catch()</code>, <code>.finally()</code>;
-        <code>Promise.Resolve(10)</code>
-      </li>
-      <li>
-        <strong>Promise.all():</strong> Wait for multiple promises to resolved
-      </li>
-      <li><strong>async/await:</strong> async/await simplifies promises;</li>
-      <li>
-        <strong>Event Loop concept:</strong> JavaScript executes synchronous
-        code first, then microtasks (Promises / async-await), and finally
-        macrotasks (timers).
-      </li>
-    </ul>
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Arrays <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>map</strong></td>
+            <td>Transform array elements, returns new array</td>
+            <td><code>arr.map(x =&gt; x * 2)</code></td>
+          </tr>
+          <tr>
+            <td><strong>filter</strong></td>
+            <td>Filter elements by condition, returns new array</td>
+            <td><code>arr.filter(x =&gt; x &gt; 10)</code></td>
+          </tr>
+          <tr>
+            <td><strong>reduce</strong></td>
+            <td>Reduce array to a single value</td>
+            <td><code>arr.reduce((sum, x) =&gt; sum + x, 0)</code></td>
+          </tr>
+          <tr>
+            <td><strong>forEach</strong></td>
+            <td>Iterate without return value</td>
+            <td><code>arr.forEach(x =&gt; console.log(x))</code></td>
+          </tr>
+          <tr>
+            <td><strong>find / findIndex</strong></td>
+            <td>First matching element &amp; its index</td>
+            <td><code>arr.find(x =&gt; x &gt; 10)</code></td>
+          </tr>
+          <tr>
+            <td><strong>some / every</strong></td>
+            <td>
+              <code>some</code>: at least one match; <code>every</code>: all
+              match
+            </td>
+            <td><code>arr.some(x =&gt; x &gt; 10)</code></td>
+          </tr>
+          <tr>
+            <td><strong>push / pop / shift / unshift</strong></td>
+            <td>Add/remove from end or start of array</td>
+            <td><code>arr.push(5)</code>, <code>arr.pop()</code></td>
+          </tr>
+          <tr>
+            <td><strong>splice</strong></td>
+            <td>Add or remove elements at a specific index</td>
+            <td><code>arr.splice(startIndex, deleteCount, newItem)</code></td>
+          </tr>
+          <tr>
+            <td><strong>slice</strong></td>
+            <td>Returns a portion of the array without modifying it</td>
+            <td><code>arr.slice(1, 3)</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 6: Fetch API & HTTP</h2>
-    <ul>
-      <li><strong>fetch():</strong> Making HTTP requests</li>
-      <li>
-        <strong>GET requests:</strong>
-        <code>fetch(url).then(res => res.json())</code>
-      </li>
-      <li>
-        <strong>POST requests:</strong>
-        <code>fetch(url, {method: 'POST', body: JSON.stringify(data)})</code>
-      </li>
-      <li><strong>Headers:</strong> Content-Type, Authorization</li>
-      <li>
-        <strong>Response methods:</strong> <code>.json()</code>,
-        <code>.text()</code>, <code>.blob()</code>
-      </li>
-      <li>
-        <strong>Error handling:</strong> fetch rejects promise & throw exception
-        on <strong>Network errors</strong>, But not on
-        <strong>HTTP errors</strong>; Must check <code>response.ok</code>
-      </li>
-      <li>
-        <strong>async/await with fetch:</strong> async/await makes fetch code
-        readable and easy to handle errors
-      </li>
-    </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <h2>SECTION 7: DOM Manipulation</h2>
-    <ul>
-      <li>
-        <strong>Selecting element:</strong> <code>querySelector()</code>,
-        <code>querySelectorAll()</code>, <code>getElementById()</code>
-      </li>
-      <li>
-        <strong>Modifying content:</strong> <code>innerHTML</code>,
-        <code>textContent</code>, <code>innerText</code>
-      </li>
-      <li>
-        <strong>CSS classes:</strong> <code>classList.add()</code>,
-        <code>classList.remove()</code>, <code>classList.toggle()</code>
-      </li>
-      <li>
-        <strong>Attributes:</strong> <code>getAttribute()</code>,
-        <code>setAttribute()</code>
-      </li>
-      <li>
-        <strong>Creating/Removing element:</strong>
-        <code>createElement()</code>, <code>appendChild()</code>,
-        <code>remove()</code>
-      </li>
-      <li>
-        <strong>Styles:</strong> <code>element.style.property</code>
-        <code>element.style.color = "red"</code>
-      </li>
-    </ul>
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Objects <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Object Creation</strong></td>
+            <td>
+              Object literals, constructor functions, classes, Object.create,
+              factory functions
+            </td>
+            <td><code>const obj = { name: "Ali" }</code></td>
+          </tr>
+          <tr>
+            <td><strong>Dot vs Bracket Notation</strong></td>
+            <td>Dot for static key; bracket for dynamic key</td>
+            <td>
+              <code>obj.name</code> &nbsp;|&nbsp; <code>obj[keyName]</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Object.keys / values / entries</strong></td>
+            <td>Get object details as a collection</td>
+            <td><code>Object.keys(obj)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Destructuring</strong></td>
+            <td>Extract values from objects or arrays into variables</td>
+            <td><code>const { name, age } = person</code></td>
+          </tr>
+          <tr>
+            <td><strong>Spread Operator</strong></td>
+            <td>Copy or merge values of arrays/objects</td>
+            <td><code>{ ...obj }</code> &nbsp;|&nbsp; <code>[...arr]</code></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 8: Events</h2>
-    <ul>
-      <li>
-        <strong>addEventListener()</strong> &
-        <strong>removeEventListener()</strong>
-      </li>
-      <li>
-        <strong>Common events:</strong> <code>click</code>, <code>submit</code>,
-        <code>change</code>, <code>input</code>, <code>keydown</code>,
-        <code>load</code>
-      </li>
-      <li>
-        <strong>Event object:</strong> <code>event.target</code>,
-        <code>event.preventDefault()</code>,
-        <code>event.stopPropagation()</code>
-      </li>
-      <li>
-        <strong>Event delegation:</strong> Attaching single event to parent
-        instead of having many in children. It's example of event bubbling.
-      </li>
-      <li>
-        <strong>Event bubbling:</strong> Default,
-        <strong>event moves from child to parent</strong>. Button is clicked
-        first, then UI handles it (used for menus, lists, tables, dynamic
-        buttons).
-      </li>
-      <li>
-        <strong>Event capturing:</strong> Event moves from
-        <strong>parent to child</strong>. UI checks first, then allows the
-        button click (used for validation, blocking clicks, analytics, modals).
-      </li>
-    </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <h2>SECTION 9: Miscellaneous</h2>
-    <ul>
-      <li><strong>JSON.parse():</strong> JSON string to JS Object</li>
-      <li><strong>JSON.stringify():</strong> Opposite of above</li>
-      <li>
-        <strong>localStorage:</strong> Permanent browser string based storage;
-        <code>localStorage.setItem("Key", "value")</code>,
-        <code>getItem()</code>, <code>removeItem()</code>, <code>clear()</code>
-      </li>
-      <li>
-        <code>setTimeout(() => console.log("Once"), 1000)</code> runs once after
-        delay, <code>setInterval()</code> runs repeatedly
-      </li>
-      <li>
-        <strong>Template literals:</strong> Makes string concatenation easier,
-        more readable using <code>${}</code> syntax; <code>Hello ${name}</code>
-      </li>
-      <li>
-        <strong>Optional chaining:</strong> Safe property access
-        <code>obj?.property</code>
-      </li>
-      <li>
-        <strong>Nullish coalescing:</strong> Default value for null or undefined
-        <code>value ?? defaultValue</code>
-      </li>
-      <li><strong>Try catch finally:</strong> Graceful error handling</li>
-    </ul>
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Asynchronous JavaScript <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sync vs Async</strong></td>
+            <td>
+              Sync blocks thread until task completes; async runs task in
+              background without blocking thread
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Callback Hell</strong></td>
+            <td>
+              Deeply nested callbacks that reduce readability — fix with
+              Promises or async/await
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Promises</strong></td>
+            <td>
+              Handles async operations —
+              <code>new Promise((resolve, reject) =&gt; {})</code><br />
+              Chained with <code>.then()</code>, <code>.catch()</code>,
+              <code>.finally()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Promise.all()</strong></td>
+            <td>Wait for multiple promises to all resolve before continuing</td>
+          </tr>
+          <tr>
+            <td><strong>async / await</strong></td>
+            <td>
+              Simplifies promises — write async code that reads like synchronous
+              code
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Event Loop</strong></td>
+            <td>
+              JavaScript executes: synchronous code first → microtasks
+              (Promises/async-await) → macrotasks (timers)
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 10: jQuery Essentials</h2>
-    <div class="note">
-      <pre><code>// &lt;button id="btn"&gt;Click Me&lt;/button&gt;  
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Fetch API &amp; HTTP <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>fetch()</strong></td>
+            <td>Built-in browser API for making HTTP requests</td>
+            <td><code>fetch(url)</code></td>
+          </tr>
+          <tr>
+            <td><strong>GET Request</strong></td>
+            <td>Retrieve data from server</td>
+            <td><code>fetch(url).then(res =&gt; res.json())</code></td>
+          </tr>
+          <tr>
+            <td><strong>POST Request</strong></td>
+            <td>Send data to server</td>
+            <td>
+              <code
+                >fetch(url, { method: 'POST', body: JSON.stringify(data)
+                })</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Headers</strong></td>
+            <td>Metadata sent with request</td>
+            <td><code>Content-Type</code>, <code>Authorization</code></td>
+          </tr>
+          <tr>
+            <td><strong>Response Methods</strong></td>
+            <td>Parse the response body</td>
+            <td>
+              <code>.json()</code>, <code>.text()</code>, <code>.blob()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Error Handling</strong></td>
+            <td>
+              fetch rejects only on network errors, not HTTP errors — must check
+              <code>response.ok</code>
+            </td>
+            <td><code>if (!res.ok) throw new Error(...)</code></td>
+          </tr>
+          <tr>
+            <td><strong>async/await with fetch</strong></td>
+            <td>
+              Makes fetch code cleaner and easier to handle errors with
+              try/catch
+            </td>
+            <td><code>const res = await fetch(url)</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: DOM Manipulation <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Selecting Elements</strong></td>
+            <td>Get elements from the DOM</td>
+            <td>
+              <code>querySelector()</code>, <code>querySelectorAll()</code>,
+              <code>getElementById()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Modifying Content</strong></td>
+            <td>Change what's displayed inside an element</td>
+            <td>
+              <code>innerHTML</code>, <code>textContent</code>,
+              <code>innerText</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>CSS Classes</strong></td>
+            <td>Add, remove, or toggle classes dynamically</td>
+            <td>
+              <code>classList.add()</code>, <code>classList.remove()</code>,
+              <code>classList.toggle()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Attributes</strong></td>
+            <td>Read or set HTML attributes</td>
+            <td><code>getAttribute()</code>, <code>setAttribute()</code></td>
+          </tr>
+          <tr>
+            <td><strong>Creating / Removing Elements</strong></td>
+            <td>Dynamically add or remove DOM nodes</td>
+            <td>
+              <code>createElement()</code>, <code>appendChild()</code>,
+              <code>remove()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Styles</strong></td>
+            <td>Apply inline styles directly via JavaScript</td>
+            <td><code>element.style.color = "red"</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: Events <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>addEventListener / removeEventListener</strong></td>
+            <td>Attach or detach event handlers to DOM elements</td>
+          </tr>
+          <tr>
+            <td><strong>Common Events</strong></td>
+            <td>
+              <code>click</code>, <code>submit</code>, <code>change</code>,
+              <code>input</code>, <code>keydown</code>, <code>load</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Event Object</strong></td>
+            <td>
+              <code>event.target</code> — which element triggered;
+              <code>event.preventDefault()</code> — stop default;
+              <code>event.stopPropagation()</code> — stop bubbling
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Event Delegation</strong></td>
+            <td>
+              Attach a single event to a parent instead of many events on
+              children — uses event bubbling; useful for dynamic lists, tables,
+              menus
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Event Bubbling</strong></td>
+            <td>
+              Default — event moves from child to parent. Button is clicked
+              first, then parent handles it. Used for menus, lists, dynamic
+              buttons.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Event Capturing</strong></td>
+            <td>
+              Event moves from parent to child. Parent checks first, then allows
+              the child click. Used for validation, blocking clicks, analytics,
+              modals.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Miscellaneous <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>JSON.parse()</strong></td>
+            <td>Convert JSON string to JavaScript object</td>
+            <td><code>JSON.parse('{"name":"Ali"}')</code></td>
+          </tr>
+          <tr>
+            <td><strong>JSON.stringify()</strong></td>
+            <td>Convert JavaScript object to JSON string</td>
+            <td><code>JSON.stringify(obj)</code></td>
+          </tr>
+          <tr>
+            <td><strong>localStorage</strong></td>
+            <td>
+              Permanent browser string-based storage; persists after tab closes
+            </td>
+            <td>
+              <code>localStorage.setItem("key", "value")</code>,
+              <code>getItem()</code>, <code>removeItem()</code>,
+              <code>clear()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>setTimeout / setInterval</strong></td>
+            <td>
+              <code>setTimeout</code> runs once after delay;
+              <code>setInterval</code> runs repeatedly
+            </td>
+            <td><code>setTimeout(() =&gt; console.log("Once"), 1000)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Template Literals</strong></td>
+            <td>Makes string concatenation easier and more readable</td>
+            <td><code>`Hello ${name}`</code></td>
+          </tr>
+          <tr>
+            <td><strong>Optional Chaining</strong></td>
+            <td>Safe property access without throwing if null/undefined</td>
+            <td><code>obj?.property</code></td>
+          </tr>
+          <tr>
+            <td><strong>Nullish Coalescing</strong></td>
+            <td>Default value when left side is null or undefined</td>
+            <td><code>value ?? defaultValue</code></td>
+          </tr>
+          <tr>
+            <td><strong>try / catch / finally</strong></td>
+            <td>Graceful error handling; finally always runs</td>
+            <td><code>try { } catch (e) { } finally { }</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: jQuery Essentials <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p><strong>Basic jQuery Pattern:</strong></p>
+        <pre><code>// &lt;button id="btn"&gt;Click Me&lt;/button&gt;
 // &lt;p id="text"&gt;Hello&lt;/p&gt;
 
 $(document).ready(function () {
@@ -335,97 +706,114 @@ $(document).ready(function () {
         $('#text').text('Button Clicked').addClass('active');
     });
 });</code></pre>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Methods</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Selectors</strong></td>
+            <td>
+              <code>$('#id')</code>, <code>$('.class')</code>,
+              <code>$('element')</code>, <code>$('[attr]')</code>,
+              <code>$(':checked')</code>
+            </td>
+            <td>Select elements from the DOM</td>
+          </tr>
+          <tr>
+            <td><strong>Traversal</strong></td>
+            <td>
+              <code>find()</code>, <code>parent()</code>,
+              <code>children()</code>, <code>closest()</code>,
+              <code>next()</code>, <code>prev()</code>
+            </td>
+            <td>Navigate the DOM tree</td>
+          </tr>
+          <tr>
+            <td><strong>Content</strong></td>
+            <td>
+              <code>html()</code>, <code>text()</code>, <code>val()</code>
+            </td>
+            <td>Get or set content and values</td>
+          </tr>
+          <tr>
+            <td><strong>Manipulation</strong></td>
+            <td>
+              <code>append()</code>, <code>prepend()</code>,
+              <code>remove()</code>, <code>addClass()</code>,
+              <code>removeClass()</code>, <code>toggleClass()</code>
+            </td>
+            <td>Modify DOM elements</td>
+          </tr>
+          <tr>
+            <td><strong>Attributes</strong></td>
+            <td>
+              <code>attr()</code>, <code>removeAttr()</code>,
+              <code>prop()</code>
+            </td>
+            <td>Work with HTML attributes</td>
+          </tr>
+          <tr>
+            <td><strong>CSS</strong></td>
+            <td><code>css()</code></td>
+            <td>Get or set inline styles</td>
+          </tr>
+          <tr>
+            <td><strong>Visibility</strong></td>
+            <td>
+              <code>show()</code>, <code>hide()</code>, <code>toggle()</code>
+            </td>
+            <td>Show or hide elements</td>
+          </tr>
+          <tr>
+            <td><strong>Events</strong></td>
+            <td>
+              <code>on()</code>, <code>off()</code>, <code>click()</code>,
+              <code>change()</code>, <code>submit()</code>
+            </td>
+            <td>Event handling</td>
+          </tr>
+          <tr>
+            <td><strong>Event Delegation</strong></td>
+            <td><code>on('event', 'selector', handler)</code></td>
+            <td>Handle dynamic elements; attach many events to one parent</td>
+          </tr>
+          <tr>
+            <td><strong>AJAX</strong></td>
+            <td>
+              <code>$.ajax()</code>, <code>$.get()</code>, <code>$.post()</code>
+            </td>
+            <td>Make HTTP requests</td>
+          </tr>
+          <tr>
+            <td><strong>Utilities</strong></td>
+            <td>
+              <code>$.each()</code>, <code>each()</code>,
+              <code>$(document).ready()</code>
+            </td>
+            <td>Iteration and DOM ready handling</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Methods</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Selectors</strong></td>
-          <td>
-            <code>$('#id')</code>, <code>$('.class')</code>,
-            <code>$('element')</code>, <code>$('[attr]')</code>,
-            <code>$(':checked')</code>
-          </td>
-          <td>Select elements</td>
-        </tr>
-        <tr>
-          <td><strong>Traversal</strong></td>
-          <td>
-            <code>find()</code>, <code>parent()</code>, <code>children()</code>,
-            <code>closest()</code>, <code>next()</code>, <code>prev()</code>
-          </td>
-          <td>Navigate DOM tree</td>
-        </tr>
-        <tr>
-          <td><strong>Content</strong></td>
-          <td><code>html()</code>, <code>text()</code>, <code>val()</code></td>
-          <td>Get / set content & values</td>
-        </tr>
-        <tr>
-          <td><strong>Manipulation</strong></td>
-          <td>
-            <code>append()</code>, <code>prepend()</code>,
-            <code>remove()</code>, <code>addClass()</code>,
-            <code>removeClass()</code>, <code>toggleClass()</code>
-          </td>
-          <td>Modify DOM</td>
-        </tr>
-        <tr>
-          <td><strong>Attributes</strong></td>
-          <td>
-            <code>attr()</code>, <code>removeAttr()</code>, <code>prop()</code>
-          </td>
-          <td>Work with attributes</td>
-        </tr>
-        <tr>
-          <td><strong>CSS</strong></td>
-          <td><code>css()</code></td>
-          <td>Get / set styles</td>
-        </tr>
-        <tr>
-          <td><strong>Visibility</strong></td>
-          <td>
-            <code>show()</code>, <code>hide()</code>, <code>toggle()</code>
-          </td>
-          <td>Show / hide elements</td>
-        </tr>
-        <tr>
-          <td><strong>Events</strong></td>
-          <td>
-            <code>on()</code>, <code>off()</code>, <code>click()</code>,
-            <code>change()</code>, <code>submit()</code>
-          </td>
-          <td>Event handling</td>
-        </tr>
-        <tr>
-          <td><strong>Event Delegation</strong></td>
-          <td><code>on('event','selector',handler)</code></td>
-          <td>Handle dynamic elements, add many events on a element</td>
-        </tr>
-        <tr>
-          <td><strong>AJAX</strong></td>
-          <td>
-            <code>$.ajax()</code>, <code>$.get()</code>, <code>$.post()</code>
-          </td>
-          <td>HTTP requests</td>
-        </tr>
-        <tr>
-          <td><strong>Utilities</strong></td>
-          <td>
-            <code>$.each()</code>, <code>each()</code>,
-            <code>$(document).ready()</code>
-          </td>
-          <td>Iteration & DOM ready</td>
-        </tr>
-      </tbody>
-    </table>
     <script src="../change.js"></script>
   </body>
 </html>

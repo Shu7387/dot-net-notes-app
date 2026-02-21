@@ -1,364 +1,970 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style.css" />
-    <title>GIT, CI/CD & Docker Notes</title>
+    <title>DevOps Notes</title>
   </head>
   <body>
-    <h1>8. GIT, CI/CD & Docker</h1>
+    <h1>9. DevOps: Git, CI/CD, Docker &amp; Kubernetes</h1>
 
-    <h2>SECTION 1: Git Essentials</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Step</th>
-          <th>Concept</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><strong>Git basics</strong></td>
-          <td>
-            <code>clone</code>, <code>stage</code>, <code>commit</code>,
-            <code>push</code>, <code>pull</code>, <code>stash</code>,
-            <code>fetch</code>; Basic operations to manage code in a repository.
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td><strong>Branching</strong></td>
-          <td>Create, switch, and merge branches to manage parallel work.</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td><strong>Feature branching workflow</strong></td>
-          <td>
-            Use separate branches for features to avoid conflicts in main
-            branch.
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td><strong>Resolving merge conflicts</strong></td>
-          <td>
-            Handling conflicts when changes from different branches overlap.
-          </td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td><strong>Pull Requests & Code Reviews</strong></td>
-          <td>Submit changes for review and merge after approval.</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td><strong>.gitignore</strong></td>
-          <td>Specify files/folders that Git should ignore.</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td><strong>Rebase vs Merge</strong></td>
-          <td>
-            Rebase rewrites commit history; merge combines histories without
-            rewriting.
-          </td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td><strong>Git stash & cherry-pick</strong></td>
-          <td>
-            Stash saves work temporarily; cherry-pick applies specific commits
-            to a branch.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: Git Essentials <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>git clone</strong></td>
+            <td>Download entire project from server to your computer</td>
+            <td><code>git clone https://repo-url</code></td>
+          </tr>
+          <tr>
+            <td><strong>git status</strong></td>
+            <td>Check what files changed since last commit</td>
+            <td><code>git status</code></td>
+          </tr>
+          <tr>
+            <td><strong>git add</strong></td>
+            <td>Stage changed files to be committed (pack the box)</td>
+            <td><code>git add .</code></td>
+          </tr>
+          <tr>
+            <td><strong>git commit</strong></td>
+            <td>Save staged changes with a message (seal the box)</td>
+            <td><code>git commit -m "Fixed bug X"</code></td>
+          </tr>
+          <tr>
+            <td><strong>git push</strong></td>
+            <td>Send committed changes to server (mail the box)</td>
+            <td><code>git push origin main</code></td>
+          </tr>
+          <tr>
+            <td><strong>git pull</strong></td>
+            <td>Download latest changes from server</td>
+            <td><code>git pull origin main</code></td>
+          </tr>
+          <tr>
+            <td><strong>git branch</strong></td>
+            <td>Create separate workspace for a feature</td>
+            <td><code>git branch feature-login</code></td>
+          </tr>
+          <tr>
+            <td><strong>git checkout</strong></td>
+            <td>Switch between branches</td>
+            <td><code>git checkout feature-login</code></td>
+          </tr>
+          <tr>
+            <td><strong>git merge</strong></td>
+            <td>Combine changes from one branch into another</td>
+            <td><code>git merge feature-login</code></td>
+          </tr>
+          <tr>
+            <td><strong>Merge Conflicts</strong></td>
+            <td>
+              Same file changed in both branches — must resolve manually by
+              choosing which version to keep
+            </td>
+            <td>Edit file → save → <code>git add .</code> → commit</td>
+          </tr>
+          <tr>
+            <td><strong>.gitignore</strong></td>
+            <td>
+              Tell Git to ignore specific files — node_modules, secrets, build
+              output
+            </td>
+            <td><code>.env, *.log, bin/, obj/</code></td>
+          </tr>
+          <tr>
+            <td><strong>Pull Request (PR)</strong></td>
+            <td>
+              Ask team to review your branch before merging — quality check
+              before code enters main
+            </td>
+            <td>GitHub / Azure DevOps PR interface</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h2>SECTION 2: CI/CD Flow & Concepts</h2>
-    <h3>Flow:</h3>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 10%; text-align: center">Step</th>
-          <th style="width: 90%">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center">1</td>
-          <td>
-            <strong>👨‍💻 Developer writes .NET API</strong><br />Project includes
-            Dockerfile & YAML
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">2</td>
-          <td>
-            <strong>🐳 Define Build Instructions</strong><br />Dockerfile
-            defines how to package the API & YAML defines how to build, run,
-            test the pipeline
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">3</td>
-          <td>
-            <strong>💻 Push to Repository</strong><br />Code is pushed to DevOps
-            Main repository
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">4</td>
-          <td>
-            <strong>📄 Pipeline Triggers</strong><br />YAML Pipeline in Azure
-            DevOps triggers automatically
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">5</td>
-          <td>
-            <strong>⚙️ Build Pipeline Steps:</strong><br />
-            • 🔧 Restore & build the project<br />
-            • ✅ Run tests<br />
-            • 🐳 Create Docker Image from Dockerfile
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">6</td>
-          <td>
-            <strong>📦 Push to Registry</strong><br />Docker image is pushed to
-            Azure Container Registry (ACR)
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">7</td>
-          <td>
-            <strong>🚀 Deployment Pipeline</strong><br />Release/Deployment
-            Pipeline starts
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">8</td>
-          <td>
-            <strong>⬇️ Pull Image</strong><br />Deployment pulls the image from
-            ACR
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">9</td>
-          <td>
-            <strong>🖥️ Create Containers</strong><br />Azure creates containers
-            from the pulled image
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">10</td>
-          <td>
-            <strong>☁️ Deploy to Cloud:</strong><br />
-            • Azure App Service<br />
-            • Azure Kubernetes Service (AKS)<br />
-            • Azure Container Instances (ACI)
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">11</td>
-          <td><strong>🏃 Run API</strong><br />Container runs the API</td>
-        </tr>
-        <tr>
-          <td style="text-align: center">12</td>
-          <td>
-            <strong>🗄️ Database Connection</strong><br />API connects to cloud
-            database (SQL/Azure SQL)
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">13</td>
-          <td>
-            <strong>🔐 Secrets Management</strong><br />Secrets (DB connection
-            string, keys) managed by Azure Key Vault
-          </td>
-        </tr>
-        <tr>
-          <td style="text-align: center">14</td>
-          <td>
-            <strong>🧠 Orchestration</strong><br />Azure DevOps orchestrates
-            everything end-to-end
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: CI/CD Pipeline <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+            <th>Why important</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CI — Continuous Integration</strong></td>
+            <td>
+              Every push auto-compiles and runs tests. Instant feedback if
+              something breaks.
+            </td>
+            <td>Catch bugs early, not in production</td>
+          </tr>
+          <tr>
+            <td><strong>CD — Continuous Deployment</strong></td>
+            <td>
+              After tests pass, code automatically goes to production — no
+              manual steps.
+            </td>
+            <td>Deploy instantly, no manual intervention</td>
+          </tr>
+          <tr>
+            <td><strong>CR — Continuous Release</strong></td>
+            <td>
+              Code is always ready to deploy, but a human must approve before
+              going live.
+            </td>
+            <td>You control when changes reach users</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Step</th>
-          <th>Concept</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><strong>YAML file</strong></td>
-          <td>
-            Tells Azure DevOps when to run, which machine to use, and the steps
-            to build, test app & create a Docker image, and push it to ACR
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td><strong>Pipeline triggers</strong></td>
-          <td>
-            CI, PR triggers, or scheduled triggers decide when the pipeline
-            runs.
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td><strong>Build pipeline</strong></td>
-          <td>Compiles code and packages it into a deployable artifact.</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td><strong>Automated testing</strong></td>
-          <td>Tests run automatically during build to catch issues early.</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td><strong>Publishing artifacts</strong></td>
-          <td>
-            Artifacts are the build outputs for deployment, which can be
-            compiled binaries, Docker images, configuration files, exe, dll,
-            .jar or test reports.
-          </td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td><strong>Deployment pipeline</strong></td>
-          <td>
-            Deploys artifacts step-by-step to Dev, Staging, and Production.
-          </td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td><strong>Secrets management</strong></td>
-          <td>
-            Ensures passwords, keys, and tokens are secure using Key Vault or
-            pipeline secret stores.
-          </td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td><strong>Azure DevOps Pipelines</strong></td>
-          <td>Orchestrates the entire CI/CD process.</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td><strong>CI/CD purpose</strong></td>
-          <td>
-            Explains why this automation process exists and why it matters.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="note">
+        <p><strong>CI/CD Pipeline — Step-by-Step Flow:</strong></p>
+        <ol>
+          <li>
+            <strong>Developer pushes code</strong> —
+            <code>git push origin main</code>
+          </li>
+          <li>
+            <strong>Pipeline triggers automatically</strong> — Git push
+            detected, Azure DevOps starts pipeline with no manual action
+          </li>
+          <li>
+            <strong>Build phase</strong> — <code>dotnet build</code> — if
+            compile error, pipeline stops and you get an alert
+          </li>
+          <li>
+            <strong>Test phase</strong> — <code>dotnet test</code> — if any test
+            fails, pipeline stops before deployment
+          </li>
+          <li>
+            <strong>Build Docker image</strong> — pipeline reads Dockerfile,
+            creates a snapshot of your compiled app
+          </li>
+          <li>
+            <strong>Push to Container Registry (ACR)</strong> — image tagged
+            with version (<code>myapi:v1.2.3</code>) and stored in ACR
+          </li>
+          <li>
+            <strong>Deploy to Dev</strong> — image deployed to Dev environment
+            automatically
+          </li>
+          <li>
+            <strong>Approval gate</strong> — pipeline pauses, waits for human
+            approval before Staging/Production
+          </li>
+          <li>
+            <strong>Deploy to Staging → Production</strong> — after approval,
+            same image deployed to each environment
+          </li>
+          <li>
+            <strong>App is live</strong> — container running, monitoring
+            watching for errors
+          </li>
+        </ol>
+      </div>
 
-    <h2>SECTION 3: Docker Basics</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th>Description</th>
-          <th>Example</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>What is Docker & why it exists</strong></td>
-          <td>
-            Docker packs an app and its dependencies into a container so it runs
-            the same on any machine.
-          </td>
-          <td><code>docker build -t app .</code></td>
-        </tr>
-        <tr>
-          <td><strong>Containers vs Virtual Machines</strong></td>
-          <td>
-            Containers share OS and are lightweight; VMs have full OS and are
-            heavy.
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><strong>Images vs Containers</strong></td>
-          <td>Image = template; Container = running instance.</td>
-          <td><code>docker images</code> / <code>docker ps</code></td>
-        </tr>
-        <tr>
-          <td><strong>Basic commands</strong></td>
-          <td>Build, run, stop, and monitor containers.</td>
-          <td><code>docker run -d -p 80:80 img</code></td>
-        </tr>
-        <tr>
-          <td><strong>Dockerfile basics</strong></td>
-          <td>Instructions to build an image.</td>
-          <td>
-            <code>FROM</code>, <code>COPY</code>, <code>RUN</code>,
-            <code>CMD</code>, <code>ENTRYPOINT</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Multi-stage builds</strong></td>
-          <td>Build app in one image, run it in a smaller image.</td>
-          <td><code>FROM sdk AS build</code></td>
-        </tr>
-        <tr>
-          <td><strong>Debugging containers</strong></td>
-          <td>View logs and go inside running containers.</td>
-          <td>
-            <code>docker logs id</code> / <code>docker exec -it id sh</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Containerizing .NET API</strong></td>
-          <td>Build & run .NET API inside Docker.</td>
-          <td><code>docker run -p 5000:80 api-img</code></td>
-        </tr>
-        <tr>
-          <td><strong>Environment variables</strong></td>
-          <td>Pass configuration values to containers.</td>
-          <td><code>docker run -e KEY=VAL img</code></td>
-        </tr>
-        <tr>
-          <td><strong>docker-compose.yml</strong></td>
-          <td>Run multiple containers together.</td>
-          <td><code>docker-compose up -d</code></td>
-        </tr>
-        <tr>
-          <td><strong>Volumes & Bind mounts</strong></td>
-          <td>Persist container data outside container.</td>
-          <td><code>-v data:/var/lib/data</code></td>
-        </tr>
-        <tr>
-          <td><strong>Container registry</strong></td>
-          <td>Store and share Docker images.</td>
-          <td><code>docker push repo/img:tag</code></td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <thead>
+          <tr>
+            <th>YAML Section</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>trigger</strong></td>
+            <td>When does pipeline run? (every push, only on PR, scheduled)</td>
+            <td><code>trigger: - main</code></td>
+          </tr>
+          <tr>
+            <td><strong>pool</strong></td>
+            <td>Which machine runs the pipeline</td>
+            <td><code>vmImage: 'ubuntu-latest'</code></td>
+          </tr>
+          <tr>
+            <td><strong>variables</strong></td>
+            <td>Store values reused across pipeline</td>
+            <td><code>buildConfiguration: 'Release'</code></td>
+          </tr>
+          <tr>
+            <td><strong>stages</strong></td>
+            <td>Divide pipeline into logical phases</td>
+            <td>Build → Test → Deploy</td>
+          </tr>
+          <tr>
+            <td><strong>jobs</strong></td>
+            <td>Tasks inside each stage that run in order</td>
+            <td>Compile, Test, Build Docker, Push to ACR</td>
+          </tr>
+          <tr>
+            <td><strong>steps</strong></td>
+            <td>Individual commands to execute</td>
+            <td>
+              <code>dotnet build</code>, <code>dotnet test</code>,
+              <code>docker build</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <h3>Dockerfile Example:</h3>
-    <pre>FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build  <span style="color: #666;">// Image used to build and compile the .NET application</span>
-WORKDIR /src                                    <span style="color: #666;">// Set working directory inside the container</span>
-COPY . .                                        <span style="color: #666;">// Copy all project files into the container</span>
-RUN dotnet publish -c Release -o /app           <span style="color: #666;">// Build the app and produce optimized output files</span>
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it means</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Artifacts</strong></td>
+            <td>
+              Output from build (compiled .exe, Docker image) that gets deployed
+            </td>
+            <td>The actual thing deployed to production</td>
+          </tr>
+          <tr>
+            <td><strong>Build Number</strong></td>
+            <td>Each pipeline run gets a unique number (Build #123)</td>
+            <td>Track exactly which code version is running in prod</td>
+          </tr>
+          <tr>
+            <td><strong>Build Failure</strong></td>
+            <td>Pipeline stops if code doesn't compile or tests fail</td>
+            <td>Bad code never reaches production</td>
+          </tr>
+          <tr>
+            <td><strong>Deployment Approval</strong></td>
+            <td>Pipeline pauses at Staging/Production for human sign-off</td>
+            <td>You control when code goes live</td>
+          </tr>
+          <tr>
+            <td><strong>Rollback</strong></td>
+            <td>
+              If new deployment breaks prod, redeploy the previous working
+              version
+            </td>
+            <td>Fast recovery with minimal damage</td>
+          </tr>
+          <tr>
+            <td><strong>Secrets Management</strong></td>
+            <td>Passwords and API keys stored in Key Vault — never in code</td>
+            <td>Prevents security breaches</td>
+          </tr>
+        </tbody>
+      </table>
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0       <span style="color: #666;">// Lightweight image used only to run the app</span>
-WORKDIR /app                                   <span style="color: #666;">// Directory where the app will run</span>
-COPY --from=build /app .                       <span style="color: #666;">// Copy compiled files from the build stage</span>
-ENTRYPOINT ["dotnet","YourApp.dll"]            <span style="color: #666;">// Command to start the application</span></pre>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Docker <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Without Docker</th>
+            <th>With Docker</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Different environments</strong></td>
+            <td>
+              Works on your PC, breaks on server (different OS, libraries)
+            </td>
+            <td>Same image works everywhere — Windows, Linux, Mac</td>
+          </tr>
+          <tr>
+            <td><strong>Dependency issues</strong></td>
+            <td>Missing .NET version, SQL driver → runtime errors</td>
+            <td>Everything bundled in the Docker image</td>
+          </tr>
+          <tr>
+            <td><strong>Deployment</strong></td>
+            <td>Manual install steps, lots of room for error</td>
+            <td>One command: <code>docker run</code> deploys everything</td>
+          </tr>
+          <tr>
+            <td><strong>Scaling</strong></td>
+            <td>Running multiple copies is complicated</td>
+            <td>Run same image multiple times, load balance between them</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>What it is</th>
+            <th>Analogy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Docker Image</strong></td>
+            <td>Blueprint of your app with all dependencies baked in</td>
+            <td>A recipe</td>
+          </tr>
+          <tr>
+            <td><strong>Docker Container</strong></td>
+            <td>A running instance of an image</td>
+            <td>The cooked dish from the recipe</td>
+          </tr>
+          <tr>
+            <td><strong>Dockerfile</strong></td>
+            <td>Text file with step-by-step instructions to build an image</td>
+            <td>The recipe ingredients and steps</td>
+          </tr>
+          <tr>
+            <td><strong>Docker Hub / Registry</strong></td>
+            <td>
+              Cloud storage for Docker images (like GitHub but for images)
+            </td>
+            <td>A library of recipes</td>
+          </tr>
+          <tr>
+            <td><strong>Azure Container Registry (ACR)</strong></td>
+            <td>Private company image storage — your images are not public</td>
+            <td>Your private recipe book</td>
+          </tr>
+          <tr>
+            <td><strong>Volume</strong></td>
+            <td>
+              Persistent storage — data survives even after container restarts
+            </td>
+            <td>A storage locker that outlives the container</td>
+          </tr>
+          <tr>
+            <td><strong>Port Mapping</strong></td>
+            <td>
+              Connect container port to host port to expose app to outside
+            </td>
+            <td>
+              <code>-p 5000:80</code> = host port 5000 maps to container port 80
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>docker build</strong></td>
+            <td>Create image from Dockerfile</td>
+            <td><code>docker build -t myapi:1.0 .</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker run</strong></td>
+            <td>Create and start container from image</td>
+            <td><code>docker run -d -p 5000:80 myapi:1.0</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker ps</strong></td>
+            <td>List all running containers</td>
+            <td><code>docker ps</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker stop</strong></td>
+            <td>Stop a running container gracefully</td>
+            <td><code>docker stop container-id</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker logs</strong></td>
+            <td>View container output for debugging</td>
+            <td><code>docker logs container-id</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker exec</strong></td>
+            <td>Run a command inside a running container</td>
+            <td><code>docker exec -it container-id bash</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker images</strong></td>
+            <td>List all images on your computer</td>
+            <td><code>docker images</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker push</strong></td>
+            <td>Upload image to registry</td>
+            <td><code>docker push acr.azurecr.io/myapi:1.0</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker pull</strong></td>
+            <td>Download image from registry</td>
+            <td><code>docker pull acr.azurecr.io/myapi:1.0</code></td>
+          </tr>
+          <tr>
+            <td><strong>docker-compose up</strong></td>
+            <td>Run multiple containers together (app + database)</td>
+            <td><code>docker-compose up -d</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Dockerfile — Line by Line:</strong></p>
+        <pre>
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+# Start with .NET SDK image as base (has the compiler)
+# "AS build" = name this stage "build" for multi-stage use
+
+WORKDIR /src
+# Set working directory inside container to /src
+
+COPY . .
+# Copy all files from your computer into /src in container
+
+RUN dotnet publish -c Release -o /app
+# Compile in Release mode; output goes to /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+# New stage — lightweight runtime only (no compiler)
+# Final image is much smaller than SDK image
+
+WORKDIR /app
+
+COPY --from=build /app .
+# Copy only compiled output from the "build" stage
+
+EXPOSE 80
+# Container listens on port 80
+
+ENTRYPOINT ["dotnet", "MyApp.dll"]
+# Run this when container starts</pre
+        >
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Without Multi-Stage Build</th>
+            <th>With Multi-Stage Build</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Final image includes SDK (~1 GB)</td>
+            <td>Final image has runtime only (~200 MB) — 5× smaller</td>
+          </tr>
+          <tr>
+            <td>Includes compiler and build tools not needed at runtime</td>
+            <td>Only what's needed to run the app</td>
+          </tr>
+          <tr>
+            <td>Slower deployment, more storage cost</td>
+            <td>Faster deployment, cheaper cloud storage</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Docker Layer Caching:</strong></p>
+        <ul>
+          <li>
+            <strong>Each Dockerfile line = one layer</strong> (filesystem
+            snapshot)
+          </li>
+          <li>
+            <strong>Unchanged layers are reused from cache</strong> — builds in
+            seconds instead of minutes
+          </li>
+          <li>
+            <strong>Put frequently changing commands LAST</strong> — copy source
+            code after installing dependencies, so the install layer is cached
+            and reused even when code changes
+          </li>
+          <li>
+            <strong>Smaller image = faster everything</strong> — less download
+            time, faster deployments, lower storage cost
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Kubernetes (K8s) <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What is Kubernetes?</strong> Automatic manager for Docker
+          containers. Handles running, scaling, updating, and healing containers
+          across multiple machines. You declare what you want — K8s figures out
+          how to make it happen.
+        </p>
+        <ul>
+          <li>
+            <strong>Use K8s when:</strong> Many containers running across
+            multiple servers at scale (like Netflix, Spotify)
+          </li>
+          <li>
+            <strong>Don't use K8s when:</strong> 1–2 containers on a single
+            machine — just use Docker or App Service
+          </li>
+        </ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>What it does</th>
+            <th>Real-world example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cluster</strong></td>
+            <td>Group of machines (servers) running Kubernetes together</td>
+            <td>10 servers in a data center = 1 K8s cluster</td>
+          </tr>
+          <tr>
+            <td><strong>Node</strong></td>
+            <td>
+              Single machine/server inside the cluster that runs containers
+            </td>
+            <td>One physical or virtual server</td>
+          </tr>
+          <tr>
+            <td><strong>Pod</strong></td>
+            <td>Smallest K8s unit — 1+ containers running together</td>
+            <td>Usually 1 container per pod (your API)</td>
+          </tr>
+          <tr>
+            <td><strong>Deployment</strong></td>
+            <td>
+              Instructions: "run 5 copies of my API, keep them running always"
+            </td>
+            <td>You declare 5 replicas → K8s creates and manages them</td>
+          </tr>
+          <tr>
+            <td><strong>Service</strong></td>
+            <td>
+              Load balancer in front of multiple pods — single endpoint,
+              balanced traffic
+            </td>
+            <td>5 API pods behind one URL — traffic split between them</td>
+          </tr>
+          <tr>
+            <td><strong>ReplicaSet</strong></td>
+            <td>Ensures desired number of pods are always running</td>
+            <td>
+              1 pod crashes → ReplicaSet creates a replacement immediately
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ConfigMap</strong></td>
+            <td>Store non-secret config (database URL, environment name)</td>
+            <td>
+              Dev vs Prod can have different DB URLs without rebuilding image
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Secret</strong></td>
+            <td>Store sensitive config (passwords, API keys) encrypted</td>
+            <td>DB password injected at runtime — never in code</td>
+          </tr>
+          <tr>
+            <td><strong>Ingress</strong></td>
+            <td>
+              External HTTP entry point — routes traffic to the right service
+            </td>
+            <td><code>api.example.com</code> → routes to API service</td>
+          </tr>
+          <tr>
+            <td><strong>Namespace</strong></td>
+            <td>
+              Logical isolation inside cluster — separate dev, staging, prod
+            </td>
+            <td>Prevent accidents, easier management per environment</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How Kubernetes Works — Step-by-Step:</strong></p>
+        <ol>
+          <li>
+            Write a <strong>Deployment YAML</strong> — "run 5 replicas of
+            myapi:1.0, listen on port 80"
+          </li>
+          <li>Apply it: <code>kubectl apply -f deployment.yaml</code></li>
+          <li>
+            K8s <strong>schedules pods</strong> across available nodes,
+            distributing load evenly
+          </li>
+          <li>
+            Each pod <strong>pulls the Docker image</strong> from ACR and starts
+            the container
+          </li>
+          <li>
+            A <strong>Service</strong> sits in front of all 5 pods — single
+            entry point, load balanced
+          </li>
+          <li>
+            K8s <strong>continuously health-checks</strong> pods — if one
+            crashes, a new one is created automatically
+          </li>
+          <li>
+            <strong>Scale up:</strong>
+            <code>kubectl scale deployment myapi --replicas=10</code> → 5 more
+            pods instantly
+          </li>
+          <li>
+            <strong>Rolling update:</strong> new image available → K8s replaces
+            pods one at a time → zero downtime
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p><strong>Basic Deployment YAML:</strong></p>
+        <pre>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapi
+spec:
+  replicas: 5                        # Run 5 copies
+  selector:
+    matchLabels:
+      app: myapi                     # Manage pods with this label
+  template:
+    metadata:
+      labels:
+        app: myapi
+    spec:
+      containers:
+      - name: myapi
+        image: acr.azurecr.io/myapi:1.0   # Always use specific tag, never "latest"
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: db-url            # Config from ConfigMap, not hardcoded</pre
+        >
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>kubectl apply</strong></td>
+            <td>Create or update from YAML file</td>
+            <td><code>kubectl apply -f deployment.yaml</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl get pods</strong></td>
+            <td>List all running pods</td>
+            <td><code>kubectl get pods -n default</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl get deployments</strong></td>
+            <td>List all deployments</td>
+            <td><code>kubectl get deployments</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl logs</strong></td>
+            <td>View pod output for debugging</td>
+            <td><code>kubectl logs myapi-pod-123</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl exec</strong></td>
+            <td>Run command inside a pod</td>
+            <td><code>kubectl exec -it myapi-pod-123 bash</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl scale</strong></td>
+            <td>Change number of replicas</td>
+            <td><code>kubectl scale deployment myapi --replicas=10</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl set image</strong></td>
+            <td>Update to new image version (triggers rolling update)</td>
+            <td>
+              <code
+                >kubectl set image deployment/myapi
+                myapi=acr.azurecr.io/myapi:2.0</code
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><strong>kubectl delete</strong></td>
+            <td>Delete deployment and all its pods</td>
+            <td><code>kubectl delete deployment myapi</code></td>
+          </tr>
+          <tr>
+            <td><strong>kubectl rollout undo</strong></td>
+            <td>Rollback to previous working deployment</td>
+            <td><code>kubectl rollout undo deployment/myapi</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>What it is</th>
+            <th>When to use</th>
+            <th>Complexity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Docker</strong></td>
+            <td>Package app into container</td>
+            <td>Dev, testing, single server deployment</td>
+            <td>⭐ Easy</td>
+          </tr>
+          <tr>
+            <td><strong>Azure App Service</strong></td>
+            <td>Managed hosting — Azure handles everything</td>
+            <td>Small-medium app, no server management</td>
+            <td>⭐⭐ Medium</td>
+          </tr>
+          <tr>
+            <td><strong>Kubernetes (AKS)</strong></td>
+            <td>Orchestrate 100s–1000s of containers across many servers</td>
+            <td>Large scale, auto-scaling, complex deployments</td>
+            <td>⭐⭐⭐ Hard</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Kubernetes Best Practices:</strong></p>
+        <ul>
+          <li>
+            <strong>Never use <code>latest</code> tag</strong> — always specify
+            version (<code>myapi:1.2.3</code>). <code>latest</code> is
+            unpredictable across different servers.
+          </li>
+          <li>
+            <strong>Set resource limits</strong> — specify CPU and memory per
+            pod. Prevents one pod from consuming all resources and crashing
+            others.
+          </li>
+          <li>
+            <strong>Add liveness probes</strong> — K8s pings your health
+            endpoint. Unhealthy pods are restarted automatically.
+          </li>
+          <li>
+            <strong>Use Namespaces</strong> — separate dev, staging, prod to
+            prevent accidents and ease management.
+          </li>
+          <li>
+            <strong>Use Secrets for credentials</strong> — passwords and API
+            keys are encrypted; never put them in YAML files.
+          </li>
+          <li>
+            <strong>Use ConfigMaps for config</strong> — change settings without
+            rebuilding the image.
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Complete DevOps Workflow (End-to-End)
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>What happens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DEVELOP</strong></td>
+            <td>
+              Write C# API → create Dockerfile → write pipeline YAML →
+              <code>git push origin main</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>BUILD</strong></td>
+            <td>
+              Git push triggers pipeline → <code>dotnet build</code> →
+              <code>dotnet test</code> → build Docker image → push to ACR with
+              version tag
+            </td>
+          </tr>
+          <tr>
+            <td><strong>DEPLOY</strong></td>
+            <td>
+              Auto-deploy to Dev → Approval gate → Deploy to Staging → QA
+              testing → Final approval → Deploy to Production
+            </td>
+          </tr>
+          <tr>
+            <td><strong>RUN</strong></td>
+            <td>
+              Kubernetes / App Service runs container → 5 replicas load-balanced
+              → K8s health checks → auto-heal on crash → auto-scale on traffic
+              spike → Application Insights monitors everything
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Full Flow in One Line:</strong></p>
+        <p>
+          Developer pushes code → Pipeline builds &amp; tests → Docker image
+          pushed to ACR → Deployed to Dev → Approval → Staging → Approval →
+          Production → Kubernetes runs, heals, and scales automatically →
+          Application Insights monitors
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Benefit</th>
+            <th>What it means</th>
+            <th>Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Faster deployment</strong></td>
+            <td>Deploy in minutes, not days</td>
+            <td>Respond to issues and ship features faster</td>
+          </tr>
+          <tr>
+            <td><strong>Higher reliability</strong></td>
+            <td>Automated tests catch bugs before prod</td>
+            <td>Fewer outages, better user experience</td>
+          </tr>
+          <tr>
+            <td><strong>Auto-scaling</strong></td>
+            <td>Traffic spike? More pods created automatically</td>
+            <td>Always responsive, no manual action needed</td>
+          </tr>
+          <tr>
+            <td><strong>Self-healing</strong></td>
+            <td>Pod crashes? New one starts automatically</td>
+            <td>Zero downtime even during failures</td>
+          </tr>
+          <tr>
+            <td><strong>Easy rollback</strong></td>
+            <td>Bad deployment? Roll back to previous version instantly</td>
+            <td>Minimal damage, fast recovery</td>
+          </tr>
+          <tr>
+            <td><strong>Consistent environments</strong></td>
+            <td>Dev, staging, prod all run same Docker image</td>
+            <td>"Works on my machine" problem solved forever</td>
+          </tr>
+          <tr>
+            <td><strong>Cost optimization</strong></td>
+            <td>Auto-scale down when traffic is low</td>
+            <td>Pay only for what you actually use</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
     <script src="../change.js"></script>
   </body>

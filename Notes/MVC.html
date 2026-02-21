@@ -9,1177 +9,1329 @@
   <body>
     <h1>4. ASP.NET CORE MVC</h1>
 
-    <h2>SECTION 1: MVC Pattern & Architecture</h2>
-    <ul>
-      <li>
-        <strong>MVC Pattern:</strong> Model (data), View (UI), Controller
-        (logic), separation of concerns
-      </li>
-      <li>
-        <strong>Request Flow:</strong> Browser → Routing → Controller → Model
-        Binding → Action → View/Result → Response
-      </li>
-      <li>
-        <strong>MVC vs API:</strong> MVC returns Views (HTML), API returns data
-        (JSON), same runtime
-      </li>
-      <li>
-        <strong>Project Structure:</strong> Controllers/, Views/, Models/,
-        wwwroot/, Program.cs, appsettings.json
-      </li>
-      <li>
-        <strong>Program.cs:</strong> App entry point that configures services,
-        middleware, and routes;
-        <code
-          >builder.Services () → builder.Build() → app.Use() → app.Run()</code
-        >
-      </li>
-      <li>
-        <strong>Middleware Order:</strong> Exception → HTTPS → Static Files →
-        Routing → Auth → Authorization → Controller Endpoints
-      </li>
-      <li>
-        <strong>Areas:</strong> Split large MVC app into smaller module, use
-        <code>[Area("Admin")]</code> attribute;
-        <code>URL: Area/Controller/Action</code>;
-        <strong>It is Mini MVC</strong>
-      </li>
-      <li>
-        <strong>Dot Net Core:</strong> Core vs Framework, benefits;
-        <strong>Kestrel</strong> is built in server which hosts the core app,
-        and <strong>reverse proxy</strong> like IIS or Nginx sits in front of it
-        <br />
-        to handle security, SSL, load balancing, static files, cache,
-        compression & forward request to Kestrel.
-      </li>
-    </ul>
-
-    <h2>SECTION 2: Controllers & Attributes</h2>
-    <ul>
-      <li>
-        <strong>Controller:</strong> Inherits Controller base class, handles
-        HTTP requests, returns IActionResult
-      </li>
-      <li>
-        <strong>Keep Actions Thin:</strong> Delegate logic to
-        services/repositories, controllers coordinate only
-      </li>
-      <li>
-        <strong>MVC Action Returns:</strong>
-        <code>IActionResult</code>, <code>ActionResult&lt;T&gt;</code>,
-        <code>ViewResult</code>, <code>JsonResult</code>,
-        <code>FileResult</code>, <code>RedirectToActionResult</code>
-      </li>
-      <li>
-        <strong>Attributes:</strong> <code>[HttpGet]</code>,
-        <code>[HttpPost]</code>, <code>[Route(...)]</code>,
-        <code>[ValidateAntiForgeryToken]</code>, <code>[Authorize]</code>
-      </li>
-      <li>
-        <strong>Model Binding Sources:</strong> <code>[FromQuery]</code>,
-        <code>[FromBody]</code>, <code>[FromRoute]</code>,
-        <code>[FromForm]</code>, <code>[FromHeader]</code>
-      </li>
-      <li>
-        <strong>Over-posting Protection:</strong> Use ViewModels or
-        <code>[Bind("AllowedProp1,AllowedProp2")]</code>; Do not model bind
-        unnecessary fields
-      </li>
-    </ul>
-
-    <h2>SECTION 3: Routing</h2>
-    <ul>
-      <li>
-        <strong>Route Constraints:</strong> <code>/products/{id:int}</code> =>
-        <code>:int</code>, <code>:alpha</code>, <code>:datetime</code>,
-        <code>:min(value)</code>,
-        <code>:max(value)</code>
-      </li>
-      <li>
-        <strong>Default Route:</strong> <code>Home/Index</code>, fallback for
-        root URL; Using conventional routing define in <code>program.cs</code>
-      </li>
-      <li>
-        <strong>Combining Routes:</strong> Attribute routing overrides
-        conventional
-      </li>
-      <li>
-        <strong>Route Priority:</strong> Specific routes first, then generic;
-        <code>MapControllers()</code> registers MVC controller endpoints;
-      </li>
-      <li>
-        <strong>Route types:</strong> Conventional
-        <code>{controller=Home}/{action=Index}/{id}</code> and Attribute
-        <code>[Route("home/details/{id:int?}")]</code>
-      </li>
-    </ul>
-
-    <h2>SECTION 4: Views & Razor Syntax</h2>
-    <ul>
-      <li>
-        <strong>Razor Basics:</strong> <code>@model</code> directive,
-        <code>@Model.Property</code>, <code>@{ code blocks }</code>,
-        <code>@if/@for/@foreach</code>
-      </li>
-      <li>
-        <strong>View Discovery:</strong> Controller Views folder
-        <code>Views/{Controller}/{Action}.cshtml</code>, or Shared folder
-        <code>Views/Shared/</code>
-      </li>
-      <li>
-        <strong>Layouts:</strong> Common page template;
-        <code>_Layout.cshtml</code> is master page,
-        <code>@RenderBody()</code> renders view content,
-        <code>_ViewStart.cshtml</code> sets layout for all views, and
-        <code>_ViewImports.cshtml</code> holds shared razor imports, configs for
-        all views.
-      </li>
-      <li>
-        <strong>Partials:</strong> Reusable HTML,
-        <code>@Html.Partial("_Header", model)</code>, for small UI pieces
-      </li>
-      <li>
-        <strong>View Components:</strong> Reusable UI with backend logic,
-        Inherit <code>ViewComponent</code> & <code>InvokeAsync()</code> method;
-        Use for complex reusable widgets like menus, headers, notifications;
-        <code>@await Component.InvokeAsync("UserInfo", model)</code>
-      </li>
-      <li>
-        <strong>Tag & HTML Helpers:</strong> Use html based attributes:
-        <code>asp-controller</code>, <code>asp-action</code>,
-        <code>asp-for</code>, <code>asp-validation-for</code>,
-        <code>asp-antiforgery</code> Prefer over C# HTML helpers:
-        <code>BeginForm</code>, <code>@Html.TextBoxFor(m => m.city)</code>,
-        <code>LabelFor</code>, <code>ValidationMessageFor</code>,
-        <code>DropDownListFor</code>,
-        <code>ActionLink</code>
-      </li>
-      <li>
-        <strong>Sections:</strong> Allow views to inject page-specific content
-        (scripts, styles, meta tags) into layout using <code>@section</code> in
-        view & <code>@RenderSection("Scripts", required: false)</code> in
-        layout.
-      </li>
-    </ul>
-
-    <h2>SECTION 5: Models & ViewModels</h2>
-    <ul>
-      <li>
-        <strong>Domain Models:</strong> Represent database entities, business
-        logic
-      </li>
-      <li>
-        <strong>ViewModels:</strong> Tailored for views, prevent over-posting,
-        combine multiple models
-      </li>
-      <li>
-        <strong>Model Binding:</strong> Form/query/route data → action
-        parameters, automatic population
-      </li>
-      <li>
-        <strong>ModelState:</strong> Validation errors container,
-        <code>ModelState.IsValid</code> check,
-        <code>ModelState.AddModelError()</code> for custom errors
-      </li>
-      <li>
-        <strong>Return Strategy:</strong> If invalid, return same view with
-        model to show errors
-      </li>
-    </ul>
-
-    <h2>SECTION 6: Validation</h2>
-    <ul>
-      <li>
-        <strong>Client-Side:</strong> Unobtrusive validation, jQuery validate,
-        fast feedback
-      </li>
-      <li>
-        <strong>Display Errors:</strong> <code>asp-validation-for</code>,
-        <code>asp-validation-summary</code>
-      </li>
-      <li>
-        <strong>Server-Side:</strong> Always validate, client can be bypassed;
-        Use Data Annotations, Fluent, Custom
-      </li>
-      <li>
-        <strong>Data Annotations Attributes:</strong> <code>[Required]</code>,
-        <code>[StringLength]</code>, <code>[Range]</code>,
-        <code>[EmailAddress]</code>, <code>[Compare]</code>,
-        <code>[RegularExpression]</code> <br />
-        <strong>Custom Validation:</strong> Implement
-        <code>ValidationAttribute</code>, <code>IValidatableObject</code>;
-        <strong>Fluent Validation Library:</strong> Validation in a separate
-        model
-      </li>
-    </ul>
-
-    <h2>SECTION 7: Forms</h2>
-    <ul>
-      <li>
-        <strong>Form Submission:</strong> GET (display form) → POST (submit) →
-        Validate → Persist → Redirect
-      </li>
-      <li>
-        <strong>PRG Pattern:</strong> Post-Redirect-Get prevents duplicate
-        submissions on refresh
-      </li>
-      <li>
-        <strong>Anti-CSRF:</strong> Form tag helper auto-includes token,
-        <code>[ValidateAntiForgeryToken]</code> on POST
-      </li>
-      <li>
-        <strong>Form Tag Helpers:</strong> <code>asp-controller</code>,
-        <code>asp-action</code>, <code>asp-route-*</code>,
-        <code>method="post"</code>
-      </li>
-      <li>
-        <strong>File Upload:</strong> Allow users to upload files using
-        <code>IFormFile</code>, post action method then validate size, type and
-        save file to storage
-      </li>
-    </ul>
-
-    <h2>SECTION 8: AJAX</h2>
-    <ul>
-      <li>
-        <strong>Partial View:</strong> Return PartialView() from action, renders
-        HTML fragment
-      </li>
-      <li>
-        <strong>AJAX Pattern:</strong> fetch() or $.ajax() →
-        <strong
-          >Call server in background & update part of a page, without page
-          loading</strong
-        >
-      </li>
-      <li>
-        <strong>JSON Return:</strong> Return Json(data) for API-like responses
-      </li>
-      <li>
-        <strong>jQuery Load:</strong> $("#div").load("/Home/Partial"), quick
-        partial updates
-      </li>
-      <li>
-        <strong>Progressive Enhancement:</strong> Page should work without JS,
-        enhance with AJAX
-      </li>
-    </ul>
-
-    <h2>SECTION 9: Dependency Injection & Configuration</h2>
-    <ul>
-      <li><strong>Constructor Injection:</strong> Preferred, cleaner</li>
-      <li>
-        <strong>View Injection:</strong> @inject IService service, for
-        view-specific needs
-      </li>
-      <li>
-        <strong>Configuration:</strong> Uses <code>IConfiguration</code> to read
-        settings from <code>appsettings.json</code> & environment-specific
-        files.
-      </li>
-      <li>
-        <strong>Options Pattern:</strong> Uses <code>IOptions&lt;T&gt;</code> to
-        <strong>bind settings to strongly-typed classes</strong> & configure
-        them in <code>Program.cs</code>
-      </li>
-    </ul>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Lifetime</th>
-          <th>Scope</th>
-          <th>Typical Use Cases</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Singleton</strong></td>
-          <td>One instance for App lifetime</td>
-          <td>Configuration, caching, stateless helpers, loggers</td>
-        </tr>
-        <tr>
-          <td><strong>Scoped</strong></td>
-          <td>One per HTTP request</td>
-          <td>
-            DbContext, business/services, repositories,
-            <strong>Data, User, stateful</strong>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Transient</strong></td>
-          <td>New instance each use</td>
-          <td>
-            Lightweight, short-lived utility services,
-            <strong>helper, stateless</strong>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 10: Authentication & Authorization</h2>
-    <ul>
-      <li>
-        <strong>Middleware:</strong> <code>app.UseAuthentication()</code> →
-        <code>app.UseAuthorization()</code> order matters
-      </li>
-      <li>
-        <strong>Cookie Auth:</strong>
-        <code>AddAuthentication().AddCookie()</code>,
-        <code>SignInAsync/SignOutAsync</code>
-      </li>
-      <li>
-        <strong>Identity:</strong> UserManager, SignInManager, RoleManager,
-        complete user system
-      </li>
-      <li><strong>[AllowAnonymous]:</strong> Bypass auth for login pages</li>
-      <li>
-        <strong>User Object:</strong> <code>User.Identity.Name</code>,
-        <code>User.IsInRole()</code>, <code>User.Claims</code>
-      </li>
-      <li>
-        <strong><em>Authentication:</em></strong> Cookie, MFA, External;
-        <strong>Authorization:</strong> Role, Claim, Policy
-      </li>
-    </ul>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Authorization Type</th>
-          <th>Example</th>
-          <th>Use For</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Role-based</strong></td>
-          <td><code>[Authorize(Roles="Admin")]</code></td>
-          <td>Simple scenarios</td>
-        </tr>
-        <tr>
-          <td><strong>Claims-based</strong></td>
-          <td><code>User.Claims</code> checks</td>
-          <td>Fine-grained access</td>
-        </tr>
-        <tr>
-          <td><strong>Policy-based</strong></td>
-          <td><code>[Authorize(Policy="AdminOnly")]</code></td>
-          <td>Complex rules</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 11: Filters & Middleware</h2>
-    <ul>
-      <li>
-        <strong>Filters:</strong> Component that run before or after
-        controller/action execution; <strong>controller-level</strong>; used for
-        logging, validation, authorization, and result manipulation
-      </li>
-      <li>
-        <strong>Middleware:</strong> Component in request pipeline that
-        processes every HTTP request & response; <strong>app-wide</strong>; used
-        for CORS, auth, static files, routing, etc
-      </li>
-      <li>
-        <strong>Middleware Behavior:</strong> Execution, Pipeline Flow, Custom,
-        Short-circuit; <strong>use()</strong> → call next middleware,
-        <strong>run()</strong> → end pipeline, <strong>when()</strong> → run on
-        condition
-      </li>
-    </ul>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Filter Type</th>
-          <th>Runs When (Exact)</th>
-          <th>What it Really Does</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Authorization</strong> (<code>[Authorize]</code>)</td>
-          <td>Runs first, before any other filters and before action</td>
-          <td>Decides <strong>who is allowed</strong> to access the action</td>
-        </tr>
-        <tr>
-          <td><strong>Resource</strong> (<code>IResourceFilter</code>)</td>
-          <td>
-            Runs after authorization,
-            <strong>before model binding and after action</strong>
-          </td>
-          <td>
-            Decides <strong>whether the request should continue</strong> (cache
-            / short-circuit)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Action</strong> (<code>IActionFilter</code>)</td>
-          <td>
-            Runs
-            <strong
-              >after model binding, just before and after action method</strong
-            >
-          </td>
-          <td>
-            Runs logic <strong>around the action</strong> (logging, validation,
-            parameter changes)
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Result</strong> (<code>IResultFilter</code>)</td>
-          <td>
-            Runs logic <strong>around the action result</strong> (View/JSON)
-          </td>
-          <td>Modifies or logs the <strong>final response</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Exception</strong> (<code>IExceptionFilter</code>)</td>
-          <td>Runs only if an exception occurs in action or result</td>
-          <td>Catches MVC errors and returns proper response</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3>Important Middleware (Order Matters):</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Middleware</th>
-          <th>Purpose</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <code>app.UseExceptionHandler("/Error")</code> <br />
-            <code>app.UseDeveloperExceptionPage()</code>
-          </td>
-          <td>Global error handling</td>
-        </tr>
-        <tr>
-          <td><code>app.UseHttpsRedirection()</code></td>
-          <td>Enforce HTTPS</td>
-        </tr>
-        <tr>
-          <td><code>app.UseStaticFiles()</code></td>
-          <td>Serve CSS, JS, images</td>
-        </tr>
-        <tr>
-          <td><code>app.UseRouting()</code></td>
-          <td>Enable endpoint routing</td>
-        </tr>
-        <tr>
-          <td><code>app.UseCors("Policy")</code></td>
-          <td>Cross-origin requests</td>
-        </tr>
-        <tr>
-          <td><code>app.UseAuthentication()</code></td>
-          <td>Identify the user</td>
-        </tr>
-        <tr>
-          <td><code>app.UseAuthorization()</code></td>
-          <td>Enforce access rules</td>
-        </tr>
-        <tr>
-          <td><code>app.MapControllerRoute(...)</code></td>
-          <td>Map MVC routes/endpoints</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 12: State Management</h2>
-    <ul>
-      <li>
-        <strong>Session:</strong> <code>services.AddSession()</code>,
-        <code>app.UseSession()</code>,
-        <code>HttpContext.Session.SetString/GetString</code>
-      </li>
-      <li>
-        <strong>Cache:</strong> In-Memory Cache, response cache, distributed
-        cache like Redis, SQL for scalability
-      </li>
-      <li>
-        <strong>Ways:</strong> ViewBag, ViewData, TempData, Session, Cache,
-        Cookies, Hidden Fields
-      </li>
-    </ul>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Scope</th>
-          <th>Use For</th>
-          <th>Syntax</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>ViewBag</strong></td>
-          <td>Current request</td>
-          <td>Pass small data to view (dynamic key/value)</td>
-          <td><code>ViewBag.Title = "Home"</code></td>
-        </tr>
-        <tr>
-          <td><strong>ViewData</strong></td>
-          <td>Current request</td>
-          <td>Pass small data to view (dictionary, casting required)</td>
-          <td><code>ViewData["Title"] = "Home"</code></td>
-        </tr>
-        <tr>
-          <td><strong>TempData</strong></td>
-          <td>One redirect; <code>Peek(), Keep()</code></td>
-          <td>Controller to controller</td>
-          <td><code>TempData["Msg"] = "Saved"</code></td>
-        </tr>
-        <tr>
-          <td><strong>Session</strong></td>
-          <td>User session</td>
-          <td>User-specific data (cart, prefs)</td>
-          <td><code>HttpContext.Session.SetString("Key","Val")</code></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 13: Error Handling & Logging</h2>
-    <ul>
-      <li>
-        <strong>Development:</strong> Middleware
-        <code>UseDeveloperExceptionPage()</code>, detailed stack traces for dev
-        config
-      </li>
-      <li>
-        <strong>Production:</strong> Middleware
-        <code>UseExceptionHandler("/Home/Error")</code>, friendly error page
-      </li>
-      <li>
-        <strong>Status Code Pages:</strong>
-        <code>UseStatusCodePagesWithReExecute("/Home/Error/{0}")</code>
-      </li>
-      <li>
-        <strong>Error View:</strong> Error.cshtml in Shared, displays friendly
-        message
-      </li>
-      <li>
-        <strong>Ways:</strong> Log error, Try Catch, Exception Page, Custom &
-        Built-in Exception Handling Filters & Middlewares
-      </li>
-      <li>
-        <strong>Logging:</strong> <strong>ILogger</strong>&lt;T&gt; is main
-        logging interface; <strong>Log levels</strong> control severity;
-        <strong>Providers</strong> decide where logs go;
-        <strong>Configuration</strong> in appsettings.json;
-        <strong>Serilog</strong> provides structured logging;
-        <strong>HTTP Logging middleware</strong> logs requests/responses
-      </li>
-    </ul>
-
-    <h2>SECTION 14: Performance & Optimization</h2>
-    <ul>
-      <li><strong>Optimize:</strong> SQL, C#, EF, Web API</li>
-      <li>
-        <strong>Proper Middleware Order & Use Async Actions: </strong>
-        <code>async/await</code> for DB, HTTP calls, prevents thread blocking
-      </li>
-      <li>
-        <strong>Caching:</strong> Response, Output, In-Memory, Redis caching to
-        avoid repeated processing
-      </li>
-      <li>
-        <strong>Compression, Bundling & Minification:</strong> Middleware
-        <code>UseResponseCompression</code> (gzip/brotli) reduces response size;
-        <br />
-        Bundling reduces browser HTTP requests for assets; Minification removes
-        unnecessary characters to shrink assets.
-      </li>
-      <li>
-        <strong>Static Files via CDN:</strong> Serve CSS, JS, images via CDN,
-        use <code>UseStaticFiles()</code> middleware early
-      </li>
-    </ul>
-
-    <h2>SECTION 15: Security Best Practices</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Security Topic</th>
-          <th>Who is Under Attack</th>
-          <th>What the Attack Is</th>
-          <th>How to Prevent (Short)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <strong>CSRF</strong><br />
-            (Cross Site Request Forgery)
-          </td>
-          <td>Logged-in <strong>User</strong></td>
-          <td>
-            Attacker tricks browser to send authenticated requests without user
-            intent
-          </td>
-          <td>
-            Antiforgery tokens on POST/PUT/DELETE,
-            <code>[ValidateAntiForgeryToken]</code>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>XSS</strong><br />(Cross Site Scripting)</td>
-          <td><strong>User's Browser</strong></td>
-          <td>
-            Malicious JavaScript injected via input and executed in browser
-          </td>
-          <td>
-            Razor auto-encoding (<code>@</code>), avoid
-            <code>@Html.Raw</code> with untrusted data
-          </td>
-        </tr>
-        <tr>
-          <td><strong>SQL Injection</strong></td>
-          <td><strong>Database</strong></td>
-          <td>Malicious SQL input alters or leaks DB data</td>
-          <td>
-            EF Core, parameterized queries, stored procedures, no SQL
-            concatenation
-          </td>
-        </tr>
-        <tr>
-          <td><strong>HTTPS</strong></td>
-          <td><strong>User Data in Transit</strong></td>
-          <td>Attacker intercepts or modifies traffic (MITM)</td>
-          <td><code>UseHttpsRedirection()</code>, HSTS in production</td>
-        </tr>
-        <tr>
-          <td><strong>Auth Secrets</strong></td>
-          <td><strong>Application / Infra</strong></td>
-          <td>Leaked keys allow full system access</td>
-          <td>Secure storage (Key Vault), never commit secrets to Git</td>
-        </tr>
-        <tr>
-          <td><strong>Input Validation</strong></td>
-          <td><strong>Application Logic</strong></td>
-          <td>Invalid or malicious input causes unexpected behavior</td>
-          <td>Always validate server-side; client-side is convenience only</td>
-        </tr>
-        <tr>
-          <td><strong>Secure Headers</strong></td>
-          <td><strong>Browser Context</strong></td>
-          <td>Clickjacking, MIME sniffing, script injection</td>
-          <td>
-            <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>,
-            <code>Content-Security-Policy</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>SECTION 16: Testing Basics</h2>
-    <ul>
-      <li>
-        <strong>Unit Tests:</strong> Test a small piece of code in isolation,
-        Ex. an action method; <strong>xUnit/NUnit</strong>
-      </li>
-      <li>
-        <strong>Integration Tests:</strong> Test how different parts of the
-        application work together, Ex. API endpoints, DB flow
-      </li>
-      <li>
-        <strong>Mocking:</strong> Moq library, mock dependencies, test logic not
-        infrastructure
-      </li>
-      <li><strong>Arrange-Act-Assert:</strong> Standard test structure</li>
-    </ul>
-
-    <h2>SECTION 17: Miscellaneous</h2>
-    <ul>
-      <li>
-        <strong>Remote Attribute:</strong> Validates field by calling server
-        method via AJAX(unobtrusive.js) before form submission
-        <code>[Remote("isEmailExists","Controller")]</code>
-      </li>
-
-      <li>
-        <strong>HttpClientFactory:</strong> Calls APIs; Create & manages
-        httpClient instances, Benefits: It avoids socket exhaustion, DNS cache,
-        proper resource disposal
-      </li>
-      <li>
-        <strong>Environment-Based Config:</strong> Dev, Staging, Prod,
-        appsettings.{Environment}.json; <strong>Access:</strong>
-        <code>IConfiguration</code>, Strongly-Typed Config
-        <code>IOptions&lt;T&gt;</code>
-      </li>
-      <li>
-        <strong>Coding Standards:</strong>
-        <strong>Code Analysis</strong>: Rule violations using Roslyn/.NET
-        Analyzers, <strong>Code Metrics</strong>: Measure complexity with Visual
-        Studio Metrics, and <strong>Code Coverage</strong>: Test coverage with
-        Visual Studio Test Coverage.
-      </li>
-    </ul>
-
-    <h2 class="collapsible" onclick="toggleSection()">
-      SECTION 18: Scenario-Based Questions
-      <span class="toggle-icon" id="toggleIcon">▼</span>
+    <!-- ===================== SECTION 1 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 1: MVC Pattern &amp; Architecture
+      <span class="toggle-icon">▼</span>
     </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>MVC Pattern:</strong> Model (data), View (UI), Controller
+          (logic), separation of concerns
+        </li>
+        <li>
+          <strong>Request Flow:</strong> Browser → Routing → Controller → Model
+          Binding → Action → View/Result → Response
+        </li>
+        <li>
+          <strong>MVC vs API:</strong> MVC returns Views (HTML), API returns
+          data (JSON), same runtime
+        </li>
+        <li>
+          <strong>Project Structure:</strong> Controllers/, Views/, Models/,
+          wwwroot/, Program.cs, appsettings.json
+        </li>
+        <li>
+          <strong>Program.cs:</strong> App entry point; configures services,
+          middleware, and routes — <code>builder.Services()</code> →
+          <code>builder.Build()</code> → <code>app.Use()</code> →
+          <code>app.Run()</code>
+        </li>
+        <li>
+          <strong>Middleware Order:</strong> Exception → HTTPS → Static Files →
+          Routing → Auth → Authorization → Controller Endpoints
+        </li>
+        <li>
+          <strong>Areas:</strong> Split large MVC app into smaller modules; use
+          <code>[Area("Admin")]</code>; URL:
+          <code>Area/Controller/Action</code>; <strong>Mini MVC</strong>
+        </li>
+        <li>
+          <strong>.NET Core:</strong> <strong>Kestrel</strong> is the built-in
+          server hosting the app; <strong>reverse proxy</strong> (IIS/Nginx)
+          sits in front to handle SSL, load balancing, static files, cache,
+          compression, and forwards requests to Kestrel
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
 
-    <div class="scenario-content" id="scenarioContent">
+    <!-- ===================== SECTION 2 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2: Controllers &amp; Attributes <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Controller:</strong> Inherits Controller base class; handles
+          HTTP requests; returns IActionResult
+        </li>
+        <li>
+          <strong>Keep Actions Thin:</strong> Delegate logic to
+          services/repositories; controllers coordinate only
+        </li>
+        <li>
+          <strong>MVC Action Returns:</strong> <code>IActionResult</code>,
+          <code>ActionResult&lt;T&gt;</code>, <code>ViewResult</code>,
+          <code>JsonResult</code>, <code>FileResult</code>,
+          <code>RedirectToActionResult</code>
+        </li>
+        <li>
+          <strong>Attributes:</strong> <code>[HttpGet]</code>,
+          <code>[HttpPost]</code>, <code>[Route(...)]</code>,
+          <code>[ValidateAntiForgeryToken]</code>, <code>[Authorize]</code>
+        </li>
+        <li>
+          <strong>Model Binding Sources:</strong> <code>[FromQuery]</code>,
+          <code>[FromBody]</code>, <code>[FromRoute]</code>,
+          <code>[FromForm]</code>, <code>[FromHeader]</code>
+        </li>
+        <li>
+          <strong>Over-posting Protection:</strong> Use ViewModels or
+          <code>[Bind("AllowedProp1,AllowedProp2")]</code>; never model bind
+          unnecessary fields
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 3 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3: Routing <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Route Types:</strong> Conventional
+          <code>{controller=Home}/{action=Index}/{id}</code> and Attribute
+          <code>[Route("home/details/{id:int?}")]</code>
+        </li>
+        <li>
+          <strong>Route Constraints:</strong> <code>/products/{id:int}</code> —
+          <code>:int</code>, <code>:alpha</code>, <code>:datetime</code>,
+          <code>:min(value)</code>, <code>:max(value)</code>
+        </li>
+        <li>
+          <strong>Default Route:</strong> <code>Home/Index</code>; fallback for
+          root URL; defined via conventional routing in <code>Program.cs</code>
+        </li>
+        <li>
+          <strong>Route Priority:</strong> Attribute routing overrides
+          conventional; specific routes first, then generic;
+          <code>MapControllers()</code> registers MVC controller endpoints
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Views &amp; Razor Syntax <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Razor Basics:</strong> <code>@model</code> directive,
+          <code>@Model.Property</code>, <code>@{ code blocks }</code>,
+          <code>@if/@for/@foreach</code>
+        </li>
+        <li>
+          <strong>View Discovery:</strong>
+          <code>Views/{Controller}/{Action}.cshtml</code> or shared
+          <code>Views/Shared/</code>
+        </li>
+        <li>
+          <strong>Layouts:</strong> <code>_Layout.cshtml</code> is master page;
+          <code>@RenderBody()</code> renders view content;
+          <code>_ViewStart.cshtml</code> sets layout for all views;
+          <code>_ViewImports.cshtml</code> holds shared Razor imports for all
+          views
+        </li>
+        <li>
+          <strong>Partials:</strong> Reusable HTML fragments —
+          <code>@Html.Partial("_Header", model)</code>
+        </li>
+        <li>
+          <strong>View Components:</strong> Reusable UI with backend logic;
+          inherit <code>ViewComponent</code> &amp; implement
+          <code>InvokeAsync()</code>; used for complex widgets (menus,
+          notifications) —
+          <code>@await Component.InvokeAsync("UserInfo", model)</code>
+        </li>
+        <li>
+          <strong>Tag &amp; HTML Helpers:</strong> Tag helpers:
+          <code>asp-controller</code>, <code>asp-action</code>,
+          <code>asp-for</code>, <code>asp-validation-for</code>; HTML helpers:
+          <code>@Html.TextBoxFor()</code>, <code>LabelFor()</code>,
+          <code>DropDownListFor()</code>, <code>ActionLink()</code>
+        </li>
+        <li>
+          <strong>Sections:</strong> Allow views to inject page-specific content
+          (scripts, styles) into layout via <code>@section</code> in view and
+          <code>@RenderSection("Scripts", required: false)</code> in layout
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 5 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 5: Models &amp; ViewModels <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Domain Models:</strong> Represent database entities and
+          business logic
+        </li>
+        <li>
+          <strong>ViewModels:</strong> Tailored for views; prevent over-posting;
+          combine multiple models
+        </li>
+        <li>
+          <strong>Model Binding:</strong> Form/query/route data → action
+          parameters; automatic population
+        </li>
+        <li>
+          <strong>ModelState:</strong> Validation errors container;
+          <code>ModelState.IsValid</code> check;
+          <code>ModelState.AddModelError()</code> for custom errors
+        </li>
+        <li>
+          <strong>Return Strategy:</strong> If invalid, return same view with
+          model to show errors
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Validation <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Client-Side:</strong> Unobtrusive validation with jQuery
+          Validate; fast feedback without round trip
+        </li>
+        <li>
+          <strong>Display Errors:</strong> <code>asp-validation-for</code>,
+          <code>asp-validation-summary</code>
+        </li>
+        <li>
+          <strong>Server-Side:</strong> Always validate — client can be
+          bypassed; use Data Annotations, FluentValidation, or Custom
+        </li>
+        <li>
+          <strong>Data Annotations:</strong> <code>[Required]</code>,
+          <code>[StringLength]</code>, <code>[Range]</code>,
+          <code>[EmailAddress]</code>, <code>[Compare]</code>,
+          <code>[RegularExpression]</code>
+        </li>
+        <li>
+          <strong>Custom Validation:</strong> Implement
+          <code>ValidationAttribute</code> or <code>IValidatableObject</code>
+        </li>
+        <li>
+          <strong>FluentValidation:</strong> External library; validation rules
+          in separate class; more powerful for complex rules
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7: Forms <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Form Submission:</strong> GET (display form) → POST (submit) →
+          Validate → Persist → Redirect
+        </li>
+        <li>
+          <strong>PRG Pattern:</strong> Post-Redirect-Get prevents duplicate
+          submissions on browser refresh
+        </li>
+        <li>
+          <strong>Anti-CSRF:</strong> Form tag helper auto-includes token;
+          <code>[ValidateAntiForgeryToken]</code> on POST actions
+        </li>
+        <li>
+          <strong>Form Tag Helpers:</strong> <code>asp-controller</code>,
+          <code>asp-action</code>, <code>asp-route-*</code>,
+          <code>method="post"</code>
+        </li>
+        <li>
+          <strong>File Upload:</strong> Use <code>IFormFile</code>; validate
+          size and type; save to storage
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8: AJAX <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>AJAX Pattern:</strong> <code>fetch()</code> or
+          <code>$.ajax()</code> — call server in background and update part of a
+          page without full page reload
+        </li>
+        <li>
+          <strong>Partial View:</strong> Return <code>PartialView()</code> from
+          action; renders HTML fragment
+        </li>
+        <li>
+          <strong>JSON Return:</strong> Return <code>Json(data)</code> for
+          API-like responses
+        </li>
+        <li>
+          <strong>jQuery Load:</strong>
+          <code>$("#div").load("/Home/Partial")</code> for quick partial updates
+        </li>
+        <li>
+          <strong>Progressive Enhancement:</strong> Page should work without JS;
+          enhance with AJAX
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Dependency Injection &amp; Configuration
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li><strong>Constructor Injection:</strong> Preferred; cleaner</li>
+        <li>
+          <strong>View Injection:</strong>
+          <code>@inject IService service</code> for view-specific needs
+        </li>
+        <li>
+          <strong>Configuration:</strong> <code>IConfiguration</code> reads
+          settings from <code>appsettings.json</code> and environment-specific
+          files
+        </li>
+        <li>
+          <strong>Options Pattern:</strong> <code>IOptions&lt;T&gt;</code> binds
+          settings to strongly-typed classes; configured in
+          <code>Program.cs</code>
+        </li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Lifetime</th>
+            <th>Scope</th>
+            <th>Typical Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Singleton</strong></td>
+            <td>One instance for app lifetime</td>
+            <td>Configuration, caching, stateless helpers, loggers</td>
+          </tr>
+          <tr>
+            <td><strong>Scoped</strong></td>
+            <td>One per HTTP request</td>
+            <td>
+              DbContext, business services, repositories —
+              <strong>stateful, data, user</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Transient</strong></td>
+            <td>New instance each use</td>
+            <td>
+              Lightweight, short-lived utility services —
+              <strong>stateless helpers</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 10 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 10: Authentication &amp; Authorization
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Middleware Order:</strong>
+          <code>app.UseAuthentication()</code> →
+          <code>app.UseAuthorization()</code> — order matters
+        </li>
+        <li>
+          <strong>Cookie Auth:</strong>
+          <code>AddAuthentication().AddCookie()</code>,
+          <code>SignInAsync/SignOutAsync</code>
+        </li>
+        <li>
+          <strong>Identity:</strong> UserManager, SignInManager, RoleManager —
+          complete user management system
+        </li>
+        <li>
+          <strong>[AllowAnonymous]:</strong> Bypass auth for login/public pages
+        </li>
+        <li>
+          <strong>User Object:</strong> <code>User.Identity.Name</code>,
+          <code>User.IsInRole()</code>, <code>User.Claims</code>
+        </li>
+        <li>
+          <strong>Authentication types:</strong> Cookie, MFA, External;
+          <strong>Authorization types:</strong> Role, Claim, Policy
+        </li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Authorization Type</th>
+            <th>Example</th>
+            <th>Use For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Role-based</strong></td>
+            <td><code>[Authorize(Roles="Admin")]</code></td>
+            <td>Simple scenarios</td>
+          </tr>
+          <tr>
+            <td><strong>Claims-based</strong></td>
+            <td><code>User.Claims</code> checks</td>
+            <td>Fine-grained access</td>
+          </tr>
+          <tr>
+            <td><strong>Policy-based</strong></td>
+            <td><code>[Authorize(Policy="AdminOnly")]</code></td>
+            <td>Complex rules</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 11 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 11: Filters &amp; Middleware <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Filters:</strong> Run before/after controller/action
+          execution; <strong>controller-level</strong>; used for logging,
+          validation, authorization, result manipulation
+        </li>
+        <li>
+          <strong>Middleware:</strong> Processes every HTTP request &amp;
+          response in the pipeline; <strong>app-wide</strong>; used for CORS,
+          auth, static files, routing
+        </li>
+        <li>
+          <strong>Middleware Behavior:</strong> <code>Use()</code> → call next
+          middleware; <code>Run()</code> → end pipeline; <code>When()</code> →
+          run on condition
+        </li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Filter Type</th>
+            <th>Runs When</th>
+            <th>What it Does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Authorization</strong> (<code>[Authorize]</code>)</td>
+            <td>Runs first, before any other filters and before action</td>
+            <td>
+              Decides <strong>who is allowed</strong> to access the action
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Resource</strong> (<code>IResourceFilter</code>)</td>
+            <td>After authorization, before model binding and after action</td>
+            <td>
+              Decides <strong>whether request should continue</strong> (cache /
+              short-circuit)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Action</strong> (<code>IActionFilter</code>)</td>
+            <td>After model binding, just before and after action method</td>
+            <td>
+              Logic <strong>around the action</strong> (logging, validation,
+              parameter changes)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Result</strong> (<code>IResultFilter</code>)</td>
+            <td>Around the action result (View/JSON)</td>
+            <td>Modifies or logs the <strong>final response</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Exception</strong> (<code>IExceptionFilter</code>)</td>
+            <td>Only if an exception occurs in action or result</td>
+            <td>Catches MVC errors and returns proper response</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Important Middleware (Order Matters):</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Middleware</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code>app.UseExceptionHandler("/Error")</code> /
+                <code>app.UseDeveloperExceptionPage()</code>
+              </td>
+              <td>Global error handling</td>
+            </tr>
+            <tr>
+              <td><code>app.UseHttpsRedirection()</code></td>
+              <td>Enforce HTTPS</td>
+            </tr>
+            <tr>
+              <td><code>app.UseStaticFiles()</code></td>
+              <td>Serve CSS, JS, images</td>
+            </tr>
+            <tr>
+              <td><code>app.UseRouting()</code></td>
+              <td>Enable endpoint routing</td>
+            </tr>
+            <tr>
+              <td><code>app.UseCors("Policy")</code></td>
+              <td>Cross-origin requests</td>
+            </tr>
+            <tr>
+              <td><code>app.UseAuthentication()</code></td>
+              <td>Identify the user</td>
+            </tr>
+            <tr>
+              <td><code>app.UseAuthorization()</code></td>
+              <td>Enforce access rules</td>
+            </tr>
+            <tr>
+              <td><code>app.MapControllerRoute(...)</code></td>
+              <td>Map MVC routes/endpoints</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 12 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 12: State Management <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Session:</strong> <code>services.AddSession()</code>,
+          <code>app.UseSession()</code>,
+          <code>HttpContext.Session.SetString/GetString</code>
+        </li>
+        <li>
+          <strong>Cache:</strong> In-Memory, Response, Distributed (Redis/SQL)
+          for scalability
+        </li>
+        <li>
+          <strong>All Ways:</strong> ViewBag, ViewData, TempData, Session,
+          Cache, Cookies, Hidden Fields
+        </li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Scope</th>
+            <th>Use For</th>
+            <th>Syntax</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ViewBag</strong></td>
+            <td>Current request</td>
+            <td>Pass small data to view (dynamic key/value)</td>
+            <td><code>ViewBag.Title = "Home"</code></td>
+          </tr>
+          <tr>
+            <td><strong>ViewData</strong></td>
+            <td>Current request</td>
+            <td>Pass small data to view (dictionary; casting required)</td>
+            <td><code>ViewData["Title"] = "Home"</code></td>
+          </tr>
+          <tr>
+            <td><strong>TempData</strong></td>
+            <td>One redirect; <code>Peek()</code>, <code>Keep()</code></td>
+            <td>Controller to controller (success/error messages)</td>
+            <td><code>TempData["Msg"] = "Saved"</code></td>
+          </tr>
+          <tr>
+            <td><strong>Session</strong></td>
+            <td>User session</td>
+            <td>User-specific data (cart, prefs)</td>
+            <td><code>HttpContext.Session.SetString("Key","Val")</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 13 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 13: Error Handling &amp; Logging
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Development:</strong>
+          <code>UseDeveloperExceptionPage()</code> — detailed stack traces
+        </li>
+        <li>
+          <strong>Production:</strong>
+          <code>UseExceptionHandler("/Home/Error")</code> — friendly error page
+        </li>
+        <li>
+          <strong>Status Code Pages:</strong>
+          <code>UseStatusCodePagesWithReExecute("/Home/Error/{0}")</code>
+        </li>
+        <li>
+          <strong>Error View:</strong> <code>Error.cshtml</code> in Shared
+          folder; displays friendly message
+        </li>
+        <li>
+          <strong>Ways:</strong> Try-Catch, Exception Page, Custom &amp;
+          Built-in Exception Filters &amp; Middlewares
+        </li>
+        <li>
+          <strong>Logging:</strong> <code>ILogger&lt;T&gt;</code> is the main
+          logging interface; log levels control severity; providers decide where
+          logs go (console, file, Seq); <strong>Serilog</strong> provides
+          structured logging; HTTP Logging middleware logs requests/responses
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 14 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 14: Performance &amp; Optimization
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li><strong>Optimize:</strong> SQL, C#, EF, Web API calls</li>
+        <li>
+          <strong>Use async/await:</strong> For DB and HTTP calls; prevents
+          thread blocking
+        </li>
+        <li>
+          <strong>Caching:</strong> Response, Output, In-Memory, Redis — avoid
+          repeated processing
+        </li>
+        <li>
+          <strong>Compression, Bundling &amp; Minification:</strong>
+          <code>UseResponseCompression</code> (gzip/brotli) reduces response
+          size; bundling reduces browser HTTP requests; minification shrinks
+          assets
+        </li>
+        <li>
+          <strong>Static Files via CDN:</strong> Serve CSS, JS, images via CDN;
+          use <code>UseStaticFiles()</code> middleware early
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 15 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 15: Security Best Practices <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Security Topic</th>
+            <th>Who is Under Attack</th>
+            <th>What the Attack Is</th>
+            <th>How to Prevent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CSRF</strong></td>
+            <td>Logged-in <strong>User</strong></td>
+            <td>
+              Attacker tricks browser to send authenticated requests without
+              user intent
+            </td>
+            <td>
+              Antiforgery tokens on POST/PUT/DELETE —
+              <code>[ValidateAntiForgeryToken]</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>XSS</strong></td>
+            <td><strong>User's Browser</strong></td>
+            <td>
+              Malicious JavaScript injected via input and executed in browser
+            </td>
+            <td>
+              Razor auto-encoding (<code>@</code>); avoid
+              <code>@Html.Raw</code> with untrusted data
+            </td>
+          </tr>
+          <tr>
+            <td><strong>SQL Injection</strong></td>
+            <td><strong>Database</strong></td>
+            <td>Malicious SQL input alters or leaks DB data</td>
+            <td>
+              EF Core, parameterized queries, stored procedures; no SQL string
+              concatenation
+            </td>
+          </tr>
+          <tr>
+            <td><strong>HTTPS</strong></td>
+            <td><strong>Data in Transit</strong></td>
+            <td>Attacker intercepts or modifies traffic (MITM)</td>
+            <td><code>UseHttpsRedirection()</code>, HSTS in production</td>
+          </tr>
+          <tr>
+            <td><strong>Auth Secrets</strong></td>
+            <td><strong>Application / Infra</strong></td>
+            <td>Leaked keys allow full system access</td>
+            <td>Azure Key Vault; never commit secrets to Git</td>
+          </tr>
+          <tr>
+            <td><strong>Input Validation</strong></td>
+            <td><strong>Application Logic</strong></td>
+            <td>Invalid or malicious input causes unexpected behavior</td>
+            <td>
+              Always validate server-side; client-side is convenience only
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Secure Headers</strong></td>
+            <td><strong>Browser Context</strong></td>
+            <td>Clickjacking, MIME sniffing, script injection</td>
+            <td>
+              <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>,
+              <code>Content-Security-Policy</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 16 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 16: Testing Basics <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Unit Tests:</strong> Test a small piece of code in isolation
+          (e.g. an action method) — xUnit / NUnit
+        </li>
+        <li>
+          <strong>Integration Tests:</strong> Test how different parts of the
+          app work together (e.g. API endpoints, DB flow)
+        </li>
+        <li>
+          <strong>Mocking:</strong> Moq library; mock dependencies; test logic
+          not infrastructure
+        </li>
+        <li><strong>Arrange-Act-Assert:</strong> Standard test structure</li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 17 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 17: Miscellaneous <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>Remote Attribute:</strong> Validates field by calling server
+          method via AJAX before form submission —
+          <code>[Remote("isEmailExists","Controller")]</code>
+        </li>
+        <li>
+          <strong>HttpClientFactory:</strong> Manages HttpClient instances;
+          avoids socket exhaustion, DNS cache issues, and improper disposal
+        </li>
+        <li>
+          <strong>Environment-Based Config:</strong> Dev, Staging, Prod —
+          <code>appsettings.{Environment}.json</code>; access via
+          <code>IConfiguration</code> or strongly-typed
+          <code>IOptions&lt;T&gt;</code>
+        </li>
+        <li>
+          <strong>Coding Standards:</strong> <strong>Code Analysis</strong> —
+          rule violations via Roslyn Analyzers; <strong>Code Metrics</strong> —
+          complexity via VS Metrics; <strong>Code Coverage</strong> — test
+          coverage via VS Test Coverage
+        </li>
+      </ul>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 18: SCENARIOS ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 18: Scenario-Based Questions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
       <div class="scenario-item">
         <h3>1. Form Resubmission on Browser Refresh</h3>
         <p>
           After submitting an order form, users refresh the page and the order
-          gets created again, resulting in duplicate orders. How do you prevent
-          this form resubmission issue?
+          gets created again, resulting in duplicates. Users also sometimes
+          click Submit multiple times on slow networks. How do you prevent this?
         </p>
-        <div class="related-note">
-          <strong>Related:</strong> Users click "Submit Order" multiple times
-          before the page responds (slow network), creating duplicate orders in
-          the database. How do you prevent multiple form submissions?
-        </div>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Form resubmission happens because the browser repeats the last POST
-            request when you refresh the page. I prevent this by using the
-            Post-Redirect-Get (PRG) pattern. After saving data in the POST
-            action, I redirect to a GET action instead of returning a view
-            directly. This way, refreshing the page only repeats the GET
-            request, not the POST. I can also disable the submit button after
-            clicking to prevent multiple submissions and use an idempotency key
-            to ignore duplicate requests.
+            Use the Post-Redirect-Get (PRG) pattern — after saving data in the
+            POST action, redirect to a GET action instead of returning a view
+            directly. Refreshing the page then only repeats the GET, not the
+            POST. Additionally, disable the submit button after the first click
+            via JavaScript to prevent multiple submissions, and use an
+            idempotency key to ignore any duplicate requests that still get
+            through.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
         <h3>2. Session Data Lost in Load-Balanced Environment</h3>
         <p>
-          Your application stores shopping cart data in Session. After deploying
-          to multiple servers behind a load balancer, users randomly lose cart
-          items because requests go to different servers. How do you fix this?
+          Shopping cart data is stored in Session. After deploying to multiple
+          servers behind a load balancer, users randomly lose cart items because
+          requests go to different servers. How do you fix this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            In a load-balanced environment, in-memory session data is stored
-            separately on each server and is not shared. When a user's request
-            goes to a different server, the session data is not available there.
-            I fix this by using distributed session storage like SQL Server or
-            Redis so all servers can access the same session data. For critical
-            data like shopping carts, I prefer storing it directly in the
-            database. Never use in-memory session storage in a load-balanced
-            environment.
+            In-memory session is stored per server and not shared. When a
+            request hits a different server, the session data isn't there. Fix:
+            use distributed session storage — Redis or SQL Server — so all
+            servers share the same session. For critical data like carts, prefer
+            storing it in the database. Never use in-memory session in a
+            load-balanced environment.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>3. CSRF Attack Prevention</h3>
+        <h3>3. CSRF Attack on Money Transfer Form</h3>
         <p>
-          Your application has a money transfer form. An attacker creates a
-          malicious website with a hidden form that submits to your application,
-          causing unauthorized transfers when logged-in users visit that site.
-          How do you prevent Cross-Site Request Forgery (CSRF)?
+          An attacker creates a malicious site with a hidden form that submits
+          to your app, causing unauthorized transfers when logged-in users visit
+          that site. How do you prevent CSRF?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            CSRF happens when an attacker tricks a logged-in user into sending a
-            request from a malicious website to your application. I prevent this
-            by using anti-forgery tokens in forms with
-            <code>@Html.AntiForgeryToken()</code> and validating them on the
-            server using the <code>[ValidateAntiForgeryToken]</code> attribute.
-            This ensures the request genuinely came from my application and not
-            from an external malicious site.
+            CSRF tricks a logged-in user's browser into sending a request to
+            your app from a malicious site. Prevent it by using anti-forgery
+            tokens — add <code>@Html.AntiForgeryToken()</code> in forms and
+            validate with <code>[ValidateAntiForgeryToken]</code> on POST
+            actions. The token is unique per session, so requests from external
+            sites won't have it and will be rejected.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>4. Over-Posting Vulnerability</h3>
+        <h3>4. Over-Posting / User Grants Themselves Admin</h3>
         <p>
-          Your User edit form has fields for Name and Email only. A malicious
-          user adds <code>IsAdmin=true</code> to the POST data using browser
-          developer tools, granting themselves admin privileges. How do you
-          prevent over-posting attacks?
+          Your edit form only shows Name and Email. A malicious user adds
+          <code>IsAdmin=true</code> to the POST data using dev tools and grants
+          themselves admin privileges. How do you prevent this?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Over-posting happens when MVC binds extra fields sent by the client
-            that were not intended to be updated. I prevent this by using
-            dedicated ViewModels that expose only the allowed fields for
-            editing, and by never binding domain entities directly in POST
-            actions. This way, even if a malicious user sends extra data, MVC
-            won't bind it because the ViewModel doesn't have those properties.
+            Use dedicated ViewModels that only expose the fields intended for
+            editing. Never bind domain entities directly in POST actions. Since
+            <code>IsAdmin</code> is not a property on the ViewModel, MVC won't
+            bind it even if the client sends it. Alternatively use
+            <code>[Bind("Name,Email")]</code> to explicitly whitelist allowed
+            fields.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>5. N+1 Query Problem in Views</h3>
+        <h3>5. XSS — Script Injected via User Comment</h3>
         <p>
-          Your product listing page shows each product with its category name.
-          The page loads very slowly because it makes a separate database query
-          for each product's category inside the view loop. How do you fix this?
+          Users post comments with
+          <code>&lt;script&gt;alert('Hacked')&lt;/script&gt;</code> and the
+          script executes for everyone viewing the page. How do you prevent XSS?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            The N+1 problem happens when the application makes one database
-            query to get the main list and then makes an additional query for
-            each item inside a loop. This creates many unnecessary database
-            calls and slows down the page. I fix this by loading all required
-            data in a single query using <code>Include()</code> for eager
-            loading or by using projection with <code>Select()</code> to get
-            only the needed fields. This reduces database calls dramatically and
-            improves performance. Never hit the database inside a view
-            loop—fetch all data in one query in the controller.
+            Razor automatically HTML-encodes output when you use
+            <code>@variable</code> — the script tags become plain text, not
+            executable. Never use <code>@Html.Raw()</code> with untrusted user
+            input. Always validate input server-side too. Razor's auto-encoding
+            covers the vast majority of XSS attack vectors.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>6. XSS Attack Through User Input</h3>
+        <h3>6. User Accesses Admin Pages by Typing the URL</h3>
         <p>
-          Users post comments containing
-          <code>&lt;script&gt;alert('Hacked')&lt;/script&gt;</code>, and the
-          script executes for everyone viewing the page. How do you prevent XSS
-          (Cross-Site Scripting) attacks?
+          Admin links are hidden in the nav menu for non-admins, but users can
+          still access <code>/Admin/DeleteUser</code> by typing it directly. How
+          do you implement proper authorization?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            XSS happens when user input is displayed without proper encoding,
-            and the browser executes injected scripts. In MVC, I prevent this by
-            relying on Razor's automatic HTML encoding when displaying user
-            data. I avoid using <code>Html.Raw()</code> unless absolutely
-            necessary and the data is trusted. I also validate user input on the
-            server side and never trust data coming from users. Razor
-            automatically encodes output, which protects against most XSS
-            attacks.
+            Hiding links in the UI is not security — anyone can type a URL.
+            Secure the action with <code>[Authorize(Roles = "Admin")]</code>.
+            This enforces authorization at the server level regardless of how
+            the user reached the URL. Never rely on UI visibility for access
+            control.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>7. Unauthorized Access to Admin Pages</h3>
+        <h3>7. DbContext Disposed Error When View Renders</h3>
         <p>
-          Users can access admin pages by directly typing URLs like
-          <code>/Admin/DeleteUser</code>, even though your navigation menu hides
-          these links for non-admins. How do you implement proper authorization?
+          The view tries to access lazy-loaded navigation properties but throws
+          "Cannot access a disposed object." The DbContext was disposed before
+          the view rendered. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Hiding links in the UI does not prevent users from accessing URLs
-            directly. I implement proper authorization by securing controller
-            actions using the <code>[Authorize]</code> attribute with roles or
-            policies. For example,
-            <code>[Authorize(Roles = "Admin")]</code> ensures only users in the
-            Admin role can access the action. This ensures proper security even
-            if someone manually enters the URL. Never rely on hiding links for
-            security.
+            Lazy loading fires a DB query when a navigation property is accessed
+            — but by the time the view renders, the DbContext is already
+            disposed. Fix: eagerly load all required data in the controller
+            using <code>Include()</code>, or use a ViewModel so the view never
+            touches navigation properties directly. Views should render data,
+            never fetch it.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>8. Model Binding Returns Null Values</h3>
+        <h3>8. Dashboard Page Takes 15 Seconds to Load</h3>
         <p>
-          You submit a form with all fields filled, but in the controller
-          action, the model properties are all null or default values. The form
-          data isn't binding to your model. How do you fix model binding issues?
+          Your dashboard has 20 partial views and each makes its own separate
+          database call. The whole page takes 15 seconds. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Model binding returns null when form field names do not match model
-            property names, or when the HTTP method or action is incorrect. I
-            fix this by using strongly typed HTML helpers like
-            <code>@Html.TextBoxFor()</code> which automatically generate correct
-            field names. I also ensure the form uses
-            <code>method="POST"</code> and the controller action has the
-            <code>[HttpPost]</code> attribute. Remember, MVC binds form data by
-            the <code>name</code> attribute, not by the
-            <code>id</code> attribute.
+            Each partial view fetching its own data causes 20+ DB round trips.
+            Fix: load all required data in the controller in a single
+            comprehensive query and pass it via a ViewModel. Partial views
+            should receive data from the ViewModel, not fetch it themselves.
+            This reduces 20 queries to 1 or 2 and renders dramatically faster.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>9. DbContext Disposed Error in Views</h3>
+        <h3>9. Anti-Forgery Token Error in AJAX Requests</h3>
         <p>
-          Your view tries to display lazy-loaded navigation properties, but you
-          get "Cannot access a disposed object" error. The DbContext was
-          disposed before the view rendered. How do you fix this?
+          AJAX POST requests fail with "The anti-forgery token could not be
+          decrypted," especially when users have multiple tabs open or the page
+          has been idle. How do you fix it?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            This error occurs because lazy loading tries to access the database
-            after the DbContext has already been disposed. The DbContext
-            lifetime ends when the controller action completes, but the view
-            renders afterward. I fix this by eagerly loading all required
-            navigation properties in the controller using
-            <code>Include()</code>, or by using ViewModels so the view doesn't
-            depend on DbContext or navigation properties. Views should never
-            trigger database calls—load everything you need in the controller.
+            AJAX requests don't automatically include anti-forgery tokens like
+            normal form posts. Fix: generate the token with
+            <code>@Html.AntiForgeryToken()</code>, read it from the hidden field
+            in JavaScript, and send it as a request header
+            (<code>RequestVerificationToken</code>) in every AJAX POST call. The
+            server then validates it normally.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>10. Client-Side Validation Not Working</h3>
-        <p>
-          Your model has validation attributes like <code>[Required]</code> and
-          <code>[StringLength]</code>. Server-side validation works, but
-          client-side validation (immediate feedback without submitting) doesn't
-          work. How do you enable it?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Client-side validation does not work if the required JavaScript
-            libraries are missing. I enable it by including three scripts in the
-            correct order: jQuery, jQuery Validation, and jQuery Unobtrusive
-            Validation. I also use strongly typed HTML helpers like
-            <code>@Html.EditorFor()</code> and
-            <code>@Html.ValidationMessageFor()</code> so validation rules are
-            automatically generated in the HTML. These scripts read the
-            validation attributes and provide instant feedback to users.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>11. TempData Lost During Redirect</h3>
-        <p>
-          You set success messages in TempData after saving data, but sometimes
-          users don't see the messages after redirect, especially on slow
-          networks or when they navigate quickly. How do you ensure TempData
-          reliability?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            TempData is designed to persist data only for a single redirect and
-            is cleared after it is read. To ensure reliability, I use the
-            Post-Redirect-Get pattern properly and avoid reading TempData
-            multiple times. If I need to read TempData without removing it, I
-            use <code>TempData.Peek("key")</code> to read without deleting, or
-            <code>TempData.Keep("key")</code> to keep it for another request.
-            TempData is perfect for showing one-time messages after redirects.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>12. Circular Reference Error in JSON</h3>
-        <p>
-          Your API action returns a Product with its Category, and Category has
-          a list of Products, creating a circular reference. You get "A circular
-          reference was detected while serializing" error. How do you fix this?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            This error occurs because related entities reference each other,
-            causing the JSON serializer to loop infinitely when trying to
-            serialize them. I fix this by using DTOs (Data Transfer Objects) or
-            ViewModels and returning only the required data instead of full
-            Entity Framework entities. This avoids circular references and keeps
-            API responses clean and lightweight. Never return EF entities
-            directly from API actions.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>13. Action Method Ambiguity Error</h3>
-        <p>
-          You have two action methods with the same name but different
-          parameters. When you run the application, you get "Multiple actions
-          were found that match the request" error. How do you resolve routing
-          conflicts?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            When two actions match the same route and HTTP verb, MVC cannot
-            decide which one to call and throws an ambiguity error. I fix this
-            by using different HTTP verbs like <code>[HttpGet]</code> and
-            <code>[HttpPost]</code>, using route attributes to create different
-            URLs, or giving distinct action names using
-            <code>[ActionName("EditUser")]</code>. Each route must uniquely
-            identify an action based on URL, HTTP verb, and parameters.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>14. File Download Without Authorization</h3>
-        <p>
-          Files in the <code>wwwroot/uploads</code> folder are directly
-          accessible by anyone who knows the URL, bypassing your authorization
-          logic. How do you secure file downloads to require authorization?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Files inside <code>wwwroot</code> (or <code>Content</code> in older
-            MVC) are publicly accessible and bypass authorization because the
-            web server serves them directly. To secure downloads, I store files
-            outside the <code>wwwroot</code> folder and serve them through a
-            controller action protected with <code>[Authorize]</code>. The
-            action reads the file and returns it using
-            <code>File()</code> result. This ensures only authorized users can
-            download files.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>15. Slow View Rendering Performance</h3>
-        <p>
-          Your dashboard page loads 20 partial views, and each partial view
-          makes separate database calls. The entire page takes 15 seconds to
-          load. How do you optimize view rendering performance?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            The page is slow because each partial view makes its own database
-            call, causing many unnecessary queries. I optimize this by loading
-            all required data in the controller in one go using a comprehensive
-            ViewModel and passing it to the view. Partial views should receive
-            data through the ViewModel, not fetch it themselves. This reduces
-            database calls from 20+ to just 1 or 2 and dramatically improves
-            page rendering performance. Views render data; they should never
-            fetch data.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>16. Anti-Forgery Token Errors in AJAX</h3>
-        <p>
-          Your AJAX POST requests fail with "The anti-forgery token could not be
-          decrypted" error, especially when users open multiple tabs or after
-          the page sits idle. How do you fix anti-forgery token validation in
-          AJAX?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            AJAX requests do not automatically include anti-forgery tokens like
-            normal form posts. I fix this by generating the token on the page
-            using <code>@Html.AntiForgeryToken()</code> and explicitly reading
-            it from the hidden field and sending it in the AJAX request headers.
-            I add the token to the request header as
-            <code>RequestVerificationToken</code>. This ensures the server can
-            validate the request even when multiple tabs are open or after the
-            page has been idle. AJAX posts must send anti-forgery tokens
-            manually.
-          </p>
-        </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>17. ViewBag Data Lost After ModelState Error</h3>
+        <h3>10. ViewBag Dropdown Data Lost After Validation Failure</h3>
         <p>
           You populate dropdown data in ViewBag, validate the form, and return
-          the view due to validation errors. The dropdowns are now empty because
-          ViewBag data is lost. How do you preserve ViewBag/ViewData on
-          validation failure?
+          the view on errors. The dropdowns are now empty. How do you preserve
+          dropdown data on validation failure?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            ViewBag data is lost because it only lives for a single request.
-            When validation fails and I return the view, the ViewBag data must
-            be repopulated. The better approach is to use a ViewModel that
-            contains both the form data and the dropdown data (like a list of
-            categories). This way, when validation fails, all the data needed to
-            display the form is already in the ViewModel. Avoid using ViewBag
-            for data that needs to survive validation failures.
+            ViewBag only lives for one request — when you return the view after
+            validation failure, it's gone. Best fix: include dropdown data
+            inside the ViewModel itself (e.g. a
+            <code>List&lt;SelectListItem&gt; Categories</code> property). When
+            returning the view on validation failure, repopulate the ViewModel
+            including that list. Avoid using ViewBag for data that must survive
+            validation failures.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>18. Large File Uploads Causing Timeouts</h3>
+        <h3>11. Files in wwwroot Accessible Without Auth</h3>
         <p>
-          Users upload 500MB video files, causing request timeouts, "Maximum
-          request length exceeded" errors, and server memory issues. How do you
-          handle large file uploads properly?
+          Files in <code>wwwroot/uploads</code> are directly accessible by
+          anyone who knows the URL, bypassing your authorization logic. How do
+          you secure file downloads?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Large file uploads fail because the default request size limits are
-            small (usually 4MB) and loading big files into memory causes
-            timeouts and memory problems. I fix this by increasing the request
-            size limit in <code>web.config</code> (or
-            <code>appsettings.json</code> in Core), streaming files directly to
-            disk instead of loading them into memory, validating file size early
-            on the client side, and using chunked uploads for very large files.
-            I also increase the execution timeout to give more time for uploads
-            to complete.
+            Files inside <code>wwwroot</code> are served directly by the web
+            server, bypassing MVC and authorization entirely. Fix: store
+            sensitive files outside <code>wwwroot</code> and serve them through
+            a controller action protected with <code>[Authorize]</code>. The
+            action reads the file from the secure location and returns it using
+            <code>File()</code>. Only authorized users can reach the action and
+            get the file.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>19. Authentication Not Working After Deployment</h3>
+        <h3>12. Stale Cache Data After Database Update</h3>
         <p>
-          Your application works perfectly on localhost with authentication, but
-          after deploying to the server, users cannot log in or stay logged in.
-          Sessions expire immediately or cookies are not set. How do you
-          troubleshoot authentication issues after deployment?
+          You update a product price in the database but users still see the old
+          price even after refreshing. The cache is serving stale data. How do
+          you handle cache invalidation?
         </p>
         <div class="answer">
           <strong>Answer:</strong>
           <p>
-            Authentication issues after deployment usually happen due to machine
-            key differences, cookie domain mismatches, or HTTPS requirements. In
-            a load-balanced environment, I ensure all servers use the same
-            machine key in <code>web.config</code>. I check that the
-            authentication cookie domain and path are configured correctly for
-            the deployed URL. For production, I enable
-            <code>requireSSL</code> for cookies to work over HTTPS. I also
-            verify that the connection string points to the correct database
-            with user accounts.
+            Cached data doesn't update automatically when the database changes.
+            Fix: invalidate (remove or update) the relevant cache key
+            immediately after any write operation. In ASP.NET Core, call
+            <code>_cache.Remove("productList")</code> after updating. Set an
+            expiration time as a safety net, but don't rely on it alone — always
+            invalidate on write.
           </p>
         </div>
-      </div>
-
-      <div class="scenario-item">
-        <h3>20. Stale Data Displayed After Database Update</h3>
-        <p>
-          You update a product's price in the database, but users still see the
-          old price on the website. Even refreshing the page shows old data. The
-          cache is serving stale data. How do you handle caching properly?
-        </p>
-        <div class="answer">
-          <strong>Answer:</strong>
-          <p>
-            Stale data appears when cached values are not cleared after data is
-            updated. To fix this, I remove or refresh the cache whenever the
-            data changes. In ASP.NET Core, I invalidate cache keys after updates
-            (for in-memory or distributed cache like Redis) and use expiration
-            times as a safety measure. Cache should always be refreshed when the
-            database data changes.
-          </p>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
         </div>
+        <div class="image-preview-box"></div>
       </div>
 
+      <!-- ===== QUESTIONS 21-26: KEPT EXACTLY AS ORIGINAL ===== -->
+
       <div class="scenario-item">
-        <h3>21. Memory Leaks from Event Handlers</h3>
+        <h3>13. Memory Leaks from Event Handlers</h3>
         <p>
           Your application's memory usage keeps growing over time. After several
           hours of use, the server runs out of memory and needs to be restarted.
@@ -1201,16 +1353,25 @@
             DbContext) to ensure objects are disposed correctly.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>22. Authentication Flow in ASP.NET MVC & Angular</h3>
+        <h3>14. Authentication Flow in ASP.NET MVC &amp; Angular</h3>
         <p>
           A user logs in to an ASP.NET MVC application that consumes a Web API.
           The browser does not call the API directly. How does authentication
           work?
         </p>
-
         <div class="answer">
           <strong>Answer:</strong>
 
@@ -1321,10 +1482,20 @@
             tokens short-lived while maintaining seamless authentication.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>23. Migrating from .NET Framework MVC to .NET Core</h3>
+        <h3>15. Migrating from .NET Framework MVC to .NET Core</h3>
         <p>
           You are asked to migrate an existing .NET Framework MVC application to
           ASP.NET Core. The application uses Web.config, System.Web, and older
@@ -1350,10 +1521,20 @@
             migration and use the .NET Upgrade Assistant to identify issues.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>24. How do you deploy an application using IIS?</h3>
+        <h3>16. How do you deploy an application using IIS?</h3>
         <p>
           You have an ASP.NET / ASP.NET Core application on your local machine
           and need to make it available publicly using IIS. What are the steps?
@@ -1372,10 +1553,20 @@
             accessible.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>25. How do you deploy an application to Azure App Service?</h3>
+        <h3>17. How do you deploy an application to Azure App Service?</h3>
         <p>
           You want to deploy a .NET application to Azure so it is publicly
           accessible without managing servers manually. How do you do it?
@@ -1392,10 +1583,20 @@
             Service URL.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
 
       <div class="scenario-item">
-        <h3>26. Reverse Proxy and Load Balancer Flow</h3>
+        <h3>18. Reverse Proxy and Load Balancer Flow</h3>
         <p>
           In a normal production ASP.NET MVC, Angular, or Microservices
           application, how are the Client, Reverse Proxy, Load Balancer, and
@@ -1430,8 +1631,20 @@
             requests to the appropriate service.
           </p>
         </div>
+        <div class="image-icons">
+          <span class="image-icons-label">Images:</span>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+          <button class="image-icon" onclick="toggleImage(this)" data-src="">
+            📷
+          </button>
+        </div>
+        <div class="image-preview-box"></div>
       </div>
     </div>
+    <!-- end section-content scenarios -->
+
     <script src="../change.js"></script>
   </body>
 </html>
