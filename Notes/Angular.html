@@ -21,8 +21,8 @@
         </li>
         <li>
           <strong>Component Communication:</strong> <code>@Input</code> (parent
-          → child), <code>@Output</code> + <code>EventEmitter</code> (child →
-          parent)
+          → child), <code>@Output</code> + <code>EventEmitter</code> (c → p);
+          Siblings uses shared service with BehaviorSubject
         </li>
         <li>
           <strong>Template Syntax:</strong> Interpolation
@@ -829,7 +829,7 @@
         <p>
           <strong>Signals:</strong> New reactive primitive variables for
           fine-grained reactivity; alternative to RxJS for local state;
-          auto-updates UI.
+          auto-updates UI. <br />
           <strong
             >Signals = simple UI state; RxJS = async and complex data
             streams.</strong
@@ -1219,12 +1219,20 @@
           <tr>
             <td><strong>Unsubscribe Pattern</strong></td>
             <td>Prevent memory leaks from forgotten subscriptions</td>
-            <td><code>takeUntil(destroy$)</code> or <code>async</code> pipe</td>
+            <td>
+              <code>takeUntil(destroy$)</code> or <code>async</code> pipe or
+              <code>ngOnDestroy</code>
+            </td>
           </tr>
           <tr>
             <td><strong>shareReplay</strong></td>
             <td>Cache HTTP response; avoid duplicate calls</td>
             <td><code>pipe(shareReplay(1))</code></td>
+          </tr>
+          <tr>
+            <td><strong>Others</strong></td>
+            <td>Use pure pipe avoid impure pipe; Use pagination</td>
+            <td>-</td>
           </tr>
         </tbody>
       </table>

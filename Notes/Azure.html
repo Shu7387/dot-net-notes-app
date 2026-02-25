@@ -17,9 +17,9 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Managed service to host Angular, React,
-          or Vue apps. Provides automatic HTTPS, global CDN, and auto-deploy on
-          GitHub push.
+          <strong>What it is:</strong> Managed service to host frontend like
+          Angular, React, or Vue apps. Provides automatic HTTPS, global CDN, and
+          auto-deploy on GitHub push.
         </p>
       </div>
 
@@ -33,27 +33,17 @@
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
+          <li>Create Static Web App in Azure Portal</li>
+          <li>Copy Deployment Token</li>
+          <li>Add token as secret variable in Azure DevOps Pipeline</li>
           <li>
-            Build your Angular project → creates <code>dist/</code> folder
+            Add <code>azure-pipelines.yml</code> with
+            <code>$(SWA_DEPLOYMENT_TOKEN)</code> <code>app_location</code> and
+            <code>output_location</code>
           </li>
-          <li>Azure Portal → Create → Search "Static Web App" → Create</li>
-          <li>
-            Sign in to GitHub → authorize Azure → select repository and branch
-          </li>
-          <li>
-            Set App location: <code>/</code> and Output location:
-            <code>dist/project-name</code>
-          </li>
-          <li>
-            Click "Review + Create" → Azure auto-deploys on every GitHub push
-          </li>
-          <li>
-            Update <code>environment.prod.ts</code> with your API base URL
-          </li>
-          <li>
-            Enable CORS in your backend to allow requests from the Static Web
-            App domain
-          </li>
+          <li>Push code → Pipeline builds and deploys automatically</li>
+          <li>Update <code>environment.prod.ts</code> with API base URL</li>
+          <li>Enable CORS in backend</li>
         </ol>
       </div>
 
@@ -66,7 +56,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/static web app YAML.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">

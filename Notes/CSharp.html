@@ -25,8 +25,8 @@
           <tr>
             <td><strong>Value vs Reference Type</strong></td>
             <td>
-              Value (stack, int, bool, struct, enum); Reference (heap, class,
-              string, array)
+              Value (store on stack, int, bool, struct, enum, not nullable by
+              default); Reference (heap, class, string, array)
             </td>
           </tr>
           <tr>
@@ -74,7 +74,7 @@
           </li>
           <li>
             <strong>IQueryable:</strong> LINQ to SQL/EF; query filtered on the
-            DB server — faster for DB queries
+            DB server, faster for DB queries
           </li>
           <li>
             <strong>ICollection:</strong> Non-indexed; Count, Add, Remove, Clear
@@ -183,16 +183,18 @@
           <tr>
             <td><strong>Abstraction</strong></td>
             <td>Show only essentials; hide complexity</td>
-            <td>Interface, abstract class, public properties</td>
+            <td>
+              Interface, abstract class, public properties, method declaration
+            </td>
           </tr>
           <tr>
             <td><strong>Encapsulation</strong></td>
             <td>Hide internal data</td>
-            <td>Private fields with public methods</td>
+            <td>Class, private fields, method implementation</td>
           </tr>
           <tr>
             <td><strong>Inheritance</strong></td>
-            <td>Code reuse; IS-A relationship</td>
+            <td>Code reuse; IS-A relationship; Parent & Child Classes</td>
             <td><code>class B : A</code>; Single, Multilevel, Hierarchical</td>
           </tr>
           <tr>
@@ -224,7 +226,10 @@
       </div>
 
       <div class="note">
-        <p><strong>Association:</strong></p>
+        <p>
+          <strong>Association:</strong> Relationship between classes that uses
+          each other
+        </p>
         <ul>
           <li>
             <strong>Composition:</strong> Strong ownership; child dies with
@@ -240,10 +245,14 @@
       <div class="note">
         <p>
           <strong>Method Parameters:</strong>
+          <code> var a = 10;</code>
           <code>ChangeValue(a, ref b, out c);</code>
         </p>
         <ul>
-          <li><strong>Value:</strong> Copy passed; original unchanged</li>
+          <li>
+            <strong>Value:</strong> Copy of variable is passed to called method;
+            original unchanged
+          </li>
           <li>
             <strong>ref:</strong> Reference passed; must be initialized before
             call; changes affect original
@@ -253,7 +262,8 @@
             used to return multiple values
           </li>
           <li>
-            <strong>params:</strong> Pass multiple values as array —
+            <strong>params:</strong> Pass multiple arguments to method as array
+            —
             <code>params int[] numbers</code>
           </li>
         </ul>
@@ -264,7 +274,7 @@
         <ul>
           <li>
             <strong>virtual:</strong> Method can optionally be overridden in
-            child
+            child; Complete method
           </li>
           <li>
             <strong>override:</strong> Child provides its own implementation of
@@ -307,7 +317,7 @@
         <ul>
           <li>
             <strong>Static Class:</strong> Cannot instantiate; only static
-            members; no inheritance — utility classes
+            members; no inheritance, utility classes
           </li>
           <li>
             <strong>Static Members:</strong> Shared across all instances;
@@ -326,10 +336,18 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/interface vs abstract class.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/c_polymorphism.webp"
+        >
           📷
         </button>
       </div>
@@ -435,7 +453,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/generic vs non generic collection classes.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -548,8 +570,11 @@
             <td><code>delegate void Log(string msg);</code></td>
           </tr>
           <tr>
-            <td><strong>Multicast Delegate</strong></td>
-            <td>Points to and calls multiple methods in order</td>
+            <td><strong>Delegate Types</strong></td>
+            <td>
+              Singlecast, Multicast; Points to and calls multiple methods in
+              order
+            </td>
             <td><code>log += Method1; log -= Method2;</code></td>
           </tr>
           <tr>
@@ -621,19 +646,6 @@
             </td>
           </tr>
           <tr>
-            <td><strong>Task vs Thread</strong></td>
-            <td>
-              <strong>Task:</strong> Lightweight, .NET-managed (assign work to
-              company)<br /><strong>Thread:</strong> Heavyweight, OS-level,
-              manually managed (hire a dedicated worker)
-            </td>
-            <td>
-              <code>Task.Run(() =&gt; Work());</code><br /><code
-                >new Thread(Work).Start();</code
-              >
-            </td>
-          </tr>
-          <tr>
             <td><strong>ConfigureAwait(false)</strong></td>
             <td>
               Don't resume on original thread after await; prevents deadlocks in
@@ -645,6 +657,19 @@
             <td><strong>CancellationToken</strong></td>
             <td>Safely stop async work on request</td>
             <td><code>CancellationToken ct</code></td>
+          </tr>
+          <tr>
+            <td><strong>Task vs Thread</strong></td>
+            <td>
+              <strong>Task:</strong> Lightweight, .NET-managed (assign work to
+              company)<br /><strong>Thread:</strong> Heavyweight, OS-level,
+              manually managed (hire a dedicated worker)
+            </td>
+            <td>
+              <code>Task.Run(() =&gt; Work());</code><br /><code
+                >new Thread(Work).Start();</code
+              >
+            </td>
           </tr>
           <tr>
             <td><strong>lock</strong></td>
@@ -741,7 +766,7 @@
           <li>
             <strong>Memory Leaks:</strong> Objects kept alive longer than needed
             — unsubscribed events, static references, not disposing
-            <code>IDisposable</code>, captured closures, long-running timers
+            <code>IDisposable</code>, long-running timers
           </li>
         </ul>
       </div>
@@ -789,8 +814,8 @@
           <tr>
             <td><strong>I</strong>SP</td>
             <td>
-              Interface Segregation — many small interfaces; don't force unused
-              methods
+              Interface Segregation — many small interfaces; don't force classes
+              to implement unused methods
             </td>
           </tr>
           <tr>
@@ -805,9 +830,14 @@
 
       <div class="note">
         <p>
-          <strong>Dependency Injection (DI):</strong> Inject dependencies via
-          constructor, property, or method instead of creating them inside the
-          class. Lifetimes: Singleton, Scoped, Transient.
+          <strong>SOLID Principles:</strong> Principles to write clean,
+          maintainable, scalable, and loosely coupled code that is easy to
+          extend and test.
+        </p>
+        <p>
+          <strong>Dependency Injection:</strong> Inject dependencies via
+          constructor, property, method instead of creating them inside class.
+          <strong>Lifetimes:</strong> Singleton, Scoped, Transient.
         </p>
       </div>
 
@@ -891,11 +921,13 @@
             <td>Order placed → notify email, SMS, inventory services</td>
           </tr>
           <tr>
-            <td><strong>Chain of Responsibility</strong></td>
+            <td><strong>CQRS</strong></td>
             <td>
-              Pass request through a chain of handlers until one handles it
+              Separates read (Query) and write (Command) operations; commonly
+              implemented using <strong>MediatR</strong> for handling requests.
+              1 handler => 1 request
             </td>
-            <td>Middleware pipeline, multi-level approval workflow</td>
+            <td>Used in Clean Architecture, scalable .NET APIs</td>
           </tr>
         </tbody>
       </table>
@@ -936,11 +968,11 @@
         <p><strong>Deferred vs Immediate Execution:</strong></p>
         <ul>
           <li>
-            <strong>Deferred:</strong> Query runs only when iterated (Where,
-            Select, OrderBy); reusable
+            <strong>Deferred:</strong> LINQ query is not executed until it is
+            iterated (Where, Select, OrderBy); reusable
           </li>
           <li>
-            <strong>Immediate:</strong> Runs right away and creates a snapshot
+            <strong>Immediate:</strong> Runs right away and consumes memory
             (ToList, ToArray, Count, First)
           </li>
         </ul>
@@ -1015,7 +1047,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Deferred vs Immediate Execution.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">

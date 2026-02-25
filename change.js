@@ -203,7 +203,7 @@ window.toggleImage = function (buttonElement) {
 
     if (src) {
       // Has a real image path — show the image
-      previewBox.innerHTML = `<img src="${src}" alt="Reference image" /><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;
+      previewBox.innerHTML = `<img src="${src}" alt="Reference image" style="display:block; width:auto; height:auto; max-width:100%;" /><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;
     } else {
       // No image path yet — show a placeholder message
       previewBox.innerHTML = `<p class="image-placeholder">📷 No image added yet. Set the <code>data-src</code> attribute on this button to link an image.</p><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;

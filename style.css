@@ -401,11 +401,14 @@ h2.section-header:hover,
   max-height: 2000px;
   margin-top: 10px;
   transition: max-height 0.4s ease-in;
+  overflow: visible;
 }
 
 .image-preview-box img {
   display: block;
-  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-width: none;
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #f9f9f9;

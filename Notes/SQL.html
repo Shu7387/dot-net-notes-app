@@ -126,7 +126,11 @@
       </div>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql-join-types-768x611.png.webp"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -464,7 +468,11 @@
       </div>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql trigger types.webp"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -754,10 +762,10 @@
         </p>
         <p>
           <strong>Deadlock:</strong> Happens when two transactions block each
-          other by holding locks, so SQL Server kills one. Avoid it by short
-          transactions, proper indexes, and consistent table access order.
-          <strong>Fix =&gt;</strong> Identify session, analyze query, wait if
-          possible, kill as last option, then fix root cause.
+          other by holding locks on resources, so SQL Server kills one. Avoid it
+          by short transactions, proper indexes, and consistent table access
+          order. <strong>Fix =&gt;</strong> Identify session, analyze query,
+          wait if possible, kill as last option, then fix root cause.
         </p>
       </div>
       <div class="image-icons">
@@ -863,11 +871,20 @@
           </li>
         </ul>
         <p>
+          <strong>Default Databases:</strong>
+          <code>master</code> (server-level settings, logins, all DB info),
+          <code>model</code> (template used when creating new database),
+          <code>msdb</code> (SQL Agent jobs, schedules, backup history),
+          <code>tempdb</code> (temporary tables, sorting, joins, intermediate
+          results)<br />
+          <br />
+
           <strong>System Tables:</strong>
-          <code>INFORMATION_SCHEMA.TABLES</code>, <code>SYS.TABLES</code>,
-          <code>SYS.COLUMNS</code>, <code>SYS.INDEXES</code><br />
-          Database existence → <code>DB_ID()</code>, Object existence →
-          <code>IF OBJECT_ID('dbo.vw_Students', 'V') IS NOT NULL</code>
+          <code>INFORMATION_SCHEMA.TABLES</code> (basic table metadata –
+          standard view), <code>SYS.TABLES</code> (detailed table info – SQL
+          Server specific), <code>SYS.COLUMNS</code> (column name, type,
+          nullability), <code>SYS.INDEXES</code> (index type, PK/unique,
+          performance info)
         </p>
       </div>
       <div class="image-icons">
@@ -898,7 +915,7 @@
         <li>
           <strong>Indexing Strategy:</strong> Index, Covering index on
           <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code> hot
-          columns; avoid over-indexing (slows writes)
+          columns; avoid over-indexing (slows writes), Index Maintenance
         </li>
         <li>
           <strong>Data Statistics:</strong> Describe data distribution to help
