@@ -56,7 +56,11 @@
       </ul>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Framework vs Core.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -87,7 +91,7 @@
           <code>RedirectToActionResult</code>
         </li>
         <li>
-          <strong>Attributes:</strong> <code>[HttpGet]</code>,
+          <strong>Action Attributes:</strong> <code>[HttpGet]</code>,
           <code>[HttpPost]</code>, <code>[Route(...)]</code>,
           <code>[ValidateAntiForgeryToken]</code>, <code>[Authorize]</code>
         </li>
@@ -908,7 +912,7 @@
         </li>
         <li>
           <strong>Mocking:</strong> Moq library; mock dependencies; test logic
-          not infrastructure
+          not infrastructure, use wiremocks
         </li>
         <li><strong>Arrange-Act-Assert:</strong> Standard test structure</li>
       </ul>

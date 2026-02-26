@@ -75,7 +75,11 @@
       </ul>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Minimal API.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -113,8 +117,8 @@
         <li>
           <strong>N+1 Problem:</strong> One query loads main data and N extra
           queries load related data. Fix: use <code>Include()</code> /
-          <code>ThenInclude()</code> to load related data in 1 query; avoid lazy
-          loading
+          <code>ThenInclude()</code> to load related data in 1 query; use join
+          in sql; avoid lazy loading
         </li>
         <li>
           <strong>Relationships &amp; Keys:</strong> Configure one-to-many,
@@ -800,15 +804,16 @@
         </li>
         <li>
           <strong>API Gateway:</strong> Sits between client and backend APIs;
-          single entry point; handles auth, rate limiting, logging — MVC → API
-          Gateway → All Backend APIs
+          single entry point; handles routing, auth, rate limiting, logging —
+          MVC → API Gateway → All Backend APIs
         </li>
         <li>
           <strong>Securing Web API:</strong> JWT via <code>AddJwtBearer</code>;
           <code>UseAuthentication</code> +
-          <code>UseAuthorization</code> middleware;
-          <code>[Authorize]</code> attribute; HTTPS; CORS; rate limiting; Azure
-          Key Vault for secrets
+          <code>UseAuthorization</code> middleware; Use HTTPS, CORS, rate
+          limiting middlewares; Use <code>[Authorize]</code> attribute and add
+          model validations; Use Azure Key Vault for secrets; Expose DTOs to
+          client not enitities
         </li>
       </ul>
 
