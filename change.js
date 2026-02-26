@@ -210,6 +210,7 @@ window.toggleImage = function (buttonElement) {
     }
 
     previewBox.classList.add("open");
+    document.body.style.zoom = "0.9";
 
     // Smooth scroll to preview
     setTimeout(() => {
@@ -238,6 +239,7 @@ window.closeImagePreview = function (btnElement) {
 
   previewBox.classList.remove("open");
   previewBox.innerHTML = "";
+  document.body.style.zoom = "";
 };
 
 /* ============================================================
@@ -394,7 +396,36 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(initializeCollapsedBlocks, 50);
 
   /* ----------------------------------------------------------
-     1.6) KEYBOARD ACCESSIBILITY
+     1.6) HIDE IMAGE ICON BUTTONS WITH NO data-src
+          - Hides individual empty buttons
+          - If ALL buttons in a container are empty, hides the
+            entire .image-icons block + its .image-preview-box
+  ---------------------------------------------------------- */
+  document.querySelectorAll(".image-icons").forEach((container) => {
+    const buttons = container.querySelectorAll(".image-icon");
+    let allEmpty = true;
+
+    buttons.forEach((btn) => {
+      const src = (btn.getAttribute("data-src") || "").trim();
+      if (!src) {
+        btn.style.display = "none";
+      } else {
+        allEmpty = false;
+      }
+    });
+
+    // If every button was empty, hide the whole container + preview box
+    if (allEmpty) {
+      container.style.display = "none";
+      const preview = container.nextElementSibling;
+      if (preview && preview.classList.contains("image-preview-box")) {
+        preview.style.display = "none";
+      }
+    }
+  });
+
+  /* ----------------------------------------------------------
+     1.7) KEYBOARD ACCESSIBILITY
   ---------------------------------------------------------- */
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;

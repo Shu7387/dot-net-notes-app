@@ -103,6 +103,18 @@
             <td><code>@Injectable({providedIn: 'root'})</code></td>
           </tr>
           <tr>
+            <td><strong>@Directive</strong></td>
+            <td>Class</td>
+            <td>Define custom directive</td>
+            <td><code>@Directive({selector: '[appHighlight]'})</code></td>
+          </tr>
+          <tr>
+            <td><strong>@Pipe</strong></td>
+            <td>Class</td>
+            <td>Define custom pipe</td>
+            <td><code>@Pipe({name: 'customFormat'})</code></td>
+          </tr>
+          <tr>
             <td><strong>@Input</strong></td>
             <td>Property</td>
             <td>Child receive data from parent</td>
@@ -132,28 +144,16 @@
             </td>
           </tr>
           <tr>
-            <td><strong>@HostListener</strong></td>
-            <td>Method</td>
-            <td>Listen to events on the host element</td>
-            <td><code>@HostListener('click') onClick() { }</code></td>
-          </tr>
-          <tr>
             <td><strong>@HostBinding</strong></td>
             <td>Property</td>
             <td>Bind class, style, attribute to the host element</td>
             <td><code>@HostBinding('class.active') isActive = true;</code></td>
           </tr>
           <tr>
-            <td><strong>@Directive</strong></td>
-            <td>Class</td>
-            <td>Define custom directive</td>
-            <td><code>@Directive({selector: '[appHighlight]'})</code></td>
-          </tr>
-          <tr>
-            <td><strong>@Pipe</strong></td>
-            <td>Class</td>
-            <td>Define custom pipe</td>
-            <td><code>@Pipe({name: 'customFormat'})</code></td>
+            <td><strong>@HostListener</strong></td>
+            <td>Method</td>
+            <td>Listen to events on the host element</td>
+            <td><code>@HostListener('click') onClick() { }</code></td>
           </tr>
         </tbody>
       </table>
@@ -229,10 +229,18 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/custom directive.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/validation custom directive.png"
+        >
           📷
         </button>
       </div>
@@ -288,7 +296,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/angular lifecycle hooks.jpg"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
