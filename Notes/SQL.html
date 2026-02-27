@@ -53,7 +53,18 @@
         >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/SQL CRUD.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql_execution_order_.png"
+        >
           📷
         </button>
       </div>
@@ -133,7 +144,11 @@
         >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql join and group by.png"
+        >
           📷
         </button>
       </div>
@@ -328,7 +343,11 @@
       </div>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql code 3rd highest, duplicate delete.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -368,18 +387,29 @@
             </td>
           </tr>
           <tr>
-            <td><strong>Benefits</strong></td>
+            <td><strong>SP Benefits</strong></td>
             <td>
-              Performance (cached plan), security (permissions), reusability,
-              reduced network traffic, centralize business logic, prevent sql
-              injection
+              Better performance (precompiled & cached plan); reduced network
+              traffic; improved security (no direct table access, prevent sql
+              injection); reusable & maintainable code; supports transactions
+              and error handling
+            </td>
+          </tr>
+          <tr>
+            <td><strong>SP Optimization</strong></td>
+            <td>
+              Check execution plan; proper indexing & updated statistics; avoid
+              SELECT *; where filter early; temp table (large data), table
+              variable (small data); avoid cursors; reduce DISTINCT/ORDER BY;
+              keep transactions short; Join over subquery
             </td>
           </tr>
           <tr>
             <td><strong>Error Handling</strong></td>
             <td>
-              <code>TRY...CATCH</code> block; log errors to table;
-              <code>ROLLBACK</code> on failure
+              TRY...CATCH block; use with TRANSACTION (COMMIT/ROLLBACK) for data
+              consistency; <strong>error functions:</strong> ERROR_NUMBER(),
+              ERROR_MESSAGE(), ERROR_LINE(), ERROR_PROCEDURE(), ERROR_SEVERITY()
             </td>
           </tr>
           <tr>
@@ -387,13 +417,6 @@
             <td>
               Build/execute SQL strings at run time; use
               <code>sp_executesql</code> for parameterization
-            </td>
-          </tr>
-          <tr>
-            <td><strong>SP vs Inline SQL</strong></td>
-            <td>
-              SP: Better performance, security; Inline: Flexibility, easier
-              debugging
             </td>
           </tr>
         </tbody>
@@ -471,11 +494,22 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/store procedure.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/sql trigger types.webp"
         >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/sql trigger.png"
+        >
           📷
         </button>
       </div>
