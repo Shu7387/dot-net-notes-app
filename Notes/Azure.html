@@ -556,47 +556,105 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 7 ===================== -->
+    <!-- ===================== SECTION 7: Storage Account ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 7: File Storage – Azure Blob Storage
+      SECTION 7: Storage Account – Blob & Queue Storage
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Object storage for files (images, PDFs,
-          videos). Don't store files in your database — use Blob Storage which
-          is cheaper and faster. Each file gets a unique URL.
+          <strong>What it is:</strong> A cloud storage service that holds your
+          data. Inside it you can create Blob Storage (for files) and Queue
+          Storage (for messages). Don't store files in your database — use Blob
+          Storage, it's cheaper and faster. Each file gets a unique URL.<br />
+          <strong>Blob Flow:</strong> Angular → API → Blob Storage → save file
+          URL in SQL DB<br />
+          <strong>Queue Flow:</strong> User → API → Queue (message added) →
+          Azure Function (processes) → Database Updated
         </p>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Concept</th>
+            <th>Type</th>
+            <th>What it stores</th>
+            <th>Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Blob Storage</strong></td>
+            <td>Files — images, videos, PDFs, backups</td>
+            <td>User uploads, static files, logs</td>
+          </tr>
+          <tr>
+            <td><strong>Queue Storage</strong></td>
+            <td>Short text messages (max 64 KB)</td>
+            <td>Pass tasks between services, background jobs</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
             <th>Description</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Private</strong></td>
-            <td>Requires authentication — recommended for sensitive files</td>
-          </tr>
-          <tr>
-            <td><strong>Public Blob</strong></td>
+            <td><strong>Blob Access Tiers</strong></td>
             <td>
-              Individual file accessible without login (images, public assets)
+              <strong>Hot</strong> — accessed frequently |
+              <strong>Cool</strong> — accessed occasionally |
+              <strong>Archive</strong> — rarely accessed, cheapest but slow to
+              retrieve
             </td>
           </tr>
           <tr>
-            <td><strong>Public Container</strong></td>
-            <td>All files in container accessible without login</td>
+            <td><strong>Container Access</strong></td>
+            <td>
+              Private (no public access), Blob (anyone can read a file by URL),
+              Container (anyone can list and read all files)
+            </td>
           </tr>
           <tr>
-            <td><strong>SAS URL</strong></td>
+            <td><strong>SAS Token</strong></td>
             <td>
-              Temporary secure access token with expiry — e.g. 1-hour download
-              link without exposing storage keys
+              Temporary URL with expiry and permissions — share a file securely
+              without making the container public
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Lifecycle Management</strong></td>
+            <td>
+              Auto-move blobs between tiers or delete after X days — e.g. Cool
+              after 30 days → Archive after 90 → Delete after 365
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Blob Trigger</strong></td>
+            <td>
+              Runs a azure function automatically when a file is uploaded or
+              modified
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Queue Trigger</strong></td>
+            <td>
+              Runs a azure function automatically when a new message arrives in
+              the queue. Auto-retries on failure (default 5 times) → then moves
+              to Poison Queue for manual inspection.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Visibility Timeout (Queue)</strong></td>
+            <td>
+              Message becomes hidden while being processed. If not deleted in
+              time, it reappears for another consumer to retry.
             </td>
           </tr>
         </tbody>
@@ -606,105 +664,77 @@
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Azure Portal → Create → "Storage Account" → fill in Resource Group,
-            name, replication (Locally-redundant is cheapest)
+            Azure Portal → Create <strong>Storage Account</strong> → Choose
+            Region → Select Redundancy (LRS / GRS)
           </li>
           <li>
-            Storage Account → Containers → Add Container → set name and
-            "Private" access level
-          </li>
-          <li>.NET API → install NuGet: <code>Azure.Storage.Blobs</code></li>
-          <li>
-            Create upload endpoint: receives file → saves to Blob → saves
-            metadata URL to SQL DB → returns URL
+            <strong>Blob:</strong> Storage Account → Containers → Create
+            Container → Set access level
           </li>
           <li>
-            Create download endpoint: generates SAS URL with expiry → returns to
-            Angular → Angular downloads directly from Blob
+            <strong>Queue:</strong> Storage Account → Queues → Create Queue →
+            Give it a name
+          </li>
+          <li>
+            Storage Account → Access Keys → Copy
+            <strong>Connection String</strong> → store in Key Vault /
+            <code>local.settings.json</code>
+          </li>
+          <li>
+            Install NuGet: <code>Azure.Storage.Blobs</code> or
+            <code>Azure.Storage.Queues</code>
+          </li>
+          <li>
+            Use <code>BlobServiceClient</code> to upload/download files or
+            <code>QueueClient</code> to send/receive messages
+          </li>
+          <li>
+            For Azure Functions: use <code>[BlobTrigger]</code> or
+            <code>[QueueTrigger]</code> — Azure handles reading automatically
           </li>
         </ol>
       </div>
 
       <div class="note">
+        <p><strong>Queue benefits:</strong></p>
+        <ul>
+          <li>
+            ✓ Handles background tasks like order processing, email sending, and
+            file processing without blocking the main API.
+          </li>
+          <li>
+            ✓ Improves system performance by responding instantly to users while
+            heavy work runs asynchronously.
+          </li>
+          <li>
+            ✓ Increases reliability with built-in retry and poison queue support
+            if processing fails.
+          </li>
+          <li>
+            ✓ Enables scalable microservices where multiple workers can process
+            messages independently.
+          </li>
+        </ul>
         <p>
-          <strong>Upload Flow:</strong> Angular → API → Blob Storage → save file
-          URL in SQL DB
-        </p>
-        <p>
-          <strong>Download Flow:</strong> Angular → API generates SAS URL →
-          Angular downloads directly from Blob
+          <strong>Download Flow (Blob):</strong> Angular → API generates SAS URL
+          → Angular downloads directly from Blob
         </p>
       </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Blob Trigger + SAS + Move Tier + Service Bus.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 8 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 8: Message Queues – Azure Queue Storage
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> Simple messaging service for async
-          communication. Instead of waiting for a task, you add a message to a
-          queue and an Azure Function processes it in the background. User gets
-          instant response.
-        </p>
-      </div>
-
-      <ul>
-        <li>✓ Background processing — long tasks run async</li>
-        <li>✓ Decouple services — parts don't wait for each other</li>
-        <li>✓ Instant user response — no long API wait times</li>
-        <li>✓ Auto-retry if processing fails — messages not lost</li>
-        <li>✓ Poison queue — failed messages moved for manual inspection</li>
-      </ul>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>Storage Account → Queues → Add Queue → enter queue name</li>
-          <li>.NET API → install NuGet: <code>Azure.Storage.Queues</code></li>
-          <li>
-            API endpoint: receive upload → save to Blob → add message to queue →
-            return success immediately
-          </li>
-          <li>
-            Create Azure Function with "Queue Trigger" → it listens for new
-            messages
-          </li>
-          <li>Function processes the message → updates database</li>
-          <li>
-            On failure: message auto-retries (default 5 times) → then moves to
-            Poison Queue
-          </li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> User → API (Upload) → Queue (message added) →
-          Azure Function (processes) → Database Updated
-        </p>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Queue Trigger → Save to Cosmos DB Output Binding.png"
+        >
           📷
         </button>
       </div>
@@ -719,9 +749,13 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Serverless service that runs your code
-          when an event happens. No server management — Azure scales
-          automatically. You pay only for execution time (per millisecond).
+          <strong>What it is:</strong> A cloud service that runs your code
+          automatically when something triggers it. No server management, pay
+          only when it runs. <br />
+
+          <strong>Flow:</strong> Event occurs (HTTP / Timer / Queue / Blob /
+          Cosmos DB) → Function triggers → code runs → output written to target
+          (DB / Queue / Blob)
         </p>
       </div>
 
@@ -735,16 +769,6 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Queue Trigger</strong></td>
-            <td>New message in Queue Storage</td>
-            <td>Background processing, image resize</td>
-          </tr>
-          <tr>
-            <td><strong>Service Bus Trigger</strong></td>
-            <td>Message in Service Bus queue/topic</td>
-            <td>Enterprise messaging between microservices</td>
-          </tr>
-          <tr>
             <td><strong>HTTP Trigger</strong></td>
             <td>HTTP request arrives</td>
             <td>Lightweight API endpoints</td>
@@ -755,58 +779,159 @@
             <td>Nightly reports, cleanup jobs</td>
           </tr>
           <tr>
+            <td><strong>Queue Trigger</strong></td>
+            <td>New message in Queue Storage</td>
+            <td>Simple background processing, image resize</td>
+          </tr>
+          <tr>
+            <td><strong>Service Bus Trigger</strong></td>
+            <td>Message in Service Bus queue/topic subscription</td>
+            <td>Enterprise messaging between microservices</td>
+          </tr>
+          <tr>
             <td><strong>Blob Trigger</strong></td>
-            <td>File uploaded/modified in Blob Storage</td>
+            <td>File uploaded or modified in Blob Storage</td>
             <td>Process images, scan documents</td>
           </tr>
           <tr>
             <td><strong>Cosmos DB Trigger</strong></td>
-            <td>Change Feed — document inserted/updated</td>
+            <td>Data inserted or updated (Change Feed)</td>
             <td>Sync data, send notifications on data change</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="note">
-        <p>
-          <strong>HTTP Trigger Security:</strong> Function Key = API password.
-          Pass via query string <code>?code=FUNCTION_KEY</code> or header
-          <code>x-functions-key: KEY</code>. Authorization levels: Anonymous (no
-          key), Function (function key), Admin (master key).
-        </p>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HTTP Trigger Security</strong></td>
+            <td>
+              Function Key acts as an API password. Pass via query string
+              <code>?code=FUNCTION_KEY</code> or header
+              <code>x-functions-key: KEY</code>. Levels: Anonymous (no key),
+              Function (function key), Admin (master key)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Input Bindings</strong></td>
+            <td>
+              Automatically pull data into your function — e.g. read a Blob file
+              or Cosmos DB document without writing connection code
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Output Bindings</strong></td>
+            <td>
+              Automatically push data out of your function — e.g. write to
+              Queue, Blob, Cosmos DB, or Service Bus without writing connection
+              code
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Durable Functions</strong></td>
+            <td>
+              Extension of Azure Functions for stateful workflows. Executes
+              functions sequentially (A → B → C) or in parallel
+              (fan-out/fan-in). Automatically manages state, retries, and
+              checkpoints.
+              <br />
+              <strong>Example (Sequential):</strong>
+              Order Processing → Check Inventory → Process Payment → Send
+              Confirmation Email. <br />
+              <strong>Example (Parallel):</strong>
+              Resize 10 images simultaneously, then generate final report.
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Retry Policy</strong></td>
+            <td>
+              Automatically retries on failure — configure max retry count and
+              delay. On Queue/Service Bus trigger, failed messages move to Dead
+              Letter Queue after max retries
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Azure Portal → Create → "Function App" → fill in Resource Group,
-            name, Runtime, hosting plan (Consumption = cheapest)
+            Azure Portal → Create <strong>Storage Account</strong> (required for
+            runtime logs & scaling)
           </li>
+
           <li>
-            Open Function App → Add function → select trigger type → connect to
-            your queue/blob/timer
+            Azure Portal → Create <strong>Function App</strong> → Select .NET
+            Runtime → Choose Hosting Plan (Consumption / Premium / App Service)
+            → Attach Storage Account
           </li>
+
           <li>
-            Write function code — process image, send email, update database,
-            etc.
+            Function App → <strong>Configuration</strong> → Add App Settings /
+            Connection Strings (Recommended: store secrets in Key Vault)
           </li>
+
           <li>
-            Function App → Configuration → add connection strings for Storage,
-            SQL, Cosmos DB
+            Visual Studio → Create <strong>Azure Functions Project</strong> →
+            Select Trigger (HTTP / Timer / Service Bus etc.)
           </li>
+
           <li>
-            Test locally using Azure Functions Core Tools or deploy to Azure
+            Write function using
+            <code>[FunctionName]</code> + Trigger attribute (e.g.
+            <code>[HttpTrigger]</code>, <code>[ServiceBusTrigger]</code>)
+          </li>
+
+          <li>
+            Store local values in <code>local.settings.json</code> → Test
+            locally
+          </li>
+
+          <li>
+            Right-click Project → <strong>Publish</strong> → Select Existing
+            Azure Function App
+          </li>
+
+          <li>
+            Monitor execution via <strong>Application Insights</strong> /
+            Monitor tab
           </li>
         </ol>
       </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure funtion with service bus.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/azure-funtion-triggers-and-bindings.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Durable funtions.png"
+        >
           📷
         </button>
       </div>
@@ -821,102 +946,197 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Reliable messaging for microservices with
-          guaranteed delivery. Unlike Queue Storage, Service Bus has guaranteed
-          ordering, dead-letter queues, transactions, and pub/sub. Built for
-          enterprise applications.
+          <strong>What it is:</strong> Azure Service Bus helps applications send
+          messages to each other safely using queues and topics for background
+          processing. <br />
+          <strong>Flow:</strong> Microservice 1 (Publisher) → Azure Service Bus
+          Queue/Topic (Message Storage) → Microservice 2 & 3 (Subscribers)
         </p>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Concept</th>
+            <th>Type</th>
             <th>Description</th>
+            <th>Use Cases</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Queue (1-to-1)</strong></td>
-            <td>One sender, one receiver gets each message</td>
-          </tr>
-          <tr>
-            <td><strong>Topic (1-to-many)</strong></td>
-            <td>One sender, multiple subscribers all get the same message</td>
-          </tr>
-          <tr>
-            <td><strong>Dead Letter Queue (DLQ)</strong></td>
             <td>
-              Stores failed messages after max retries — inspect and retry
-              manually
+              One sender, one receiver — message consumed once by a single
+              consumer
+            </td>
+            <td>
+              Order processing, payment processing, background jobs, email
+              sending, report generation, image processing, inventory updates
             </td>
           </tr>
           <tr>
-            <td><strong>Message Ordering</strong></td>
-            <td>Guarantees messages processed in the order they were sent</td>
-          </tr>
-          <tr>
-            <td><strong>Transactions</strong></td>
-            <td>Multiple operations succeed or all fail together (atomic)</td>
+            <td><strong>Topic (1-to-many)</strong></td>
+            <td>
+              One sender, multiple subscriptions — each subscription gets its
+              own independent copy
+            </td>
+            <td>
+              Notifications (SMS/Email), microservices communication, event
+              broadcasting, audit logging, analytics processing, sending data to
+              multiple systems
+            </td>
           </tr>
         </tbody>
       </table>
 
-      <div class="note">
-        <p>
-          <strong>Queue Storage vs Service Bus — When to use which:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Queue Storage:</strong> Simple background jobs, basic retry,
-            cheap — image processing, email sending
-          </li>
-          <li>
-            <strong>Service Bus:</strong> Guaranteed delivery, ordering,
-            pub/sub, transactions — order processing, microservice communication
-          </li>
-        </ul>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Peek-Lock</strong></td>
+            <td>
+              Message locked during processing. If processing fails or lock
+              expires, it becomes available again and is retried. In a Topic,
+              each subscription has its own copy — if one fails and retries,
+              others are not affected.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Automatic Retries</strong></td>
+            <td>Retries on failure before moving to Dead Letter Queue</td>
+          </tr>
+          <tr>
+            <td><strong>Dead Letter Queue</strong></td>
+            <td>
+              After exceeding max delivery count, message moves here
+              automatically — inspect and retry manually
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Duplicate Detection</strong></td>
+            <td>
+              Azure service bus uses <code>MessageId</code> to detect and
+              discard duplicate messages sent by publisher
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Sessions</strong></td>
+            <td>
+              Messages with the same <code>SessionId</code> are locked to one
+              session and processed one by one in the exact order they were sent
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Subscription Filters</strong></td>
+            <td>
+              Routes messages to specific subscriptions based on message
+              properties e.g. <code>channel = 'sms'</code>. If no filter is set,
+              all subscriptions receive all messages — broadcast model
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Scheduled Messages</strong></td>
+            <td>
+              Deliver a message at a future time — set
+              <code>ScheduledEnqueueTime</code> on the message
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Orchestrator Pattern</strong></td>
+            <td>
+              To process steps in order (e.g. SMS → Email → Letter), use one
+              queue and one consumer. It runs all steps sequentially and
+              completes the message only after all succeed. Since Service Bus
+              guarantees at-least-once delivery, use
+              <strong>idempotency</strong> to prevent duplicate execution —
+              store each completed step with
+              <code>CorrelationId + StepName</code> in a database and skip
+              already completed steps on retry; Must manage state here manually
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
             Azure Portal → Create → "Service Bus" → fill in Resource Group,
-            Namespace name, pricing tier
+            Namespace name, pricing tier (Standard for Topics, Basic for Queues
+            only)
           </li>
           <li>
-            Service Bus Namespace → Queues → Add Queue → configure Dead Letter
-            and Retry settings
+            <strong>Queue:</strong> Namespace → Queues → Add Queue → set name
+            and Max Delivery Count
           </li>
           <li>
-            .NET API → install NuGet: <code>Azure.Messaging.ServiceBus</code>
-          </li>
-          <li>Create sender: send messages to queue/topic from your API</li>
-          <li>
-            Create Azure Function with "Service Bus Trigger" to receive and
-            process messages
+            <strong>Topic:</strong> Namespace → Topics → Add Topic → open Topic
+            → Subscriptions → Add Subscription per consumer (e.g. sms-sub,
+            email-sub)
           </li>
           <li>
-            Service Bus Namespace → Shared Access Policies → copy connection
-            string
+            <strong>Filters:</strong> open Subscription → Filters → Add Filter →
+            e.g. <code>channel = 'sms'</code>
+          </li>
+          <li>
+            <strong>Sessions:</strong> enable "Requires Session" on Queue/Topic
+            at creation
+          </li>
+          <li>
+            <strong>Duplicate Detection:</strong> enable "Requires Duplicate
+            Detection" on Queue/Topic at creation
+          </li>
+          <li>
+            Namespace → Shared Access Policies → copy Primary Connection String
+            → store in Key Vault
+          </li>
+          <li>
+            .NET API → install NuGet: <code>Azure.Messaging.ServiceBus</code> →
+            register in <code>Program.cs</code>:
+            <code
+              >builder.Services.AddSingleton(new
+              ServiceBusClient(connectionString))</code
+            >
+          </li>
+          <li>
+            <strong>Send:</strong> inject <code>ServiceBusClient</code> → create
+            sender → call
+            <code>SendMessageAsync(new ServiceBusMessage(body))</code>
+          </li>
+          <li>
+            <strong>Receive:</strong> create Azure Function with "Service Bus
+            Trigger" → binds to your queue or topic subscription → processes
+            automatically
           </li>
         </ol>
       </div>
 
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> Microservice 1 → Service Bus Queue/Topic →
-          Microservice 2 &amp; 3 (both receive if Topic)
-        </p>
-      </div>
-
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Service Bus Flow.webp"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure service bus code.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Queue Storage vs Azure Service Bus.png"
+        >
           📷
         </button>
       </div>
@@ -930,19 +1150,66 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Fast in-memory cache. Instead of querying
-          the database every time, store frequently accessed data in Redis
-          (memory) — which is 1000x faster. Perfect for data that doesn't change
-          often.
+          <strong>What it is:</strong> Instead of querying the database every
+          time, store frequently accessed data in Redis (RAM memory) which is
+          1000x faster. Perfect for data that doesn't change often.
         </p>
       </div>
 
-      <ul>
-        <li>✓ Reduce database load — same queries don't hammer the DB</li>
-        <li>✓ Blazing fast API responses — in-memory access</li>
-        <li>✓ Session storage — remember user login across requests</li>
-        <li>✓ Reduce costs — fewer DB calls = lower charges</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Features</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Reduce Database Load</b></td>
+            <td>
+              Stores frequently used data in memory so the same queries don’t
+              hit the database again and again.
+            </td>
+          </tr>
+          <tr>
+            <td><b>High Performance</b></td>
+            <td>
+              Very fast API responses because data is read from RAM (in-memory)
+              instead of disk/database.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Distributed Caching</b></td>
+            <td>
+              All servers connect to the same Redis, so cached data is shared
+              across multiple servers behind a load balancer.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Session Storage</b></td>
+            <td>
+              Keeps user session/login data centrally, so sessions work properly
+              even when requests hit different servers.
+            </td>
+          </tr>
+          <tr>
+            <td><b>TTL (Expiry Support)</b></td>
+            <td>
+              Supports automatic expiry (TTL) so cached data is removed after a
+              set time to avoid stale data.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Advanced Enterprise Capabilities</b></td>
+            <td>
+              Supports Pub/Sub (real-time messaging), distributed locking (avoid
+              duplicate processing), scalability, high availability (replication
+              + failover), and cost optimization by reducing
+              database/infrastructure load.
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>Cache Logic:</strong></p>
@@ -995,7 +1262,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/redis cache, load balancer.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
