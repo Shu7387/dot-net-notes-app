@@ -72,71 +72,188 @@
 
     <!-- ===================== SECTION 2 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 2: Backend Hosting – Azure App Service
+      SECTION 2: Application Hosting – Azure App Service
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Fully managed platform to host .NET,
-          Node.js, Java, or Python APIs. Azure handles server maintenance,
-          updates, and auto-scaling.
+          <strong>What it is:</strong> Azure App Service is a fully managed PaaS
+          used to host Web Apps and APIs without managing servers (IIS, OS,
+          patching, load balancer). <br />
+          <strong>Flow:</strong> Developer → Azure DevOps Pipeline → Azure App
+          Service → User API <br />
+          <strong>Why needed:</strong> No server management, auto scaling,
+          secure configuration, zero-downtime deployments, easy CI/CD
+          integration, production-ready monitoring.
         </p>
       </div>
 
-      <ul>
-        <li>✓ No server management — Azure handles everything</li>
-        <li>✓ Auto-scaling — handles traffic spikes automatically</li>
-        <li>✓ Easy deployment from Visual Studio or Azure DevOps</li>
-        <li>✓ Multiple APIs can share one App Service Plan to save costs</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Web App</strong></td>
+            <td>
+              Hosts ASP.NET Core MVC, Web API, Node.js, Java, or frontend +
+              backend together
+            </td>
+            <td>
+              .NET Web APIs, MVC apps, enterprise backend systems, internal
+              tools
+            </td>
+          </tr>
+          <tr>
+            <td><strong>App Service Plan</strong></td>
+            <td>
+              Defines computing resources like CPU, RAM, scaling capability, and
+              pricing tier; <br />
+              One App Service Plan can host multiple App Services sharing the
+              same resources.
+            </td>
+            <td>Choose based on traffic and production requirements</td>
+          </tr>
+          <tr>
+            <td><strong>Deployment Slots</strong></td>
+            <td>
+              Separate environments (Staging/Production) inside the same App
+              Service for zero-downtime deployments. Deploy to staging, test
+              safely, then swap to production. Supports slot-specific
+              configuration (DB, API keys) to prevent environment mixing.
+            </td>
+            <td>Blue-Green deployments, safe production releases</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Setting</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Application Settings</strong></td>
+            <td>
+              Store environment variables (ConnectionStrings, API Keys,
+              ASPNETCORE_ENVIRONMENT). Overrides appsettings.json. Never store
+              secrets in code.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Connection Strings</strong></td>
+            <td>
+              Secure storage for database connections (Azure SQL, MySQL, etc.)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Scaling (Vertical & Horizontal)</strong></td>
+            <td>
+              Vertical: Increase CPU/RAM by upgrading plan. <br />
+              Horizontal: Increase instance count for load balancing.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Always On</strong></td>
+            <td>
+              Keeps your application warm and continuously running to avoid cold
+              start delays in production. Enable for APIs.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Deployment Slots</strong></td>
+            <td>
+              Deploy to Staging → Test → Swap to Production without downtime.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Managed Identity</strong></td>
+            <td>
+              Azure creates an identity for your app automatically to securely
+              access Azure SQL / Key Vault without storing credentials.
+              <br />
+              App Service → Uses Managed Identity → Authenticates via Azure AD →
+              Access Azure SQL / Key Vault
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Application Insights</strong></td>
+            <td>
+              Monitor logs, performance metrics, failed request tracking,
+              exceptions, live traffic of our app <br />
+              User → App Service → Application Insights collects telemetry →
+              Azure Monitor stores data → You analyze in portal
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Access Restrictions</strong></td>
+            <td>
+              Secures your App Service by allowing or blocking traffic based on
+              IP address or VNet rules, acting like a built-in firewall. <br />
+              User → Azure checks IP/VNet rule → If allowed → Request reaches
+              App Service If denied → 403 Forbidden
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Health Check</strong></td>
+            <td>
+              Monitors endpoint (e.g. /health) that verifies your application &
+              it's dependencies are healthy and automatically restarts or
+              removes unhealthy instances from traffic.
+              <br />
+              User → App Service (multiple instances) Azure periodically calls:
+              /health If response = 200 OK → Healthy If failure / timeout → Mark
+              Unhealthy → Restart instance
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
-        <p>
-          <strong>App Service Plan:</strong> Defines compute resources (CPU,
-          RAM, pricing tier, scaling rules). Think of it as the "power level" of
-          your server. Multiple APIs share one plan without affecting each
-          other.
-        </p>
-      </div>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
+        <p><strong>How to implement (Azure DevOps Pipeline):</strong></p>
         <ol>
           <li>
-            Publish your .NET API in Visual Studio → right-click project →
-            Publish
+            Azure Portal → Create → "App Service" → choose Runtime (.NET 8 /
+            .NET 6) → select App Service Plan
+          </li>
+          <li>Enable Application Insights</li>
+          <li>
+            Configure Application Settings (ConnectionStrings, Environment
+            values)
+          </li>
+          <li>Create Deployment Slot (Staging) for production safety</li>
+          <li>
+            Azure DevOps → Create Build Pipeline → Use
+            <code>DotNetCoreCLI@2</code> (publish)
           </li>
           <li>
-            Azure Portal → Create → "App Service" → fill in Resource Group, App
-            name, Runtime (.NET)
+            Add <code>AzureWebApp@1</code> task → Select Service Connection →
+            Provide App Name
           </li>
-          <li>Select or create an App Service Plan with your preferred tier</li>
           <li>
-            After creation → Deployment Center → connect GitHub or Azure DevOps
+            Pipeline Flow: Code Push → Build → Publish → Deploy to App Service
           </li>
-          <li>Enable HTTPS Only under SSL Settings</li>
           <li>
-            Optionally configure auto-scaling rules based on CPU/memory usage
+            For Production: Deploy to Staging Slot → Validate → Swap with
+            Production
           </li>
         </ol>
       </div>
-
-      <div class="note">
-        <p><strong>Configuration Priority (highest → lowest):</strong></p>
-        <ol>
-          <li><strong>Environment Variables</strong> — overrides everything</li>
-          <li>
-            <strong>App Service Configuration</strong> — in Azure Portal
-            settings
-          </li>
-          <li><strong>appsettings.json</strong> — lowest priority</li>
-        </ol>
-      </div>
-
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure app service.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -148,54 +265,171 @@
 
     <!-- ===================== SECTION 3 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 3: Database – Azure SQL Database
+      SECTION 3: Cloud Database – Azure SQL Database
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Managed cloud SQL Server database with
-          automatic daily backups, high availability, and automatic security
-          patches.
+          <strong>What it is:</strong> It is SQL Server in the cloud, where you
+          manage only the database and Azure handles the infrastructure and
+          updates. <br />
+          <strong>Flow:</strong> Application (App Service / API) → Connection
+          String / Managed Identity → Azure SQL Logical Server → Azure SQL
+          Database → Data Storage <br />
+          <strong>Why needed:</strong> No infrastructure management, automatic
+          backups, built-in high availability, strong security, easy scaling,
+          cloud-ready database solution.
         </p>
       </div>
 
-      <ul>
-        <li>✓ Automatic daily backups — never lose data</li>
-        <li>✓ High availability — stays running even if hardware fails</li>
-        <li>✓ Automatic security patches — no manual updates</li>
-        <li>✓ Easy scaling — increase storage and performance as needed</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Logical Server</strong></td>
+            <td>
+              Management container that holds multiple databases, firewall
+              rules, and admin login. Not a physical server.
+            </td>
+            <td>
+              Organize multiple databases under one server, manage access and
+              security.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Database</strong></td>
+            <td>
+              Actual storage of tables, indexes, stored procedures, views, and
+              data (same as SQL Server).
+            </td>
+            <td>
+              Application data storage for web apps, APIs, enterprise systems.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>vCore / DTU Model</strong></td>
+            <td>
+              Pricing and performance model. vCore allows selecting CPU, RAM,
+              and storage separately. DTU is bundled model.
+            </td>
+            <td>
+              Choose performance based on workload and production traffic.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Service Tier</strong></td>
+            <td>
+              General Purpose, Business Critical, Hyperscale — different
+              performance and availability levels.
+            </td>
+            <td>
+              Standard apps (General), low-latency enterprise apps (Business
+              Critical), very large DBs (Hyperscale).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>High Availability</strong></td>
+            <td>
+              Built-in replicas and automatic failover with 99.99% SLA. No
+              manual clustering required.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Automatic Backups</strong></td>
+            <td>
+              Full, differential, and log backups automatically. Supports
+              point-in-time restore.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Scaling</strong></td>
+            <td>
+              Increase vCores, storage, or change tier with minimal downtime.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Security</strong></td>
+            <td>
+              Firewall rules, Azure AD authentication, encryption at rest (TDE),
+              encryption in transit (TLS).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Managed Identity Support</strong></td>
+            <td>
+              Allows App Service to connect using Azure AD without storing DB
+              passwords.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring & Tuning</strong></td>
+            <td>
+              Integrated with Azure Monitor, Query Performance Insight,
+              automatic index recommendations.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Point-in-Time Restore</strong></td>
+            <td>
+              Restore database to a specific time within retention period (7–35
+              days default).
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Export local database as <code>.bacpac</code> file (SSMS →
-            right-click DB → Tasks → Export)
+            Azure Portal → Create → "Azure SQL" → Choose "Single Database"
+          </li>
+          <li>Create or select Logical Server → Set admin username/password</li>
+          <li>Select pricing model (vCore recommended) and service tier</li>
+          <li>Configure networking → Allow specific IP or Azure services</li>
+          <li>Enable Azure AD authentication (recommended for enterprise)</li>
+          <li>
+            Connect from App Service using Connection String or Managed Identity
           </li>
           <li>
-            Azure Portal → Create → "SQL Database" → fill in Resource Group,
-            Database name, Server
-          </li>
-          <li>Choose pricing tier → Review + Create</li>
-          <li>
-            In SSMS → right-click database → Tasks → Import Data-tier
-            Application → select <code>.bacpac</code>
-          </li>
-          <li>
-            Azure Portal → SQL Database → Firewall settings → allow your IP
-            address
+            Monitor performance using Query Performance Insight and Azure
+            Monitor
           </li>
         </ol>
       </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure SQL DB overview.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure SQL Access role.png"
+        >
           📷
         </button>
       </div>
@@ -429,63 +663,147 @@
 
     <!-- ===================== SECTION 5 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 5: Secrets Management – Azure Key Vault + Managed Identity
+      SECTION 5: Secure Secret Management – Azure Key Vault
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Secure vault for storing secrets (DB
-          passwords, API keys, connection strings). Managed Identity lets your
-          App Service access Key Vault without storing any passwords in code.
+          <strong>What it is:</strong> Azure Key Vault is a secure service used
+          to store secrets, keys, and certificates safely in the cloud. <br />
+          <strong>Flow:</strong> App Service → Managed Identity → Azure AD
+          (Entra ID) → Azure Key Vault → Secret Value Used in Application <br />
+          <strong>Why needed:</strong> No secrets in code, centralized secret
+          storage, secure access control, easy secret rotation, enterprise
+          security compliance.
         </p>
       </div>
 
-      <ul>
-        <li>✓ No secrets in code — safe and secure</li>
-        <li>✓ Centralized secret management — one place for all secrets</li>
-        <li>✓ Audit logs — see who accessed what and when</li>
-        <li>✓ Easy secret rotation — update secrets without redeploying</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Secret</strong></td>
+            <td>
+              Stores sensitive values like passwords, connection strings, API
+              keys.
+            </td>
+            <td>DB connection string, JWT secret, third-party API keys.</td>
+          </tr>
+          <tr>
+            <td><strong>Key</strong></td>
+            <td>Cryptographic key used for encryption or signing.</td>
+            <td>Data encryption, digital signatures.</td>
+          </tr>
+          <tr>
+            <td><strong>Certificate</strong></td>
+            <td>SSL/TLS certificates stored securely in Key Vault.</td>
+            <td>HTTPS security, domain certificates.</td>
+          </tr>
+          <tr>
+            <td><strong>Versioning</strong></td>
+            <td>
+              Every time a secret is updated, a new version is created
+              automatically.
+            </td>
+            <td>Safe secret updates and rollback if needed.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Setting</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>RBAC (Access Control)</strong></td>
+            <td>
+              Uses Azure AD roles like
+              <strong>Key Vault Secrets User</strong> to control access.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Managed Identity Support</strong></td>
+            <td>
+              Allows App Service to access secrets without storing passwords.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Soft Delete</strong></td>
+            <td>Deleted secrets can be recovered within retention period.</td>
+          </tr>
+          <tr>
+            <td><strong>Purge Protection</strong></td>
+            <td>
+              Prevents permanent deletion of secrets (recommended in
+              production).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Networking</strong></td>
+            <td>Restrict access using firewall rules or Private Endpoint.</td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring & Logs</strong></td>
+            <td>
+              Track who accessed secrets using Azure Monitor and audit logs.
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Azure Portal → Create → "Key Vault" → fill in Resource Group, Vault
-            name
+            Azure Portal → Create → "Key Vault" → Select resource group and
+            region.
           </li>
           <li>
-            Open Key Vault → Secrets → Generate/Import → add secrets (DB
-            connection string, API keys)
+            Enable <strong>Soft Delete</strong> and
+            <strong>Purge Protection</strong>.
           </li>
           <li>
-            Go to your App Service → Identity → enable "System Assigned" Managed
-            Identity → copy the Object ID
+            Go to <strong>Secrets</strong> → Generate/Import → Add secret name
+            and value.
           </li>
           <li>
-            Go to Key Vault → Access Policies → Add Access Policy → Secret
-            permissions (Get, List) → select your App Service as Principal
+            App Service → Identity → Enable
+            <strong>System Assigned Managed Identity</strong>.
           </li>
           <li>
-            In App Service → Configuration → add Key Vault reference:
-            <code
-              >@Microsoft.KeyVault(VaultName=my-keyvault;SecretName=DbPassword)</code
-            >
+            Key Vault → Access Control (IAM) → Assign
+            <strong>Key Vault Secrets User</strong> role to the App Service
+            identity.
+          </li>
+          <li>
+            In .NET application, use <code>DefaultAzureCredential()</code> to
+            read secrets from Key Vault.
+          </li>
+          <li>
+            Use the secret value like a normal configuration value in your
+            application.
           </li>
         </ol>
       </div>
 
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> App Service (Managed Identity) → Key Vault
-          Access Policy → Reads secrets securely (no passwords in code)
-        </p>
-      </div>
-
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure key vault overview.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -503,53 +821,151 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Gateway that sits in front of all your
-          microservices. Provides centralized security, rate limiting, JWT
-          validation, and API versioning. All traffic goes through APIM first.
+          <strong>What it is:</strong> An API gateway service that sits in front
+          of your backend APIs to secure, control, and monitor API traffic. It
+          does not host your code, it manages access to your APIs. <br />
+          <strong>Flow:</strong> Client (Web/Mobile/Partner) → APIM Gateway →
+          App Service (API) → Database / Other Services <br />
+          <strong>Why needed:</strong> Centralized security, JWT validate, rate
+          limiting, API version control, monitoring, secure external exposure,
+          single entry point for multiple APIs.
         </p>
       </div>
 
-      <ul>
-        <li>✓ Centralized security policies — manage in one place</li>
-        <li>✓ Rate limiting — prevent spam and abuse</li>
-        <li>✓ JWT token validation — verify user is authenticated</li>
-        <li>✓ API versioning — support multiple versions simultaneously</li>
-        <li>✓ CORS handling — allow cross-origin requests safely</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gateway</strong></td>
+            <td>
+              Receives requests, applies policies, forwards to backend API, and
+              returns response.
+            </td>
+            <td>Secure and manage traffic before it reaches App Service.</td>
+          </tr>
+          <tr>
+            <td><strong>APIs</strong></td>
+            <td>
+              Backend APIs imported into APIM (via OpenAPI/Swagger or App
+              Service).
+            </td>
+            <td>Manage multiple microservices under one gateway.</td>
+          </tr>
+          <tr>
+            <td><strong>Products</strong></td>
+            <td>
+              Logical grouping of APIs. Access is granted at product level.
+            </td>
+            <td>Internal APIs, Partner APIs, Premium APIs.</td>
+          </tr>
+          <tr>
+            <td><strong>Subscriptions</strong></td>
+            <td>Clients receive a subscription key to access APIs securely.</td>
+            <td>Control and track API consumers.</td>
+          </tr>
+          <tr>
+            <td><strong>Developer Portal</strong></td>
+            <td>
+              Built-in portal for developers to view documentation and test
+              APIs.
+            </td>
+            <td>External partner integration.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Authentication & Authorization</strong></td>
+            <td>
+              Supports Azure AD, OAuth2, JWT validation, subscription keys.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Rate Limiting & Throttling</strong></td>
+            <td>
+              Limit number of requests per minute/day to protect backend APIs.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Policies</strong></td>
+            <td>
+              XML-based rules to validate tokens, modify headers, transform
+              requests/responses.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Versioning & Revisions</strong></td>
+            <td>Maintain multiple API versions (v1, v2) safely.</td>
+          </tr>
+          <tr>
+            <td><strong>Caching</strong></td>
+            <td>
+              Cache responses to reduce backend load and improve performance.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring & Analytics</strong></td>
+            <td>
+              Integrated with Azure Monitor and Application Insights for
+              tracking usage and errors.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Networking</strong></td>
+            <td>
+              Supports VNet integration and private endpoints (Premium tier).
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
+          <li>Azure Portal → Create → "API Management"</li>
           <li>
-            Azure Portal → Create → "API Management" → fill in Resource Group,
-            APIM name, pricing tier
+            Select pricing tier (Developer for testing, Standard/Premium for
+            production)
           </li>
+          <li>Import API (OpenAPI/Swagger or App Service)</li>
+          <li>Create Product and add API to it</li>
+          <li>Configure authentication (Azure AD or Subscription Key)</li>
           <li>
-            After creation (takes 20–30 min) → APIM → APIs → Add API → Manual
+            Add policies (rate limit, JWT validation, header transformation)
           </li>
-          <li>Enter API name and Web service URL (your App Service URL)</li>
-          <li>Inbound policies → add "JWT Validate" policy to check tokens</li>
-          <li>Add "Rate Limit" policy — e.g. 100 calls per minute</li>
-          <li>
-            Update Angular API URL to point to APIM endpoint instead of App
-            Service directly
-          </li>
+          <li>Test APIs using Developer Portal</li>
+          <li>Monitor traffic using Azure Monitor / Application Insights</li>
         </ol>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> Angular UI → APIM Gateway → Microservices (App
-          Service / Functions)
-        </p>
       </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure APIM overview.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Gateway.webp"
+        >
           📷
         </button>
       </div>
@@ -1049,14 +1465,14 @@
           <tr>
             <td><strong>Orchestrator Pattern</strong></td>
             <td>
-              To process steps in order (e.g. SMS → Email → Letter), use one
-              queue and one consumer. It runs all steps sequentially and
-              completes the message only after all succeed. Since Service Bus
-              guarantees at-least-once delivery, use
-              <strong>idempotency</strong> to prevent duplicate execution —
-              store each completed step with
-              <code>CorrelationId + StepName</code> in a database and skip
-              already completed steps on retry; Must manage state here manually
+              To execute steps in order (e.g., SMS → Email → Letter), use a
+              single queue with one consumer so steps run sequentially. Complete
+              the message only after all steps succeed. Since Service Bus
+              provides at-least-once delivery, implement
+              <strong>idempotency</strong> to avoid duplicates — store each
+              completed step using <code>CorrelationId + StepName</code> in a
+              database and skip already completed steps during retries. You must
+              manage state manually; alternatively, use a Durable Function.
             </td>
           </tr>
         </tbody>
@@ -1278,50 +1694,84 @@
 
     <!-- ===================== SECTION 12 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 12: User Authentication – Azure Active Directory (AAD / Entra ID)
+      SECTION 12: Identity & Access – Azure AD (Microsoft Entra ID)
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Azure's identity service. Users log in
-          with username/password, Azure validates them and issues a JWT token.
-          Your API checks the token before returning data. Supports SSO, roles,
-          and MFA.
+          <strong>What it is:</strong> It is service that manages users, login
+          (Auth and Authorization), MFA, and issues secure tokens for accessing
+          apps/APIs. <br />
+          <strong>Flow:</strong> User → Angular (MSAL) → Azure AD Login (+MFA) →
+          Access Token (JWT)→ Angular sends JWT → .NET Web API (Validate JWT) →
+          Response <br />
+          <strong>Why needed:</strong> centralized login, secure token-based API
+          access, enterprise MFA + RBAC, no passwords stored in your app
         </p>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Concept</th>
+            <th>Token/Concept</th>
             <th>Description</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td><strong>JWT</strong></td>
+            <td>
+              Token format (Header.Payload.Signature). In Azure AD, both ID
+              Token and Access Token are JWT strings.
+            </td>
+          </tr>
+          <tr>
             <td><strong>ID Token</strong></td>
-            <td>Who the user is — for authentication</td>
+            <td>
+              Used by Angular to identify user (name/email). Not meant for
+              calling APIs. <strong>Authentication</strong>
+            </td>
           </tr>
           <tr>
             <td><strong>Access Token</strong></td>
-            <td>Proves user has permission to call a secured API</td>
+            <td>
+              Used to call Web API. Sent as
+              <code>Authorization: Bearer &lt;token&gt;</code>. Web API
+              validates this JWT. <strong>Authorization</strong>
+            </td>
           </tr>
           <tr>
-            <td><strong>App Registration</strong></td>
-            <td>Register your app in AAD to get Client ID and Tenant ID</td>
+            <td><strong>Authorization Code</strong></td>
+            <td>
+              Temporary one-time code returned after login; Angular (MSAL)
+              exchanges it for tokens securely (PKCE). Never handle it manually.
+            </td>
           </tr>
           <tr>
-            <td><strong>SSO</strong></td>
-            <td>Login once, access multiple apps</td>
+            <td><strong>PKCE</strong></td>
+            <td>
+              Security step for SPA: prevents code interception; MSAL manages
+              <code>code_verifier</code> and <code>code_challenge</code>.
+            </td>
           </tr>
           <tr>
-            <td><strong>RBAC</strong></td>
-            <td>Role-based access control — Admin, User, Manager roles</td>
+            <td><strong>RBAC (Role Based Access Control)</strong></td>
+            <td>
+              <strong>Flow:</strong> Admin assigns role in Azure AD → role added
+              into JWT (<code>roles</code> claim) → Web API checks role using
+              <code>[Authorize(Roles="Admin")]</code>. RBAC controls
+              <strong>what user can do</strong> after login.
+            </td>
           </tr>
           <tr>
-            <td><strong>MFA</strong></td>
-            <td>Multi-Factor Authentication — extra security with 2FA</td>
+            <td><strong>MFA (Multi-Factor Authentication)</strong></td>
+            <td>
+              MFA happens <strong>during Azure AD login</strong> (before tokens
+              are issued). If policy requires MFA → user must complete
+              OTP/Authenticator → only then Azure AD issues tokens. MFA controls
+              <strong>how strongly user is verified</strong>.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -1330,51 +1780,119 @@
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Azure Portal → Azure Active Directory → App Registrations → New
-            Registration (for API) → copy Tenant ID and Client ID
+            <strong>Register Web API App (Backend Identity):</strong><br />
+            Entra ID → App registrations → New registration → Name your API →
+            Register → Copy
+            <strong>Tenant ID</strong> and <strong>API Client ID</strong>
           </li>
+
           <li>
-            API registration → Expose an API → set URI → Add scope:
-            <code>access_as_user</code>
+            <strong
+              >Expose API Scope (App scope - Which client apps can access our
+              API?):</strong
+            ><br />
+            API App → Expose an API → Set Application ID URI → Add scope
+            <code>access_as_user</code><br />
+            Scope format becomes:
+            <code>api://&lt;API_CLIENT_ID&gt;/access_as_user</code>
           </li>
+
           <li>
-            Create another App Registration for Angular (Single Page
-            Application) → add Redirect URI: <code>http://localhost:4200/</code>
+            <strong>Create Roles (RBAC – What login user can do?):</strong
+            ><br />
+            API App → App roles → Create roles like <code>Admin</code>,
+            <code>User</code><br />
+            Enterprise Applications → Open your API → Users & Groups → Assign
+            users/groups to roles
           </li>
+
           <li>
-            Angular registration → API Permissions → Add your Backend API scope
+            <strong>Register Angular SPA App (Frontend Identity):</strong><br />
+            App registrations → New registration → Register Angular app → Copy
+            <strong>Angular Client ID</strong>
           </li>
+
           <li>
-            .NET API → install NuGet: <code>Microsoft.Identity.Web</code> →
-            configure in <code>Program.cs</code>:
-            <code
-              >builder.AddMicrosoftIdentityWebApiAuthentication(configuration)</code
-            >
+            <strong>Configure Redirect URI:</strong><br />
+            Angular App → Authentication → Add platform → Single Page
+            Application → Add
+            <code>http://localhost:4200</code>
           </li>
-          <li>Add <code>[Authorize]</code> attribute to protected endpoints</li>
+
           <li>
-            Angular → install
-            <code>@azure/msal-angular @azure/msal-browser</code> → configure
-            MSAL with Tenant ID and Client ID
+            <strong>Grant Angular Permission to Call API:</strong><br />
+            Angular App → API permissions → Add permission → My APIs → Select
+            your API → Choose
+            <code>access_as_user</code> → (Optional) Click
+            <strong>Grant Admin Consent</strong>
           </li>
+
           <li>
-            When calling API: include token in header —
-            <code>Authorization: Bearer [TOKEN]</code>
+            <strong>Configure Angular (MSAL Setup):</strong><br />
+            Install MSAL packages → Configure:
+            <ul>
+              <li><code>clientId</code> = Angular Client ID</li>
+              <li>
+                <code>authority</code> =
+                https://login.microsoftonline.com/&lt;TenantID&gt;
+              </li>
+              <li><code>redirectUri</code> = http://localhost:4200</li>
+              <li>
+                <code>scope</code> = api://&lt;API_CLIENT_ID&gt;/access_as_user
+              </li>
+            </ul>
+            Use MSAL interceptor to automatically attach
+            <code>Authorization: Bearer &lt;access_token&gt;</code> in API
+            calls.
+          </li>
+
+          <li>
+            <strong>Configure .NET Web API (JWT Validation):</strong><br />
+            Add JWT Bearer Authentication with:
+            <ul>
+              <li>
+                <strong>Authority</strong> =
+                https://login.microsoftonline.com/&lt;TenantID&gt;
+              </li>
+              <li><strong>Audience</strong> = API Client ID</li>
+            </ul>
+            Protect endpoints using:
+            <code>[Authorize]</code><br />
+            Protect role-based endpoints using:
+            <code>[Authorize(Roles = "Admin")]</code>
+          </li>
+
+          <li>
+            <strong>Enable MFA (Extra Security Layer):</strong><br />
+            Entra ID → Security → Conditional Access → Create Policy → Select
+            Users → Select Cloud App (your app) → Require Multi-Factor
+            Authentication
+          </li>
+
+          <li>
+            <strong>Final Runtime Flow:</strong><br />
+            User logs in (Password + MFA) → Azure AD issues JWT → JWT contains
+            <code>scp</code> (scope) + <code>roles</code> → Angular calls API
+            with Access Token → API validates token + checks roles → Access
+            granted or denied.
           </li>
         </ol>
       </div>
 
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> User → Angular Login → Azure AD validates → JWT
-          Token issued → Angular calls API with token → API validates token →
-          return secure data
-        </p>
-      </div>
-
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure AD.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure AD register flow.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -1473,92 +1991,6 @@
         <p>
           <strong>Alerts:</strong> App Insights → Alerts → Create alert rule →
           set condition (e.g. error rate &gt; 5%) → set action (email/SMS)
-        </p>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 14 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 14: CI/CD – Azure DevOps Pipelines
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> Automated system that builds code, runs
-          tests, creates Docker images, and deploys to Azure on every GitHub
-          push. No manual deployment — push code → app goes live automatically.
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Stage</th>
-            <th>What happens</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>CI (Continuous Integration)</strong></td>
-            <td>
-              Code push → pull code → restore packages → build → run tests →
-              create Docker image → push to Azure Container Registry (ACR)
-            </td>
-          </tr>
-          <tr>
-            <td><strong>CD (Continuous Deployment)</strong></td>
-            <td>
-              Take build artifact → deploy to App Service (API) and Static Web
-              App (Angular) → run smoke tests
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Environments</strong></td>
-            <td>
-              Dev → QA → Production (staged deployments with approval gates
-              before Production)
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>
-            Azure DevOps → Pipelines → Create Pipeline → select repository
-          </li>
-          <li>
-            Select template (ASP.NET Core or Node.js) → generates
-            <code>azure-pipelines.yml</code>
-          </li>
-          <li>Add Docker steps to build image and push to ACR</li>
-          <li>Save and Run → CI pipeline builds and validates code</li>
-          <li>
-            Create Release pipeline → configure Dev → QA → Production stages
-          </li>
-          <li>Add approval gates before Production deployment</li>
-          <li>Store secrets in Azure Key Vault — reference from pipeline</li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Docker Deployment Flow:</strong> Developer pushes code → CI
-          pipeline builds Docker image → pushes to ACR → CD pipeline updates App
-          Service → App Service pulls new image → new version live
         </p>
       </div>
 
@@ -1751,160 +2183,6 @@
           API → Infrastructure created automatically
         </p>
       </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 17: COMPLETE ARCHITECTURE ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 17: Complete Architecture Overview
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p><strong>Main Request Flow (Read Operations):</strong></p>
-        <p>
-          Angular (Static Web App) → APIM Gateway → App Services (Microservices)
-          → Redis Cache → Azure SQL / Cosmos DB
-        </p>
-        <ul>
-          <li>
-            <strong>Cache Hit:</strong> Data in Redis → return immediately
-            (fast!)
-          </li>
-          <li>
-            <strong>Cache Miss:</strong> Not in Redis → query DB → store in
-            Redis → return to user
-          </li>
-        </ul>
-      </div>
-
-      <div class="note">
-        <p><strong>File &amp; Background Processing Flow:</strong></p>
-        <p>
-          Angular → API → Blob Storage (file saved) → Queue (message added) →
-          Azure Function (processes) → Database updated
-        </p>
-      </div>
-
-      <div class="note">
-        <p><strong>Security Layer:</strong></p>
-        <p>
-          User → Angular (MSAL login) → Azure AD (issues JWT) → APIM (validates
-          JWT, rate limits) → App Service ([Authorize]) → Key Vault (secrets via
-          Managed Identity)
-        </p>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Monitoring:</strong> Application Insights monitors Angular
-          (frontend), APIM (gateway), App Services (APIs), Azure Functions
-          (background jobs), SQL/Cosmos DB (data queries) — complete end-to-end
-          visibility.
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Layer</th>
-            <th>Azure Service</th>
-            <th>Purpose</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Frontend</strong></td>
-            <td>Static Web Apps</td>
-            <td>Host Angular app with CDN</td>
-          </tr>
-          <tr>
-            <td><strong>Gateway</strong></td>
-            <td>API Management (APIM)</td>
-            <td>Security, rate limiting, versioning</td>
-          </tr>
-          <tr>
-            <td><strong>Backend</strong></td>
-            <td>App Service</td>
-            <td>Host .NET APIs</td>
-          </tr>
-          <tr>
-            <td><strong>Serverless</strong></td>
-            <td>Azure Functions</td>
-            <td>Background jobs, event-driven tasks</td>
-          </tr>
-          <tr>
-            <td><strong>SQL Database</strong></td>
-            <td>Azure SQL Database</td>
-            <td>Relational structured data</td>
-          </tr>
-          <tr>
-            <td><strong>NoSQL Database</strong></td>
-            <td>Cosmos DB</td>
-            <td>Flexible schema, global scale, high-speed reads</td>
-          </tr>
-          <tr>
-            <td><strong>Cache</strong></td>
-            <td>Redis Cache</td>
-            <td>In-memory fast data access</td>
-          </tr>
-          <tr>
-            <td><strong>File Storage</strong></td>
-            <td>Blob Storage</td>
-            <td>Store images, PDFs, documents</td>
-          </tr>
-          <tr>
-            <td><strong>Simple Queue</strong></td>
-            <td>Queue Storage</td>
-            <td>Basic background processing</td>
-          </tr>
-          <tr>
-            <td><strong>Enterprise Messaging</strong></td>
-            <td>Service Bus</td>
-            <td>Reliable microservice communication</td>
-          </tr>
-          <tr>
-            <td><strong>Secrets</strong></td>
-            <td>Key Vault + Managed Identity</td>
-            <td>Secure secrets — no passwords in code</td>
-          </tr>
-          <tr>
-            <td><strong>Identity</strong></td>
-            <td>Azure AD / Entra ID</td>
-            <td>Authentication, SSO, roles</td>
-          </tr>
-          <tr>
-            <td><strong>Monitoring</strong></td>
-            <td>Application Insights</td>
-            <td>Logs, errors, performance, alerts</td>
-          </tr>
-          <tr>
-            <td><strong>CI/CD</strong></td>
-            <td>Azure DevOps Pipelines</td>
-            <td>Automated build and deployment</td>
-          </tr>
-          <tr>
-            <td><strong>Automation</strong></td>
-            <td>Logic Apps</td>
-            <td>No-code workflow automation</td>
-          </tr>
-          <tr>
-            <td><strong>Infrastructure</strong></td>
-            <td>Terraform</td>
-            <td>Infrastructure as Code</td>
-          </tr>
-        </tbody>
-      </table>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>

@@ -107,192 +107,513 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 2 ===================== -->
+    <!-- ===================== SECTION 2: CI/CD PIPELINES ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 2: CI/CD Pipeline <span class="toggle-icon">▼</span>
+      SECTION 2: CI/CD Pipelines
+      <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- WHAT IS CI/CD -->
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> It automates building, testing, and
+          deploying code every time a developer pushes changes. <br />
+          <strong>CI (Continuous Integration):</strong> Automatically builds and
+          tests code on every push/PR to catch bugs early. <br />
+          <strong>CD (Continuous Delivery):</strong> Automatically deploys the
+          tested artifact to one or more environments (Dev → Staging →
+          Production). <br />
+          <strong>Flow:</strong> Developer pushes code → Azure Repo → CI
+          Pipeline triggers → Build + Test → Publish Artifact → CD Pipeline →
+          Deploy to Azure App Service <br />
+          <strong>Why needed:</strong> Eliminates manual deployments, catches
+          bugs early, ensures consistent releases, enables zero-downtime
+          deployments with slot swapping.
+        </p>
+      </div>
+
+      <!-- OVERVIEW TABLE -->
       <table>
         <thead>
           <tr>
-            <th>Term</th>
-            <th>Meaning</th>
-            <th>Why important</th>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Azure DevOps Term</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>CI — Continuous Integration</strong></td>
+            <td><strong>CI Pipeline</strong></td>
             <td>
-              Every push auto-compiles and runs tests. Instant feedback if
-              something breaks.
+              Triggered on code push or PR. Compiles code, runs unit tests, and
+              publishes a deployable artifact (zip file).
             </td>
-            <td>Catch bugs early, not in production</td>
+            <td>Pipelines → Pipelines (YAML or Classic)</td>
           </tr>
           <tr>
-            <td><strong>CD — Continuous Deployment</strong></td>
+            <td><strong>CD Pipeline</strong></td>
             <td>
-              After tests pass, code automatically goes to production — no
-              manual steps.
+              Picks up the artifact from CI and deploys it to target
+              environments. Can have approval gates before production.
             </td>
-            <td>Deploy instantly, no manual intervention</td>
+            <td>Pipelines → Releases (Classic) or multi-stage YAML</td>
           </tr>
           <tr>
-            <td><strong>CR — Continuous Release</strong></td>
+            <td><strong>Artifact</strong></td>
             <td>
-              Code is always ready to deploy, but a human must approve before
-              going live.
+              The output of the CI pipeline — a published, compiled,
+              ready-to-deploy zip of your application.
             </td>
-            <td>You control when changes reach users</td>
+            <td>Published via <code>DotNetCoreCLI@2</code> publish task</td>
+          </tr>
+          <tr>
+            <td><strong>Service Connection</strong></td>
+            <td>
+              Authenticates Azure DevOps to deploy into your Azure Subscription.
+              Must be created before pipeline can deploy.
+            </td>
+            <td>
+              Project Settings → Service Connections → Azure Resource Manager
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Agent Pool</strong></td>
+            <td>
+              The virtual machine that runs your pipeline tasks.
+              Microsoft-hosted (ubuntu-latest, windows-latest) or self-hosted.
+            </td>
+            <td>pool: vmImage: 'ubuntu-latest'</td>
           </tr>
         </tbody>
       </table>
 
+      <!-- AZURE REPO SETUP -->
       <div class="note">
-        <p><strong>CI/CD Pipeline — Step-by-Step Flow:</strong></p>
+        <p><strong>Azure Repos – Setup &amp; Push Code:</strong></p>
         <ol>
           <li>
-            <strong>Developer pushes code</strong> —
-            <code>git push origin main</code>
+            Go to <strong>dev.azure.com</strong> → Select your Organization
+            &amp; Project → Left sidebar → <strong>Repos</strong>
           </li>
           <li>
-            <strong>Pipeline triggers automatically</strong> — Git push
-            detected, Azure DevOps starts pipeline with no manual action
+            Click dropdown at top → <strong>New Repository</strong> → Type: Git
+            → Enter name → Click <strong>Create</strong>
           </li>
           <li>
-            <strong>Build phase</strong> — <code>dotnet build</code> — if
-            compile error, pipeline stops and you get an alert
+            Clone repo locally:
+            <code
+              >git clone https://dev.azure.com/{org}/{project}/_git/{repo}</code
+            >
           </li>
           <li>
-            <strong>Test phase</strong> — <code>dotnet test</code> — if any test
-            fails, pipeline stops before deployment
+            Or add remote to existing project:
+            <code
+              >git remote add origin
+              https://dev.azure.com/{org}/{project}/_git/{repo}</code
+            >
           </li>
           <li>
-            <strong>Build Docker image</strong> — pipeline reads Dockerfile,
-            creates a snapshot of your compiled app
+            Push code:
+            <code
+              >git add . → git commit -m "message" → git push -u origin
+              main</code
+            >
           </li>
           <li>
-            <strong>Push to Container Registry (ACR)</strong> — image tagged
-            with version (<code>myapi:v1.2.3</code>) and stored in ACR
-          </li>
-          <li>
-            <strong>Deploy to Dev</strong> — image deployed to Dev environment
-            automatically
-          </li>
-          <li>
-            <strong>Approval gate</strong> — pipeline pauses, waits for human
-            approval before Staging/Production
-          </li>
-          <li>
-            <strong>Deploy to Staging → Production</strong> — after approval,
-            same image deployed to each environment
-          </li>
-          <li>
-            <strong>App is live</strong> — container running, monitoring
-            watching for errors
+            For authentication use
+            <strong>PAT (Personal Access Token)</strong> → User Settings →
+            Personal Access Tokens → New Token → Scopes: Code (Read &amp; Write)
           </li>
         </ol>
       </div>
 
+      <!-- BRANCH POLICIES TABLE -->
       <table>
         <thead>
           <tr>
-            <th>YAML Section</th>
-            <th>What it does</th>
-            <th>Example</th>
+            <th>Branch Policy</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Require Pull Request</strong></td>
+            <td>
+              No direct push to main/master allowed. All changes must go through
+              a Pull Request.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Minimum Reviewers</strong></td>
+            <td>PR requires at least N approvals before it can be merged.</td>
+          </tr>
+          <tr>
+            <td><strong>Build Validation</strong></td>
+            <td>
+              CI pipeline must pass successfully before the PR can be merged
+              into the protected branch.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Comment Resolution</strong></td>
+            <td>
+              All PR review comments must be resolved before merge is allowed.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Linked Work Items</strong></td>
+            <td>
+              PR must be linked to a task or user story from Azure Boards.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- CI PIPELINE STEPS -->
+      <div class="note">
+        <p><strong>CI Pipeline – Steps to Create (Classic / YAML):</strong></p>
+        <ol>
+          <li>Azure DevOps → <strong>Pipelines → New Pipeline</strong></li>
+          <li>
+            Select source: <strong>Azure Repos Git</strong> → choose your
+            repository
+          </li>
+          <li>
+            Choose template: <strong>ASP.NET Core</strong> or start with empty
+            YAML
+          </li>
+          <li>
+            Add <code>DotNetCoreCLI@2</code> task → command:
+            <strong>restore</strong> → restores NuGet packages
+          </li>
+          <li>
+            Add <code>DotNetCoreCLI@2</code> task → command:
+            <strong>build</strong> → compiles the project
+          </li>
+          <li>
+            Add <code>DotNetCoreCLI@2</code> task → command:
+            <strong>test</strong> → runs unit tests (optional but recommended)
+          </li>
+          <li>
+            Add <code>DotNetCoreCLI@2</code> task → command:
+            <strong>publish</strong> → creates deployable artifact zip
+          </li>
+          <li>
+            Add <strong>Publish Pipeline Artifact</strong> task → publishes the
+            zip so CD can pick it up
+          </li>
+          <li>
+            Set trigger: <strong>trigger: - main</strong> → pipeline auto-runs
+            on every push to main branch
+          </li>
+          <li>Save and Run → verify build succeeds in pipeline logs</li>
+        </ol>
+      </div>
+
+      <!-- CI YAML SAMPLE -->
+      <div class="note">
+        <p>
+          <strong>CI Pipeline – YAML Example (azure-pipelines.yml):</strong>
+        </p>
+        <pre><code>trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    inputs:
+      command: 'test'
+      projects: '**/*Tests.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish'
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+      zipAfterPublish: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'drop'</code></pre>
+      </div>
+
+      <!-- CD PIPELINE STEPS -->
+      <div class="note">
+        <p>
+          <strong>CD Pipeline – Steps to Create (Release Pipeline):</strong>
+        </p>
+        <ol>
+          <li>
+            Azure DevOps → <strong>Pipelines → Releases → New Pipeline</strong>
+          </li>
+          <li>
+            Click <strong>Add an artifact</strong> → Source: Build → Select your
+            CI pipeline → Default version: Latest → Click Add
+          </li>
+          <li>
+            Enable <strong>Continuous Deployment Trigger</strong> (lightning
+            bolt icon on artifact) → so CD triggers automatically after CI
+            succeeds
+          </li>
+          <li>
+            Click <strong>Add a Stage</strong> → Choose template:
+            <strong>Azure App Service Deployment</strong>
+          </li>
+          <li>
+            In stage tasks → Set <strong>Azure Subscription</strong> → select
+            your Service Connection
+          </li>
+          <li>
+            Set <strong>App Service Name</strong> → select your App Service from
+            the dropdown
+          </li>
+          <li>
+            Set <strong>Deployment Slot</strong> (optional) → e.g.
+            <code>staging</code> for slot-based deployments
+          </li>
+          <li>
+            Package: <code>$(System.DefaultWorkingDirectory)/**/*.zip</code>
+          </li>
+          <li>
+            For Production: add a second stage → add
+            <strong>Pre-deployment Approval</strong> → assign approver email
+          </li>
+          <li>
+            After staging deploy is validated → add
+            <strong>Azure App Service Manage</strong> task → Action:
+            <strong>Swap Slots</strong> → swap staging with production
+          </li>
+          <li>Save → Create Release → Monitor deployment in Releases tab</li>
+        </ol>
+      </div>
+
+      <!-- CD YAML (Multi-Stage) -->
+      <div class="note">
+        <p>
+          <strong
+            >CD – Multi-Stage YAML Example (deploy stage added to same
+            file):</strong
+          >
+        </p>
+        <pre><code>stages:
+  - stage: Build
+    jobs:
+      - job: BuildJob
+        steps:
+          # ... (same as CI steps above)
+
+  - stage: Deploy_Staging
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: DeployToStaging
+        environment: 'Staging'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: 'Deploy to Staging Slot'
+                  inputs:
+                    azureSubscription: 'MyServiceConnection'
+                    appType: 'webApp'
+                    appName: 'my-app-service'
+                    deployToSlotOrASE: true
+                    resourceGroupName: 'my-rg'
+                    slotName: 'staging'
+                    package: '$(Pipeline.Workspace)/drop/**/*.zip'
+
+  - stage: Deploy_Production
+    dependsOn: Deploy_Staging
+    condition: succeeded()
+    jobs:
+      - deployment: SwapToProduction
+        environment: 'Production'   # environment has approval gate configured
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureAppServiceManage@0
+                  displayName: 'Swap Staging to Production'
+                  inputs:
+                    azureSubscription: 'MyServiceConnection'
+                    Action: 'Swap Slots'
+                    WebAppName: 'my-app-service'
+                    ResourceGroupName: 'my-rg'
+                    SourceSlot: 'staging'</code></pre>
+      </div>
+
+      <!-- IMPORTANT SETTINGS TABLE -->
+      <table>
+        <thead>
+          <tr>
+            <th>Important Setting</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>trigger</strong></td>
-            <td>When does pipeline run? (every push, only on PR, scheduled)</td>
-            <td><code>trigger: - main</code></td>
+            <td>
+              Defines which branch push auto-triggers the CI pipeline. Use
+              <code>trigger: - main</code> or specify multiple branches.
+            </td>
           </tr>
           <tr>
-            <td><strong>pool</strong></td>
-            <td>Which machine runs the pipeline</td>
-            <td><code>vmImage: 'ubuntu-latest'</code></td>
+            <td><strong>pr (PR trigger)</strong></td>
+            <td>
+              Runs pipeline when a Pull Request is raised. Use
+              <code>pr: - main</code> to validate PRs before merge. Works with
+              Build Validation branch policy.
+            </td>
           </tr>
           <tr>
             <td><strong>variables</strong></td>
-            <td>Store values reused across pipeline</td>
-            <td><code>buildConfiguration: 'Release'</code></td>
-          </tr>
-          <tr>
-            <td><strong>stages</strong></td>
-            <td>Divide pipeline into logical phases</td>
-            <td>Build → Test → Deploy</td>
-          </tr>
-          <tr>
-            <td><strong>jobs</strong></td>
-            <td>Tasks inside each stage that run in order</td>
-            <td>Compile, Test, Build Docker, Push to ACR</td>
-          </tr>
-          <tr>
-            <td><strong>steps</strong></td>
-            <td>Individual commands to execute</td>
             <td>
-              <code>dotnet build</code>, <code>dotnet test</code>,
-              <code>docker build</code>
+              Store reusable values like
+              <code>buildConfiguration: Release</code>. Reference with
+              <code>$(buildConfiguration)</code>. Sensitive values go in
+              Variable Groups (Library) — never hardcode secrets.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Service Connection</strong></td>
+            <td>
+              Must be created before deployment tasks. Project Settings →
+              Service Connections → New → Azure Resource Manager → choose
+              Subscription → grant access.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Environment + Approvals</strong></td>
+            <td>
+              In Pipelines → Environments → create "Production" environment →
+              Add Approval → set approver. When YAML deploy stage targets this
+              environment, it pauses and waits for manual approval before
+              deploying.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Variable Groups (Library)</strong></td>
+            <td>
+              Pipelines → Library → Variable Groups → store shared secrets (DB
+              passwords, API keys) linked across multiple pipelines. Can link to
+              Azure Key Vault to pull secrets directly.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Deployment Slot (Swap)</strong></td>
+            <td>
+              Deploy to staging slot first → test → use AzureAppServiceManage@0
+              Swap task to promote to production with zero downtime. Staging
+              slot gets production traffic instantly after swap.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>condition</strong></td>
+            <td>
+              Controls when a stage/step runs.
+              <code>condition: succeeded()</code> only runs if previous stage
+              passed. <code>condition: always()</code> runs even on failure
+              (useful for cleanup steps).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>dependsOn</strong></td>
+            <td>
+              Defines stage execution order in multi-stage YAML.
+              <code>dependsOn: Build</code> means Deploy stage only starts after
+              Build stage completes successfully.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>zipAfterPublish</strong></td>
+            <td>
+              In <code>DotNetCoreCLI@2</code> publish task — set to
+              <code>true</code> to zip the output. The AzureWebApp@1 deploy task
+              expects a zip file.
             </td>
           </tr>
         </tbody>
       </table>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Concept</th>
-            <th>What it means</th>
-            <th>Why it matters</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Artifacts</strong></td>
-            <td>
-              Output from build (compiled .exe, Docker image) that gets deployed
-            </td>
-            <td>The actual thing deployed to production</td>
-          </tr>
-          <tr>
-            <td><strong>Build Number</strong></td>
-            <td>Each pipeline run gets a unique number (Build #123)</td>
-            <td>Track exactly which code version is running in prod</td>
-          </tr>
-          <tr>
-            <td><strong>Build Failure</strong></td>
-            <td>Pipeline stops if code doesn't compile or tests fail</td>
-            <td>Bad code never reaches production</td>
-          </tr>
-          <tr>
-            <td><strong>Deployment Approval</strong></td>
-            <td>Pipeline pauses at Staging/Production for human sign-off</td>
-            <td>You control when code goes live</td>
-          </tr>
-          <tr>
-            <td><strong>Rollback</strong></td>
-            <td>
-              If new deployment breaks prod, redeploy the previous working
-              version
-            </td>
-            <td>Fast recovery with minimal damage</td>
-          </tr>
-          <tr>
-            <td><strong>Secrets Management</strong></td>
-            <td>Passwords and API keys stored in Key Vault — never in code</td>
-            <td>Prevents security breaches</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- DEPLOY TO APP SERVICE NOTE -->
+      <div class="note">
+        <p><strong>How to Deploy to Azure App Service (Full Flow):</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create <strong>App Service</strong> → Choose Runtime:
+            .NET 8 → Select App Service Plan → Click Create
+          </li>
+          <li>
+            In App Service → <strong>Deployment Center</strong> → Source: Azure
+            DevOps → Select Org, Project, Repo, Branch → Save (this can
+            auto-generate a pipeline)
+          </li>
+          <li>
+            Or manually: in your YAML pipeline add
+            <code>AzureWebApp@1</code> task with your
+            <strong>Service Connection</strong> and <strong>App Name</strong>
+          </li>
+          <li>
+            In App Service →
+            <strong>Configuration → Application Settings</strong> → Add
+            <code>ASPNETCORE_ENVIRONMENT</code>, <code>ConnectionStrings</code>,
+            API keys (overrides appsettings.json)
+          </li>
+          <li>
+            Create a <strong>Staging slot</strong>: App Service → Deployment
+            Slots → Add Slot → Name: staging → Clone settings from production
+          </li>
+          <li>
+            CD Pipeline deploys artifact to <strong>staging slot</strong> first
+            → run smoke tests / manual validation
+          </li>
+          <li>
+            Then run <code>AzureAppServiceManage@0</code> Swap task → swaps
+            staging ↔ production → zero downtime
+          </li>
+          <li>
+            Monitor after deploy: App Service →
+            <strong>Application Insights</strong> → check for errors, slow
+            requests, exceptions
+          </li>
+        </ol>
+      </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
+          📷 CI Pipeline
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
+          📷 CD Release
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷 Slot Swap
         </button>
       </div>
       <div class="image-preview-box"></div>
@@ -965,7 +1286,6 @@ spec:
       </div>
       <div class="image-preview-box"></div>
     </div>
-
     <script src="../change.js"></script>
   </body>
 </html>

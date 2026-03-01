@@ -11,6 +11,7 @@
  * ✅ Steps toggle (toggleSteps)
  * ✅ HR Q&A toggle (toggleHRSection)
  * ✅ Image expand/collapse (toggleImage)
+ * ✅ Double-click image to open in new tab
  * ✅ Keyboard accessibility
  * ============================================================
  */
@@ -172,6 +173,8 @@ window.toggleHRSection = function (headerElement) {
  *  - If image is already showing for that button → close it (toggle off)
  *  - If a different image is showing → swap to new one
  *  - If none showing → open new one
+ *
+ * Double-click the image to open it in a new tab.
  */
 window.toggleImage = function (buttonElement) {
   if (!buttonElement) return;
@@ -203,7 +206,8 @@ window.toggleImage = function (buttonElement) {
 
     if (src) {
       // Has a real image path — show the image
-      previewBox.innerHTML = `<img src="${src}" alt="Reference image" style="display:block; width:auto; height:auto; max-width:100%;" /><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;
+      // Double-click on the image opens it in a new tab
+      previewBox.innerHTML = `<img src="${src}" alt="Reference image" title="Double-click to open in new tab" style="display:block; width:auto; height:auto; max-width:100%; cursor:zoom-in;" ondblclick="window.open('${src}', '_blank')" /><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;
     } else {
       // No image path yet — show a placeholder message
       previewBox.innerHTML = `<p class="image-placeholder">📷 No image added yet. Set the <code>data-src</code> attribute on this button to link an image.</p><button class="image-close-btn" onclick="closeImagePreview(this)">✕ Close</button>`;
