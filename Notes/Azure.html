@@ -9,70 +9,9 @@
   <body>
     <h1>8. Azure</h1>
 
-    <!-- ===================== SECTION 1 ===================== -->
+    <!-- ===================== SECTION 1: App Service ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 1: Frontend Hosting – Azure Static Web Apps
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> Managed service to host frontend like
-          Angular, React, or Vue apps. Provides automatic HTTPS, global CDN, and
-          auto-deploy on GitHub push.
-        </p>
-      </div>
-
-      <ul>
-        <li>✓ Automatic HTTPS — secure by default</li>
-        <li>✓ Global CDN — fast loading worldwide</li>
-        <li>✓ Auto-deploy when you push to GitHub</li>
-        <li>✓ No server management needed</li>
-      </ul>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>Create Static Web App in Azure Portal</li>
-          <li>Copy Deployment Token</li>
-          <li>Add token as secret variable in Azure DevOps Pipeline</li>
-          <li>
-            Add <code>azure-pipelines.yml</code> with
-            <code>$(SWA_DEPLOYMENT_TOKEN)</code> <code>app_location</code> and
-            <code>output_location</code>
-          </li>
-          <li>Push code → Pipeline builds and deploys automatically</li>
-          <li>Update <code>environment.prod.ts</code> with API base URL</li>
-          <li>Enable CORS in backend</li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> User Browser → Static Web App (CDN) → Backend
-          API
-        </p>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/static web app YAML.png"
-        >
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 2 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 2: Application Hosting – Azure App Service
+      SECTION 1: Application Hosting – Azure App Service
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -81,8 +20,10 @@
           <strong>What it is:</strong> Azure App Service is a fully managed PaaS
           used to host Web Apps and APIs without managing servers (IIS, OS,
           patching, load balancer). <br />
+          <br />
           <strong>Flow:</strong> Developer → Azure DevOps Pipeline → Azure App
           Service → User API <br />
+          <br />
           <strong>Why needed:</strong> No server management, auto scaling,
           secure configuration, zero-downtime deployments, easy CI/CD
           integration, production-ready monitoring.
@@ -252,20 +193,24 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
-          data-src="./Images/Azure app service.png"
+          data-src="./Images/Azure App Service Architecture Overview.png"
         >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure app service.png"
+        >
           📷
         </button>
       </div>
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 3 ===================== -->
+    <!-- ===================== SECTION 2: SQL DB ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 3: Cloud Database – Azure SQL Database
+      SECTION 2: Cloud Database – Azure SQL Database
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -274,9 +219,11 @@
           <strong>What it is:</strong> It is SQL Server in the cloud, where you
           manage only the database and Azure handles the infrastructure and
           updates. <br />
+          <br />
           <strong>Flow:</strong> Application (App Service / API) → Connection
           String / Managed Identity → Azure SQL Logical Server → Azure SQL
           Database → Data Storage <br />
+          <br />
           <strong>Why needed:</strong> No infrastructure management, automatic
           backups, built-in high availability, strong security, easy scaling,
           cloud-ready database solution.
@@ -421,6 +368,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure SQL DB flow full.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure SQL DB overview.png"
         >
           📷
@@ -436,730 +390,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 4 ===================== -->
+    <!-- ===================== SECTION 3: Azure Functions ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 4: NoSQL Database – Azure Cosmos DB
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> Globally distributed NoSQL database that
-          stores data as JSON documents. Offers single-digit millisecond reads,
-          automatic global replication, and multiple consistency levels. Use
-          when you need flexible schema, massive scale, or globally distributed
-          data.
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Concept</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Database</strong></td>
-            <td>
-              Top-level container; like a SQL Server instance. Holds multiple
-              containers.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Container</strong></td>
-            <td>Like a SQL table but schema-free. Stores JSON documents.</td>
-          </tr>
-          <tr>
-            <td><strong>Item / Document</strong></td>
-            <td>
-              A single JSON record inside a container. Each has a unique
-              <code>id</code>.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Partition Key</strong></td>
-            <td>
-              Property used to distribute data across partitions. Critical for
-              performance — choose high-cardinality values like
-              <code>userId</code>, <code>productId</code>.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Throughput (RU/s)</strong></td>
-            <td>
-              Request Units per second — the "currency" for reads/writes. Set at
-              database or container level. Can be manual or autoscale.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Consistency Levels</strong></td>
-            <td>
-              Strong → Bounded Staleness → Session → Consistent Prefix →
-              Eventual. Session is default — reads your own writes.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>TTL (Time to Live)</strong></td>
-            <td>
-              Auto-delete documents after X seconds. Useful for session data,
-              logs, temp records.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Change Feed</strong></td>
-            <td>
-              Ordered stream of all inserts/updates in a container. Use with
-              Azure Functions to trigger on data changes.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Global Distribution</strong></td>
-            <td>
-              Replicate data to any Azure region with one click. Reads served
-              from nearest region.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>APIs Supported</strong></td>
-            <td>
-              NoSQL (native), MongoDB, Cassandra, Gremlin (graph), Table. Choose
-              at creation — cannot change later.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="note">
-        <p><strong>SQL vs Cosmos DB — When to use which:</strong></p>
-        <ul>
-          <li>
-            <strong>Azure SQL:</strong> Structured relational data, complex
-            joins, transactions, strict schema — ERP, banking, HR systems
-          </li>
-          <li>
-            <strong>Cosmos DB:</strong> Flexible/changing schema, massive scale,
-            global distribution, high-speed reads — e-commerce catalogs,
-            real-time apps, IoT telemetry, user sessions
-          </li>
-        </ul>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Partition Key — Critical Rule:</strong> Every query should
-          include the partition key. Queries without it do a cross-partition
-          scan — expensive and slow. Bad key example: <code>status</code> (only
-          3 values). Good key example: <code>userId</code> (millions of values).
-        </p>
-      </div>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>
-            Azure Portal → Create → "Azure Cosmos DB" → select API (NoSQL for
-            JSON documents)
-          </li>
-          <li>
-            Fill in Resource Group, Account name, Region → select Capacity mode
-            (Provisioned or Serverless)
-          </li>
-          <li>Review + Create → once deployed, open the account</li>
-          <li>
-            Go to Data Explorer → New Database → set Database name and
-            throughput (RU/s)
-          </li>
-          <li>
-            Create Container → set Container name and Partition key (e.g.
-            <code>/userId</code>)
-          </li>
-          <li>
-            In your .NET API, install NuGet: <code>Microsoft.Azure.Cosmos</code>
-          </li>
-          <li>
-            Register in <code>Program.cs</code>:
-            <code
-              >builder.Services.AddSingleton&lt;CosmosClient&gt;(new
-              CosmosClient(connectionString))</code
-            >
-          </li>
-          <li>
-            Inject <code>CosmosClient</code> → get container → call
-            <code>CreateItemAsync</code>, <code>ReadItemAsync</code>,
-            <code>GetItemQueryIterator</code>
-          </li>
-          <li>
-            Store connection string in Azure Key Vault — never hardcode it
-          </li>
-          <li>Enable TTL on container if documents should auto-expire</li>
-          <li>
-            Set up Change Feed + Azure Function to react to inserts/updates if
-            needed
-          </li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <p><strong>Common Operations (.NET SDK):</strong></p>
-        <ul>
-          <li>
-            <strong>Create:</strong>
-            <code
-              >container.CreateItemAsync(item, new
-              PartitionKey(item.UserId))</code
-            >
-          </li>
-          <li>
-            <strong>Read:</strong>
-            <code
-              >container.ReadItemAsync&lt;T&gt;(id, new
-              PartitionKey(userId))</code
-            >
-          </li>
-          <li>
-            <strong>Query:</strong>
-            <code
-              >container.GetItemQueryIterator&lt;T&gt;(new
-              QueryDefinition("SELECT * FROM c WHERE c.userId = @id"))</code
-            >
-          </li>
-          <li>
-            <strong>Update:</strong>
-            <code
-              >container.UpsertItemAsync(item, new
-              PartitionKey(item.UserId))</code
-            >
-          </li>
-          <li>
-            <strong>Delete:</strong>
-            <code
-              >container.DeleteItemAsync&lt;T&gt;(id, new
-              PartitionKey(userId))</code
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> Angular → API → CosmosClient → Container → JSON
-          Documents stored/retrieved
-        </p>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 5 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 5: Secure Secret Management – Azure Key Vault
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> Azure Key Vault is a secure service used
-          to store secrets, keys, and certificates safely in the cloud. <br />
-          <strong>Flow:</strong> App Service → Managed Identity → Azure AD
-          (Entra ID) → Azure Key Vault → Secret Value Used in Application <br />
-          <strong>Why needed:</strong> No secrets in code, centralized secret
-          storage, secure access control, easy secret rotation, enterprise
-          security compliance.
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Description</th>
-            <th>Use Cases</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Secret</strong></td>
-            <td>
-              Stores sensitive values like passwords, connection strings, API
-              keys.
-            </td>
-            <td>DB connection string, JWT secret, third-party API keys.</td>
-          </tr>
-          <tr>
-            <td><strong>Key</strong></td>
-            <td>Cryptographic key used for encryption or signing.</td>
-            <td>Data encryption, digital signatures.</td>
-          </tr>
-          <tr>
-            <td><strong>Certificate</strong></td>
-            <td>SSL/TLS certificates stored securely in Key Vault.</td>
-            <td>HTTPS security, domain certificates.</td>
-          </tr>
-          <tr>
-            <td><strong>Versioning</strong></td>
-            <td>
-              Every time a secret is updated, a new version is created
-              automatically.
-            </td>
-            <td>Safe secret updates and rollback if needed.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Important Setting</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>RBAC (Access Control)</strong></td>
-            <td>
-              Uses Azure AD roles like
-              <strong>Key Vault Secrets User</strong> to control access.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Managed Identity Support</strong></td>
-            <td>
-              Allows App Service to access secrets without storing passwords.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Soft Delete</strong></td>
-            <td>Deleted secrets can be recovered within retention period.</td>
-          </tr>
-          <tr>
-            <td><strong>Purge Protection</strong></td>
-            <td>
-              Prevents permanent deletion of secrets (recommended in
-              production).
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Networking</strong></td>
-            <td>Restrict access using firewall rules or Private Endpoint.</td>
-          </tr>
-          <tr>
-            <td><strong>Monitoring & Logs</strong></td>
-            <td>
-              Track who accessed secrets using Azure Monitor and audit logs.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>
-            Azure Portal → Create → "Key Vault" → Select resource group and
-            region.
-          </li>
-          <li>
-            Enable <strong>Soft Delete</strong> and
-            <strong>Purge Protection</strong>.
-          </li>
-          <li>
-            Go to <strong>Secrets</strong> → Generate/Import → Add secret name
-            and value.
-          </li>
-          <li>
-            App Service → Identity → Enable
-            <strong>System Assigned Managed Identity</strong>.
-          </li>
-          <li>
-            Key Vault → Access Control (IAM) → Assign
-            <strong>Key Vault Secrets User</strong> role to the App Service
-            identity.
-          </li>
-          <li>
-            In .NET application, use <code>DefaultAzureCredential()</code> to
-            read secrets from Key Vault.
-          </li>
-          <li>
-            Use the secret value like a normal configuration value in your
-            application.
-          </li>
-        </ol>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/Azure key vault overview.png"
-        >
-          📷
-        </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 6 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 6: API Gateway – Azure API Management (APIM)
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> An API gateway service that sits in front
-          of your backend APIs to secure, control, and monitor API traffic. It
-          does not host your code, it manages access to your APIs. <br />
-          <strong>Flow:</strong> Client (Web/Mobile/Partner) → APIM Gateway →
-          App Service (API) → Database / Other Services <br />
-          <strong>Why needed:</strong> Centralized security, JWT validate, rate
-          limiting, API version control, monitoring, secure external exposure,
-          single entry point for multiple APIs.
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Description</th>
-            <th>Use Cases</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Gateway</strong></td>
-            <td>
-              Receives requests, applies policies, forwards to backend API, and
-              returns response.
-            </td>
-            <td>Secure and manage traffic before it reaches App Service.</td>
-          </tr>
-          <tr>
-            <td><strong>APIs</strong></td>
-            <td>
-              Backend APIs imported into APIM (via OpenAPI/Swagger or App
-              Service).
-            </td>
-            <td>Manage multiple microservices under one gateway.</td>
-          </tr>
-          <tr>
-            <td><strong>Products</strong></td>
-            <td>
-              Logical grouping of APIs. Access is granted at product level.
-            </td>
-            <td>Internal APIs, Partner APIs, Premium APIs.</td>
-          </tr>
-          <tr>
-            <td><strong>Subscriptions</strong></td>
-            <td>Clients receive a subscription key to access APIs securely.</td>
-            <td>Control and track API consumers.</td>
-          </tr>
-          <tr>
-            <td><strong>Developer Portal</strong></td>
-            <td>
-              Built-in portal for developers to view documentation and test
-              APIs.
-            </td>
-            <td>External partner integration.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Important Feature</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Authentication & Authorization</strong></td>
-            <td>
-              Supports Azure AD, OAuth2, JWT validation, subscription keys.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Rate Limiting & Throttling</strong></td>
-            <td>
-              Limit number of requests per minute/day to protect backend APIs.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Policies</strong></td>
-            <td>
-              XML-based rules to validate tokens, modify headers, transform
-              requests/responses.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Versioning & Revisions</strong></td>
-            <td>Maintain multiple API versions (v1, v2) safely.</td>
-          </tr>
-          <tr>
-            <td><strong>Caching</strong></td>
-            <td>
-              Cache responses to reduce backend load and improve performance.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Monitoring & Analytics</strong></td>
-            <td>
-              Integrated with Azure Monitor and Application Insights for
-              tracking usage and errors.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Networking</strong></td>
-            <td>
-              Supports VNet integration and private endpoints (Premium tier).
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>Azure Portal → Create → "API Management"</li>
-          <li>
-            Select pricing tier (Developer for testing, Standard/Premium for
-            production)
-          </li>
-          <li>Import API (OpenAPI/Swagger or App Service)</li>
-          <li>Create Product and add API to it</li>
-          <li>Configure authentication (Azure AD or Subscription Key)</li>
-          <li>
-            Add policies (rate limit, JWT validation, header transformation)
-          </li>
-          <li>Test APIs using Developer Portal</li>
-          <li>Monitor traffic using Azure Monitor / Application Insights</li>
-        </ol>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/Azure APIM overview.png"
-        >
-          📷
-        </button>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/Gateway.webp"
-        >
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 7: Storage Account ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 7: Storage Account – Blob & Queue Storage
-      <span class="toggle-icon">▼</span>
-    </h2>
-    <div class="section-content">
-      <div class="note">
-        <p>
-          <strong>What it is:</strong> A cloud storage service that holds your
-          data. Inside it you can create Blob Storage (for files) and Queue
-          Storage (for messages). Don't store files in your database — use Blob
-          Storage, it's cheaper and faster. Each file gets a unique URL.<br />
-          <strong>Blob Flow:</strong> Angular → API → Blob Storage → save file
-          URL in SQL DB<br />
-          <strong>Queue Flow:</strong> User → API → Queue (message added) →
-          Azure Function (processes) → Database Updated
-        </p>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>What it stores</th>
-            <th>Use case</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Blob Storage</strong></td>
-            <td>Files — images, videos, PDFs, backups</td>
-            <td>User uploads, static files, logs</td>
-          </tr>
-          <tr>
-            <td><strong>Queue Storage</strong></td>
-            <td>Short text messages (max 64 KB)</td>
-            <td>Pass tasks between services, background jobs</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Blob Access Tiers</strong></td>
-            <td>
-              <strong>Hot</strong> — accessed frequently |
-              <strong>Cool</strong> — accessed occasionally |
-              <strong>Archive</strong> — rarely accessed, cheapest but slow to
-              retrieve
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Container Access</strong></td>
-            <td>
-              Private (no public access), Blob (anyone can read a file by URL),
-              Container (anyone can list and read all files)
-            </td>
-          </tr>
-          <tr>
-            <td><strong>SAS Token</strong></td>
-            <td>
-              Temporary URL with expiry and permissions — share a file securely
-              without making the container public
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Lifecycle Management</strong></td>
-            <td>
-              Auto-move blobs between tiers or delete after X days — e.g. Cool
-              after 30 days → Archive after 90 → Delete after 365
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Blob Trigger</strong></td>
-            <td>
-              Runs a azure function automatically when a file is uploaded or
-              modified
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Queue Trigger</strong></td>
-            <td>
-              Runs a azure function automatically when a new message arrives in
-              the queue. Auto-retries on failure (default 5 times) → then moves
-              to Poison Queue for manual inspection.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Visibility Timeout (Queue)</strong></td>
-            <td>
-              Message becomes hidden while being processed. If not deleted in
-              time, it reappears for another consumer to retry.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="note">
-        <p><strong>How to implement:</strong></p>
-        <ol>
-          <li>
-            Azure Portal → Create <strong>Storage Account</strong> → Choose
-            Region → Select Redundancy (LRS / GRS)
-          </li>
-          <li>
-            <strong>Blob:</strong> Storage Account → Containers → Create
-            Container → Set access level
-          </li>
-          <li>
-            <strong>Queue:</strong> Storage Account → Queues → Create Queue →
-            Give it a name
-          </li>
-          <li>
-            Storage Account → Access Keys → Copy
-            <strong>Connection String</strong> → store in Key Vault /
-            <code>local.settings.json</code>
-          </li>
-          <li>
-            Install NuGet: <code>Azure.Storage.Blobs</code> or
-            <code>Azure.Storage.Queues</code>
-          </li>
-          <li>
-            Use <code>BlobServiceClient</code> to upload/download files or
-            <code>QueueClient</code> to send/receive messages
-          </li>
-          <li>
-            For Azure Functions: use <code>[BlobTrigger]</code> or
-            <code>[QueueTrigger]</code> — Azure handles reading automatically
-          </li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <p><strong>Queue benefits:</strong></p>
-        <ul>
-          <li>
-            ✓ Handles background tasks like order processing, email sending, and
-            file processing without blocking the main API.
-          </li>
-          <li>
-            ✓ Improves system performance by responding instantly to users while
-            heavy work runs asynchronously.
-          </li>
-          <li>
-            ✓ Increases reliability with built-in retry and poison queue support
-            if processing fails.
-          </li>
-          <li>
-            ✓ Enables scalable microservices where multiple workers can process
-            messages independently.
-          </li>
-        </ul>
-        <p>
-          <strong>Download Flow (Blob):</strong> Angular → API generates SAS URL
-          → Angular downloads directly from Blob
-        </p>
-      </div>
-
-      <div class="image-icons">
-        <span class="image-icons-label">Images:</span>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/Blob Trigger + SAS + Move Tier + Service Bus.png"
-        >
-          📷
-        </button>
-        <button
-          class="image-icon"
-          onclick="toggleImage(this)"
-          data-src="./Images/Queue Trigger → Save to Cosmos DB Output Binding.png"
-        >
-          📷
-        </button>
-      </div>
-      <div class="image-preview-box"></div>
-    </div>
-
-    <!-- ===================== SECTION 9 ===================== -->
-    <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 9: Serverless Computing – Azure Functions
+      SECTION 3: Serverless Computing – Azure Functions
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1168,10 +401,17 @@
           <strong>What it is:</strong> A cloud service that runs your code
           automatically when something triggers it. No server management, pay
           only when it runs. <br />
+          <br />
 
           <strong>Flow:</strong> Event occurs (HTTP / Timer / Queue / Blob /
           Cosmos DB) → Function triggers → code runs → output written to target
-          (DB / Queue / Blob)
+          (DB / Queue / Blob) <br />
+          <br />
+
+          <strong>Why needed:</strong> No server management, pay only when code
+          runs, automatically scales with load, handles background tasks without
+          blocking main API, supports many triggers to react to events across
+          Azure services.
         </p>
       </div>
 
@@ -1329,6 +569,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure funtions full overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure funtion with service bus.png"
         >
           📷
@@ -1354,9 +601,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 10 ===================== -->
+    <!-- ===================== SECTION 4: Service Bus ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 10: Enterprise Messaging – Azure Service Bus
+      SECTION 4: Enterprise Messaging – Azure Service Bus
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1365,8 +612,16 @@
           <strong>What it is:</strong> Azure Service Bus helps applications send
           messages to each other safely using queues and topics for background
           processing. <br />
+          <br />
           <strong>Flow:</strong> Microservice 1 (Publisher) → Azure Service Bus
           Queue/Topic (Message Storage) → Microservice 2 & 3 (Subscribers)
+          <br />
+          <br />
+
+          <strong>Why needed:</strong> Decouples microservices so they don't
+          depend on each other directly, guarantees message delivery even if
+          receiver is down, handles retries automatically, prevents data loss,
+          and allows multiple services to react to the same event independently.
         </p>
       </div>
 
@@ -1537,6 +792,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure Service Bus Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure Service Bus Flow.webp"
         >
           📷
@@ -1559,120 +821,170 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 11 ===================== -->
+    <!-- ===================== SECTION 5: Storage Account (Blob & Queue) ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 11: Caching – Azure Redis Cache <span class="toggle-icon">▼</span>
+      SECTION 5: Storage Account – Blob & Queue Storage
+      <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Instead of querying the database every
-          time, store frequently accessed data in Redis (RAM memory) which is
-          1000x faster. Perfect for data that doesn't change often.
+          <strong>What it is:</strong> A cloud storage service that holds your
+          data. Inside it you can create Blob Storage (for files) and Queue
+          Storage (for messages). Don't store files in your database — use Blob
+          Storage, it's cheaper and faster. Each file gets a unique URL. <br />
+          <br />
+          <strong>Blob Flow:</strong> Angular → API → Blob Storage → save file
+          URL in SQL DB <br />
+          <br />
+          <strong>Queue Flow:</strong> User → API → Queue (message added) →
+          Azure Function (processes) → Database Updated
         </p>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Features</th>
+            <th>Type</th>
+            <th>What it stores</th>
+            <th>Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Blob Storage</strong></td>
+            <td>Files — images, videos, PDFs, backups</td>
+            <td>User uploads, static files, logs</td>
+          </tr>
+          <tr>
+            <td><strong>Queue Storage</strong></td>
+            <td>Short text messages (max 64 KB)</td>
+            <td>Pass tasks between services, background jobs</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
             <th>Description</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><b>Reduce Database Load</b></td>
+            <td><strong>Blob Access Tiers</strong></td>
             <td>
-              Stores frequently used data in memory so the same queries don’t
-              hit the database again and again.
+              <strong>Hot</strong> — accessed frequently |
+              <strong>Cool</strong> — accessed occasionally |
+              <strong>Archive</strong> — rarely accessed, cheapest but slow to
+              retrieve
             </td>
           </tr>
           <tr>
-            <td><b>High Performance</b></td>
+            <td><strong>Container Access</strong></td>
             <td>
-              Very fast API responses because data is read from RAM (in-memory)
-              instead of disk/database.
+              Private (no public access), Blob (anyone can read a file by URL),
+              Container (anyone can list and read all files)
             </td>
           </tr>
           <tr>
-            <td><b>Distributed Caching</b></td>
+            <td><strong>SAS Token</strong></td>
             <td>
-              All servers connect to the same Redis, so cached data is shared
-              across multiple servers behind a load balancer.
+              Temporary URL with expiry and permissions — share a file securely
+              without making the container public
             </td>
           </tr>
           <tr>
-            <td><b>Session Storage</b></td>
+            <td><strong>Lifecycle Management</strong></td>
             <td>
-              Keeps user session/login data centrally, so sessions work properly
-              even when requests hit different servers.
+              Auto-move blobs between tiers or delete after X days — e.g. Cool
+              after 30 days → Archive after 90 → Delete after 365
             </td>
           </tr>
           <tr>
-            <td><b>TTL (Expiry Support)</b></td>
+            <td><strong>Blob Trigger</strong></td>
             <td>
-              Supports automatic expiry (TTL) so cached data is removed after a
-              set time to avoid stale data.
+              Runs a azure function automatically when a file is uploaded or
+              modified
             </td>
           </tr>
           <tr>
-            <td><b>Advanced Enterprise Capabilities</b></td>
+            <td><strong>Queue Trigger</strong></td>
             <td>
-              Supports Pub/Sub (real-time messaging), distributed locking (avoid
-              duplicate processing), scalability, high availability (replication
-              + failover), and cost optimization by reducing
-              database/infrastructure load.
+              Runs a azure function automatically when a new message arrives in
+              the queue. Auto-retries on failure (default 5 times) → then moves
+              to Poison Queue for manual inspection.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Visibility Timeout (Queue)</strong></td>
+            <td>
+              Message becomes hidden while being processed. If not deleted in
+              time, it reappears for another consumer to retry.
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="note">
-        <p><strong>Cache Logic:</strong></p>
-        <ul>
-          <li>
-            <strong>Cache Hit:</strong> Data found in Redis → return immediately
-            (fast!)
-          </li>
-          <li>
-            <strong>Cache Miss:</strong> Not in Redis → query database → store
-            in Redis with TTL → return to user
-          </li>
-          <li>
-            <strong>Cache Invalidation:</strong> On update/delete → clear cache
-            so next query fetches fresh data
-          </li>
-          <li>
-            <strong>TTL (Time To Live):</strong> How long data stays in cache
-            (e.g. 1 hour). Balances performance vs freshness.
-          </li>
-        </ul>
-      </div>
-
-      <div class="note">
         <p><strong>How to implement:</strong></p>
         <ol>
           <li>
-            Azure Portal → Create → "Azure Cache for Redis" → fill in Resource
-            Group, Cache name, pricing tier
+            Azure Portal → Create <strong>Storage Account</strong> → Choose
+            Region → Select Redundancy (LRS / GRS)
           </li>
           <li>
-            Redis Cache → Settings → Access Keys → copy Primary Connection
-            String
+            <strong>Blob:</strong> Storage Account → Containers → Create
+            Container → Set access level
           </li>
-          <li>.NET API → install NuGet: <code>StackExchange.Redis</code></li>
           <li>
-            Check Redis first → if hit, return; if miss, query DB → store in
-            Redis with TTL → return
+            <strong>Queue:</strong> Storage Account → Queues → Create Queue →
+            Give it a name
           </li>
-          <li>On data change → invalidate (delete) the relevant cache key</li>
+          <li>
+            Storage Account → Access Keys → Copy
+            <strong>Connection String</strong> → store in Key Vault /
+            <code>local.settings.json</code>
+          </li>
+          <li>
+            Install NuGet: <code>Azure.Storage.Blobs</code> or
+            <code>Azure.Storage.Queues</code>
+          </li>
+          <li>
+            Use <code>BlobServiceClient</code> to upload/download files or
+            <code>QueueClient</code> to send/receive messages
+          </li>
+          <li>
+            For Azure Functions: use <code>[BlobTrigger]</code> or
+            <code>[QueueTrigger]</code> — Azure handles reading automatically
+          </li>
         </ol>
       </div>
 
       <div class="note">
+        <p><strong>Queue benefits:</strong></p>
+        <ul>
+          <li>
+            ✓ Handles background tasks like order processing, email sending, and
+            file processing without blocking the main API.
+          </li>
+          <li>
+            ✓ Improves system performance by responding instantly to users while
+            heavy work runs asynchronously.
+          </li>
+          <li>
+            ✓ Increases reliability with built-in retry and poison queue support
+            if processing fails.
+          </li>
+          <li>
+            ✓ Enables scalable microservices where multiple workers can process
+            messages independently.
+          </li>
+        </ul>
         <p>
-          <strong>Flow:</strong> API → check Redis → Hit: return fast | Miss:
-          query SQL → save in Redis → return
+          <strong>Download Flow (Blob):</strong> Angular → API generates SAS URL
+          → Angular downloads directly from Blob
         </p>
       </div>
 
@@ -1681,7 +993,179 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
-          data-src="./Images/redis cache, load balancer.png"
+          data-src="./Images/Azure Storage Acccount Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Blob Trigger + SAS + Move Tier + Service Bus.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Queue Trigger → Save to Cosmos DB Output Binding.png"
+        >
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6: Key Vault ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Secure Secret Management – Azure Key Vault
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Azure Key Vault is a secure service used
+          to store secrets, keys, and certificates safely in the cloud. <br />
+          <br />
+          <strong>Flow:</strong> App Service → Managed Identity → Azure AD
+          (Entra ID) → Azure Key Vault → Secret Value Used in Application <br />
+          <br />
+          <strong>Why needed:</strong> No secrets in code, centralized secret
+          storage, secure access control, easy secret rotation, enterprise
+          security compliance.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Secret</strong></td>
+            <td>
+              Stores sensitive values like passwords, connection strings, API
+              keys.
+            </td>
+            <td>DB connection string, JWT secret, third-party API keys.</td>
+          </tr>
+          <tr>
+            <td><strong>Key</strong></td>
+            <td>Cryptographic key used for encryption or signing.</td>
+            <td>Data encryption, digital signatures.</td>
+          </tr>
+          <tr>
+            <td><strong>Certificate</strong></td>
+            <td>SSL/TLS certificates stored securely in Key Vault.</td>
+            <td>HTTPS security, domain certificates.</td>
+          </tr>
+          <tr>
+            <td><strong>Versioning</strong></td>
+            <td>
+              Every time a secret is updated, a new version is created
+              automatically.
+            </td>
+            <td>Safe secret updates and rollback if needed.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Setting</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>RBAC (Access Control)</strong></td>
+            <td>
+              Uses Azure AD roles like
+              <strong>Key Vault Secrets User</strong> to control access.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Managed Identity Support</strong></td>
+            <td>
+              Allows App Service to access secrets without storing passwords.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Soft Delete</strong></td>
+            <td>Deleted secrets can be recovered within retention period.</td>
+          </tr>
+          <tr>
+            <td><strong>Purge Protection</strong></td>
+            <td>
+              Prevents permanent deletion of secrets (recommended in
+              production).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Networking</strong></td>
+            <td>Restrict access using firewall rules or Private Endpoint.</td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring & Logs</strong></td>
+            <td>
+              Track who accessed secrets using Azure Monitor and audit logs.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Key Vault" → Select resource group and
+            region.
+          </li>
+          <li>
+            Enable <strong>Soft Delete</strong> and
+            <strong>Purge Protection</strong>.
+          </li>
+          <li>
+            Go to <strong>Secrets</strong> → Generate/Import → Add secret name
+            and value.
+          </li>
+          <li>
+            App Service → Identity → Enable
+            <strong>System Assigned Managed Identity</strong>.
+          </li>
+          <li>
+            Key Vault → Access Control (IAM) → Assign
+            <strong>Key Vault Secrets User</strong> role to the App Service
+            identity.
+          </li>
+          <li>
+            In .NET application, use <code>DefaultAzureCredential()</code> to
+            read secrets from Key Vault.
+          </li>
+          <li>
+            Use the secret value like a normal configuration value in your
+            application.
+          </li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Key Vault Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure key vault overview.png"
         >
           📷
         </button>
@@ -1692,9 +1176,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 12 ===================== -->
+    <!-- ===================== SECTION 7: Azure AD ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 12: Identity & Access – Azure AD (Microsoft Entra ID)
+      SECTION 7: Identity & Access – Azure AD (Microsoft Entra ID)
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1703,9 +1187,11 @@
           <strong>What it is:</strong> It is service that manages users, login
           (Auth and Authorization), MFA, and issues secure tokens for accessing
           apps/APIs. <br />
+          <br />
           <strong>Flow:</strong> User → Angular (MSAL) → Azure AD Login (+MFA) →
           Access Token (JWT)→ Angular sends JWT → .NET Web API (Validate JWT) →
           Response <br />
+          <br />
           <strong>Why needed:</strong> centralized login, secure token-based API
           access, enterprise MFA + RBAC, no passwords stored in your app
         </p>
@@ -1884,6 +1370,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure AD Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure AD.png"
         >
           📷
@@ -1902,9 +1395,176 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 13 ===================== -->
+    <!-- ===================== SECTION 8: API Management (APIM) ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 13: Monitoring &amp; Logging – Azure Monitor
+      SECTION 8: API Gateway – Azure API Management (APIM)
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> An API gateway service that sits in front
+          of your backend APIs to secure, control, and monitor API traffic. It
+          does not host your code, it manages access to your APIs. <br />
+          <br />
+          <strong>Flow:</strong> Client (Web/Mobile/Partner) → APIM Gateway →
+          App Service (API) → Database / Other Services <br />
+          <br />
+          <strong>Why needed:</strong> Centralized security, JWT validate, rate
+          limiting, API version control, monitoring, secure external exposure,
+          single entry point for multiple APIs.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gateway</strong></td>
+            <td>
+              Receives requests, applies policies, forwards to backend API, and
+              returns response.
+            </td>
+            <td>Secure and manage traffic before it reaches App Service.</td>
+          </tr>
+          <tr>
+            <td><strong>APIs</strong></td>
+            <td>
+              Backend APIs imported into APIM (via OpenAPI/Swagger or App
+              Service).
+            </td>
+            <td>Manage multiple microservices under one gateway.</td>
+          </tr>
+          <tr>
+            <td><strong>Products</strong></td>
+            <td>
+              Logical grouping of APIs. Access is granted at product level.
+            </td>
+            <td>Internal APIs, Partner APIs, Premium APIs.</td>
+          </tr>
+          <tr>
+            <td><strong>Subscriptions</strong></td>
+            <td>Clients receive a subscription key to access APIs securely.</td>
+            <td>Control and track API consumers.</td>
+          </tr>
+          <tr>
+            <td><strong>Developer Portal</strong></td>
+            <td>
+              Built-in portal for developers to view documentation and test
+              APIs.
+            </td>
+            <td>External partner integration.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Authentication & Authorization</strong></td>
+            <td>
+              Supports Azure AD, OAuth2, JWT validation, subscription keys.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Rate Limiting & Throttling</strong></td>
+            <td>
+              Limit number of requests per minute/day to protect backend APIs.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Policies</strong></td>
+            <td>
+              XML-based rules to validate tokens, modify headers, transform
+              requests/responses.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Versioning & Revisions</strong></td>
+            <td>Maintain multiple API versions (v1, v2) safely.</td>
+          </tr>
+          <tr>
+            <td><strong>Caching</strong></td>
+            <td>
+              Cache responses to reduce backend load and improve performance.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Monitoring & Analytics</strong></td>
+            <td>
+              Integrated with Azure Monitor and Application Insights for
+              tracking usage and errors.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Networking</strong></td>
+            <td>
+              Supports VNet integration and private endpoints (Premium tier).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>Azure Portal → Create → "API Management"</li>
+          <li>
+            Select pricing tier (Developer for testing, Standard/Premium for
+            production)
+          </li>
+          <li>Import API (OpenAPI/Swagger or App Service)</li>
+          <li>Create Product and add API to it</li>
+          <li>Configure authentication (Azure AD or Subscription Key)</li>
+          <li>
+            Add policies (rate limit, JWT validation, header transformation)
+          </li>
+          <li>Test APIs using Developer Portal</li>
+          <li>Monitor traffic using Azure Monitor / Application Insights</li>
+        </ol>
+      </div>
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure APIM Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure APIM overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Gateway.webp"
+        >
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9: Azure Monitor ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9: Monitoring &amp; Logging – Azure Monitor
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1912,12 +1572,12 @@
         <p>
           <strong>What it is:</strong> Azure Monitor is a service that collects,
           analyzes, alerts on data from your applications & Azure resources to
-          track performance & detect issues.
+          track performance & detect issues. <br />
           <br />
           <strong>Flow:</strong> Application or Azure resource generates
           telemetry → Data is collected (Application Insights / Diagnostic
           Settings) → Stored in Log Analytics or Metrics store → Azure Monitor
-          evaluates alert rules → Notification sent (Email/SMS/Teams).
+          evaluates alert rules → Notification sent (Email/SMS/Teams). <br />
           <br />
           <strong>Why needed:</strong> To quickly find errors, track performance
           issues, and get automatic alerts before the problem impacts users.
@@ -2032,6 +1692,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure Monitor Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure Monitor Data flow.png"
         >
           📷
@@ -2048,9 +1715,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 14 ===================== -->
+    <!-- ===================== SECTION 10: Logic Apps ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 14: Workflow Automation – Azure Logic Apps
+      SECTION 10: Workflow Automation – Azure Logic Apps
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -2059,11 +1726,12 @@
           <strong>What it is:</strong> Azure Logic Apps is a
           <strong>low-code workflow automation service</strong> used to
           integrate and connect different systems without writing full backend
-          code.
+          code. <br />
           <br />
           <strong>Flow:</strong>
           <strong>Trigger Event → Execute Actions</strong> → Process Data → Call
           External Services → Complete Workflow <br />
+          <br />
           <strong>Why needed:</strong> Automate repetitive tasks, integrate
           multiple systems, reduce backend code, enable faster development,
           handle system-to-system communication without building complex APIs.
@@ -2191,6 +1859,13 @@
         <button
           class="image-icon"
           onclick="toggleImage(this)"
+          data-src="./Images/Azure Logic App Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
           data-src="./Images/Azure logic app overview.png"
         >
           📷
@@ -2202,9 +1877,484 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 16 ===================== -->
+    <!-- ===================== SECTION 11: Redis Cache ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 16: Infrastructure as Code – Terraform
+      SECTION 11: Caching – Azure Redis Cache <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Instead of querying the database every
+          time, store frequently accessed data in Redis (RAM memory) which is
+          1000x faster. Perfect for data that doesn't change often. <br />
+          <br />
+
+          <strong>Flow:</strong> API receives request → Check Redis first → If
+          found (Cache Hit): return data instantly → If not found (Cache Miss):
+          query Database → store result in Redis with TTL → return data to user
+          → On data update/delete: remove cache key so next request fetches
+          fresh data <br />
+          <br />
+
+          <strong>Why needed:</strong> Database queries are slow and expensive —
+          Redis stores results in RAM which is 1000x faster, reduces database
+          load, improves API response time, and keeps sessions working correctly
+          across multiple servers behind a load balancer.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Features</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Reduce Database Load</b></td>
+            <td>
+              Stores frequently used data in memory so the same queries don’t
+              hit the database again and again.
+            </td>
+          </tr>
+          <tr>
+            <td><b>High Performance</b></td>
+            <td>
+              Very fast API responses because data is read from RAM (in-memory)
+              instead of disk/database.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Distributed Caching</b></td>
+            <td>
+              All servers connect to the same Redis, so cached data is shared
+              across multiple servers behind a load balancer.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Session Storage</b></td>
+            <td>
+              Keeps user session/login data centrally, so sessions work properly
+              even when requests hit different servers.
+            </td>
+          </tr>
+          <tr>
+            <td><b>TTL (Expiry Support)</b></td>
+            <td>
+              Supports automatic expiry (TTL) so cached data is removed after a
+              set time to avoid stale data.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Advanced Enterprise Capabilities</b></td>
+            <td>
+              Supports Pub/Sub (real-time messaging), distributed locking (avoid
+              duplicate processing), scalability, high availability (replication
+              + failover), and cost optimization by reducing
+              database/infrastructure load.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>Cache Logic:</strong></p>
+        <ul>
+          <li>
+            <strong>Cache Hit:</strong> Data found in Redis → return immediately
+            (fast!)
+          </li>
+          <li>
+            <strong>Cache Miss:</strong> Not in Redis → query database → store
+            in Redis with TTL → return to user
+          </li>
+          <li>
+            <strong>Cache Invalidation:</strong> On update/delete → clear cache
+            so next query fetches fresh data
+          </li>
+          <li>
+            <strong>TTL (Time To Live):</strong> How long data stays in cache
+            (e.g. 1 hour). Balances performance vs freshness.
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Azure Cache for Redis" → fill in Resource
+            Group, Cache name, pricing tier
+          </li>
+          <li>
+            Redis Cache → Settings → Access Keys → copy Primary Connection
+            String
+          </li>
+          <li>.NET API → install NuGet: <code>StackExchange.Redis</code></li>
+          <li>
+            Check Redis first → if hit, return; if miss, query DB → store in
+            Redis with TTL → return
+          </li>
+          <li>On data change → invalidate (delete) the relevant cache key</li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Redis Cache Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/redis cache, load balancer.png"
+        >
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 12: Static Web Apps ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 12: Frontend Hosting – Azure Static Web Apps
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Managed service to host frontend like
+          Angular, React, or Vue apps. Provides automatic HTTPS, global CDN, and
+          auto-deploy on GitHub push. <br />
+          <br />
+          <strong>Flow:</strong> Developer pushes code to GitHub → Pipeline
+          builds app → Static Web App deploys to CDN → User opens browser →
+          Content served from nearest CDN location → API calls go to Backend
+          <br />
+          <br />
+          <strong>Why needed:</strong> No server to manage, free HTTPS, globally
+          fast loading via CDN, auto-deploys on every push, scales automatically
+          with zero configuration.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Setting</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Custom Domains</strong></td>
+            <td>
+              Map your own domain (e.g. myapp.com) to your Static Web App with
+              free SSL certificate automatically applied.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Preview Environments</strong></td>
+            <td>
+              Every Pull Request automatically gets its own temporary URL for
+              testing before merging to production.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Authentication</strong></td>
+            <td>
+              Built-in login support with Azure AD, GitHub, Google — no backend
+              code needed. Users can be restricted by role.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Linked API (Azure Functions)</strong></td>
+            <td>
+              Attach an Azure Functions project as your backend API — both
+              frontend and API deploy together under one service.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Environment Variables</strong></td>
+            <td>
+              Set app settings per environment (dev/staging/prod) — injected at
+              build time, never stored in code.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Routing Rules</strong></td>
+            <td>
+              Define custom routes in staticwebapp.config.json — handle 404
+              fallback, redirects, and header rules.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>Create Static Web App in Azure Portal</li>
+          <li>Copy Deployment Token</li>
+          <li>Add token as secret variable in Azure DevOps Pipeline</li>
+          <li>
+            Add <code>azure-pipelines.yml</code> with
+            <code>$(SWA_DEPLOYMENT_TOKEN)</code> <code>app_location</code> and
+            <code>output_location</code>
+          </li>
+          <li>Push code → Pipeline builds and deploys automatically</li>
+          <li>Update <code>environment.prod.ts</code> with API base URL</li>
+          <li>Enable CORS in backend</li>
+        </ol>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Static Web App Architecture Overview.png"
+        >
+          📷
+        </button>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/static web app YAML.png"
+        >
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 13: Cosmos DB ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 13: NoSQL Database – Azure Cosmos DB
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> A globally distributed NoSQL database
+          that stores data as JSON documents instead of tables and rows. Use it
+          when your data has no fixed structure or needs to scale massively.
+          <br /><br />
+          <strong>Flow:</strong> Angular → API → CosmosClient → Container → JSON
+          Documents stored/retrieved <br /><br />
+          <strong>Why needed:</strong> No fixed schema so data structure can
+          change freely, scales globally with one click, reads are extremely
+          fast, and handles massive amounts of data that relational databases
+          cannot handle efficiently.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+            <th>SQL Equivalent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Database</strong></td>
+            <td>Top-level container that holds multiple containers.</td>
+            <td>SQL Server instance</td>
+          </tr>
+          <tr>
+            <td><strong>Container</strong></td>
+            <td>
+              Holds JSON documents. No fixed schema — each document can have
+              different fields.
+            </td>
+            <td>Table</td>
+          </tr>
+          <tr>
+            <td><strong>Item / Document</strong></td>
+            <td>
+              A single JSON record inside a container. Each must have a unique
+              <code>id</code>.
+            </td>
+            <td>Row</td>
+          </tr>
+          <tr>
+            <td><strong>Partition Key</strong></td>
+            <td>
+              Field used to split data across partitions for performance. Always
+              include it in queries. Choose high variety values like
+              <code>userId</code> — never low variety like <code>status</code>.
+            </td>
+            <td>No direct equivalent</td>
+          </tr>
+          <tr>
+            <td><strong>Throughput (RU/s)</strong></td>
+            <td>
+              Request Units per second — controls how many reads/writes per
+              second. Set per container. Can be manual or autoscale.
+            </td>
+            <td>No direct equivalent</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Global Distribution</strong></td>
+            <td>
+              Replicate data to any Azure region with one click. Reads are
+              served from the nearest region automatically.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>TTL (Time to Live)</strong></td>
+            <td>
+              Auto-delete documents after X seconds. Useful for sessions, logs,
+              and temporary data.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Change Feed</strong></td>
+            <td>
+              Ordered stream of all inserts/updates. Use with Azure Functions to
+              react to data changes automatically.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Consistency Levels</strong></td>
+            <td>
+              Controls how up-to-date reads are. Default is Session — you always
+              read your own writes.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>SQL vs Cosmos DB — When to use which:</strong></p>
+        <ul>
+          <li>
+            <strong>Azure SQL:</strong> Structured data, complex joins, strict
+            schema — banking, HR, ERP systems
+          </li>
+          <li>
+            <strong>Cosmos DB:</strong> Flexible schema, massive scale, global
+            users, high-speed reads — e-commerce, IoT, real-time apps, user
+            sessions
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <p><strong>How to implement:</strong></p>
+        <ol>
+          <li>
+            Azure Portal → Create → "Azure Cosmos DB" → select API (NoSQL for
+            JSON)
+          </li>
+          <li>
+            Set Resource Group, Account name, Region → select Capacity mode
+            (Provisioned or Serverless)
+          </li>
+          <li>
+            Data Explorer → New Database → New Container → set name and
+            Partition key (e.g. <code>/userId</code>)
+          </li>
+          <li>Install NuGet: <code>Microsoft.Azure.Cosmos</code></li>
+          <li>
+            Register in <code>Program.cs</code>:
+            <code
+              >builder.Services.AddSingleton&lt;CosmosClient&gt;(new
+              CosmosClient(connectionString))</code
+            >
+          </li>
+          <li>
+            Inject <code>CosmosClient</code> → get container → call
+            <code>CreateItemAsync</code>, <code>ReadItemAsync</code>,
+            <code>GetItemQueryIterator</code>
+          </li>
+          <li>
+            Store connection string in Azure Key Vault — never hardcode it
+          </li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <p><strong>Common Operations (.NET SDK):</strong></p>
+        <ul>
+          <li>
+            <strong>Create:</strong>
+            <code
+              >container.CreateItemAsync(item, new
+              PartitionKey(item.UserId))</code
+            >
+          </li>
+          <li>
+            <strong>Read:</strong>
+            <code
+              >container.ReadItemAsync&lt;T&gt;(id, new
+              PartitionKey(userId))</code
+            >
+          </li>
+          <li>
+            <strong>Query:</strong>
+            <code
+              >container.GetItemQueryIterator&lt;T&gt;(new
+              QueryDefinition("SELECT * FROM c WHERE c.userId = @id"))</code
+            >
+          </li>
+          <li>
+            <strong>Update:</strong>
+            <code
+              >container.UpsertItemAsync(item, new
+              PartitionKey(item.UserId))</code
+            >
+          </li>
+          <li>
+            <strong>Delete:</strong>
+            <code
+              >container.DeleteItemAsync&lt;T&gt;(id, new
+              PartitionKey(userId))</code
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Cosmos DB Overview.png"
+        >
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 14: Terraform ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 14: Infrastructure as Code – Terraform
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -2214,9 +2364,16 @@
           Azure resources using <code>.tf</code> configuration files instead of
           manually setting them up in Azure Portal. Version-controlled in Git
           with full history changes. <br />
+          <br />
 
           <strong>Flow:</strong> Terraform code → Git → CI/CD Pipeline → Azure
-          API → Infrastructure created automatically on Azure portal.
+          API → Infrastructure created automatically on Azure portal. <br />
+          <br />
+          <strong>Why needed:</strong> Avoids manual setup in Azure Portal,
+          infrastructure is version-controlled in Git so changes are tracked,
+          same setup can be redeployed to any environment (dev/staging/prod)
+          without mistakes, and the whole team works from the same
+          configuration.
         </p>
       </div>
 
@@ -2296,7 +2453,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Terraform.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -2305,7 +2466,6 @@
       </div>
       <div class="image-preview-box"></div>
     </div>
-
     <script src="../change.js"></script>
   </body>
 </html>
