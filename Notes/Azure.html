@@ -1904,181 +1904,295 @@
 
     <!-- ===================== SECTION 13 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 13: Monitoring &amp; Logging – Application Insights
+      SECTION 13: Monitoring &amp; Logging – Azure Monitor
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Azure's monitoring service that tracks
-          everything in your app — API requests, errors, DB queries,
-          performance, and dependencies. Real-time visibility with alerting.
+          <strong>What it is:</strong> Azure Monitor is a service that collects,
+          analyzes, alerts on data from your applications & Azure resources to
+          track performance & detect issues.
+          <br />
+          <strong>Flow:</strong> Application or Azure resource generates
+          telemetry → Data is collected (Application Insights / Diagnostic
+          Settings) → Stored in Log Analytics or Metrics store → Azure Monitor
+          evaluates alert rules → Notification sent (Email/SMS/Teams).
+          <br />
+          <strong>Why needed:</strong> To quickly find errors, track performance
+          issues, and get automatic alerts before the problem impacts users.
         </p>
       </div>
-
       <table>
         <thead>
           <tr>
-            <th>What it tracks</th>
-            <th>Where</th>
+            <th>Component</th>
+            <th>What it Does</th>
+            <th>Used For</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <strong>requests</strong> — all API requests and response times
-            </td>
-            <td>Backend (.NET)</td>
+            <td><strong>Metrics</strong></td>
+            <td>Numerical performance data</td>
+            <td>CPU %, Memory, Request count, Response time</td>
           </tr>
           <tr>
-            <td><strong>exceptions</strong> — all errors and crashes</td>
-            <td>Backend (.NET)</td>
+            <td><strong>Logs</strong></td>
+            <td>Detailed event records</td>
+            <td>Errors, SQL failures, API calls</td>
           </tr>
           <tr>
-            <td>
-              <strong>dependencies</strong> — SQL calls, external API calls
-            </td>
-            <td>Backend (.NET)</td>
+            <td><strong>Application Insights</strong></td>
+            <td>Application-level monitoring</td>
+            <td>Requests, Exceptions, Dependencies</td>
           </tr>
           <tr>
-            <td><strong>pageViews</strong> — user page navigations</td>
-            <td>Frontend (Angular)</td>
+            <td><strong>Log Analytics</strong></td>
+            <td>Central log storage + KQL queries</td>
+            <td>Search & analyze logs</td>
           </tr>
           <tr>
-            <td><strong>custom events</strong> — user actions you define</td>
-            <td>Frontend (Angular)</td>
+            <td><strong>Alerts</strong></td>
+            <td>Notification system</td>
+            <td>Email/SMS/Teams on failure</td>
+          </tr>
+          <tr>
+            <td><strong>Activity Log</strong></td>
+            <td>Tracks Azure resource changes</td>
+            <td>Who deleted/restarted/modified resource</td>
+          </tr>
+          <tr>
+            <td><strong>Diagnostic Settings</strong></td>
+            <td>Controls where logs are sent</td>
+            <td>Send logs to Log Analytics / Storage / Event Hub</td>
           </tr>
         </tbody>
       </table>
-
       <div class="note">
-        <p><strong>How to implement (.NET):</strong></p>
+        <p><strong>Application Insights (App Monitoring)</strong></p>
+        <p>
+          Tracks application telemetry including API requests, response times,
+          exceptions, SQL/external dependencies, and distributed tracing in the
+          backend. It also captures frontend page views and custom business
+          events.
+        </p>
+      </div>
+      <div class="note">
+        <p><strong>How to Enable (.NET API):</strong></p>
         <ol>
-          <li>
-            App Service → Application Insights → Enable → Apply (Azure creates
-            instance automatically)
-          </li>
+          <li>App Service → Application Insights → Enable → Apply</li>
           <li>
             Or install NuGet:
-            <code>Microsoft.ApplicationInsights.AspNetCore</code> → add
-            <code>builder.Services.AddApplicationInsightsTelemetry()</code> in
-            <code>Program.cs</code>
+            <code>Microsoft.ApplicationInsights.AspNetCore</code>
           </li>
           <li>
-            Use <code>ILogger</code> for custom logs — automatically sent to App
-            Insights
+            Add:
+            <code>builder.Services.AddApplicationInsightsTelemetry();</code>
           </li>
+          <li>Use <code>ILogger</code> for logs (auto captured)</li>
         </ol>
       </div>
 
       <div class="note">
-        <p><strong>How to implement (Angular):</strong></p>
+        <p><strong>How to Enable (Angular):</strong></p>
         <ol>
           <li>
             Install: <code>npm install @microsoft/applicationinsights-web</code>
           </li>
-          <li>Add connection string to <code>environment.prod.ts</code></li>
-          <li>Enable automatic route tracking and JavaScript error capture</li>
+          <li>Add connection string in <code>environment.prod.ts</code></li>
+          <li>Enable automatic route & JS error tracking</li>
         </ol>
       </div>
 
+      <!-- ===================== LOGS & ALERTS ===================== -->
       <div class="note">
+        <p><strong>View Logs (KQL Queries):</strong></p>
         <p>
-          <strong>View Logs (KQL):</strong> Application Insights → Logs → query
-          with KQL: <code>requests</code>, <code>exceptions</code>,
-          <code>pageViews</code>, <code>dependencies</code>
-        </p>
-        <p>
-          <strong>Alerts:</strong> App Insights → Alerts → Create alert rule →
-          set condition (e.g. error rate &gt; 5%) → set action (email/SMS)
+          Azure Monitor → Logs → Query tables:
+          <code>requests</code>, <code>exceptions</code>,
+          <code>dependencies</code>,
+          <code>pageViews</code>
         </p>
       </div>
 
+      <div class="note">
+        <p><strong>Alerts:</strong></p>
+        <ol>
+          <li>Azure Monitor → Alerts → Create rule</li>
+          <li>Select resource (App Service / App Insights)</li>
+          <li>Set condition (e.g., error rate &gt; 5%, CPU &gt; 80%)</li>
+          <li>Configure Action Group (Email / SMS / Teams)</li>
+        </ol>
+      </div>
+
+      <!-- ===================== REAL FLOW ===================== -->
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Monitor Data flow.png"
+        >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure app Monitor Overview.png"
+        >
           📷
         </button>
       </div>
+
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 15 ===================== -->
+    <!-- ===================== SECTION 14 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 15: Workflow Automation – Azure Logic Apps
+      SECTION 14: Workflow Automation – Azure Logic Apps
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> No-code/low-code service to build
-          automated workflows using a visual designer. Drag and drop triggers
-          and actions. 100+ built-in connectors. Perfect for system integration
-          and automating repetitive tasks.
+          <strong>What it is:</strong> Azure Logic Apps is a
+          <strong>low-code workflow automation service</strong> used to
+          integrate and connect different systems without writing full backend
+          code.
+          <br />
+          <strong>Flow:</strong>
+          <strong>Trigger Event → Execute Actions</strong> → Process Data → Call
+          External Services → Complete Workflow <br />
+          <strong>Why needed:</strong> Automate repetitive tasks, integrate
+          multiple systems, reduce backend code, enable faster development,
+          handle system-to-system communication without building complex APIs.
         </p>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Triggers (what starts the workflow)</th>
-            <th>Actions (what the workflow does)</th>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>HTTP request arrives</td>
-            <td>Send email (Outlook, Gmail)</td>
+            <td><strong>Trigger</strong></td>
+            <td>Event that starts the workflow execution.</td>
+            <td>
+              When email received, HTTP request triggered, file uploaded to Blob
+            </td>
           </tr>
           <tr>
-            <td>On schedule (Cron expression)</td>
-            <td>Insert/update database rows</td>
+            <td><strong>Action</strong></td>
+            <td>
+              Step executed after trigger. Can perform data operations or call
+              services.
+            </td>
+            <td>
+              Save attachment to Blob, Insert row in SQL, Send Teams message
+            </td>
           </tr>
           <tr>
-            <td>Message in Service Bus</td>
-            <td>Send message to Service Bus/Queue</td>
+            <td><strong>Connector</strong></td>
+            <td>
+              It allows your Logic App to securely connect and communicate with
+              Azure services and third-party systems without writing custom API
+              or integration code.
+            </td>
+            <td>Outlook, SQL, SharePoint, Blob Storage, Service Bus, Teams</td>
           </tr>
           <tr>
-            <td>File created in Blob Storage</td>
-            <td>Call external API (HTTP POST/GET)</td>
+            <td><strong>Condition</strong></td>
+            <td>If/Else decision logic inside workflow.</td>
+            <td>If attachment exists → Process file</td>
           </tr>
           <tr>
-            <td>Email arrives in Outlook</td>
-            <td>Post to Teams or Slack</td>
+            <td><strong>For Each</strong></td>
+            <td>Loop through collection of items.</td>
+            <td>Process multiple email attachments</td>
           </tr>
           <tr>
-            <td>Item created in SharePoint</td>
-            <td>Conditions (IF/ELSE) and Loops (For each)</td>
+            <td><strong>Scope</strong></td>
+            <td>Groups multiple actions together for better error handling.</td>
+            <td>Try/Catch style error handling</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Important Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Run History</strong></td>
+            <td>
+              Shows every workflow execution with detailed step-by-step status.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Retry Policy</strong></td>
+            <td>
+              Automatically retries failed actions based on configured retry
+              settings.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Run After</strong></td>
+            <td>
+              Controls what action runs after success, failure, or timeout.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Error Handling</strong></td>
+            <td>
+              Use Scope + Configure Run After to handle failures gracefully.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Managed Identity</strong></td>
+            <td>
+              Securely connect to Azure resources without storing credentials.
+            </td>
           </tr>
         </tbody>
       </table>
 
       <div class="note">
+        <p><strong>Real-World Example:</strong></p>
         <p>
-          <strong>Use Logic Apps when:</strong> Integrating multiple systems,
-          sending notifications, approval workflows, or any automation without
-          writing code.
+          New Email Arrives → Check Attachment → Save File to Blob Storage →
+          Insert Record in Azure SQL → Send Microsoft Teams Notification.
         </p>
       </div>
 
       <div class="note">
-        <p><strong>How to implement:</strong></p>
+        <p><strong>How to implement (Azure Portal):</strong></p>
         <ol>
-          <li>
-            Azure Portal → Create → "Logic App" → fill in Resource Group, name
-          </li>
-          <li>Open Logic App → Logic App Designer → select trigger type</li>
-          <li>Configure trigger → add actions step by step</li>
-          <li>Add conditions (IF/ELSE) and loops if needed → Save</li>
+          <li>Azure Portal → Create → Logic App (Consumption or Standard)</li>
+          <li>Select Trigger (e.g., When new email arrives)</li>
+          <li>Add required Actions (Blob, SQL, Teams etc.)</li>
+          <li>Configure connections (authenticate connectors)</li>
+          <li>Add Conditions or Loops if required</li>
+          <li>Test using Run Trigger</li>
+          <li>Monitor via Run History</li>
         </ol>
       </div>
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure logic app overview.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -2096,10 +2210,13 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>What it is:</strong> Instead of clicking in Azure Portal
-          manually, write <code>.tf</code> files that create all your Azure
-          resources automatically. Version-controlled in Git — full history of
-          infrastructure changes.
+          <strong>What it is:</strong> Terraform allows you to create & manage
+          Azure resources using <code>.tf</code> configuration files instead of
+          manually setting them up in Azure Portal. Version-controlled in Git
+          with full history changes. <br />
+
+          <strong>Flow:</strong> Terraform code → Git → CI/CD Pipeline → Azure
+          API → Infrastructure created automatically on Azure portal.
         </p>
       </div>
 
@@ -2175,13 +2292,6 @@
             automatically
           </li>
         </ol>
-      </div>
-
-      <div class="note">
-        <p>
-          <strong>Flow:</strong> Terraform code → Git → CI/CD Pipeline → Azure
-          API → Infrastructure created automatically
-        </p>
       </div>
 
       <div class="image-icons">
