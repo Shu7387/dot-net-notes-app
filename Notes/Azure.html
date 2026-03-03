@@ -842,9 +842,264 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 5: Storage Account (Blob & Queue) ===================== -->
+    <!-- ===================== SECTION 5: Event-Driven Architecture – Azure Event Grid ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 5: Storage Account – Blob & Queue Storage
+      SECTION 5: Event-Driven Architecture – Azure Event Grid
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="note">
+        <p>
+          <strong>What it is:</strong> Azure Event Grid is a real-time event
+          notification service. It tells other services when something happens.
+          <br />
+          <br />
+          <strong>Flow:</strong> Event happens → Event Grid captures it → Sends
+          it to subscribed service → Service reacts <br />
+          <br />
+          <strong>Why needed:</strong> So systems react immediately, stay
+          loosely connected, and multiple services can respond to the same event
+          without depending on each other.
+        </p>
+      </div>
+
+      <table>
+        <tr>
+          <th>Service</th>
+          <th>Purpose & Communication</th>
+          <th>Message & Guarantee</th>
+          <th>Best Use Cases & Example</th>
+        </tr>
+
+        <tr>
+          <td><b>Event Grid</b></td>
+          <td>
+            • Real-time notification service<br />
+            • React immediately when something happens<br />
+            • 1 to Many communication<br />
+            • Push-based mechanism <br />
+            • FYI, Something happened now.
+          </td>
+          <td>
+            • Event message (just informs something happened)<br />
+            • Lightweight<br />
+            • No complex workflow handling<br />
+            • Not for critical processing
+          </td>
+          <td>
+            • Trigger instant actions<br />
+            • Microservices event communication<br />
+            • Example: File uploaded → Trigger Azure Function / Send Email
+            <br />
+            • Example: Like YouTube notification bell 🔔
+          </td>
+        </tr>
+
+        <tr>
+          <td><b>Service Bus</b></td>
+          <td>
+            • Reliable enterprise messaging<br />
+            • 1 to Many communication<br />
+            • Supports complex workflows<br />
+            • Like a Post Office system <br />
+            • Do this task properly, don’t lose it, maintain order, Must
+            complete.
+          </td>
+          <td>
+            • Command-based message (instruction to do task)<br />
+            • Guaranteed delivery<br />
+            • FIFO (ordering support)<br />
+            • Dead-letter queue<br />
+            • Transaction support<br />
+            • Critical system support
+          </td>
+          <td>
+            • Banking systems<br />
+            • Order processing<br />
+            • Payment transactions<br />
+            • Enterprise applications
+          </td>
+        </tr>
+
+        <tr>
+          <td><b>Queue Storage</b></td>
+          <td>
+            • Simple background processing<br />
+            • Mostly 1 to 1 communication<br />
+            • Cost-effective<br />
+            • Basic queue system <br />
+            • Do this simple task in background.
+          </td>
+          <td>
+            • Simple message<br />
+            • No strict ordering guarantee<br />
+            • No complex workflow support<br />
+            • Basic delivery mechanism
+          </td>
+          <td>
+            • Small background jobs<br />
+            • Send email<br />
+            • Process image<br />
+            • Generate reports
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Use Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Event Source</strong></td>
+            <td>Where event happens (Blob, Storage, Custom App, etc.)</td>
+            <td>File uploaded, order created, user registered</td>
+          </tr>
+          <tr>
+            <td><strong>Topic</strong></td>
+            <td>Channel that receives and stores events temporarily</td>
+            <td>Custom application events publishing</td>
+          </tr>
+          <tr>
+            <td><strong>Event Subscription</strong></td>
+            <td>Defines which subscriber should receive which events</td>
+            <td>Filter events and send to specific handler</td>
+          </tr>
+          <tr>
+            <td><strong>Event Handler</strong></td>
+            <td>Service that processes the event</td>
+            <td>Azure Function, Webhook, Logic App</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Push Model</strong></td>
+            <td>
+              Event Grid pushes events automatically to subscribers — no need to
+              check manually
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Filtering</strong></td>
+            <td>
+              Filter events by event type or subject (e.g., only .jpg files)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Retry Policy</strong></td>
+            <td>
+              Automatically retries delivery for 24 hours if subscriber fails
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Dead Lettering</strong></td>
+            <td>
+              If event delivery fails repeatedly, store event in Blob Storage
+              for investigation
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Multiple Subscribers</strong></td>
+            <td>One event can be sent to multiple subscribers independently</td>
+          </tr>
+          <tr>
+            <td><strong>Built-in Azure Integration</strong></td>
+            <td>
+              Works directly with Blob Storage, Resource Groups, Event Hubs,
+              Service Bus, etc.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <p><strong>How to implement (End-to-End Flow):</strong></p>
+
+        <p>
+          <em>Important Clarification:</em><br />
+          If event comes from Azure services like <strong>Blob Storage</strong>,
+          you do NOT need to manually create a Topic. Azure automatically
+          creates a <strong>System Topic</strong> behind the scenes.
+          <strong
+            >Storage → Events → Select Blob Created event → Attach it to
+            Function App</strong
+          >
+          → Azure automatically creates and triggers the event whenever a file
+          is uploaded. If event comes from a
+          <strong>Custom Web API / Application</strong>, then you must create a
+          <strong>Custom Event Grid Topic</strong> manually.
+        </p>
+        <br />
+        <ol>
+          <li>
+            <strong>Create Topic:</strong>
+            Azure Portal → Create <strong>Event Grid Topic</strong>. Copy Topic
+            Endpoint & Access key; This is where publishers send events.
+          </li>
+
+          <li>
+            <strong>Create Event Subscription (Endpoint):</strong>
+            Open Topic → + Event Subscription → Choose Endpoint type (Azure
+            Function / Webhook). This connects the Topic to the Subscriber.
+          </li>
+
+          <li>
+            <strong>Publisher – Web API:</strong>
+            Install NuGet <code>Azure.Messaging.EventGrid</code>. Use Topic
+            Endpoint URL + Access Key. Create
+            <code>EventGridPublisherClient</code> and call
+            <code>SendEventAsync()</code> to publish event.
+          </li>
+
+          <li>
+            <strong>Subscriber – Azure Function:</strong>
+            Create Function with <code>[EventGridTrigger]</code>. When event is
+            published to Topic, Event Grid pushes it to this function
+            automatically.
+          </li>
+
+          <li>
+            (Optional) Add filters in Subscription to receive only specific
+            event types.
+          </li>
+        </ol>
+
+        <p>
+          <strong>Complete Flow:</strong><br />
+          Web API (Publisher) → Event Grid Topic → Event Subscription (Endpoint)
+          → Azure Function (Subscriber executes)
+        </p>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Azure Event Grid – Architecture Overview.png"
+        >
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 6: Storage Account (Blob & Queue) ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 6: Storage Account – Blob & Queue Storage
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1036,9 +1291,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 6: Key Vault ===================== -->
+    <!-- ===================== SECTION 7: Key Vault ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 6: Secure Secret Management – Azure Key Vault
+      SECTION 7: Secure Secret Management – Azure Key Vault
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1197,9 +1452,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 7: Azure AD ===================== -->
+    <!-- ===================== SECTION 8: Azure AD ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 7: Identity & Access – Azure AD (Microsoft Entra ID)
+      SECTION 8: Identity & Access – Azure AD (Microsoft Entra ID)
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1416,9 +1671,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 8: API Management (APIM) ===================== -->
+    <!-- ===================== SECTION 9: API Management (APIM) ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 8: API Gateway – Azure API Management (APIM)
+      SECTION 9: API Gateway – Azure API Management (APIM)
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1583,9 +1838,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 9: Azure Monitor ===================== -->
+    <!-- ===================== SECTION 10: Azure Monitor ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 9: Monitoring &amp; Logging – Azure Monitor
+      SECTION 10: Monitoring &amp; Logging – Azure Monitor
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1736,9 +1991,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 10: Logic Apps ===================== -->
+    <!-- ===================== SECTION 11: Logic Apps ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 10: Workflow Automation – Azure Logic Apps
+      SECTION 11: Workflow Automation – Azure Logic Apps
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -1898,9 +2153,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 11: Redis Cache ===================== -->
+    <!-- ===================== SECTION 12: Redis Cache ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 11: Caching – Azure Redis Cache <span class="toggle-icon">▼</span>
+      SECTION 12: Caching – Azure Redis Cache <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <div class="note">
@@ -2044,9 +2299,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 12: Static Web Apps ===================== -->
+    <!-- ===================== SECTION 13: Static Web Apps ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 12: Frontend Hosting – Azure Static Web Apps
+      SECTION 13: Frontend Hosting – Azure Static Web Apps
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -2157,9 +2412,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 13: Cosmos DB ===================== -->
+    <!-- ===================== SECTION 14: Cosmos DB ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 13: NoSQL Database – Azure Cosmos DB
+      SECTION 14: NoSQL Database – Azure Cosmos DB
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -2373,9 +2628,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 14: Terraform ===================== -->
+    <!-- ===================== SECTION 15: Terraform ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 14: Infrastructure as Code – Terraform
+      SECTION 15: Infrastructure as Code – Terraform
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
