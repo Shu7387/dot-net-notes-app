@@ -927,7 +927,37 @@ h1.hr-interview-title {
 }
 
 /* ================================================
-   22. PRINT STYLES
+   22. QA BLOCK (Interview Q&A style)
+   ================================================ */
+
+.qa-block {
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.qa-block:last-of-type {
+  border-bottom: none;
+}
+
+.question {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.answer {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.7;
+  padding-left: 12px;
+  border-left: 3px solid #4a4a4a;
+}
+
+/* ================================================
+   23. PRINT STYLES
    ================================================ */
 
 @media print {
