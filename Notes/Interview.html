@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <title>Interview Questions</title>
   </head>
   <body>
@@ -172,7 +179,6 @@
     <h2 class="section-header" onclick="toggleSection(this)">
       SECTION 1. C# <span class="toggle-icon">▼</span>
     </h2>
-
     <div class="section-content">
       <div class="qa-block">
         <div class="question">
@@ -725,7 +731,6 @@
     <h2 class="section-header" onclick="toggleSection(this)">
       SECTION 2.1. Microservices <span class="toggle-icon">▼</span>
     </h2>
-
     <div class="section-content">
       <div class="qa-block">
         <div class="question">
@@ -1963,6 +1968,532 @@
           automatically.<br />
           They work together: Docker packages the app, Kubernetes manages
           running it at scale.
+        </div>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 9. Coding Questions ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 9. Coding Questions <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <!-- String Problems -->
+      <h3 class="subsection-header">String Problems</h3>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          1. Reverse a string in place.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Convert to char array, swap from both ends moving inward.
+          </div>
+          <pre><code class="language-csharp">string Reverse(string s)
+{
+    char[] chars = s.ToCharArray();
+    int left = 0, right = chars.Length - 1;
+    while (left &lt; right)
+    {
+        (chars[left], chars[right]) = (chars[right], chars[left]);
+        left++; right--;
+    }
+    return new string(chars);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          2. Reverse the words in a sentence.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Split by space, reverse the array, join back.
+          </div>
+          <pre><code class="language-csharp">string ReverseWords(string s)
+{
+    string[] words = s.Split(' ');
+    Array.Reverse(words);
+    return string.Join(' ', words);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          3. Check if a string is a palindrome.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Compare from both ends — if any characters don't match, it's not a
+            palindrome.
+          </div>
+          <pre><code class="language-csharp">bool IsPalindrome(string s)
+{
+    s = s.ToLower();
+    int left = 0, right = s.Length - 1;
+    while (left &lt; right)
+    {
+        if (s[left] != s[right]) return false;
+        left++; right--;
+    }
+    return true;
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          4. Count the occurrences of a given word in a string.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Split by space, count how many words match the target.
+          </div>
+          <pre><code class="language-csharp">int CountOccurrences(string sentence, string word)
+{
+    string[] words = sentence.Split(' ');
+    return words.Count(w => w.Equals(word, StringComparison.OrdinalIgnoreCase));
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          5. Find the first non-repeated character in a string.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Count frequency of each character, return the first one with count
+            1.
+          </div>
+          <pre><code class="language-csharp">char? FirstNonRepeated(string s)
+{
+    var freq = new Dictionary&lt;char, int&gt;();
+    foreach (char c in s)
+        freq[c] = freq.GetValueOrDefault(c) + 1;
+
+    foreach (char c in s)
+        if (freq[c] == 1) return c;
+
+    return null;
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          6. Check if a string contains only digits.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use char.IsDigit on every character — all must be digits.
+          </div>
+          <pre><code class="language-csharp">bool IsAllDigits(string s) => s.All(char.IsDigit);</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          7. Check if two strings are anagrams of each other.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Sort both strings — if equal, they are anagrams.
+          </div>
+          <pre><code class="language-csharp">bool AreAnagrams(string a, string b)
+{
+    if (a.Length != b.Length) return false;
+    return a.OrderBy(c => c).SequenceEqual(b.OrderBy(c => c));
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Array Problems -->
+      <h3 class="subsection-header">Array Problems</h3>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          8. Remove duplicates from an array.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use Distinct() — it only keeps unique values automatically.
+          </div>
+          <pre><code class="language-csharp">int[] RemoveDuplicates(int[] arr) => arr.Distinct().ToArray();</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          9. Find the second largest number in an array.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Get distinct values, order descending, skip first, take next.
+          </div>
+          <pre><code class="language-csharp">int SecondLargest(int[] arr) =>
+    arr.Distinct().OrderByDescending(x => x).Skip(1).First();</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          10. Find all duplicate elements in an array.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Group by value, return groups with count greater than 1.
+          </div>
+          <pre><code class="language-csharp">int[] FindDuplicates(int[] arr)
+{
+    return arr.GroupBy(x => x)
+              .Where(g => g.Count() > 1)
+              .Select(g => g.Key)
+              .ToArray();
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          11. Find the missing number in an array (1 to N).
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Expected sum of 1 to N minus actual sum gives the missing number.
+          </div>
+          <pre><code class="language-csharp">int FindMissing(int[] arr, int n)
+{
+    int expected = n * (n + 1) / 2;
+    return expected - arr.Sum();
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          12. Sort an array without using any built-in sort method.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Bubble sort — compare adjacent elements and swap if out of order.
+          </div>
+          <pre><code class="language-csharp">void BubbleSort(int[] arr)
+{
+    for (int i = 0; i &lt; arr.Length - 1; i++)
+        for (int j = 0; j &lt; arr.Length - i - 1; j++)
+            if (arr[j] > arr[j + 1])
+                (arr[j], arr[j + 1]) = (arr[j + 1], arr[j]);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          13. Return numbers divisible by 2 and numbers divisible by 3.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Filter array twice using LINQ — one for each condition.
+          </div>
+          <pre><code class="language-csharp">void DivisibleNumbers(int[] arr)
+{
+    int[] byTwo   = arr.Where(x => x % 2 == 0).ToArray();
+    int[] byThree = arr.Where(x => x % 3 == 0).ToArray();
+
+    Console.WriteLine("Divisible by 2: " + string.Join(", ", byTwo));
+    Console.WriteLine("Divisible by 3: " + string.Join(", ", byThree));
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Number Problems -->
+      <h3 class="subsection-header">Number Problems</h3>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          14. Return the sum of the digits of an integer.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Convert to string, parse each character as digit and sum.
+          </div>
+          <pre><code class="language-csharp">int SumOfDigits(int n)
+{
+    return Math.Abs(n).ToString().Sum(c => c - '0');
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          15. Calculate the factorial of a number using recursion.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Base case is 0 or 1 = 1. Each call multiplies n by factorial of n-1.
+          </div>
+          <pre><code class="language-csharp">int Factorial(int n)
+{
+    if (n &lt;= 1) return 1;
+    return n * Factorial(n - 1);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          16. Return the N-th number in the Fibonacci sequence.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Each number is the sum of the previous two. Base cases: 0 and 1.
+          </div>
+          <pre><code class="language-csharp">int Fibonacci(int n)
+{
+    if (n &lt;= 1) return n;
+    int a = 0, b = 1;
+    for (int i = 2; i &lt;= n; i++)
+    {
+        int temp = a + b;
+        a = b;
+        b = temp;
+    }
+    return b;
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- SQL Coding -->
+      <h3 class="subsection-header">SQL Coding</h3>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          17. Write a query to find the second highest salary.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use DENSE_RANK to rank salaries — filter where rank equals 2.
+          </div>
+          <pre><code class="language-sql">SELECT Salary
+FROM (
+    SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rnk
+    FROM Employees
+) ranked
+WHERE Rnk = 2;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          18. Write a query to find the employee count per department.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            GROUP BY department and COUNT the employees in each group.
+          </div>
+          <pre><code class="language-sql">SELECT DepartmentId, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY DepartmentId
+ORDER BY EmployeeCount DESC;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          19. Write a CTE to find employees earning above the average salary.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            CTE defines a named temporary result — use it like a regular table
+            in the main query.
+          </div>
+          <pre><code class="language-sql">WITH AvgSalary AS (
+    SELECT AVG(Salary) AS Avg
+    FROM Employees
+)
+SELECT e.Name, e.Salary
+FROM Employees e, AvgSalary a
+WHERE e.Salary > a.Avg;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          20. Rank employees by salary within each department.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use DENSE_RANK with PARTITION BY to rank within each department
+            separately.
+          </div>
+          <pre><code class="language-sql">SELECT Name, DepartmentId, Salary,
+    DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS Rnk
+FROM Employees;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          21. Write a query to get the top 3 salaries in each department.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Rank salaries per department, then filter where rank is 3 or less.
+          </div>
+          <pre><code class="language-sql">SELECT Name, DepartmentId, Salary, Rnk
+FROM (
+    SELECT Name, DepartmentId, Salary,
+        DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS Rnk
+    FROM Employees
+) ranked
+WHERE Rnk &lt;= 3;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          22. Write a query to implement pagination (page 2, 10 records per
+          page).
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use OFFSET to skip rows and FETCH NEXT to take the page size.
+          </div>
+          <pre><code class="language-sql">SELECT * FROM Employees
+ORDER BY EmployeeId
+OFFSET 10 ROWS          -- skip first 10 (page 1)
+FETCH NEXT 10 ROWS ONLY; -- take next 10 (page 2)</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          23. Write a query to find duplicate emails in a table.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            GROUP BY email, use HAVING to find groups with more than one row.
+          </div>
+          <pre><code class="language-sql">SELECT Email, COUNT(*) AS Count
+FROM Employees
+GROUP BY Email
+HAVING COUNT(*) > 1;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          24. Write a CTE to get a running total of sales by date.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use SUM with OVER and ORDER BY — window function accumulates row by
+            row.
+          </div>
+          <pre><code class="language-sql">SELECT SaleDate, Amount,
+    SUM(Amount) OVER (ORDER BY SaleDate) AS RunningTotal
+FROM Sales
+ORDER BY SaleDate;</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          25. Write a query to filter and search with dynamic conditions.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use WHERE with optional conditions — pass NULL to skip a filter.
+          </div>
+          <pre><code class="language-sql">SELECT * FROM Employees
+WHERE
+    (@DepartmentId IS NULL OR DepartmentId = @DepartmentId)
+    AND (@Name IS NULL OR Name LIKE '%' + @Name + '%')
+    AND (@MinSalary IS NULL OR Salary >= @MinSalary)
+ORDER BY Name
+OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;</code></pre>
+        </div>
+      </div>
+
+      <!-- Implementation Problems -->
+      <h3 class="subsection-header">Implementation Problems</h3>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          26. Write a custom middleware in ASP.NET Core.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Implement InvokeAsync — process request, call next, process
+            response.
+          </div>
+          <pre><code class="language-csharp">public class LoggingMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public LoggingMiddleware(RequestDelegate next) => _next = next;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        Console.WriteLine($"Request: {context.Request.Path}");
+        await _next(context);
+        Console.WriteLine($"Response: {context.Response.StatusCode}");
+    }
+}
+
+// Register in Program.cs
+app.UseMiddleware&lt;LoggingMiddleware&gt;();</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          27. Write a thread-safe Singleton class in C#.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use Lazy&lt;T&gt; — handles thread safety automatically, creates
+            instance only when first accessed.
+          </div>
+          <pre><code class="language-csharp">
+public sealed class Singleton
+{
+    private static Singleton _instance;
+    private static readonly object _lock = new object();
+
+    // Private constructor prevents object creation from outside
+    private Singleton() { }
+
+    public static Singleton Instance
+    {
+        get
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new Singleton();
+                }
+
+                return _instance;
+            }
+        }
+    }
+}
+</code></pre>
         </div>
       </div>
 

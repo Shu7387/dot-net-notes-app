@@ -452,6 +452,39 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (target.classList.contains("image-icon")) {
       e.preventDefault();
       window.toggleImage(target);
+    } else if (target.classList.contains("question")) {
+      e.preventDefault();
+      window.toggleCode(target);
     }
   });
 });
+
+/**
+ * CODE BLOCK TOGGLE — for coding questions section
+ */
+window.toggleCode = function (questionElement) {
+  if (!questionElement) return;
+
+  const codeBlock = questionElement.nextElementSibling;
+  if (!codeBlock || !codeBlock.classList.contains("code-block")) return;
+
+  const isVisible = codeBlock.style.display === "block";
+
+  // Collapse all other open code blocks and reset arrows
+  document.querySelectorAll(".code-block").forEach((block) => {
+    block.style.display = "none";
+  });
+  document.querySelectorAll(".question").forEach((q) => {
+    q.classList.remove("code-open");
+  });
+
+  // If it was closed, open it and set arrow
+  if (!isVisible) {
+    codeBlock.style.display = "block";
+    questionElement.classList.add("code-open");
+    if (window.Prism) Prism.highlightAllUnder(codeBlock);
+    setTimeout(() => {
+      codeBlock.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
+  }
+};
