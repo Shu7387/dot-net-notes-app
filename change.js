@@ -305,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerHTML = `
     <header class="app-header">
       <nav>
+        <a href="Interview.html">Interview</a>
         <a href="SQL.html">SQL</a>
         <a href="CSharp.html">C#</a>
         <a href="WebAPI.html">Web API</a>
@@ -314,7 +315,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="Angular.html">Angular</a>
         <a href="Azure.html">Azure</a>
         <a href="DevOps.html">DevOps</a>
-        <a href="Interview.html">Interview</a>
         <div class="nav-right">
           <div class="dropdown">
             <button class="dropdown-btn" type="button">☰ Shubham</button>
