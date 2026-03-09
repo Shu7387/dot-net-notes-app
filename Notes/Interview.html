@@ -343,17 +343,52 @@
       </div>
 
       <div class="qa-block">
-        <div class="question">What are Delegates and Events?</div>
+        <div class="question">
+          What are Delegates in C#? What is the difference between Action, Func,
+          and Predicate?
+        </div>
         <div class="answer">
-          <strong>Delegate</strong> — type-safe pointer to a method, pass
-          methods around like variables.<br />
-          Built-in types: <code>Action</code> (no return),
-          <code>Func&lt;T&gt;</code> (with return),
-          <code>Predicate&lt;T&gt;</code> (returns bool).<br /><br />
+          <strong>Delegate</strong> — type-safe pointer to a method. Pass
+          methods around like variables.<br /><br />
+          <strong>Action</strong> — no return value.
+          <code
+            >Action&lt;string&gt; print = msg => Console.WriteLine(msg);</code
+          ><br />
+          <strong>Func&lt;T&gt;</strong> — returns a value. Last type param is
+          return type.
+          <code>Func&lt;int, int, int&gt; add = (a, b) => a + b;</code><br />
+          <strong>Predicate&lt;T&gt;</strong> — returns bool, used for
+          filtering. <code>Predicate&lt;int&gt; isEven = n => n % 2 == 0;</code
+          ><br /><br />
+          <strong>Multicast</strong> — delegate can point to multiple methods
+          using <code>+=</code>, all called in order.<br />
           <strong>Event</strong> — delegate with extra safety, can only be
-          raised from the class that declares it.<br />
-          Use for callbacks, notifications, publisher-subscriber patterns (e.g.,
-          button click handlers).
+          raised from the declaring class. Used for publisher-subscriber
+          patterns (e.g. button click).
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Parallel programming? Difference between Parallel.For,
+          Parallel.ForEach, and Task.WhenAll?
+        </div>
+        <div class="answer">
+          Runs operations simultaneously across multiple CPU cores. Part of TPL.
+          Use for <strong>CPU-bound</strong> work — not I/O (use async/await for
+          that).<br /><br />
+          <strong>Parallel.For</strong> — parallel for loop across index range.
+          <code>Parallel.For(0, 10, i => Process(i));</code><br />
+          <strong>Parallel.ForEach</strong> — parallel foreach over a
+          collection. <code>Parallel.ForEach(list, item => Process(item));</code
+          ><br />
+          <strong>Task.WhenAll</strong> — runs multiple async tasks
+          concurrently, waits for all. Best for I/O.
+          <code>await Task.WhenAll(GetOrdersAsync(), GetUsersAsync());</code
+          ><br /><br />
+          <strong>Thread safety</strong> — when threads share data, use
+          <code>ConcurrentBag&lt;T&gt;</code> or <code>lock</code> to avoid race
+          conditions.
         </div>
       </div>
 
@@ -1778,6 +1813,27 @@
           <strong>pure pipes</strong> instead of methods in templates, preload
           strategies for routes, and run <code>ng build --prod</code> which
           enables AOT compilation, tree shaking, and minification.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are Angular Migrations? How do you upgrade an Angular app to a
+          newer version?
+        </div>
+        <div class="answer">
+          Process of upgrading Angular from one major version to the next.
+          Angular provides automated tools to handle breaking changes.<br /><br />
+          <strong>Main command</strong>:
+          <code>ng update @angular/core @angular/cli</code> — updates packages
+          and runs <strong>schematics</strong> (automated code fixes for
+          deprecated APIs).<br /><br />
+          <strong>Key rules</strong>: always upgrade
+          <strong>one major version at a time</strong> — never skip versions.
+          Check <strong>update.angular.io</strong> for the full breaking changes
+          checklist between versions.<br /><br />
+          <strong>Common changes</strong>: Ivy renderer (v12+), Standalone
+          components (v14+), Required @Input (v16), Signals (v16+).
         </div>
       </div>
 
