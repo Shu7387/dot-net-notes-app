@@ -265,6 +265,22 @@
 
       <div class="qa-block">
         <div class="question">
+          What is the difference between var, dynamic, and object?
+        </div>
+        <div class="answer">
+          <strong>var</strong> — type inferred at compile time, still strongly
+          typed. <code>var x = 5</code> is just <code>int x = 5</code> to the
+          compiler.<br /><br />
+          <strong>object</strong> — base type of everything, can hold any value
+          but requires casting. Type-checked at compile time.<br /><br />
+          <strong>dynamic</strong> — type resolved at runtime, no compile-time
+          checking. Useful for COM interop or unknown types — avoid in regular
+          code, errors only show at runtime.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
           What is the difference between a concrete class and an abstract class?
         </div>
         <div class="answer">
@@ -278,15 +294,25 @@
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between an interface and an abstract class?
+          What is the difference between an interface and an abstract class? Can
+          a class implement multiple interfaces? What if two interfaces have the
+          same method name?
         </div>
         <div class="answer">
-          An interface is a pure contract — it defines what a class must do,
-          with no implementation (before C# 8). An abstract class can have both
-          implementation and abstract methods. A class can implement multiple
-          interfaces but can only inherit one abstract class. Use interface for
-          unrelated classes sharing behavior; use abstract class when classes
-          also share code.
+          <strong>Interface</strong> — pure contract, no implementation (before
+          C# 8), multiple allowed.<br />
+          <strong>Abstract class</strong> — can have both implemented + abstract
+          methods, only one allowed.<br />
+          Use interface for unrelated classes sharing behavior; abstract class
+          when classes also share code.<br /><br />
+          <strong>Multiple interfaces</strong> — yes, a class can implement many
+          interfaces.<br /><br />
+          <strong>Same method name conflict</strong> — if same signature, one
+          shared implementation satisfies both. If different behavior needed,
+          use <strong>explicit interface implementation</strong>:<br />
+          <code>void IAnimal.Speak() { ... }</code> and
+          <code>void IHuman.Speak() { ... }</code> — called through the specific
+          interface reference.
         </div>
       </div>
 
@@ -319,11 +345,15 @@
       <div class="qa-block">
         <div class="question">What are Delegates and Events?</div>
         <div class="answer">
-          A <strong>delegate</strong> is a type-safe pointer to a method — you
-          can pass methods around like variables. An <strong>event</strong> is a
-          delegate with extra safety: it can only be raised from within the
-          class that declares it. Use them for callbacks, notifications, or
-          publisher-subscriber patterns (e.g., button click handlers).
+          <strong>Delegate</strong> — type-safe pointer to a method, pass
+          methods around like variables.<br />
+          Built-in types: <code>Action</code> (no return),
+          <code>Func&lt;T&gt;</code> (with return),
+          <code>Predicate&lt;T&gt;</code> (returns bool).<br /><br />
+          <strong>Event</strong> — delegate with extra safety, can only be
+          raised from the class that declares it.<br />
+          Use for callbacks, notifications, publisher-subscriber patterns (e.g.,
+          button click handlers).
         </div>
       </div>
 
@@ -364,28 +394,55 @@
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between FirstOrDefault and First?
+          What is the difference between First, FirstOrDefault, Single, and
+          SingleOrDefault?
         </div>
         <div class="answer">
-          <code>First()</code> throws an exception if no element matches.
-          <code>FirstOrDefault()</code> returns null (or default value) instead
-          of throwing. In most cases, prefer <code>FirstOrDefault()</code> to
-          avoid crashes — use <code>First()</code> only when you're 100% sure
-          the element exists.
+          <strong>First()</strong> — returns first match, throws if none
+          found.<br />
+          <strong>FirstOrDefault()</strong> — returns first match, returns null
+          if none. Prefer this in most cases.<br /><br />
+          <strong>Single()</strong> — expects exactly one match, throws if none
+          or more than one.<br />
+          <strong>SingleOrDefault()</strong> — returns null if none, still
+          throws if more than one.<br /><br />
+          Use <code>Single</code> when exactly one result is guaranteed (e.g.,
+          find by unique ID).
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between Task, Thread, and Async/Await?
+          What is the difference between Dictionary and HashSet?
         </div>
         <div class="answer">
-          <strong>Thread</strong> is a raw OS thread — heavy, manual management.
-          <strong>Task</strong> is a lighter unit of work running on the thread
-          pool, easier to manage. <strong>async/await</strong> is syntactic
-          sugar over Task that makes async code look synchronous and easy to
-          read. Use <code>async/await</code> for I/O (DB, HTTP); use
-          <code>Task.Run</code> for CPU-heavy work.
+          <strong>Dictionary&lt;K,V&gt;</strong> — key-value pairs, look up
+          value by key, keys must be unique.<br />
+          <strong>HashSet&lt;T&gt;</strong> — unique values only, no key-value,
+          use for membership check or removing duplicates.<br /><br />
+          Both use hashing internally — lookup is O(1).
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Task, Thread, and Async/Await? What is
+          Thread Pool and how does TPL work?
+        </div>
+        <div class="answer">
+          <strong>Thread</strong> — raw OS thread, heavy, manual management.<br />
+          <strong>Thread Pool</strong> — managed pool of reusable threads
+          maintained by .NET — avoids overhead of creating/destroying threads
+          constantly. Tasks run on thread pool threads by default.<br /><br />
+          <strong>Task</strong> — lighter unit of work on the thread pool,
+          supports cancellation and continuation.<br />
+          <strong>TPL (Task Parallel Library)</strong> — built on Tasks,
+          provides <code>Parallel.For</code>, <code>Parallel.ForEach</code>,
+          <code>Task.WhenAll</code> to run work across multiple cores. Use for
+          CPU-heavy parallel workloads.<br /><br />
+          <strong>async/await</strong> — syntactic sugar over Task, makes async
+          code look synchronous. Use for I/O (DB, HTTP) — frees the thread while
+          waiting instead of blocking it.
         </div>
       </div>
 
@@ -417,16 +474,18 @@
 
       <div class="qa-block">
         <div class="question">
-          What is Dependency Injection (DI)? What are its types?
+          What is Dependency Injection (DI)? What is Inversion of Control (IoC)?
+          What are the types?
         </div>
         <div class="answer">
-          DI is a pattern where a class receives its dependencies from outside
-          instead of creating them itself — makes code loosely coupled and
-          testable. Types: <strong>Constructor injection</strong> (most common),
-          <strong>Setter/Property injection</strong>,
-          <strong>Interface injection</strong>,
-          <strong>Service Locator</strong> (considered an anti-pattern — avoid
-          it).
+          <strong>IoC</strong> — principle where control of dependencies is
+          inverted to an external system instead of the class itself.<br />
+          <strong>DI</strong> — most common IoC implementation. Class receives
+          dependencies from outside instead of creating them — loosely coupled
+          and testable.<br /><br />
+          <strong>Types</strong>: Constructor injection (most common),
+          Setter/Property injection, Interface injection, Service Locator
+          (anti-pattern — avoid it).
         </div>
       </div>
 
@@ -478,6 +537,23 @@
     <div class="section-content">
       <div class="qa-block">
         <div class="question">
+          What is ASP.NET MVC architecture? What are its components?
+        </div>
+        <div class="answer">
+          MVC separates the application into 3 layers:<br /><br />
+          <strong>Model</strong> — data and business logic, plain C# classes, EF
+          entities, DTOs.<br />
+          <strong>View</strong> — UI layer, Razor pages or Angular templates
+          that display model data.<br />
+          <strong>Controller</strong> — handles requests, calls services/models,
+          returns view or JSON.<br /><br />
+          UI changes don't affect business logic and vice versa — clean
+          separation of concerns.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
           What are the three service lifetimes — Transient, Scoped, Singleton?
         </div>
         <div class="answer">
@@ -491,14 +567,33 @@
 
       <div class="qa-block">
         <div class="question">
-          What is middleware and how does the request pipeline work?
+          What is the difference between Program.cs and Startup.cs?
+        </div>
+        <div class="answer">
+          <strong>Startup.cs</strong> (.NET 5 and below) — had two methods:
+          <code>ConfigureServices()</code> to register DI services and
+          <code>Configure()</code> to set up middleware pipeline.<br /><br />
+          <strong>Program.cs</strong> (.NET 6+) — Startup.cs removed, everything
+          merged into one file using minimal hosting model. Services via
+          <code>builder.Services.Add...()</code>, middleware via
+          <code>app.Use...()</code> — cleaner and simpler.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is middleware and how does the request pipeline work? What is the
+          difference between app.Use(), app.Run(), and app.Map()?
         </div>
         <div class="answer">
           Middleware are components that handle requests and responses in a
           pipeline. Each one processes the request, optionally calls the next
-          middleware, then processes the response on the way back.
-          <code>Use</code> = call next. <code>Run</code> = terminal, stops the
-          pipeline. <code>Map</code> = branch the pipeline based on URL path.
+          middleware, then processes the response on the way back.<br /><br />
+          <strong>app.Use()</strong> — calls next middleware, used for most
+          cases.<br />
+          <strong>app.Run()</strong> — terminal, stops the pipeline, no next
+          called.<br />
+          <strong>app.Map()</strong> — branches the pipeline based on URL path.
         </div>
       </div>
 
@@ -532,13 +627,19 @@
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between PUT and PATCH?
+          What is the difference between PUT and PATCH? How do you handle PATCH
+          for updating a specific field like email?
         </div>
         <div class="answer">
-          <code>PUT</code> replaces the entire resource — you send the full
-          object. <code>PATCH</code> does a partial update — you only send the
-          fields that changed. Use PATCH when you want to update just one or two
-          fields without sending the whole object.
+          <strong>PUT</strong> — replaces entire resource, send full object.<br />
+          <strong>PATCH</strong> — partial update, send only changed fields.<br /><br />
+          <strong>Email update via PATCH</strong> — send
+          <code>{ "email": "new@email.com" }</code> only. In controller, read
+          the field, update only that property on entity, call
+          <code>SaveChanges()</code>.<br />
+          For clean implementation use
+          <code>JsonPatchDocument&lt;T&gt;</code> from
+          <code>Microsoft.AspNetCore.JsonPatch</code>.
         </div>
       </div>
 
@@ -610,6 +711,26 @@
       </div>
 
       <div class="qa-block">
+        <div class="question">
+          What is OAuth? What are Access Token and Refresh Token? What is the
+          difference between OAuth and JWT?
+        </div>
+        <div class="answer">
+          <strong>OAuth 2.0</strong> — authorization framework, lets a user
+          grant a third-party app access to their resources without sharing
+          password. Example: "Login with Google".<br /><br />
+          <strong>JWT</strong> — token format (compact signed string with
+          claims). OAuth uses JWT as the token format, but JWT can be used
+          independently too.<br /><br />
+          <strong>Access Token</strong> — short-lived (minutes/hours), used to
+          access protected APIs, sent in Authorization header.<br />
+          <strong>Refresh Token</strong> — long-lived, used to get a new Access
+          Token when it expires without re-login. Stored in HttpOnly cookie,
+          never sent to the API directly.
+        </div>
+      </div>
+
+      <div class="qa-block">
         <div class="question">What is CORS and how do you configure it?</div>
         <div class="answer">
           CORS is a browser security rule that blocks requests from a different
@@ -627,6 +748,42 @@
           only, CORS policy to restrict origins, input validation to prevent
           injection, rate limiting to prevent abuse, and never expose sensitive
           data in responses. For server-to-server calls, use API keys.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Idempotency? Why does it matter in APIs?
+        </div>
+        <div class="answer">
+          <strong>Idempotent</strong> — calling the same operation multiple
+          times produces the same result as calling it once.<br /><br />
+          <strong>GET, PUT, DELETE</strong> — idempotent.
+          <strong>POST</strong> — not idempotent, calling twice creates two
+          records.<br /><br />
+          Important for reliability — if a network timeout causes a retry,
+          idempotent endpoints won't create duplicate data.<br />
+          Implement with <strong>idempotency keys</strong> — client sends a
+          unique request ID, server checks if already processed.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you handle security vulnerabilities in your application?
+        </div>
+        <div class="answer">
+          <strong>SQL Injection</strong> — use parameterized queries or EF Core,
+          never concatenate user input into SQL.<br />
+          <strong>XSS</strong> — Angular auto-escapes output by default, avoid
+          <code>innerHTML</code> with user data.<br />
+          <strong>CSRF</strong> — use anti-forgery tokens for form
+          submissions.<br />
+          <strong>Sensitive data</strong> — store secrets in Azure Key Vault,
+          never in code, use HTTPS always.<br />
+          <strong>Auth</strong> — JWT with short expiry, validate all inputs,
+          <code>[Authorize]</code> on all protected endpoints, CORS to restrict
+          origins.
         </div>
       </div>
 
@@ -971,6 +1128,26 @@
       </div>
 
       <div class="qa-block">
+        <div class="question">
+          How do you configure a Many-to-Many relationship in EF Core?
+        </div>
+        <div class="answer">
+          <strong>EF Core 5+</strong> — supports many-to-many directly without a
+          junction entity:<br />
+          <code
+            >modelBuilder.Entity&lt;Student&gt;().HasMany(s =>
+            s.Courses).WithMany(c => c.Students)</code
+          ><br /><br />
+          <strong>With junction table</strong> (if you need extra columns like
+          enrollment date) — create a <code>StudentCourse</code> entity with
+          <code>StudentId</code> and <code>CourseId</code> as a composite key,
+          then configure two one-to-many relationships.<br /><br />
+          In SQL: junction table holds the foreign keys of both entities — each
+          row represents one relationship.
+        </div>
+      </div>
+
+      <div class="qa-block">
         <div class="question">How do you optimize EF Core queries?</div>
         <div class="answer">
           Use <code>AsNoTracking()</code> for reads, <code>.Select()</code> to
@@ -1025,6 +1202,22 @@
           common CRUD methods (<code>GetById</code>, <code>GetAll</code>,
           <code>Add</code>, <code>Delete</code>) for any entity type using
           generics — less code duplication.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is the CQRS pattern?</div>
+        <div class="answer">
+          <strong>CQRS (Command Query Responsibility Segregation)</strong> —
+          separates read and write operations into different models.<br /><br />
+          <strong>Command</strong> — write side, changes state (Create, Update,
+          Delete), returns no data.<br />
+          <strong>Query</strong> — read side, fetches data, never changes
+          state.<br /><br />
+          <strong>Why</strong> — read and write workloads scale differently.
+          Reads can be optimized separately (e.g., denormalized read models,
+          caching). Common in microservices and event-sourced systems.<br />
+          In .NET, typically implemented with <strong>MediatR</strong> library.
         </div>
       </div>
 
@@ -1324,14 +1517,21 @@
       </div>
 
       <div class="qa-block">
-        <div class="question">What are pipes? Pure vs Impure?</div>
+        <div class="question">
+          What are pipes? Pure vs Impure? What is data transformation in
+          Angular?
+        </div>
         <div class="answer">
-          Pipes transform data in templates — e.g.,
-          <code>{{ date | date:'short' }}</code>.
-          <strong>Pure pipes</strong> only re-run when the input reference
-          changes (fast). <strong>Impure pipes</strong> re-run on every change
-          detection cycle (slow — use carefully). Create custom pipes with the
-          <code>@Pipe</code> decorator.
+          <strong>Pipes</strong> — transform data directly in templates.
+          Example: <code>{{ date | date:'short' }}</code>,
+          <code>{{ name | uppercase }}</code>.<br />
+          This is Angular's built-in data transformation — format, filter, or
+          convert values without touching component logic.<br /><br />
+          <strong>Pure pipes</strong> — only re-run when input reference
+          changes. Fast.<br />
+          <strong>Impure pipes</strong> — re-run on every change detection
+          cycle. Slow — use carefully.<br />
+          Create custom pipes with the <code>@Pipe</code> decorator.
         </div>
       </div>
 
@@ -1392,14 +1592,22 @@
       </div>
 
       <div class="qa-block">
-        <div class="question">Template-driven vs Reactive forms?</div>
+        <div class="question">
+          Template-driven vs Reactive forms? Where have you used forms in your
+          project?
+        </div>
         <div class="answer">
-          <strong>Template-driven</strong>: form logic in HTML with
-          <code>ngModel</code> — simple, less code, but hard to test.
-          <strong>Reactive</strong>: form logic in the component class with
-          <code>FormGroup</code> and <code>FormControl</code> — more code but
-          fully testable, dynamic, and better for complex forms. Prefer Reactive
-          forms in real projects.
+          <strong>Template-driven</strong> — form logic in HTML with
+          <code>ngModel</code>, simple, less code, hard to test.<br />
+          <strong>Reactive</strong> — form logic in component class with
+          <code>FormGroup</code> and <code>FormControl</code>, fully testable,
+          dynamic, better for complex forms. Prefer Reactive in real
+          projects.<br /><br />
+          <strong>In Aviva</strong> — used Reactive Forms for the policy update
+          and claims submission screens. Had complex validations (conditional
+          required fields, custom validators for date ranges) — Reactive forms
+          made it easy to control validation programmatically and test it with
+          unit tests.
         </div>
       </div>
 
@@ -1428,6 +1636,27 @@
       </div>
 
       <div class="qa-block">
+        <div class="question">
+          How do you use the response of one service call in another service
+          call in Angular?
+        </div>
+        <div class="answer">
+          Use <strong>switchMap</strong> — chain the second call after the first
+          using RxJS:<br /><br />
+          <code
+            >this.userService.getUser(id).pipe(switchMap(user =>
+            this.orderService.getOrders(user.id))).subscribe(...)</code
+          ><br /><br />
+          <strong>switchMap</strong> — cancels previous inner observable, use
+          when second call depends on first result.<br />
+          <strong>mergeMap</strong> — runs both in parallel, use for independent
+          calls.<br />
+          Avoid nested <code>subscribe()</code> calls — leads to callback hell
+          and memory leaks.
+        </div>
+      </div>
+
+      <div class="qa-block">
         <div class="question">What is RxJS? Observable vs Promise?</div>
         <div class="answer">
           RxJS is a library for reactive programming with streams.
@@ -1436,6 +1665,22 @@
           <strong>Promise</strong>: eager, resolves once, can't cancel. Use
           Observables in Angular for HTTP calls (cancellable) and real-time
           streams.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are Promises in JavaScript?</div>
+        <div class="answer">
+          <strong>Promise</strong> — represents a future value, either resolved
+          or rejected.<br />
+          3 states: <strong>pending</strong> → <strong>fulfilled</strong> or
+          <strong>rejected</strong>.<br /><br />
+          <code>.then()</code> — handles success. <code>.catch()</code> —
+          handles error. <code>.finally()</code> — runs always.<br /><br />
+          Eager — starts immediately when created. Resolves only once. Can't
+          cancel.<br />
+          Use <strong>async/await</strong> for cleaner syntax over raw
+          <code>.then()</code> chains.
         </div>
       </div>
 
@@ -1505,6 +1750,24 @@
 
       <div class="qa-block">
         <div class="question">
+          How do you make an Angular application responsive?
+        </div>
+        <div class="answer">
+          <strong>CSS Flexbox / Grid</strong> — use for layout, adapts to screen
+          size naturally.<br />
+          <strong>Angular CDK BreakpointObserver</strong> — detect screen size
+          in component and conditionally show/hide elements.<br />
+          <strong>Media queries</strong> — in component CSS or global styles.<br />
+          <strong>Angular Material</strong> — built-in responsive grid and
+          components.<br />
+          <strong>ngClass / ngStyle</strong> — apply classes dynamically based
+          on screen size or component state.<br />
+          Avoid fixed pixel widths — use %, vw, rem instead.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
           How do you optimize the performance of an Angular application?
         </div>
         <div class="answer">
@@ -1545,6 +1808,21 @@
           <strong>Unique Key</strong> allows one NULL and a table can have
           multiple unique keys. Primary key is the main row identifier; unique
           key just prevents duplicate values on a column.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are SQL Constraints?</div>
+        <div class="answer">
+          Rules enforced on table columns to maintain data integrity.<br /><br />
+          <strong>PRIMARY KEY</strong> — unique, not null, one per table.<br />
+          <strong>FOREIGN KEY</strong> — links to primary key of another table,
+          enforces referential integrity.<br />
+          <strong>UNIQUE</strong> — no duplicate values, allows one NULL.<br />
+          <strong>NOT NULL</strong> — column cannot be empty.<br />
+          <strong>CHECK</strong> — value must satisfy a condition. Example:
+          <code>CHECK (Age >= 18)</code>.<br />
+          <strong>DEFAULT</strong> — sets a default value if none provided.
         </div>
       </div>
 
@@ -1611,6 +1889,44 @@
           SELECT. <strong>Function</strong>: must return a value, can be used
           inside SELECT/WHERE, but cannot modify data. Use functions for
           reusable calculations; use procedures for business logic operations.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is a CTE? What is the difference between CTE and Temp Table? Can
+          you create indexes on a CTE?
+        </div>
+        <div class="answer">
+          <strong>CTE (Common Table Expression)</strong> — named temporary
+          result set defined with <code>WITH</code>. Exists only for that single
+          query, no physical storage.<br /><br />
+          <strong>CTE vs Temp Table</strong>:<br />
+          <strong>CTE</strong> — no storage, no index, single query use, better
+          readability. Good for recursive queries (e.g., hierarchy trees).<br />
+          <strong>Temp Table</strong> (<code>#TempTable</code>) — physically
+          stored in <code>tempdb</code>, persists for the session, can have
+          indexes, reusable across multiple queries.<br /><br />
+          Use CTE for one-time readable queries. Use Temp Table when reusing
+          result multiple times or need indexes for performance.<br /><br />
+          <strong>Indexes on CTE</strong> — No, you cannot create indexes on a
+          CTE directly. If you need indexes, use a Temp Table instead.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Temp Table and Table Variable?
+        </div>
+        <div class="answer">
+          <strong>Temp Table</strong> (<code>#TempTable</code>) — stored in
+          <code>tempdb</code>, supports indexes, visible within the session, can
+          be used across stored procedures.<br /><br />
+          <strong>Table Variable</strong> (<code>@TableVar</code>) — stored in
+          memory (mostly), scoped to the current batch/procedure only, no
+          indexes except primary key, better for small datasets.<br /><br />
+          Use Temp Table for large data sets or when you need indexes. Use Table
+          Variable for small, short-lived datasets.
         </div>
       </div>
 
@@ -1755,7 +2071,8 @@
 
       <div class="qa-block">
         <div class="question">
-          What are Azure Functions? When would you use them?
+          What are Azure Functions? When would you use them? Where did you use
+          them in your project?
         </div>
         <div class="answer">
           Serverless — small code that runs on a trigger, no server management,
@@ -1763,9 +2080,12 @@
           Triggers: <strong>HTTP</strong> (API),
           <strong>Timer</strong> (scheduled job),
           <strong>Service Bus</strong> (process messages),
-          <strong>Blob</strong> (file uploaded).<br />
-          In insurance: nightly renewal reminders (Timer), process claim docs on
-          upload (Blob trigger), send notifications from Service Bus messages.
+          <strong>Blob</strong> (file uploaded).<br /><br />
+          <strong>In Aviva</strong> — used a Timer-triggered Azure Function for
+          nightly policy renewal reminders. It runs at midnight, queries
+          policies expiring in the next 30 days, and pushes notifications to the
+          Service Bus which triggers emails to customers. No server to manage,
+          scales automatically, cost-effective.
         </div>
       </div>
 
@@ -2219,12 +2539,50 @@
         </div>
       </div>
 
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          14. Reorder array: even numbers first, then divisible by 3, then
+          remaining odd numbers (no duplicates, maintain order).
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Add evens first, then div-by-3 (not already added), then remaining
+            odds. Use HashSet to track added numbers.
+          </div>
+          <pre><code class="language-csharp">// Input:  { -6, 5, -1, 3, 0, 10, -3, 9 }
+// Output: -6, 0, 10, 3, -3, 9, 5, -1
+
+int[] ReorderArray(int[] arr)
+{
+    var seen = new HashSet&lt;int&gt;();
+    var result = new List&lt;int&gt;();
+
+    // Step 1: even numbers
+    foreach (var n in arr)
+        if (n % 2 == 0 && seen.Add(n))
+            result.Add(n);
+
+    // Step 2: divisible by 3 (not already added)
+    foreach (var n in arr)
+        if (n % 3 == 0 && seen.Add(n))
+            result.Add(n);
+
+    // Step 3: remaining odd numbers
+    foreach (var n in arr)
+        if (seen.Add(n))
+            result.Add(n);
+
+    return result.ToArray();
+}</code></pre>
+        </div>
+      </div>
+
       <!-- Number Problems -->
       <h3 class="subsection-header">Number Problems</h3>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          14. Return the sum of the digits of an integer.
+          15. Return the sum of the digits of an integer.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2239,7 +2597,7 @@
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          15. Calculate the factorial of a number using recursion.
+          16. Calculate the factorial of a number using recursion.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2255,7 +2613,7 @@
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          16. Return the N-th number in the Fibonacci sequence.
+          17. Return the N-th number in the Fibonacci sequence.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2276,12 +2634,37 @@
         </div>
       </div>
 
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          18. Swap two variables without using a third variable.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use tuple deconstruction — cleanest way in C#. Or use XOR /
+            arithmetic for integers.
+          </div>
+          <pre><code class="language-csharp">// Method 1: Tuple (preferred in C#)
+int a = 5, b = 10;
+(a, b) = (b, a);
+
+// Method 2: Arithmetic
+a = a + b;  // a = 15
+b = a - b;  // b = 5
+a = a - b;  // a = 10
+
+// Method 3: XOR (integers only)
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;</code></pre>
+        </div>
+      </div>
+
       <!-- SQL Coding -->
       <h3 class="subsection-header">SQL Coding</h3>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          17. Write a query to find the second highest salary.
+          19. Write a query to find the second highest salary.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2298,7 +2681,33 @@ WHERE Rnk = 2;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          18. Write a query to find the employee count per department.
+          20. Write a SQL query and LINQ query to find the 3rd highest salary.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            SQL: use DENSE_RANK, filter rank = 3. LINQ: distinct, order
+            descending, skip 2, take first.
+          </div>
+          <pre><code class="language-sql">-- SQL
+SELECT Salary
+FROM (
+    SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rnk
+    FROM Employees
+) ranked
+WHERE Rnk = 3;</code></pre>
+          <pre><code class="language-csharp">// LINQ
+int thirdHighest = employees
+    .Select(e => e.Salary)
+    .Distinct()
+    .OrderByDescending(s => s)
+    .Skip(2)
+    .First();</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          21. Write a query to find the employee count per department.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2313,7 +2722,7 @@ ORDER BY EmployeeCount DESC;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          19. Write a CTE to find employees earning above the average salary.
+          22. Write a CTE to find employees earning above the average salary.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2332,7 +2741,7 @@ WHERE e.Salary > a.Avg;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          20. Rank employees by salary within each department.
+          23. Rank employees by salary within each department.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2347,7 +2756,7 @@ FROM Employees;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          21. Write a query to get the top 3 salaries in each department.
+          24. Write a query to get the top 3 salaries in each department.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2365,7 +2774,7 @@ WHERE Rnk &lt;= 3;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          22. Write a query to implement pagination (page 2, 10 records per
+          25. Write a query to implement pagination (page 2, 10 records per
           page).
         </div>
         <div class="code-block" style="display: none">
@@ -2381,7 +2790,7 @@ FETCH NEXT 10 ROWS ONLY; -- take next 10 (page 2)</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          23. Write a query to find duplicate emails in a table.
+          26. Write a query to find duplicate emails in a table.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2396,7 +2805,7 @@ HAVING COUNT(*) > 1;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          24. Write a CTE to get a running total of sales by date.
+          27. Write a CTE to get a running total of sales by date.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2412,7 +2821,7 @@ ORDER BY SaleDate;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          25. Write a query to filter and search with dynamic conditions.
+          28. Write a query to filter and search with dynamic conditions.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2433,7 +2842,7 @@ OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          26. Write a custom middleware in ASP.NET Core.
+          29. Write a custom middleware in ASP.NET Core.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -2461,20 +2870,18 @@ app.UseMiddleware&lt;LoggingMiddleware&gt;();</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          27. Write a thread-safe Singleton class in C#.
+          30. Write a thread-safe Singleton class in C#.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
-            Use Lazy&lt;T&gt; — handles thread safety automatically, creates
-            instance only when first accessed.
+            Use lock with double-null check — thread safe, creates instance only
+            when first accessed.
           </div>
-          <pre><code class="language-csharp">
-public sealed class Singleton
+          <pre><code class="language-csharp">public sealed class Singleton
 {
     private static Singleton _instance;
     private static readonly object _lock = new object();
 
-    // Private constructor prevents object creation from outside
     private Singleton() { }
 
     public static Singleton Instance
@@ -2484,16 +2891,38 @@ public sealed class Singleton
             lock (_lock)
             {
                 if (_instance == null)
-                {
                     _instance = new Singleton();
-                }
 
                 return _instance;
             }
         }
     }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          31. Implement multiple interfaces with the same method signature.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use explicit interface implementation — each interface gets its own
+            method body, called through its specific interface reference.
+          </div>
+          <pre><code class="language-csharp">interface IAnimal { void Speak(); }
+interface IHuman  { void Speak(); }
+
+class Person : IAnimal, IHuman
+{
+    void IAnimal.Speak() => Console.WriteLine("Animal sound");
+    void IHuman.Speak()  => Console.WriteLine("Hello!");
 }
-</code></pre>
+
+// Usage
+Person p = new Person();
+((IAnimal)p).Speak(); // "Animal sound"
+((IHuman)p).Speak();  // "Hello!"</code></pre>
         </div>
       </div>
 
