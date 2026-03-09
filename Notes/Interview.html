@@ -168,10 +168,11 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 1. C# / OOP & .NET ===================== -->
+    <!-- ===================== SECTION 1. C# ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 1. C# / OOP &amp; .NET <span class="toggle-icon">▼</span>
+      SECTION 1. C# <span class="toggle-icon">▼</span>
     </h2>
+
     <div class="section-content">
       <div class="qa-block">
         <div class="question">
@@ -179,21 +180,28 @@
           does Stack and Heap relate to them?
         </div>
         <div class="answer">
-          Value types (int, bool, struct) store data directly on the
-          <strong>Stack</strong>. Reference types (class, string, object) store
-          data on the <strong>Heap</strong>, and only a pointer/reference sits
-          on the Stack. Stack is fast but small; Heap is larger and managed by
-          the Garbage Collector.
+          <strong>Value types</strong> (int, bool, struct) store the actual
+          value and are usually allocated on the <strong>Stack</strong>. Copying
+          creates a new separate value.
+          <br />
+          <strong>Reference types</strong> (class, string, array, object) store
+          the object in the <strong>Heap</strong>, while the variable on the
+          <strong>Stack</strong> holds only a reference to it.
+          <br />
+          Stack is fast and used for short-lived data, while Heap stores objects
+          and is managed by the Garbage Collector.
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is boxing and unboxing in C#?</div>
         <div class="answer">
-          Boxing = wrapping a value type into an object (moves it to the heap).
-          Unboxing = pulling it back out. Example: <code>object o = 5;</code> is
-          boxing, <code>int i = (int)o;</code> is unboxing. Avoid it in loops —
-          it creates unnecessary heap allocations and slows things down.
+          <strong>Boxing</strong> = Converting a value type into reference type
+          (object type, From stack to the heap). <strong>Unboxing </strong>=
+          pulling it back out. <br />
+          Example: <code>object o = 5;</code> is boxing,
+          <code>int i = (int)o;</code> is unboxing. Avoid it in loops, creates
+          unnecessary heap allocations & slows things down.
         </div>
       </div>
 
@@ -457,7 +465,7 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 2. ASP.NET Core / Web API ===================== -->
+    <!-- ===================== SECTION 2. ASP.NET Core ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
       SECTION 2. ASP.NET Core / Web API <span class="toggle-icon">▼</span>
     </h2>
@@ -711,6 +719,160 @@
         </button>
       </div>
       <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 2.1. Microservices ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 2.1. Microservices <span class="toggle-icon">▼</span>
+    </h2>
+
+    <div class="section-content">
+      <div class="qa-block">
+        <div class="question">
+          What are Microservices? How are they different from Monolithic
+          architecture?
+        </div>
+        <div class="answer">
+          <strong>Monolithic</strong>: entire application is one deployable unit
+          — all features tightly coupled. Easy to develop initially but hard to
+          scale and maintain as it grows. <strong>Microservices</strong>:
+          application is split into small independent services — each handles
+          one business capability (orders, payments, users). Each can be
+          deployed, scaled, and updated independently. Aviva is a real example —
+          30+ independent services (policy, claims, documents) each deployed
+          separately.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do microservices communicate with each other?
+        </div>
+        <div class="answer">
+          <strong>Synchronous (HTTP/REST or gRPC)</strong>: service calls
+          another directly and waits for response — simple but tightly coupled,
+          if one service is down the caller fails too.
+          <strong>Asynchronous (Message Queue)</strong>: service publishes a
+          message and doesn't wait — done via Azure Service Bus, RabbitMQ, or
+          Kafka. Services are decoupled — sender doesn't care if receiver is
+          down.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is an API Gateway? Why is it important?</div>
+        <div class="answer">
+          A single entry point for all client requests — clients never call
+          individual services directly. It handles routing, authentication, rate
+          limiting, load balancing, and logging in one place. Examples:
+          <strong>AWS API Gateway</strong>,
+          <strong>Azure API Management</strong>, <strong>Ocelot</strong> (for
+          .NET). You enforce security in one place and can change backend
+          services without affecting clients.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you handle distributed transactions across microservices?
+        </div>
+        <div class="answer">
+          You can't use a single DB transaction across services. The common
+          pattern is <strong>Saga</strong>.<br />
+          <strong>Choreography Saga</strong>: each service publishes events and
+          reacts to others' events — no central coordinator. Loosely coupled but
+          harder to track.<br />
+          <strong>Orchestration Saga</strong>: a central orchestrator tells each
+          service what to do step by step. Easier to follow but orchestrator
+          becomes a dependency.<br />
+          If a step fails, compensating transactions (rollback actions) undo
+          previous steps.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the Circuit Breaker pattern? Why is it important?
+        </div>
+        <div class="answer">
+          When one service keeps failing, dependant services shouldn't keep
+          retrying — it wastes resources and cascades failures across the
+          system.<br />
+          Circuit Breaker monitors failures. After a threshold is hit, it
+          <strong>opens</strong> (stops sending requests) and returns a fallback
+          immediately. After a timeout it goes <strong>half-open</strong> —
+          tries one request to check recovery. If it succeeds, it
+          <strong>closes</strong> again.<br />
+          In .NET, implement with <strong>Polly</strong> library — supports
+          retry, circuit breaker, and timeout policies.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you trace requests across multiple microservices? What did you
+          use in Aviva?
+        </div>
+        <div class="answer">
+          Use <strong>Distributed Tracing</strong> with a
+          <strong>Correlation ID</strong> — a unique ID generated at the entry
+          point and passed in the HTTP header to every downstream service. Each
+          service logs this ID so you can filter all logs for a single request
+          across all services.<br />
+          At Aviva, I implemented this solution which reduced debugging time
+          from 2–3 days to about 2 hours across 30+ services.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How does each microservice manage its own database?
+        </div>
+        <div class="answer">
+          Each microservice owns its own database — called the
+          <strong>Database per Service</strong> pattern. Services never share a
+          DB directly; they communicate through APIs or events.<br />
+          Benefits: each service picks the best DB type for its needs, teams
+          stay independent, schema changes in one service don't break others.
+          Downside: joining data across services is harder — you call APIs or
+          use eventual consistency through events.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Service Discovery in microservices?</div>
+        <div class="answer">
+          Services are dynamically deployed — their IP addresses change. Service
+          Discovery lets services find each other automatically without
+          hardcoded URLs.<br />
+          <strong>Client-side</strong>: caller queries a registry like
+          <strong>Consul</strong> or <strong>Eureka</strong> to get the address,
+          then calls directly. <strong>Server-side</strong>: caller goes through
+          a load balancer or API Gateway which handles the lookup. In cloud
+          setups (AWS/Azure) this is usually built in.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are the main challenges of microservices and how do you handle
+          them?
+        </div>
+        <div class="answer">
+          <strong>Distributed tracing</strong> — hard to debug across services.
+          Solution: Correlation IDs + centralized logging (Serilog + Application
+          Insights).<br />
+          <strong>Data consistency</strong> — no shared DB, eventual
+          consistency. Solution: Saga pattern.<br />
+          <strong>Service failures</strong> — one failing service can cascade.
+          Solution: Circuit Breaker with Polly, retries with exponential
+          backoff.<br />
+          <strong>Network latency</strong> — more network calls than monolith.
+          Solution: async messaging where possible, caching.<br />
+          <strong>Deployment complexity</strong> — many services to manage.
+          Solution: Docker + Kubernetes, CI/CD pipelines.
+        </div>
+      </div>
     </div>
 
     <!-- ===================== SECTION 3. Entity Framework Core ===================== -->
@@ -973,6 +1135,37 @@
           Insights for error spikes or failed requests. For the Angular side,
           use an error interceptor to report frontend errors to the backend or a
           monitoring service.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are the SOLID principles?</div>
+        <div class="answer">
+          SOLID is a set of 5 design principles that make code cleaner, more
+          maintainable, and easier to extend.<br /><br />
+          <strong>S — Single Responsibility Principle</strong><br />
+          A class should have only one reason to change. Each class should do
+          one job only.<br />
+          Example: A <code>UserService</code> should handle user logic — not
+          also send emails.<br /><br />
+          <strong>O — Open/Closed Principle</strong><br />
+          A class should be open for extension but closed for modification.<br />
+          Example: Add new behaviour by creating a new class, not by changing
+          existing code.<br /><br />
+          <strong>L — Liskov Substitution Principle</strong><br />
+          A child class should be replaceable for its parent class without
+          breaking the app.<br />
+          Example: If <code>Bird</code> has a <code>Fly()</code> method, a
+          <code>Penguin</code> class should not inherit it since penguins cannot
+          fly.<br /><br />
+          <strong>I — Interface Segregation Principle</strong><br />
+          Do not force a class to implement methods it does not need. Split
+          large interfaces into smaller focused ones.<br /><br />
+          <strong>D — Dependency Inversion Principle</strong><br />
+          High-level classes should not depend on low-level classes. Both should
+          depend on abstractions (interfaces).<br />
+          Example: A <code>Controller</code> should depend on
+          <code>IUserService</code>, not directly on <code>UserService</code>.
         </div>
       </div>
 
@@ -1478,6 +1671,298 @@
           WHERE (defeats the index), use JOINs over subqueries where possible,
           paginate large results with <code>OFFSET/FETCH</code>, and check the
           Execution Plan to find the actual bottleneck.
+        </div>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 7. Azure ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 7. Azure <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="qa-block">
+        <div class="question">What is Azure App Service?</div>
+        <div class="answer">
+          Fully managed platform to host web apps and REST APIs — no server
+          management needed. Supports .NET, Node, Java and more. Handles
+          scaling, load balancing, and SSL automatically. In insurance projects
+          like Aviva, App Service hosts the backend APIs — connection strings
+          and JWT secrets go in App Settings, never hardcoded.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Blob Storage? When would you use it?
+        </div>
+        <div class="answer">
+          Stores unstructured files — PDFs, images, documents. In insurance:
+          store policy documents, claim attachments, scanned ID proofs. Access
+          via <code>Azure.Storage.Blobs</code> SDK. Use a
+          <strong>SAS token</strong> for secure temporary access without
+          exposing the storage key.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Queue Storage vs Azure Service Bus? When do you use
+          each?
+        </div>
+        <div class="answer">
+          <strong>Queue Storage</strong>: simple, cheap, basic FIFO queue — use
+          for non-critical background tasks.<br />
+          <strong>Service Bus</strong>: enterprise messaging — supports topics,
+          subscriptions, dead-letter queue, duplicate detection, and guaranteed
+          delivery.<br />
+          In insurance: Service Bus for critical flows like claim submitted →
+          generate document → send notification. Queue Storage for simple tasks
+          like audit logging.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Service Bus? What are Topics and Subscriptions?
+        </div>
+        <div class="answer">
+          Enterprise message broker for reliable async communication between
+          services.<br />
+          <strong>Queue</strong>: one sender, one receiver.
+          <strong>Topic + Subscriptions</strong>: one sender, multiple receivers
+          — each subscription gets its own copy.<br />
+          In insurance: claim submitted → publish to topic → document service,
+          notification service, and audit service each subscribe and process
+          independently.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are Azure Functions? When would you use them?
+        </div>
+        <div class="answer">
+          Serverless — small code that runs on a trigger, no server management,
+          scales automatically, pay per execution.<br />
+          Triggers: <strong>HTTP</strong> (API),
+          <strong>Timer</strong> (scheduled job),
+          <strong>Service Bus</strong> (process messages),
+          <strong>Blob</strong> (file uploaded).<br />
+          In insurance: nightly renewal reminders (Timer), process claim docs on
+          upload (Blob trigger), send notifications from Service Bus messages.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Event Grid? How is it different from Service Bus?
+        </div>
+        <div class="answer">
+          Event Grid routes events that happen in Azure (blob uploaded, resource
+          created) to subscribers instantly — push-based, high throughput.<br />
+          <strong>Service Bus</strong>: reliable message delivery, queuing,
+          complex workflows — use when guaranteed processing matters.<br />
+          <strong>Event Grid</strong>: lightweight event notifications — use
+          when you want to react to something that happened, not send a command.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Azure API Management (APIM)?</div>
+        <div class="answer">
+          Sits in front of your APIs and acts as a gateway — handles
+          authentication, rate limiting, caching, logging, and versioning in one
+          place. Clients talk to APIM, not directly to backend APIs.<br />
+          In insurance: expose Aviva APIs to external partners (brokers,
+          aggregators) securely — apply policies per client and monitor all
+          traffic without touching backend code.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Key Vault? Why should you use it?
+        </div>
+        <div class="answer">
+          Securely stores secrets, connection strings, API keys, and
+          certificates — nothing sensitive in code or config files. App fetches
+          secrets at runtime using <strong>Managed Identity</strong> — no
+          credentials needed in code.<br />
+          In insurance: store DB connection strings, JWT signing keys,
+          third-party API keys. Rotate secrets in one place — no redeployment
+          needed.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Logic Apps? When do you use it over Azure Functions?
+        </div>
+        <div class="answer">
+          Low-code workflow automation — connect 400+ services (Outlook,
+          SharePoint, SQL, Service Bus) visually with no code.<br />
+          Use <strong>Logic Apps</strong> for simple integration workflows —
+          e.g., claim approved → send email → update SharePoint list.<br />
+          Use <strong>Azure Functions</strong> when you need custom code or
+          complex business logic. In insurance: Logic Apps for notifications,
+          Functions for processing claim data with business rules.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Terraform?</div>
+        <div class="answer">
+          Infrastructure as Code (IaC) tool — define cloud resources (servers,
+          DBs, networks) in config files and Terraform creates and manages them
+          automatically instead of manual portal setup.<br />
+          Key commands: <code>terraform init</code> (setup),
+          <code>terraform plan</code> (preview),
+          <code>terraform apply</code> (create/update).<br />
+          In insurance: provision App Service, Service Bus, Key Vault
+          consistently across dev, staging, and production — same infrastructure
+          every time, no manual errors.
+        </div>
+      </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== SECTION 8. DevOps ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 8. DevOps <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <div class="qa-block">
+        <div class="question">What is CI/CD? Why is it important?</div>
+        <div class="answer">
+          <strong>CI (Continuous Integration)</strong>: developers push code
+          frequently, automated pipeline runs tests and builds instantly —
+          catches bugs early.<br />
+          <strong>CD (Continuous Delivery/Deployment)</strong>: after CI passes,
+          code is automatically deployed to staging or production — no manual
+          steps.<br />
+          Result: faster releases, fewer errors, consistent deployments every
+          time.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are the stages in a typical CI/CD pipeline?
+        </div>
+        <div class="answer">
+          Code pushed to Git → <strong>Build</strong> (compile, restore
+          packages) → <strong>Test</strong> (run unit tests) →
+          <strong>Code Quality</strong> (SonarQube scan) →
+          <strong>Publish artifacts</strong> → <strong>Deploy</strong> to
+          dev/staging/production.<br />
+          Tools: <strong>Azure DevOps</strong> or
+          <strong>GitHub Actions</strong> for pipeline,
+          <strong>Docker</strong> for packaging, <strong>Kubernetes</strong> or
+          <strong>App Service</strong> for deployment.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Continuous Delivery and Continuous
+          Deployment?
+        </div>
+        <div class="answer">
+          <strong>Continuous Delivery</strong>: code is always ready to deploy
+          but a manual approval is needed to push to production.<br />
+          <strong>Continuous Deployment</strong>: fully automated — every
+          passing build deploys to production with no manual step.<br />
+          In insurance projects, Continuous Delivery is preferred — production
+          releases go through an approval gate.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Docker? Why do we use it?</div>
+        <div class="answer">
+          Docker packages your application and all its dependencies into a
+          <strong>container</strong> — runs the same everywhere regardless of
+          the machine. Solves the "works on my machine" problem.<br />
+          <strong>Image</strong> = blueprint. <strong>Container</strong> =
+          running instance. <strong>Dockerfile</strong> = instructions to build
+          the image. <strong>Docker Hub</strong> = registry to store and share
+          images.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is a Dockerfile? Walk through a basic one for a .NET API.
+        </div>
+        <div class="answer">
+          A script that defines how to build a Docker image step by step.<br />
+          <code>FROM mcr.microsoft.com/dotnet/aspnet:8.0</code> — base image.<br />
+          <code>COPY . /app</code> — copy code into container.<br />
+          <code>RUN dotnet publish -o /out</code> — build the app.<br />
+          <code>ENTRYPOINT ["dotnet", "MyApi.dll"]</code> — run on start.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Kubernetes (K8s)? Why is it needed?</div>
+        <div class="answer">
+          Container orchestration tool — manages deploying, scaling, and running
+          many Docker containers across multiple machines automatically.<br />
+          Docker runs one container, Kubernetes manages hundreds. Handles:
+          auto-scaling, self-healing (restarts crashed containers), load
+          balancing, and zero downtime rolling deployments.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are the key Kubernetes components?</div>
+        <div class="answer">
+          <strong>Pod</strong>: smallest unit — one or more containers running
+          together.<br />
+          <strong>Deployment</strong>: defines how many pod replicas to run and
+          manages updates.<br />
+          <strong>Service</strong>: exposes pods to the network — stable
+          endpoint even if pods restart.<br />
+          <strong>Ingress</strong>: routes external traffic to the right
+          service.<br />
+          <strong>ConfigMap / Secret</strong>: store config and sensitive values
+          outside the container.
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Docker and Kubernetes?
+        </div>
+        <div class="answer">
+          <strong>Docker</strong>: builds and runs containers — works great for
+          one machine.<br />
+          <strong>Kubernetes</strong>: orchestrates many containers across many
+          machines — handles scaling, failures, and deployments
+          automatically.<br />
+          They work together: Docker packages the app, Kubernetes manages
+          running it at scale.
         </div>
       </div>
 
