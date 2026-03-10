@@ -872,7 +872,9 @@
           restrict to JSON only, call
           <code>.AddControllers().AddJsonOptions()</code> and remove the XML
           formatter — or simply don't register
-          <code>AddXmlSerializerFormatters()</code>.
+          <code>AddXmlSerializerFormatters()</code> in program.cs file. <br />
+          For a specific action, use this attribute
+          <code>[Produces("application/json")]</code>.
         </div>
       </div>
 
@@ -1822,18 +1824,19 @@
           newer version?
         </div>
         <div class="answer">
-          Process of upgrading Angular from one major version to the next.
-          Angular provides automated tools to handle breaking changes.<br /><br />
-          <strong>Main command</strong>:
+          Upgrading Angular from one version to another using Angular CLI.<br />
+
+          <strong>Main command:</strong>
           <code>ng update @angular/core @angular/cli</code> — updates packages
-          and runs <strong>schematics</strong> (automated code fixes for
-          deprecated APIs).<br /><br />
-          <strong>Key rules</strong>: always upgrade
-          <strong>one major version at a time</strong> — never skip versions.
-          Check <strong>update.angular.io</strong> for the full breaking changes
-          checklist between versions.<br /><br />
-          <strong>Common changes</strong>: Ivy renderer (v12+), Standalone
-          components (v14+), Required @Input (v16), Signals (v16+).
+          and runs migration schematics (auto fixes).<br />
+
+          <strong>Rule:</strong> Upgrade
+          <strong>one major version at a time</strong>. Check
+          <strong>update.angular.io</strong> for breaking changes.<br />
+
+          <strong>Flow:</strong> Check version → Update CLI → Run
+          <code>ng update</code>
+          → Fix issues → Test app.
         </div>
       </div>
 

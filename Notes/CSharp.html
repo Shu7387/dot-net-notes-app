@@ -642,7 +642,8 @@
 
     <!-- ===================== SECTION 6 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 6: Async Programming <span class="toggle-icon">▼</span>
+      SECTION 6: Async Programming & Multithreading
+      <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <table>
@@ -656,55 +657,144 @@
         <tbody>
           <tr>
             <td><strong>async / await</strong></td>
-            <td>Run long tasks in background without blocking the thread</td>
-            <td>
-              <code
-                >async Task GetData(CancellationToken ct) { await CallApi(ct);
-                }</code
-              >
-            </td>
+            <td>Run long I/O operations without blocking the thread</td>
+            <td><code>async Task GetData(){ await CallApi(); }</code></td>
           </tr>
+
           <tr>
             <td><strong>ConfigureAwait(false)</strong></td>
             <td>
-              Don't resume on original thread after await; prevents deadlocks in
-              libraries
+              Do not resume on original thread after await; prevents deadlocks
+              in libraries
             </td>
             <td><code>await CallApi().ConfigureAwait(false);</code></td>
           </tr>
+
           <tr>
             <td><strong>CancellationToken</strong></td>
-            <td>Safely stop async work on request</td>
+            <td>Allows cancelling async operations safely</td>
             <td><code>CancellationToken ct</code></td>
           </tr>
+
           <tr>
             <td><strong>Task vs Thread</strong></td>
             <td>
-              <strong>Task:</strong> Lightweight, .NET-managed (assign work to
-              company)<br /><strong>Thread:</strong> Heavyweight, OS-level,
-              manually managed (hire a dedicated worker)
+              <strong>Task:</strong> Work, Lightweight, uses thread pool,
+              managed by .Net<br />
+              <strong>Thread:</strong> Worker, Heavyweight OS-level thread,
+              managed by OS
             </td>
             <td>
-              <code>Task.Run(() =&gt; Work());</code><br /><code
-                >new Thread(Work).Start();</code
-              >
+              <code>Task.Run(() =&gt; Work());</code><br />
+              <code>new Thread(Work).Start();</code>
             </td>
           </tr>
+
           <tr>
-            <td><strong>lock</strong></td>
-            <td>
-              Prevent multiple threads from accessing shared data at the same
-              time
-            </td>
-            <td><code>lock(obj) { /* code */ }</code></td>
+            <td><strong>Thread Pool</strong></td>
+            <td>Collection of reusable worker threads managed by .NET</td>
+            <td><code>Task.Run(() =&gt; Work());</code></td>
           </tr>
+
           <tr>
             <td><strong>Multithreading</strong></td>
             <td>
-              Async = waiting without blocking; Multithreading = parallel CPU
-              work
+              Multiple threads execute
+              <strong>different kinds of tasks</strong><br />
+              Tasks may run <strong>concurrently</strong> (single CPU) or
+              <strong>parallelly</strong> (multiple CPU cores)
             </td>
-            <td><code>Parallel.For(...)</code></td>
+            <td>
+              <code>Thread t = new Thread(Work);</code>
+              <code>t.Start();</code><br />
+              <code>Thread1 → API request</code> <br />
+              <code>Thread2 → Logging</code><br />
+              <code>Thread3 → Data processing</code>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Parallel Programming</strong></td>
+            <td>
+              Multiple <strong>threads execute at the same time</strong> on
+              multiple CPU cores<br />
+              to perform
+              <strong>similar kind of work split from a larger task</strong
+              ><br />
+              Used mainly for <strong>CPU-heavy computations</strong>
+            </td>
+            <td>
+              <code>Parallel.For(0,5,i => Process(i));</code><br />
+              <code>Thread1 → records 1-250</code><br />
+              <code>Thread2 → records 251-500</code><br />
+              <code>Thread3 → records 501-750</code>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>TPL (Task Parallel Library)</strong><br />
+              Parallel.For<br />
+              Parallel.ForEach<br />
+              Parallel.Invoke
+            </td>
+            <td>
+              Library that simplifies parallel programming<br />
+              Parallel.For → parallel loop<br />
+              Parallel.ForEach → parallel collection processing<br />
+              Parallel.Invoke → run multiple methods simultaneously
+            </td>
+            <td>
+              <code>Parallel.For(0,10,i =&gt; Work());</code><br />
+              <code>Parallel.ForEach(list,i =&gt; Work(i));</code><br />
+              <code>Parallel.Invoke(() =&gt; M1(), () =&gt; M2());</code>
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>lock</strong></td>
+            <td>
+              Ensures only one thread accesses shared data at a time (thread
+              safety)
+            </td>
+            <td><code>lock(obj){ counter++; }</code></td>
+          </tr>
+
+          <tr>
+            <td><strong>Race Condition</strong></td>
+            <td>
+              Multiple threads modify shared data simultaneously causing
+              incorrect results
+            </td>
+            <td><code>counter++</code></td>
+          </tr>
+
+          <tr>
+            <td><strong>Deadlock</strong></td>
+            <td>
+              Two threads wait for each other's resources and execution stops
+            </td>
+            <td><code>Thread A waiting Thread B</code></td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Concurrent Collections</strong><br />
+              ConcurrentDictionary<br />
+              ConcurrentQueue<br />
+              ConcurrentBag
+            </td>
+            <td>
+              Thread-safe collections for multithreading<br />
+              Dictionary → key-value storage<br />
+              Queue → FIFO processing<br />
+              Bag → unordered parallel storage
+            </td>
+            <td>
+              <code>ConcurrentDictionary&lt;K,V&gt;</code><br />
+              <code>ConcurrentQueue&lt;T&gt;</code><br />
+              <code>ConcurrentBag&lt;T&gt;</code>
+            </td>
           </tr>
         </tbody>
       </table>

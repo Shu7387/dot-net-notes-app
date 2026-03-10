@@ -134,7 +134,14 @@
           <tr>
             <td><strong>@ViewChild</strong></td>
             <td>Property</td>
-            <td>Access child element/component after view init</td>
+            <td>
+              <strong>ViewChild:</strong> Direct access to child component/DOM
+              from parent (to call child methods or access properties).
+              Manipulate DOM <br />
+              <strong>Input/Output:</strong> Data communication between
+              components (@Input: parent → child, @Output: child → parent). Data
+              passing
+            </td>
             <td><code>@ViewChild('ref') element;</code></td>
           </tr>
           <tr>
@@ -471,8 +478,9 @@
             <td><strong>Router Guards</strong></td>
             <td>Protect routes (auth, roles)</td>
             <td>
-              <code>canActivate: [AuthGuard]</code>, <code>CanDeactivate</code>,
-              <code>CanLoad</code>
+              <code>CanActivate: [AuthGuard]</code>, <code>CanDeactivate</code>,
+              <code>CanLoad</code>, <code>Resolve</code>,
+              <code>CanActivateChild</code>
             </td>
           </tr>
           <tr>
