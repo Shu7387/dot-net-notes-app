@@ -959,6 +959,28 @@
       </div>
 
       <div class="qa-block">
+        <div class="question">What is the Saga Pattern?</div>
+        <div class="answer">
+          <strong>Saga Pattern</strong>: Executes operations
+          <strong>step-by-step across multiple microservices</strong>. If a step
+          fails,
+          <strong>previous steps are undone using compensation actions</strong>.
+          Similar to a <strong>SQL transaction</strong>, but used in
+          <strong>distributed microservices systems</strong>. Example:
+          <code>Order → Payment → Inventory</code>.
+          <br />
+          <strong>Choreography (Event-based)</strong>: Services communicate
+          through <strong>events</strong> without a central controller —
+          commonly implemented using <strong>Azure Service Bus</strong>.
+          <br />
+          <strong>Orchestration</strong>: A
+          <strong>central orchestrator</strong> coordinates and manages each
+          step — commonly implemented using
+          <strong>Azure Durable Functions</strong>.
+        </div>
+      </div>
+
+      <div class="qa-block">
         <div class="question">What is an API Gateway? Why is it important?</div>
         <div class="answer">
           A single entry point for all client requests — clients never call
