@@ -180,102 +180,28 @@
       SECTION 1. C# <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: OOP & Class Design -->
       <div class="qa-block">
         <div class="question">
-          What is the difference between value types and reference types? How
-          does Stack and Heap relate to them?
+          What is the difference between an interface and an abstract class? Can
+          a class implement multiple interfaces? What if two interfaces have the
+          same method name?
         </div>
         <div class="answer">
-          <strong>Value types</strong> (int, bool, struct) store the actual
-          value and are usually allocated on the <strong>Stack</strong>. Copying
-          creates a new separate value.
+          <strong>Interface:</strong> pure contract, no implementation (before
+          C# 8), multiple allowed, no constructor,
+          <code>interface IAnimal { void Speak(); }</code>,
+          <strong>use:</strong> unrelated classes sharing same behavior
           <br />
-          <strong>Reference types</strong> (class, string, array, object) store
-          the object in the <strong>Heap</strong>, while the variable on the
-          <strong>Stack</strong> holds only a reference to it.
+          <strong>Abstract class:</strong> mix of abstract + concrete methods,
+          only one allowed, can have constructor,
+          <code>abstract class Shape { public abstract void Draw(); }</code>,
+          <strong>use:</strong> shared base logic with enforced contract
           <br />
-          Stack is fast and used for short-lived data, while Heap stores objects
-          and is managed by the Garbage Collector.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is boxing and unboxing in C#?</div>
-        <div class="answer">
-          <strong>Boxing</strong> = Converting a value type into reference type
-          (object type, From stack to the heap). <strong>Unboxing </strong>=
-          pulling it back out. <br />
-          Example: <code>object o = 5;</code> is boxing,
-          <code>int i = (int)o;</code> is unboxing. Avoid it in loops, creates
-          unnecessary heap allocations & slows things down.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between == and .Equals()?
-        </div>
-        <div class="answer">
-          For objects, <code>==</code> checks if both variables point to the
-          same memory address (reference equality).
-          <code>.Equals()</code> checks if the values are the same (value
-          equality). For strings, <code>==</code> is overridden to compare
-          values, so both behave the same for strings.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between readonly and const?
-        </div>
-        <div class="answer">
-          <code>const</code> is set at compile time — it never changes and must
-          be a simple type like int or string. <code>readonly</code> is set at
-          runtime, usually in the constructor, so each instance can have a
-          different value. Use <code>readonly</code> when the value isn't known
-          until the app runs.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between value, ref, and out parameters?
-        </div>
-        <div class="answer">
-          <strong>value</strong> = a copy is passed, original is untouched.
-          <strong>ref</strong> = passes the original variable, must be
-          initialized before passing. <strong>out</strong> = passes the original
-          variable, doesn't need to be initialized — but the method must assign
-          it before returning.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between String and StringBuilder?
-        </div>
-        <div class="answer">
-          <code>string</code> is immutable — every time you modify it, a new
-          string object is created in memory.
-          <code>StringBuilder</code> modifies the same object in place. If
-          you're doing lots of string concatenation (like in a loop), always use
-          <code>StringBuilder</code> — it's much faster and uses less memory.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between var, dynamic, and object?
-        </div>
-        <div class="answer">
-          <strong>var</strong> — type inferred at compile time, still strongly
-          typed. <code>var x = 5</code> is just <code>int x = 5</code> to the
-          compiler.<br /><br />
-          <strong>object</strong> — base type of everything, can hold any value
-          but requires casting. Type-checked at compile time.<br /><br />
-          <strong>dynamic</strong> — type resolved at runtime, no compile-time
-          checking. Useful for COM interop or unknown types — avoid in regular
-          code, errors only show at runtime.
+          <strong>Same method name conflict:</strong> use explicit interface
+          implementation, each gets own body, called via specific interface
+          reference, <code>void IAnimal.Speak() { }</code>
+          <code>void IHuman.Speak() { }</code>
         </div>
       </div>
 
@@ -284,35 +210,13 @@
           What is the difference between a concrete class and an abstract class?
         </div>
         <div class="answer">
-          A concrete class is fully implemented and can be instantiated
-          directly. An abstract class cannot be instantiated — it's a base class
-          that can have both implemented and abstract (unimplemented) methods.
-          Use it when you want to share common logic but force child classes to
-          provide their own version of certain methods.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between an interface and an abstract class? Can
-          a class implement multiple interfaces? What if two interfaces have the
-          same method name?
-        </div>
-        <div class="answer">
-          <strong>Interface</strong> — pure contract, no implementation (before
-          C# 8), multiple allowed.<br />
-          <strong>Abstract class</strong> — can have both implemented + abstract
-          methods, only one allowed.<br />
-          Use interface for unrelated classes sharing behavior; abstract class
-          when classes also share code.<br /><br />
-          <strong>Multiple interfaces</strong> — yes, a class can implement many
-          interfaces.<br /><br />
-          <strong>Same method name conflict</strong> — if same signature, one
-          shared implementation satisfies both. If different behavior needed,
-          use <strong>explicit interface implementation</strong>:<br />
-          <code>void IAnimal.Speak() { ... }</code> and
-          <code>void IHuman.Speak() { ... }</code> — called through the specific
-          interface reference.
+          <strong>Concrete class:</strong> fully implemented, all methods
+          defined, can be instantiated, <code>var obj = new MyClass();</code>,
+          <strong>use:</strong> creating actual objects
+          <br />
+          <strong>Abstract class:</strong> partial implementation, cannot be
+          instantiated, forces derived classes to implement abstract methods,
+          <strong>use:</strong> shared base with enforced contract
         </div>
       </div>
 
@@ -322,188 +226,33 @@
           constructors can a class have?
         </div>
         <div class="answer">
-          Types: Default, Parameterized, Copy, Static, Private. A
-          <strong>private constructor</strong> prevents other classes from
-          creating an instance — used in the Singleton pattern. A class can only
-          have <strong>one static constructor</strong> (no parameters allowed),
-          and it runs automatically once before the class is used for the first
-          time.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is IDisposable and the using statement?</div>
-        <div class="answer">
-          Implement <code>IDisposable</code> when your class holds unmanaged
-          resources like DB connections, file handles, or streams. The
-          <code>using</code> block automatically calls
-          <code>Dispose()</code> when the block ends — even if an exception is
-          thrown. This prevents resource leaks.
+          <strong>Types:</strong> Default (no params), Parameterized, Copy,
+          Static, Private
+          <br />
+          <strong>Private constructor:</strong> prevents external instantiation,
+          <strong>use:</strong> Singleton pattern, factory methods
+          <br />
+          <strong>Static constructor:</strong> only one allowed, no params, runs
+          once automatically before first use, <strong>use:</strong> one-time
+          static initialization
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What are Delegates in C#? What is the difference between Action, Func,
-          and Predicate?
+          What is the Singleton pattern? How do you make it thread-safe?
         </div>
         <div class="answer">
-          <strong>Delegate</strong> — type-safe pointer to a method. Pass
-          methods around like variables.<br /><br />
-          <strong>Action</strong> — no return value.
+          <strong>Singleton:</strong> only one instance exists throughout app
+          lifetime, private constructor prevents external instantiation,
+          <strong>use:</strong> config service, logging, caching
+          <br />
+          <strong>Thread-safe:</strong> use <code>Lazy&lt;T&gt;</code>, handles
+          thread safety automatically, instance created only on first access,
           <code
-            >Action&lt;string&gt; print = msg => Console.WriteLine(msg);</code
-          ><br />
-          <strong>Func&lt;T&gt;</strong> — returns a value. Last type param is
-          return type.
-          <code>Func&lt;int, int, int&gt; add = (a, b) => a + b;</code><br />
-          <strong>Predicate&lt;T&gt;</strong> — returns bool, used for
-          filtering. <code>Predicate&lt;int&gt; isEven = n => n % 2 == 0;</code
-          ><br /><br />
-          <strong>Multicast</strong> — delegate can point to multiple methods
-          using <code>+=</code>, all called in order.<br />
-          <strong>Event</strong> — delegate with extra safety, can only be
-          raised from the declaring class. Used for publisher-subscriber
-          patterns (e.g. button click).
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is Parallel programming? Difference between Parallel.For,
-          Parallel.ForEach, and Task.WhenAll?
-        </div>
-        <div class="answer">
-          Runs operations simultaneously across multiple CPU cores. Part of TPL.
-          Use for <strong>CPU-bound</strong> work — not I/O (use async/await for
-          that).<br /><br />
-          <strong>Parallel.For</strong> — parallel for loop across index range.
-          <code>Parallel.For(0, 10, i => Process(i));</code><br />
-          <strong>Parallel.ForEach</strong> — parallel foreach over a
-          collection. <code>Parallel.ForEach(list, item => Process(item));</code
-          ><br />
-          <strong>Task.WhenAll</strong> — runs multiple async tasks
-          concurrently, waits for all. Best for I/O.
-          <code>await Task.WhenAll(GetOrdersAsync(), GetUsersAsync());</code
-          ><br /><br />
-          <strong>Thread safety</strong> — when threads share data, use
-          <code>ConcurrentBag&lt;T&gt;</code> or <code>lock</code> to avoid race
-          conditions.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What are Extension Methods?</div>
-        <div class="answer">
-          They let you add new methods to an existing type without modifying it
-          or inheriting from it. Defined in a static class, first parameter uses
-          the <code>this</code> keyword. Example:
-          <code>public static int WordCount(this string s)</code>. LINQ methods
-          like <code>.Where()</code> and <code>.Select()</code> are all
-          extension methods.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What are Generics and why are they useful?</div>
-        <div class="answer">
-          Generics let you write code that works with any type without
-          duplicating it. Example: <code>List&lt;T&gt;</code> works for int,
-          string, or any object. Benefits: type safety (no casting), code reuse,
-          and better performance (no boxing/unboxing).
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between IEnumerable and IQueryable?
-        </div>
-        <div class="answer">
-          <code>IEnumerable</code> runs queries in-memory (client side) — data
-          is already fetched from DB. <code>IQueryable</code> builds an
-          expression tree and runs the query on the DB (server side). Always
-          prefer <code>IQueryable</code> with EF Core so filters like
-          <code>.Where()</code> run as SQL, not after loading all rows.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between First, FirstOrDefault, Single, and
-          SingleOrDefault?
-        </div>
-        <div class="answer">
-          <strong>First()</strong> — returns first match, throws if none
-          found.<br />
-          <strong>FirstOrDefault()</strong> — returns first match, returns null
-          if none. Prefer this in most cases.<br /><br />
-          <strong>Single()</strong> — expects exactly one match, throws if none
-          or more than one.<br />
-          <strong>SingleOrDefault()</strong> — returns null if none, still
-          throws if more than one.<br /><br />
-          Use <code>Single</code> when exactly one result is guaranteed (e.g.,
-          find by unique ID).
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Dictionary and HashSet?
-        </div>
-        <div class="answer">
-          <strong>Dictionary&lt;K,V&gt;</strong> — key-value pairs, look up
-          value by key, keys must be unique.<br />
-          <strong>HashSet&lt;T&gt;</strong> — unique values only, no key-value,
-          use for membership check or removing duplicates.<br /><br />
-          Both use hashing internally — lookup is O(1).
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Task, Thread, and Async/Await? What is
-          Thread Pool and how does TPL work?
-        </div>
-        <div class="answer">
-          <strong>Thread</strong> — raw OS thread, heavy, manual management.<br />
-          <strong>Thread Pool</strong> — managed pool of reusable threads
-          maintained by .NET — avoids overhead of creating/destroying threads
-          constantly. Tasks run on thread pool threads by default.<br /><br />
-          <strong>Task</strong> — lighter unit of work on the thread pool,
-          supports cancellation and continuation.<br />
-          <strong>TPL (Task Parallel Library)</strong> — built on Tasks,
-          provides <code>Parallel.For</code>, <code>Parallel.ForEach</code>,
-          <code>Task.WhenAll</code> to run work across multiple cores. Use for
-          CPU-heavy parallel workloads.<br /><br />
-          <strong>async/await</strong> — syntactic sugar over Task, makes async
-          code look synchronous. Use for I/O (DB, HTTP) — frees the thread while
-          waiting instead of blocking it.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How does async/await work under the hood? What is
-          ConfigureAwait(false)?
-        </div>
-        <div class="answer">
-          When you hit <code>await</code>, the method pauses and returns control
-          to the caller without blocking the thread. When the awaited task
-          completes, execution resumes — by default on the original thread
-          (e.g., UI thread). <code>ConfigureAwait(false)</code> tells it not to
-          resume on the original thread — use this in library code to avoid
-          deadlocks.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is Garbage Collection in .NET?</div>
-        <div class="answer">
-          The GC automatically frees memory of objects that are no longer
-          referenced. It works in 3 generations: Gen 0 (short-lived), Gen 1
-          (survived one collection), Gen 2 (long-lived). You don't manually free
-          memory in .NET, but implement <code>IDisposable</code> for unmanaged
-          resources — GC doesn't handle those.
+            >private static readonly Lazy&lt;T&gt; _instance = new(() =&gt; new
+            T());</code
+          >
         </div>
       </div>
 
@@ -513,14 +262,17 @@
           What are the types?
         </div>
         <div class="answer">
-          <strong>IoC</strong> — principle where control of dependencies is
-          inverted to an external system instead of the class itself.<br />
-          <strong>DI</strong> — most common IoC implementation. Class receives
-          dependencies from outside instead of creating them — loosely coupled
-          and testable.<br /><br />
-          <strong>Types</strong>: Constructor injection (most common),
-          Setter/Property injection, Interface injection, Service Locator
-          (anti-pattern — avoid it).
+          <strong>IoC:</strong> control of creating dependencies given to
+          external system, not the class itself,
+          <strong>use:</strong> foundation of loosely coupled design
+          <br />
+          <strong>DI:</strong> most common IoC implementation, class receives
+          dependencies from outside, loosely coupled and testable,
+          <strong>use:</strong> everywhere in ASP.NET Core
+          <br />
+          <strong>Types:</strong> Constructor injection (most common,
+          preferred), Property injection, Interface injection, Service Locator
+          (anti-pattern, avoid)
         </div>
       </div>
 
@@ -529,27 +281,348 @@
           What is the Interface Segregation Principle (ISP)?
         </div>
         <div class="answer">
-          Don't force a class to implement methods it doesn't need. Instead of
-          one big interface, split it into smaller focused ones. Example:
-          Instead of one <code>IWorker</code> with <code>Work()</code> and
-          <code>Eat()</code>, split into <code>IWorkable</code> and
-          <code>IFeedable</code> so a Robot only implements
-          <code>IWorkable</code>.
+          <strong>ISP:</strong> don't force a class to implement methods it
+          doesn't need, split large interfaces into smaller focused ones,
+          <code>IWorkable</code> + <code>IFeedable</code> instead of one big
+          <code>IWorker</code>, <strong>use:</strong> keeps classes clean,
+          avoids empty or throw implementations
+        </div>
+      </div>
+
+      <!-- GROUP: Memory & Resource Management -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between value types and reference types? How
+          does Stack and Heap relate to them?
+        </div>
+        <div class="answer">
+          <strong>Value types:</strong> store actual value, copy on assignment,
+          independent memory, stack allocated, <code>int</code>
+          <code>bool</code> <code>struct</code>, <strong>use:</strong> small
+          simple data
+          <br />
+          <strong>Reference types:</strong> store memory address, object lives
+          on heap, multiple variables share same object, changes reflect across
+          all references, <code>class</code> <code>string</code>
+          <code>array</code>, <strong>use:</strong> complex objects
+          <br />
+          <strong>Stack:</strong> stores value types + method call frames, fast
+          LIFO allocation
+          <br />
+          <strong>Heap:</strong> stores reference type objects, managed by
+          Garbage Collector
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is boxing and unboxing in C#?</div>
+        <div class="answer">
+          <strong>Boxing:</strong> value type → <code>object</code>, value
+          copied to heap, implicit, performance overhead,
+          <code>object o = 10;</code>, <strong>use:</strong> avoid in hot paths,
+          use generics instead
+          <br />
+          <strong>Unboxing:</strong> <code>object</code> → value type, explicit
+          cast required, throws if wrong type, <code>int x = (int)o;</code>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Garbage Collection in .NET?</div>
+        <div class="answer">
+          <strong>GC:</strong> automatically frees heap memory of unreferenced
+          objects, no manual memory management needed
+          <br />
+          <strong>Generations:</strong> Gen 0 (short-lived, collected
+          frequently), Gen 1 (survived one collection), Gen 2 (long-lived
+          objects)
+          <br />
+          <strong>Note:</strong> GC handles managed memory only, implement
+          <code>IDisposable</code> for unmanaged resources like DB connections,
+          file handles
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is IDisposable and the using statement?</div>
+        <div class="answer">
+          <strong>IDisposable:</strong> interface with <code>Dispose()</code>,
+          implement when class holds unmanaged resources like DB connections,
+          file handles, streams, <strong>use:</strong> manual resource cleanup
+          <br />
+          <strong>using statement:</strong> auto-calls
+          <code>Dispose()</code> when block ends, even on exception, prevents
+          resource leaks, <code>using var conn = new SqlConnection();</code>
+        </div>
+      </div>
+
+      <!-- GROUP: Async & Threading -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Task, Thread, and Async/Await? What is
+          Thread Pool and how does TPL work?
+        </div>
+        <div class="answer">
+          <strong>Thread:</strong> raw OS thread, heavy, manual management,
+          expensive to create/destroy, <strong>use:</strong> rarely used
+          directly
+          <br />
+          <strong>Thread Pool:</strong> managed pool of reusable threads by
+          .NET, avoids create/destroy overhead, tasks run on pool threads by
+          default
+          <br />
+          <strong>Task:</strong> lightweight unit of work on thread pool,
+          supports cancellation and continuation,
+          <code>Task.Run(() =&gt; DoWork())</code>,
+          <strong>use:</strong> CPU-bound background work
+          <br />
+          <strong>TPL:</strong> Task Parallel Library, provides
+          <code>Parallel.For</code> <code>Parallel.ForEach</code>
+          <code>Task.WhenAll</code>, <strong>use:</strong> CPU-heavy parallel
+          workloads
+          <br />
+          <strong>async/await:</strong> frees thread while waiting, doesn't
+          block, <code>await GetDataAsync()</code>,
+          <strong>use:</strong> I/O-bound work like DB/HTTP calls
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the Singleton pattern? How do you make it thread-safe?
+          How does async/await work under the hood? What is
+          ConfigureAwait(false)?
         </div>
         <div class="answer">
-          Singleton ensures only one instance of a class exists throughout the
-          app. Thread-safe way: use <code>Lazy&lt;T&gt;</code> —
-          <code
-            >private static readonly Lazy&lt;T&gt; instance = new(() => new
-            T());</code
-          >. <code>Lazy&lt;T&gt;</code> handles thread safety automatically and
-          only creates the instance when first accessed.
+          <strong>async/await:</strong> on hitting <code>await</code>, method
+          pauses and returns control to caller without blocking thread, resumes
+          when task completes, compiler converts to state machine under the hood
+          <br />
+          <strong>ConfigureAwait(false):</strong> resume on any thread, not
+          original context, avoids deadlocks, <strong>use:</strong> library or
+          non-UI code
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Parallel programming? Difference between Parallel.For,
+          Parallel.ForEach, and Task.WhenAll?
+        </div>
+        <div class="answer">
+          <strong>Parallel programming:</strong> runs operations simultaneously
+          across multiple CPU cores, <strong>use:</strong> CPU-bound work only,
+          not I/O
+          <br />
+          <strong>Parallel.For:</strong> parallel loop over index range,
+          <code>Parallel.For(0, 10, i =&gt; Process(i));</code>,
+          <strong>use:</strong> fixed range CPU work
+          <br />
+          <strong>Parallel.ForEach:</strong> parallel loop over collection,
+          <code>Parallel.ForEach(list, item =&gt; Process(item));</code>,
+          <strong>use:</strong> collection CPU work
+          <br />
+          <strong>Task.WhenAll:</strong> runs multiple async tasks concurrently,
+          waits for all, <code>await Task.WhenAll(task1, task2);</code>,
+          <strong>use:</strong> multiple independent I/O calls
+          <br />
+          <strong>Thread safety:</strong> use
+          <code>ConcurrentBag&lt;T&gt;</code> or <code>lock</code> when threads
+          share data
+        </div>
+      </div>
+
+      <!-- GROUP: Type System & Keywords -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between var, dynamic, and object?
+        </div>
+        <div class="answer">
+          <strong>var:</strong> compile-time type inference, strongly typed,
+          type fixed after assignment, <code>var x = 5</code> =
+          <code>int x = 5</code>, <strong>use:</strong> LINQ, complex type names
+          <br />
+          <strong>object:</strong> base type of all types, holds anything but
+          needs explicit casting, compile-time checked,
+          <strong>use:</strong> when type is truly unknown
+          <br />
+          <strong>dynamic:</strong> runtime type resolution, no compile-time
+          checking, errors only at runtime, <strong>use:</strong> COM interop,
+          reflection, avoid in regular code
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between readonly and const?
+        </div>
+        <div class="answer">
+          <strong>const:</strong> compile-time constant, assigned at declaration
+          only, implicitly static, primitives/string/enum only,
+          <code>const int Max = 100;</code>, <strong>use:</strong> fixed known
+          values like PI, config constants
+          <br />
+          <strong>readonly:</strong> runtime constant, assigned at declaration
+          or constructor, any type allowed, per-instance or static,
+          <code>readonly int _id;</code>, <strong>use:</strong> values known
+          only at runtime or per instance
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between value, ref, and out parameters?
+        </div>
+        <div class="answer">
+          <strong>value:</strong> copy passed, original untouched, default
+          behavior, <strong>use:</strong> when caller's variable should not
+          change
+          <br />
+          <strong>ref:</strong> passes original variable, must be initialized
+          before passing, changes reflect in caller, <code>ref int x</code>,
+          <strong>use:</strong> method needs to read and modify caller's
+          variable
+          <br />
+          <strong>out:</strong> passes original variable, no need to initialize
+          before passing, method must assign before returning,
+          <code>int.TryParse("5", out int result)</code>,
+          <strong>use:</strong> returning multiple values from a method
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between == and .Equals()?
+        </div>
+        <div class="answer">
+          <strong>==:</strong> reference equality by default for objects (same
+          memory address), overridden for strings to compare values,
+          <strong>use:</strong> primitives and strings
+          <br />
+          <strong>.Equals():</strong> value equality, compares actual content,
+          can be overridden in custom classes, <strong>use:</strong> comparing
+          object values, custom equality logic
+        </div>
+      </div>
+
+      <!-- GROUP: Collections & LINQ -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between IEnumerable and IQueryable?
+        </div>
+        <div class="answer">
+          <strong>IEnumerable:</strong> executes query in-memory client side,
+          data already fetched from DB, filtering happens in C#,
+          <strong>use:</strong> in-memory collections
+          <br />
+          <strong>IQueryable:</strong> builds expression tree, executes on DB
+          server side, filters run as SQL, more efficient,
+          <strong>use:</strong> EF Core DB queries, always prefer over
+          IEnumerable for DB
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between First, FirstOrDefault, Single, and
+          SingleOrDefault?
+        </div>
+        <div class="answer">
+          <strong>First():</strong> returns first match, throws if none found,
+          <strong>use:</strong> when result is guaranteed to exist
+          <br />
+          <strong>FirstOrDefault():</strong> returns first match, returns null
+          if none, <strong>use:</strong> safe default choice in most cases
+          <br />
+          <strong>Single():</strong> expects exactly one match, throws if none
+          or more than one, <strong>use:</strong> unique lookup where duplicates
+          are a bug
+          <br />
+          <strong>SingleOrDefault():</strong> returns null if none, throws if
+          more than one, <strong>use:</strong> unique lookup that may not exist
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Dictionary and HashSet?
+        </div>
+        <div class="answer">
+          <strong>Dictionary&lt;K,V&gt;:</strong> key-value pairs, lookup value
+          by key, keys must be unique, O(1) lookup,
+          <code>dict["key"] = value;</code>,
+          <strong>use:</strong> mapping/lookup by key
+          <br />
+          <strong>HashSet&lt;T&gt;:</strong> unique values only, no key-value
+          pair, O(1) lookup, <code>set.Contains(x);</code>,
+          <strong>use:</strong> membership check, removing duplicates
+        </div>
+      </div>
+
+      <!-- GROUP: Language Features -->
+      <div class="qa-block">
+        <div class="question">
+          What are Delegates in C#? What is the difference between Action, Func,
+          and Predicate?
+        </div>
+        <div class="answer">
+          <strong>Delegate:</strong> type-safe function pointer, holds reference
+          to method, supports multicast via <code>+=</code>,
+          <strong>use:</strong> callbacks, events, LINQ
+          <br />
+          <strong>Action:</strong> built-in delegate, returns <code>void</code>,
+          0–16 params,
+          <code>Action&lt;string&gt; a = msg =&gt; Console.WriteLine(msg);</code
+          >, <strong>use:</strong> operations with no return value
+          <br />
+          <strong>Func:</strong> built-in delegate, returns value, last type
+          param is return type,
+          <code>Func&lt;int,int,int&gt; f = (a,b) =&gt; a+b;</code>,
+          <strong>use:</strong> LINQ, transformations
+          <br />
+          <strong>Predicate:</strong> delegate returning <code>bool</code>,
+          <code>Predicate&lt;int&gt; p = x =&gt; x &gt; 10;</code>,
+          <strong>use:</strong> filtering/conditions in collections
+          <br />
+          <strong>Event:</strong> delegate with safety wrapper, only raised from
+          declaring class, <strong>use:</strong> publisher-subscriber pattern
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are Generics and why are they useful?</div>
+        <div class="answer">
+          <strong>Generics:</strong> write type-safe code that works with any
+          type without duplication, no casting needed, no boxing/unboxing
+          overhead, <code>List&lt;T&gt;</code>
+          <code>Dictionary&lt;K,V&gt;</code>, <strong>use:</strong> reusable
+          collections, repositories, utility methods
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are Extension Methods?</div>
+        <div class="answer">
+          <strong>Extension Methods:</strong> add methods to existing types
+          without modifying or inheriting them, defined in static class, first
+          param uses <code>this</code> keyword,
+          <code>public static int WordCount(this string s)</code>,
+          <strong>use:</strong> extend third-party or built-in types, all LINQ
+          methods are extension methods
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between String and StringBuilder?
+        </div>
+        <div class="answer">
+          <strong>string:</strong> immutable, every modification creates new
+          object in memory, <strong>use:</strong> few or no modifications
+          <br />
+          <strong>StringBuilder:</strong> mutable, modifies same object in
+          place, much faster for repeated changes,
+          <code>sb.Append("text");</code>, <strong>use:</strong> loops with many
+          string concatenations
         </div>
       </div>
 
@@ -570,33 +643,22 @@
       SECTION 2. ASP.NET Core / Web API <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Core Architecture -->
       <div class="qa-block">
         <div class="question">
           What is ASP.NET MVC architecture? What are its components?
         </div>
         <div class="answer">
-          MVC separates the application into 3 layers:<br /><br />
-          <strong>Model</strong> — data and business logic, plain C# classes, EF
-          entities, DTOs.<br />
-          <strong>View</strong> — UI layer, Razor pages or Angular templates
-          that display model data.<br />
-          <strong>Controller</strong> — handles requests, calls services/models,
-          returns view or JSON.<br /><br />
-          UI changes don't affect business logic and vice versa — clean
-          separation of concerns.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What are the three service lifetimes — Transient, Scoped, Singleton?
-        </div>
-        <div class="answer">
-          <strong>Transient</strong>: new instance every time it's requested —
-          use for lightweight stateless services. <strong>Scoped</strong>: one
-          instance per HTTP request — use for DbContext.
-          <strong>Singleton</strong>: one instance for the entire app lifetime —
-          use for caching, logging, configuration services.
+          <strong>MVC:</strong> separates app into 3 layers, clean separation of
+          concerns
+          <br />
+          <strong>Model:</strong> data and business logic, C# classes, EF
+          entities, DTOs
+          <br />
+          <strong>View:</strong> UI layer, Razor pages or Angular templates
+          <br />
+          <strong>Controller:</strong> handles requests, calls services, returns
+          view or JSON, <strong>use:</strong> entry point for every HTTP request
         </div>
       </div>
 
@@ -605,13 +667,14 @@
           What is the difference between Program.cs and Startup.cs?
         </div>
         <div class="answer">
-          <strong>Startup.cs</strong> (.NET 5 and below) — had two methods:
-          <code>ConfigureServices()</code> to register DI services and
-          <code>Configure()</code> to set up middleware pipeline.<br /><br />
-          <strong>Program.cs</strong> (.NET 6+) — Startup.cs removed, everything
-          merged into one file using minimal hosting model. Services via
-          <code>builder.Services.Add...()</code>, middleware via
-          <code>app.Use...()</code> — cleaner and simpler.
+          <strong>Startup.cs (.NET 5 and below):</strong> two methods —
+          <code>ConfigureServices()</code> for DI registration,
+          <code>Configure()</code> for middleware pipeline
+          <br />
+          <strong>Program.cs (.NET 6+):</strong> Startup.cs removed, everything
+          in one file, services via <code>builder.Services.Add...()</code>,
+          middleware via <code>app.Use...()</code>, cleaner minimal hosting
+          model
         </div>
       </div>
 
@@ -621,127 +684,49 @@
           difference between app.Use(), app.Run(), and app.Map()?
         </div>
         <div class="answer">
-          Middleware are components that handle requests and responses in a
-          pipeline. Each one processes the request, optionally calls the next
-          middleware, then processes the response on the way back.<br /><br />
-          <strong>app.Use()</strong> — calls next middleware, used for most
-          cases.<br />
-          <strong>app.Run()</strong> — terminal, stops the pipeline, no next
-          called.<br />
-          <strong>app.Map()</strong> — branches the pipeline based on URL path.
+          <strong>Middleware:</strong> components that handle request and
+          response in a pipeline, each can process request, call next, then
+          process response on way back
+          <br />
+          <strong>app.Use():</strong> calls next middleware, used for most
+          cases, <strong>use:</strong> logging, auth, exception handling
+          <br />
+          <strong>app.Run():</strong> terminal, stops pipeline, no next called,
+          <strong>use:</strong> final response handler
+          <br />
+          <strong>app.Map():</strong> branches pipeline based on URL path,
+          <strong>use:</strong> different handling per route
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">
-          How do you implement global exception handling in ASP.NET Core?
+        <div name="service-lifetimes" class="question">
+          What are the three service lifetimes — Transient, Scoped, Singleton?
         </div>
         <div class="answer">
-          Create a custom middleware that wraps the entire pipeline in a
-          try-catch and returns a standard error response. Register it first so
-          it catches exceptions from all other middleware. Alternatively use the
-          built-in <code>app.UseExceptionHandler()</code> or implement
-          <code>IExceptionFilter</code>.
+          <strong>Transient:</strong> new instance every time requested,
+          <strong>use:</strong> lightweight stateless services
+          <br />
+          <strong>Scoped:</strong> one instance per HTTP request,
+          <strong>use:</strong> DbContext, request-specific logic
+          <br />
+          <strong>Singleton:</strong> one instance for entire app lifetime,
+          <strong>use:</strong> caching, logging, configuration services
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between IActionResult, ActionResult, and
-          specific return types?
-        </div>
-        <div class="answer">
-          <code>IActionResult</code> is the most flexible interface — can return
-          Ok, NotFound, BadRequest, etc.
-          <code>ActionResult&lt;T&gt;</code> gives you flexibility plus type
-          info (better for Swagger). Specific return types like
-          <code>User</code> are simplest but you lose control over HTTP status
-          codes.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between PUT and PATCH? How do you handle PATCH
-          for updating a specific field like email?
-        </div>
-        <div class="answer">
-          <strong>PUT</strong> — replaces entire resource, send full object.<br />
-          <strong>PATCH</strong> — partial update, send only changed fields.<br /><br />
-          <strong>Email update via PATCH</strong> — send
-          <code>{ "email": "new@email.com" }</code> only. In controller, read
-          the field, update only that property on entity, call
-          <code>SaveChanges()</code>.<br />
-          For clean implementation use
-          <code>JsonPatchDocument&lt;T&gt;</code> from
-          <code>Microsoft.AspNetCore.JsonPatch</code>.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you return custom HTTP status codes from a Web API?
-        </div>
-        <div class="answer">
-          Use built-in helper methods: <code>return Ok(data)</code> (200),
-          <code>return NotFound()</code> (404),
-          <code>return BadRequest("msg")</code> (400),
-          <code>return StatusCode(500, "error")</code> for anything custom. All
-          of these return <code>IActionResult</code>.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you perform input validation? What is FluentValidation?
-        </div>
-        <div class="answer">
-          Basic: add Data Annotations on the model (<code>[Required]</code>,
-          <code>[MaxLength]</code>) and check <code>ModelState.IsValid</code> in
-          the controller. <strong>FluentValidation</strong> is a library where
-          you write validation rules in a separate class with clean, readable
-          syntax — better for complex rules. Wire it up with
-          <code>AddFluentValidation()</code> in <code>Program.cs</code>.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          Why would you still use try-catch inside a controller action?
-        </div>
-        <div class="answer">
-          Global error handling catches unexpected exceptions, but sometimes you
-          need specific handling — like catching a
-          <code>DbUpdateException</code> to return a clear message instead of a
-          generic 500. Use try-catch when an error is expected and you want to
-          handle it meaningfully in that specific context.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What are Filters in ASP.NET Core? How are they different from
-          middleware?
-        </div>
-        <div class="answer">
-          Filters run inside the MVC pipeline and have access to controller
-          context (action name, model, result). Types:
-          <strong>Authorization</strong> (check access first),
-          <strong>Action</strong> (before/after action method),
-          <strong>Exception</strong> (handle MVC exceptions),
-          <strong>Result</strong> (before/after response is sent). Middleware
-          runs before MVC and has no controller context.
-        </div>
-      </div>
-
+      <!-- GROUP: Security & Auth -->
       <div class="qa-block">
         <div class="question">How does JWT authentication work in Web API?</div>
         <div class="answer">
-          On login, the server creates a signed JWT token with user claims and
-          sends it to the client. On every future request, the client sends this
-          token in the Authorization header. The server validates the signature
-          and reads the claims — no session stored server-side. Configure with
-          <code>AddAuthentication().AddJwtBearer()</code>.
+          <strong>JWT flow:</strong> on login server creates signed token with
+          user claims, client sends token in Authorization header on every
+          request, server validates signature and reads claims, no session
+          stored server-side
+          <br />
+          <strong>Config:</strong>
+          <code>AddAuthentication().AddJwtBearer()</code>, protect endpoints
+          with <code>[Authorize]</code>
         </div>
       </div>
 
@@ -751,38 +736,109 @@
           difference between OAuth and JWT?
         </div>
         <div class="answer">
-          <strong>OAuth 2.0</strong> — authorization framework, lets a user
-          grant a third-party app access to their resources without sharing
-          password. Example: "Login with Google".<br /><br />
-          <strong>JWT</strong> — token format (compact signed string with
-          claims). OAuth uses JWT as the token format, but JWT can be used
-          independently too.<br /><br />
-          <strong>Access Token</strong> — short-lived (minutes/hours), used to
-          access protected APIs, sent in Authorization header.<br />
-          <strong>Refresh Token</strong> — long-lived, used to get a new Access
-          Token when it expires without re-login. Stored in HttpOnly cookie,
-          never sent to the API directly.
+          <strong>OAuth 2.0:</strong> authorization framework, lets user grant
+          third-party app access without sharing password,
+          <strong>use:</strong> Login with Google/Facebook
+          <br />
+          <strong>JWT:</strong> token format, compact signed string with claims,
+          OAuth uses JWT as token format but JWT can be used independently too
+          <br />
+          <strong>Access Token:</strong> short-lived (minutes/hours), sent in
+          Authorization header, <strong>use:</strong> access protected APIs
+          <br />
+          <strong>Refresh Token:</strong> long-lived, stored in HttpOnly cookie,
+          used to get new access token without re-login, never sent to API
+          directly
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you secure an API? How do you handle security vulnerabilities?
+        </div>
+        <div class="answer">
+          <strong>Auth:</strong> JWT with short expiry,
+          <code>[Authorize]</code> on all protected endpoints, HTTPS only
+          <br />
+          <strong>CORS:</strong> restrict allowed origins,
+          <code>builder.Services.AddCors()</code> + <code>app.UseCors()</code>
+          <br />
+          <strong>SQL Injection:</strong> use parameterized queries or EF Core,
+          never concatenate user input into SQL
+          <br />
+          <strong>XSS:</strong> Angular auto-escapes by default, avoid
+          <code>innerHTML</code> with user data
+          <br />
+          <strong>CSRF:</strong> use anti-forgery tokens for form submissions
+          <br />
+          <strong>Secrets:</strong> store in Azure Key Vault, never in code
+          <br />
+          <strong>Other:</strong> input validation, rate limiting, never expose
+          sensitive data in responses
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is CORS and how do you configure it?</div>
         <div class="answer">
-          CORS is a browser security rule that blocks requests from a different
-          domain/port. You need to tell your API which origins are allowed. In
-          ASP.NET Core: define a policy with
-          <code>builder.Services.AddCors()</code>, then apply it with
-          <code>app.UseCors("PolicyName")</code>.
+          <strong>CORS:</strong> browser security rule, blocks requests from
+          different domain/port, server must explicitly allow origins
+          <br />
+          <strong>Config:</strong> <code>builder.Services.AddCors()</code> to
+          define policy, <code>app.UseCors("PolicyName")</code> to apply,
+          <strong>use:</strong> allow Angular frontend to call API from
+          different port/domain
+        </div>
+      </div>
+
+      <!-- GROUP: Request Handling -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between IActionResult, ActionResult, and
+          specific return types?
+        </div>
+        <div class="answer">
+          <strong>IActionResult:</strong> most flexible, can return any HTTP
+          response, <code>Ok()</code> <code>NotFound()</code>
+          <code>BadRequest()</code>, <strong>use:</strong> when return type
+          varies
+          <br />
+          <strong>ActionResult&lt;T&gt;:</strong> flexible + typed, better for
+          Swagger docs, <strong>use:</strong> most common in real projects
+          <br />
+          <strong>Specific type (e.g. User):</strong> simplest but loses HTTP
+          status code control, <strong>use:</strong> simple read-only endpoints
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">How do you secure an API?</div>
+        <div class="question">
+          What is the difference between PUT and PATCH? How do you handle PATCH
+          for updating a specific field like email?
+        </div>
         <div class="answer">
-          JWT for authentication, <code>[Authorize]</code> on endpoints, HTTPS
-          only, CORS policy to restrict origins, input validation to prevent
-          injection, rate limiting to prevent abuse, and never expose sensitive
-          data in responses. For server-to-server calls, use API keys.
+          <strong>PUT:</strong> replaces entire resource, send full object,
+          <strong>use:</strong> full update
+          <br />
+          <strong>PATCH:</strong> partial update, send only changed fields,
+          <strong>use:</strong> update single field like email
+          <br />
+          <strong>PATCH implementation:</strong> read only changed field from
+          body, update that property on entity, call <code>SaveChanges()</code>,
+          use <code>JsonPatchDocument&lt;T&gt;</code> for clean implementation
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you return custom HTTP status codes from a Web API?
+        </div>
+        <div class="answer">
+          <strong>Built-in helpers:</strong> <code>return Ok(data)</code> (200),
+          <code>return NotFound()</code> (404),
+          <code>return BadRequest("msg")</code> (400),
+          <code>return StatusCode(500, "error")</code> for custom codes, all
+          return <code>IActionResult</code>
         </div>
       </div>
 
@@ -791,34 +847,94 @@
           What is Idempotency? Why does it matter in APIs?
         </div>
         <div class="answer">
-          <strong>Idempotent</strong> — calling the same operation multiple
-          times produces the same result as calling it once.<br /><br />
-          <strong>GET, PUT, DELETE</strong> — idempotent.
-          <strong>POST</strong> — not idempotent, calling twice creates two
-          records.<br /><br />
-          Important for reliability — if a network timeout causes a retry,
-          idempotent endpoints won't create duplicate data.<br />
-          Implement with <strong>idempotency keys</strong> — client sends a
-          unique request ID, server checks if already processed.
+          <strong>Idempotent:</strong> calling same operation multiple times
+          produces same result as calling once
+          <br />
+          <strong>GET, PUT, DELETE:</strong> idempotent —
+          <strong>POST:</strong> not idempotent, calling twice creates two
+          records
+          <br />
+          <strong>Why it matters:</strong> network timeouts cause retries,
+          idempotent endpoints won't create duplicate data
+          <br />
+          <strong>Implementation:</strong> idempotency keys — client sends
+          unique request ID, server checks if already processed
+        </div>
+      </div>
+
+      <!-- GROUP: Validation & Error Handling -->
+      <div class="qa-block">
+        <div class="question">
+          How do you perform input validation? What is FluentValidation?
+        </div>
+        <div class="answer">
+          <strong>Data Annotations:</strong> <code>[Required]</code>
+          <code>[MaxLength]</code> on model, check
+          <code>ModelState.IsValid</code> in controller,
+          <strong>use:</strong> simple validations
+          <br />
+          <strong>FluentValidation:</strong> validation rules in separate class,
+          clean readable syntax, better for complex rules, register with
+          <code>AddFluentValidation()</code> in <code>Program.cs</code>,
+          <strong>use:</strong> complex conditional validations
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          How do you handle security vulnerabilities in your application?
+          How do you implement global exception handling in ASP.NET Core? Why
+          would you still use try-catch inside a controller?
         </div>
         <div class="answer">
-          <strong>SQL Injection</strong> — use parameterized queries or EF Core,
-          never concatenate user input into SQL.<br />
-          <strong>XSS</strong> — Angular auto-escapes output by default, avoid
-          <code>innerHTML</code> with user data.<br />
-          <strong>CSRF</strong> — use anti-forgery tokens for form
-          submissions.<br />
-          <strong>Sensitive data</strong> — store secrets in Azure Key Vault,
-          never in code, use HTTPS always.<br />
-          <strong>Auth</strong> — JWT with short expiry, validate all inputs,
-          <code>[Authorize]</code> on all protected endpoints, CORS to restrict
-          origins.
+          <strong>Global handling:</strong> custom middleware wrapping pipeline
+          in try-catch, register first so it catches all exceptions, or use
+          built-in <code>app.UseExceptionHandler()</code> or
+          <code>IExceptionFilter</code>
+          <br />
+          <strong>try-catch in controller:</strong> use when specific error is
+          expected and needs meaningful handling, e.g. catch
+          <code>DbUpdateException</code> to return clear 400 instead of generic
+          500
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are Filters in ASP.NET Core? How are they different from
+          middleware?
+        </div>
+        <div class="answer">
+          <strong>Filters:</strong> run inside MVC pipeline, have access to
+          controller context (action name, model, result)
+          <br />
+          <strong>Types:</strong> Authorization (check access first), Action
+          (before/after action), Exception (handle MVC errors), Result
+          (before/after response sent)
+          <br />
+          <strong>vs Middleware:</strong> middleware runs before MVC, no
+          controller context, <strong>use:</strong> filters for MVC-specific
+          logic, middleware for app-wide concerns
+        </div>
+      </div>
+
+      <!-- GROUP: Performance & Features -->
+      <div class="qa-block">
+        <div class="question">
+          What is API caching and how can it be implemented?
+        </div>
+        <div class="answer">
+          <strong>Caching:</strong> stores response data so server doesn't
+          recompute on every request
+          <br />
+          <strong>Response caching:</strong>
+          <code>[ResponseCache]</code> attribute, <strong>use:</strong> simple
+          endpoint-level caching
+          <br />
+          <strong>In-memory cache:</strong> <code>IMemoryCache</code>,
+          <strong>use:</strong> single server apps
+          <br />
+          <strong>Distributed cache:</strong> Redis,
+          <strong>use:</strong> multi-server/load-balanced setups
         </div>
       </div>
 
@@ -827,36 +943,15 @@
           What is API versioning and how do you implement it?
         </div>
         <div class="answer">
-          Versioning lets you release API changes without breaking existing
-          clients. Common approaches: URL versioning
-          (<code>/api/v1/users</code>), header versioning, or query string
-          (<code>?api-version=1.0</code>). Use the
-          <code>Asp.Versioning.Mvc</code> NuGet package and configure it in
-          <code>Program.cs</code>.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is API caching and how can it be implemented?
-        </div>
-        <div class="answer">
-          Caching stores response data so the server doesn't recompute it on
-          every request. Options: <strong>Response caching</strong> with the
-          <code>[ResponseCache]</code> attribute,
-          <strong>In-memory cache</strong> with <code>IMemoryCache</code>, or
-          <strong>Distributed cache</strong> with Redis for multi-server setups.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">How do you log errors in ASP.NET Core?</div>
-        <div class="answer">
-          Inject <code>ILogger&lt;T&gt;</code> and use
-          <code>_logger.LogError()</code>, <code>LogWarning()</code>,
-          <code>LogInformation()</code>. Built-in providers: Console, Debug,
-          EventLog. For production use <strong>Serilog</strong> (write to files,
-          DB, cloud) or <strong>NLog</strong>.
+          <strong>API versioning:</strong> release API changes without breaking
+          existing clients
+          <br />
+          <strong>Approaches:</strong> URL versioning
+          <code>/api/v1/users</code> (most common), header versioning, query
+          string <code>?api-version=1.0</code>
+          <br />
+          <strong>Implementation:</strong> <code>Asp.Versioning.Mvc</code> NuGet
+          package, configure in <code>Program.cs</code>
         </div>
       </div>
 
@@ -866,15 +961,13 @@
           specific formats?
         </div>
         <div class="answer">
-          Content negotiation is when the client tells the server what format it
-          wants (JSON, XML) via the <code>Accept</code> header, and the server
-          responds accordingly. By default ASP.NET Core returns JSON. To
-          restrict to JSON only, call
-          <code>.AddControllers().AddJsonOptions()</code> and remove the XML
-          formatter — or simply don't register
-          <code>AddXmlSerializerFormatters()</code> in program.cs file. <br />
-          For a specific action, use this attribute
-          <code>[Produces("application/json")]</code>.
+          <strong>Content negotiation:</strong> client requests format via
+          <code>Accept</code> header, server responds accordingly, default is
+          JSON in ASP.NET Core
+          <br />
+          <strong>Restrict to JSON:</strong> don't register
+          <code>AddXmlSerializerFormatters()</code>, or use
+          <code>[Produces("application/json")]</code> on specific action
         </div>
       </div>
 
@@ -883,29 +976,50 @@
           What is state management and data passing in MVC?
         </div>
         <div class="answer">
-          HTTP is stateless, so ASP.NET Core gives you several ways to pass
-          data: <strong>ViewData/ViewBag</strong> (controller to view, single
-          request), <strong>TempData</strong> (survives one redirect, uses
-          session under the hood), <strong>Session</strong> (per user, stored
-          server-side), <strong>Query strings / Route values</strong> (in the
-          URL), and <strong>Cookies</strong> (stored in browser).
+          <strong>HTTP is stateless</strong> — ASP.NET Core provides several
+          options:
+          <br />
+          <strong>ViewData/ViewBag:</strong> controller to view, single request
+          only
+          <br />
+          <strong>TempData:</strong> survives one redirect, uses session under
+          the hood
+          <br />
+          <strong>Session:</strong> per user, stored server-side
+          <br />
+          <strong>Query strings / Route values:</strong> passed in URL
+          <br />
+          <strong>Cookies:</strong> stored in browser, persists across requests
         </div>
       </div>
 
+      <div class="qa-block">
+        <div class="question">How do you log errors in ASP.NET Core?</div>
+        <div class="answer">
+          <strong>Built-in:</strong> inject <code>ILogger&lt;T&gt;</code>, use
+          <code>_logger.LogError()</code> <code>LogWarning()</code>
+          <code>LogInformation()</code>, providers: Console, Debug, EventLog
+          <br />
+          <strong>Production:</strong> use Serilog (write to files, DB, cloud)
+          or NLog, <strong>use:</strong> structured logging with Application
+          Insights or Seq
+        </div>
+      </div>
+
+      <!-- GROUP: Testing -->
       <div class="qa-block">
         <div class="question">
           Which unit testing framework do you use and how do you mock data?
         </div>
         <div class="answer">
-          Most common framework is <strong>xUnit</strong> (preferred in .NET
-          Core projects) or NUnit. For mocking, use <strong>Moq</strong> — it
-          lets you create fake versions of dependencies so you can test a class
-          in isolation. Example: mock your repository interface with
-          <code>var mock = new Mock&lt;IUserRepository&gt;();</code>, set up
-          what it returns with
-          <code>mock.Setup(r =&gt; r.GetById(1)).Returns(fakeUser);</code>, then
-          inject it into the class you're testing. This way you test only your
-          logic, not the DB.
+          <strong>Framework:</strong> xUnit (preferred in .NET Core) or NUnit
+          <br />
+          <strong>Moq:</strong> creates fake versions of dependencies, test
+          class in isolation,
+          <code>var mock = new Mock&lt;IUserRepository&gt;();</code> then
+          <code>mock.Setup(r =&gt; r.GetById(1)).Returns(fakeUser);</code>
+          <br />
+          <strong>use:</strong> test only business logic, not the actual DB
         </div>
       </div>
 
@@ -926,20 +1040,25 @@
       SECTION 2.1. Microservices <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Core Concepts -->
       <div class="qa-block">
         <div class="question">
           What are Microservices? How are they different from Monolithic
           architecture?
         </div>
         <div class="answer">
-          <strong>Monolithic</strong>: entire application is one deployable unit
-          — all features tightly coupled. Easy to develop initially but hard to
-          scale and maintain as it grows. <strong>Microservices</strong>:
-          application is split into small independent services — each handles
-          one business capability (orders, payments, users). Each can be
-          deployed, scaled, and updated independently. Aviva is a real example —
-          30+ independent services (policy, claims, documents) each deployed
-          separately.
+          <strong>Monolithic:</strong> single deployable unit, all features
+          tightly coupled, easy to start but hard to scale and maintain as
+          grows, <strong>use:</strong> small or early-stage apps
+          <br />
+          <strong>Microservices:</strong> app split into small independent
+          services, each handles one business capability,
+          deployed/scaled/updated independently, <strong>use:</strong> large
+          enterprise apps, independent teams
+          <br />
+          <strong>Why not monolith at scale:</strong> hard to scale specific
+          parts, one change needs full redeploy, teams block each other, slow
+          releases
         </div>
       </div>
 
@@ -948,66 +1067,52 @@
           How do microservices communicate with each other?
         </div>
         <div class="answer">
-          <strong>Synchronous (HTTP/REST or gRPC)</strong>: service calls
-          another directly and waits for response — simple but tightly coupled,
-          if one service is down the caller fails too.
-          <strong>Asynchronous (Message Queue)</strong>: service publishes a
-          message and doesn't wait — done via Azure Service Bus, RabbitMQ, or
-          Kafka. Services are decoupled — sender doesn't care if receiver is
-          down.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is the Saga Pattern?</div>
-        <div class="answer">
-          <strong>Saga Pattern</strong>: Executes operations
-          <strong>step-by-step across multiple microservices</strong>. If a step
-          fails,
-          <strong>previous steps are undone using compensation actions</strong>.
-          Similar to a <strong>SQL transaction</strong>, but used in
-          <strong>distributed microservices systems</strong>. Example:
-          <code>Order → Payment → Inventory</code>.
+          <strong>Synchronous (HTTP/REST or gRPC):</strong> service calls
+          another and waits, simple but tightly coupled, caller fails if target
+          is down, <strong>use:</strong> real-time queries needing immediate
+          response
           <br />
-          <strong>Choreography (Event-based)</strong>: Services communicate
-          through <strong>events</strong> without a central controller —
-          commonly implemented using <strong>Azure Service Bus</strong>.
-          <br />
-          <strong>Orchestration</strong>: A
-          <strong>central orchestrator</strong> coordinates and manages each
-          step — commonly implemented using
-          <strong>Azure Durable Functions</strong>.
+          <strong>Asynchronous (Message Queue):</strong> service publishes
+          message and doesn't wait, fully decoupled, sender doesn't care if
+          receiver is down, Azure Service Bus / RabbitMQ / Kafka,
+          <strong>use:</strong> events, notifications, background processing
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is an API Gateway? Why is it important?</div>
         <div class="answer">
-          A single entry point for all client requests — clients never call
-          individual services directly. It handles routing, authentication, rate
-          limiting, load balancing, and logging in one place. Examples:
-          <strong>AWS API Gateway</strong>,
-          <strong>Azure API Management</strong>, <strong>Ocelot</strong> (for
-          .NET). You enforce security in one place and can change backend
-          services without affecting clients.
+          <strong>API Gateway:</strong> single entry point for all client
+          requests, clients never call individual services directly, handles
+          routing, auth, rate limiting, load balancing, logging in one place
+          <br />
+          <strong>Examples:</strong> AWS API Gateway, Azure API Management,
+          Ocelot (.NET)
+          <br />
+          <strong>use:</strong> enforce security in one place, change backend
+          services without affecting clients
         </div>
       </div>
 
+      <!-- GROUP: Patterns -->
       <div class="qa-block">
         <div class="question">
-          How do you handle distributed transactions across microservices?
+          What is the Saga Pattern? How do you handle distributed transactions
+          across microservices?
         </div>
         <div class="answer">
-          You can't use a single DB transaction across services. The common
-          pattern is <strong>Saga</strong>.<br />
-          <strong>Choreography Saga</strong>: each service publishes events and
-          reacts to others' events — no central coordinator. Loosely coupled but
-          harder to track.<br />
-          <strong>Orchestration Saga</strong>: a central orchestrator tells each
-          service what to do step by step. Easier to follow but orchestrator
-          becomes a dependency.<br />
-          If a step fails, compensating transactions (rollback actions) undo
-          previous steps.
+          <strong>Saga:</strong> executes operations step-by-step across
+          multiple services, if step fails previous steps undone via
+          compensation actions, like SQL transaction but for distributed
+          systems, <code>Order → Payment → Inventory</code>
+          <br />
+          <strong>Choreography:</strong> services communicate via events, no
+          central controller, loosely coupled but harder to track,
+          <strong>use:</strong> Azure Service Bus
+          <br />
+          <strong>Orchestration:</strong> central orchestrator coordinates each
+          step, easier to follow but orchestrator is a dependency,
+          <strong>use:</strong> Azure Durable Functions
         </div>
       </div>
 
@@ -1016,32 +1121,16 @@
           What is the Circuit Breaker pattern? Why is it important?
         </div>
         <div class="answer">
-          When one service keeps failing, dependant services shouldn't keep
-          retrying — it wastes resources and cascades failures across the
-          system.<br />
-          Circuit Breaker monitors failures. After a threshold is hit, it
-          <strong>opens</strong> (stops sending requests) and returns a fallback
-          immediately. After a timeout it goes <strong>half-open</strong> —
-          tries one request to check recovery. If it succeeds, it
-          <strong>closes</strong> again.<br />
-          In .NET, implement with <strong>Polly</strong> library — supports
-          retry, circuit breaker, and timeout policies.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you trace requests across multiple microservices? What did you
-          use in Aviva?
-        </div>
-        <div class="answer">
-          Use <strong>Distributed Tracing</strong> with a
-          <strong>Correlation ID</strong> — a unique ID generated at the entry
-          point and passed in the HTTP header to every downstream service. Each
-          service logs this ID so you can filter all logs for a single request
-          across all services.<br />
-          At Aviva, I implemented this solution which reduced debugging time
-          from 2–3 days to about 2 hours across 30+ services.
+          <strong>Circuit Breaker:</strong> stops retrying a failing service,
+          prevents cascading failures across system
+          <br />
+          <strong>States:</strong> Closed (normal), Open (failures exceeded
+          threshold, returns fallback immediately), Half-Open (tries one request
+          to check recovery)
+          <br />
+          <strong>Implementation:</strong> Polly library in .NET, supports
+          retry, circuit breaker, timeout policies, <strong>use:</strong> any
+          service-to-service HTTP call
         </div>
       </div>
 
@@ -1050,27 +1139,47 @@
           How does each microservice manage its own database?
         </div>
         <div class="answer">
-          Each microservice owns its own database — called the
-          <strong>Database per Service</strong> pattern. Services never share a
-          DB directly; they communicate through APIs or events.<br />
-          Benefits: each service picks the best DB type for its needs, teams
-          stay independent, schema changes in one service don't break others.
-          Downside: joining data across services is harder — you call APIs or
-          use eventual consistency through events.
+          <strong>Database per Service:</strong> each service owns its own DB,
+          services never share DB directly, communicate via APIs or events
+          <br />
+          <strong>Benefits:</strong> each service picks best DB type, teams stay
+          independent, schema changes don't break others
+          <br />
+          <strong>Downside:</strong> joining data across services is harder, use
+          API calls or eventual consistency via events
+        </div>
+      </div>
+
+      <!-- GROUP: Observability & Infrastructure -->
+      <div class="qa-block">
+        <div class="question">
+          How do you trace requests across multiple microservices? What did you
+          use in Aviva?
+        </div>
+        <div class="answer">
+          <strong>Distributed Tracing:</strong> unique Correlation ID generated
+          at entry point, passed in HTTP header to every downstream service,
+          each service logs this ID, filter all logs for single request across
+          all services
+          <br />
+          <strong>Aviva:</strong> implemented correlation ID logging across 30+
+          services, reduced debugging time from 2–3 days to ~2 hours
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is Service Discovery in microservices?</div>
         <div class="answer">
-          Services are dynamically deployed — their IP addresses change. Service
-          Discovery lets services find each other automatically without
-          hardcoded URLs.<br />
-          <strong>Client-side</strong>: caller queries a registry like
-          <strong>Consul</strong> or <strong>Eureka</strong> to get the address,
-          then calls directly. <strong>Server-side</strong>: caller goes through
-          a load balancer or API Gateway which handles the lookup. In cloud
-          setups (AWS/Azure) this is usually built in.
+          <strong>Service Discovery:</strong> services find each other
+          automatically without hardcoded URLs, needed because IPs change on
+          dynamic deployments
+          <br />
+          <strong>Client-side:</strong> caller queries registry (Consul, Eureka)
+          to get address, then calls directly
+          <br />
+          <strong>Server-side:</strong> caller goes through load balancer or API
+          Gateway which handles lookup, <strong>use:</strong> built-in in
+          AWS/Azure cloud setups
         </div>
       </div>
 
@@ -1080,20 +1189,33 @@
           them?
         </div>
         <div class="answer">
-          <strong>Distributed tracing</strong> — hard to debug across services.
-          Solution: Correlation IDs + centralized logging (Serilog + Application
-          Insights).<br />
-          <strong>Data consistency</strong> — no shared DB, eventual
-          consistency. Solution: Saga pattern.<br />
-          <strong>Service failures</strong> — one failing service can cascade.
-          Solution: Circuit Breaker with Polly, retries with exponential
-          backoff.<br />
-          <strong>Network latency</strong> — more network calls than monolith.
-          Solution: async messaging where possible, caching.<br />
-          <strong>Deployment complexity</strong> — many services to manage.
-          Solution: Docker + Kubernetes, CI/CD pipelines.
+          <strong>Distributed tracing:</strong> hard to debug across services →
+          Correlation IDs + Serilog + Application Insights
+          <br />
+          <strong>Data consistency:</strong> no shared DB, eventual consistency
+          → Saga pattern
+          <br />
+          <strong>Service failures:</strong> one failing service can cascade →
+          Circuit Breaker with Polly, retry with exponential backoff
+          <br />
+          <strong>Network latency:</strong> more calls than monolith → async
+          messaging, caching
+          <br />
+          <strong>Deployment complexity:</strong> many services to manage →
+          Docker + Kubernetes, CI/CD pipelines
         </div>
       </div>
+
+      <div class="image-icons">
+        <span class="image-icons-label">Images:</span>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+          📷
+        </button>
+      </div>
+      <div class="image-preview-box"></div>
     </div>
 
     <!-- ===================== SECTION 3. Entity Framework Core ===================== -->
@@ -1101,14 +1223,17 @@
       SECTION 3. Entity Framework Core <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Core Concepts -->
       <div class="qa-block">
         <div class="question">What is DbContext and DbSet?</div>
         <div class="answer">
-          <code>DbContext</code> is the main class that manages the DB
-          connection and all operations (query, save, track changes).
-          <code>DbSet&lt;T&gt;</code> represents a table — each property in your
-          context maps to one table. You query through DbSet and call
-          <code>SaveChanges()</code> on the context to commit.
+          <strong>DbContext:</strong> main class, manages DB connection and all
+          operations (query, save, track changes), one per request (Scoped
+          lifetime)
+          <br />
+          <strong>DbSet&lt;T&gt;:</strong> represents a table, each property
+          maps to one table, query through DbSet, commit via
+          <code>SaveChanges()</code>
         </div>
       </div>
 
@@ -1117,60 +1242,40 @@
           What is the difference between Code First and Database First?
         </div>
         <div class="answer">
-          <strong>Code First</strong>: write C# model classes, EF generates the
-          database from them. <strong>Database First</strong>: database already
-          exists, EF scaffolds the C# models from it. Code First is preferred
-          for new projects since you control everything from code and use
-          migrations for changes.
+          <strong>Code First:</strong> write C# model classes, EF generates DB
+          from them, use migrations for schema changes,
+          <strong>use:</strong> new projects, full control from code
+          <br />
+          <strong>Database First:</strong> DB already exists, EF scaffolds C#
+          models from it, <strong>use:</strong> existing legacy databases
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What are EF Core migrations?</div>
         <div class="answer">
-          Migrations track changes to your model over time and apply them to the
-          database incrementally.
-          <code>Add-Migration MigrationName</code> creates the migration file.
-          <code>Update-Database</code> applies it. Think of it like version
-          control for your database schema.
+          <strong>Migrations:</strong> track model changes over time, apply to
+          DB incrementally, like version control for DB schema
+          <br />
+          <code>Add-Migration MigrationName</code> creates migration file,
+          <code>Update-Database</code> applies it, <strong>use:</strong> every
+          time model/schema changes
         </div>
       </div>
 
+      <!-- GROUP: Loading Strategies -->
       <div class="qa-block">
         <div class="question">
           What is the difference between Lazy Loading and Eager Loading?
         </div>
         <div class="answer">
-          <strong>Eager Loading</strong>: load related data immediately with
-          <code>.Include()</code> — one query with a JOIN.
-          <strong>Lazy Loading</strong>: related data loads automatically when
-          you access the navigation property — fires a separate query. Prefer
-          Eager Loading to avoid the N+1 problem.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is AsNoTracking() and when should you use it?
-        </div>
-        <div class="answer">
-          By default, EF tracks every entity you fetch and watches for changes.
-          <code>AsNoTracking()</code> skips that — EF doesn't monitor those
-          objects. Use it for read-only queries (like displaying a list) where
-          you don't plan to update anything. It's faster and uses less memory.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Add, Update, and Attach in EF Core?
-        </div>
-        <div class="answer">
-          <code>Add</code> = marks entity as new (INSERT on save).
-          <code>Update</code> = marks all properties as modified (UPDATE on save
-          — even unchanged ones). <code>Attach</code> = attaches an existing
-          entity without marking it modified — use when you only want to update
-          specific properties manually.
+          <strong>Eager Loading:</strong> loads related data immediately with
+          <code>.Include()</code>, single query with JOIN,
+          <strong>use:</strong> when you know you need related data
+          <br />
+          <strong>Lazy Loading:</strong> related data loads automatically when
+          navigation property accessed, fires separate query per access, causes
+          N+1 problem, <strong>use:</strong> avoid in most cases
         </div>
       </div>
 
@@ -1179,10 +1284,67 @@
           What is the N+1 query problem? How do you fix it?
         </div>
         <div class="answer">
-          If you load 100 orders and then access <code>order.Customer</code> in
-          a loop, EF fires a separate query for each — that's 101 queries total.
-          Fix it with <code>.Include(o =&gt; o.Customer)</code> — loads
-          everything in one JOIN query upfront.
+          <strong>N+1 problem:</strong> load 100 orders then access
+          <code>order.Customer</code> in loop — fires 101 queries total, one per
+          row
+          <br />
+          <strong>Fix:</strong> use <code>.Include(o =&gt; o.Customer)</code> —
+          loads everything in one JOIN query upfront,
+          <strong>use:</strong> always include related data you know you'll need
+        </div>
+      </div>
+
+      <!-- GROUP: Performance -->
+      <div class="qa-block">
+        <div class="question">
+          What is AsNoTracking() and when should you use it?
+        </div>
+        <div class="answer">
+          <strong>AsNoTracking():</strong> skips change tracking for fetched
+          entities, faster queries, less memory, EF doesn't monitor those
+          objects, <code>context.Users.AsNoTracking().ToList()</code>,
+          <strong>use:</strong> read-only queries where you don't plan to update
+          data
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">How do you optimize EF Core queries?</div>
+        <div class="answer">
+          <strong>AsNoTracking():</strong> for all read-only queries
+          <br />
+          <strong>.Select():</strong> fetch only needed columns, avoid loading
+          full entity
+          <br />
+          <strong>.Include():</strong> avoid N+1, load related data upfront
+          <br />
+          <strong>IQueryable:</strong> keep query as IQueryable as long as
+          possible, filters run as SQL not in memory
+          <br />
+          <strong>Pagination:</strong> use <code>Skip/Take</code>, never load
+          all rows
+          <br />
+          <strong>Indexes:</strong> add proper DB indexes on filtered/joined
+          columns
+        </div>
+      </div>
+
+      <!-- GROUP: Entity State & Relationships -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Add, Update, and Attach in EF Core?
+        </div>
+        <div class="answer">
+          <strong>Add:</strong> marks entity as new, INSERT on SaveChanges,
+          <strong>use:</strong> inserting new records
+          <br />
+          <strong>Update:</strong> marks all properties as modified, UPDATE on
+          SaveChanges even for unchanged fields, <strong>use:</strong> full
+          entity update
+          <br />
+          <strong>Attach:</strong> attaches existing entity without marking
+          modified, manually set changed properties,
+          <strong>use:</strong> partial update of specific fields only
         </div>
       </div>
 
@@ -1191,29 +1353,17 @@
           How do you configure a Many-to-Many relationship in EF Core?
         </div>
         <div class="answer">
-          <strong>EF Core 5+</strong> — supports many-to-many directly without a
-          junction entity:<br />
+          <strong>EF Core 5+ (direct):</strong> no junction entity needed,
           <code
-            >modelBuilder.Entity&lt;Student&gt;().HasMany(s =>
-            s.Courses).WithMany(c => c.Students)</code
-          ><br /><br />
-          <strong>With junction table</strong> (if you need extra columns like
-          enrollment date) — create a <code>StudentCourse</code> entity with
-          <code>StudentId</code> and <code>CourseId</code> as a composite key,
-          then configure two one-to-many relationships.<br /><br />
-          In SQL: junction table holds the foreign keys of both entities — each
-          row represents one relationship.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">How do you optimize EF Core queries?</div>
-        <div class="answer">
-          Use <code>AsNoTracking()</code> for reads, <code>.Select()</code> to
-          fetch only needed columns, <code>.Include()</code> to avoid N+1, keep
-          queries as <code>IQueryable</code> as long as possible before calling
-          <code>ToList()</code>, use pagination with <code>Skip/Take</code>, and
-          add proper indexes on the DB.
+            >modelBuilder.Entity&lt;Student&gt;().HasMany(s =&gt;
+            s.Courses).WithMany(c =&gt; c.Students)</code
+          >
+          <br />
+          <strong>With junction table:</strong> needed when extra columns
+          required (e.g. enrollment date), create
+          <code>StudentCourse</code> entity with composite key
+          <code>StudentId + CourseId</code>, configure two one-to-many
+          relationships
         </div>
       </div>
 
@@ -1235,18 +1385,56 @@
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: SOLID & Design Principles -->
+      <div class="qa-block">
+        <div class="question">What are the SOLID principles?</div>
+        <div class="answer">
+          <strong>S — Single Responsibility:</strong> class should have only one
+          reason to change, one job only, <code>UserService</code> handles user
+          logic — not emails too
+          <br />
+          <strong>O — Open/Closed:</strong> open for extension, closed for
+          modification, add new behavior via new class not by changing existing
+          code
+          <br />
+          <strong>L — Liskov Substitution:</strong> child class should be
+          replaceable for parent without breaking app,
+          <code>Penguin</code> should not inherit <code>Bird.Fly()</code> since
+          penguins can't fly
+          <br />
+          <strong>I — Interface Segregation:</strong> don't force class to
+          implement methods it doesn't need, split large interfaces into smaller
+          focused ones
+          <br />
+          <strong>D — Dependency Inversion:</strong> high-level classes depend
+          on abstractions not concrete implementations,
+          <code>Controller</code> depends on <code>IUserService</code> not
+          <code>UserService</code>
+        </div>
+      </div>
+
+      <!-- GROUP: Design Patterns -->
       <div class="qa-block">
         <div class="question">
           Which design patterns have you used? Explain each.
         </div>
         <div class="answer">
-          <strong>Singleton</strong>: one shared instance (e.g., config
-          service). <strong>Repository</strong>: abstracts DB access logic from
-          business logic. <strong>Factory</strong>: creates objects without
-          exposing creation logic. <strong>Strategy</strong>: swap algorithms at
-          runtime. <strong>Decorator</strong>: add behavior to objects
-          dynamically. Always mention ones you actually used in your project
-          with a real example.
+          <strong>Singleton:</strong> one shared instance throughout app,
+          <strong>use:</strong> config service, logging, caching
+          <br />
+          <strong>Repository:</strong> abstracts DB access from business logic,
+          easier to test and swap DBs, <strong>use:</strong> data access layer
+          <br />
+          <strong>Factory:</strong> creates objects without exposing creation
+          logic, <strong>use:</strong> when object creation is complex or
+          conditional
+          <br />
+          <strong>Strategy:</strong> swap algorithms at runtime without changing
+          client code, <strong>use:</strong> payment methods, sorting strategies
+          <br />
+          <strong>Decorator:</strong> add behavior to objects dynamically
+          without modifying them, <strong>use:</strong> logging, caching
+          wrappers
         </div>
       </div>
 
@@ -1255,41 +1443,49 @@
           What is the Repository pattern? What is a Generic Repository?
         </div>
         <div class="answer">
-          Repository wraps data access logic so controllers/services don't talk
-          to DbContext directly — easier to test (you can mock the repo) and
-          easier to swap DBs. A <strong>Generic Repository</strong> provides
-          common CRUD methods (<code>GetById</code>, <code>GetAll</code>,
-          <code>Add</code>, <code>Delete</code>) for any entity type using
-          generics — less code duplication.
+          <strong>Repository:</strong> wraps data access logic,
+          controllers/services never talk to DbContext directly, easier to mock
+          in unit tests, easier to swap DB
+          <br />
+          <strong>Generic Repository:</strong> common CRUD methods for any
+          entity type using generics, <code>GetById</code> <code>GetAll</code>
+          <code>Add</code> <code>Delete</code>, less code duplication,
+          <strong>use:</strong> base repository all entities inherit from
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is the CQRS pattern?</div>
         <div class="answer">
-          <strong>CQRS (Command Query Responsibility Segregation)</strong> —
-          separates read and write operations into different models.<br /><br />
-          <strong>Command</strong> — write side, changes state (Create, Update,
-          Delete), returns no data.<br />
-          <strong>Query</strong> — read side, fetches data, never changes
-          state.<br /><br />
-          <strong>Why</strong> — read and write workloads scale differently.
-          Reads can be optimized separately (e.g., denormalized read models,
-          caching). Common in microservices and event-sourced systems.<br />
-          In .NET, typically implemented with <strong>MediatR</strong> library.
+          <strong>CQRS:</strong> separates read and write operations into
+          different models
+          <br />
+          <strong>Command:</strong> write side, changes state (Create, Update,
+          Delete), returns no data
+          <br />
+          <strong>Query:</strong> read side, fetches data, never changes state
+          <br />
+          <strong>Why:</strong> reads and writes scale differently, reads can be
+          optimized separately with caching or denormalized models
+          <br />
+          <strong>Implementation:</strong> MediatR library in .NET,
+          <strong>use:</strong> microservices, event-sourced systems
         </div>
       </div>
 
+      <!-- GROUP: Architecture -->
       <div class="qa-block">
         <div class="question">
           Explain your project architecture — layers and responsibilities.
         </div>
         <div class="answer">
-          Typical layered setup: <strong>Presentation</strong> (Controllers /
-          Angular) → <strong>Business Logic</strong> (Services) →
-          <strong>Data Access</strong> (Repositories / EF Core) →
-          <strong>Database</strong>. Each layer talks only to the one below it.
-          This keeps concerns separated, code testable, and easy to maintain.
+          <strong>Layered architecture:</strong> Presentation (Controllers /
+          Angular) → Business Logic (Services) → Data Access (Repositories / EF
+          Core) → Database
+          <br />
+          each layer talks only to layer below it, concerns separated, code
+          testable, easy to maintain, <strong>use:</strong> standard enterprise
+          app structure
         </div>
       </div>
 
@@ -1299,46 +1495,39 @@
           flow.
         </div>
         <div class="answer">
-          Angular service calls <code>HttpClient.get()</code> → HTTP request
-          hits API controller → controller calls service → service calls
-          repository → EF Core queries DB → data returns back up the chain →
-          Angular receives JSON → component displays it. JWT token is attached
-          to every request via an HTTP Interceptor.
+          <strong>Flow:</strong> Angular service calls
+          <code>HttpClient.get()</code> → HTTP request hits API controller →
+          controller calls service → service calls repository → EF Core queries
+          DB → data returns up the chain → Angular receives JSON → component
+          displays it
+          <br />
+          <strong>JWT:</strong> attached to every request via HTTP Interceptor
+          automatically
         </div>
       </div>
 
+      <!-- GROUP: Performance & Scalability -->
       <div class="qa-block">
         <div class="question">
-          How do you handle exceptions across the entire project?
+          How do you improve performance in your APIs? How would you design a
+          scalable API?
         </div>
         <div class="answer">
-          Backend: global middleware catches unhandled exceptions and returns a
-          standard error response. Angular: HTTP Interceptor catches error
-          responses and shows a toast/notification. For expected errors
-          (validation, not found), return proper HTTP status codes. Log
-          everything on the backend with Serilog.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">How do you improve performance in your APIs?</div>
-        <div class="answer">
-          Use <code>AsNoTracking()</code> and <code>.Select()</code> in EF
-          queries, caching for frequently read data (IMemoryCache / Redis),
-          pagination to avoid loading huge datasets,
-          <code>async/await</code> everywhere for non-blocking I/O, proper DB
-          indexes, and avoid unnecessary object allocations.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">How do you handle concurrency issues?</div>
-        <div class="answer">
-          Use <strong>Optimistic Concurrency</strong>: add a
-          <code>RowVersion</code> or <code>Timestamp</code> column to the
-          entity. EF Core checks this on update — if it changed since you read
-          it, it throws a <code>DbUpdateConcurrencyException</code>. Catch it
-          and tell the user the record was already modified by someone else.
+          <strong>EF queries:</strong> <code>AsNoTracking()</code> for reads,
+          <code>.Select()</code> for only needed columns, pagination with
+          <code>Skip/Take</code>
+          <br />
+          <strong>Caching:</strong> IMemoryCache for single server, Redis for
+          multi-server, reduces DB load
+          <br />
+          <strong>Async/await:</strong> everywhere for non-blocking I/O, frees
+          threads during DB/HTTP calls
+          <br />
+          <strong>Scalable design:</strong> stateless (no server-side session),
+          load balancer for horizontal scaling, message queue for heavy
+          background tasks, rate limiting
+          <br />
+          <strong>DB:</strong> proper indexes on filtered/joined columns
         </div>
       </div>
 
@@ -1347,22 +1536,51 @@
           How do you handle large data queries efficiently?
         </div>
         <div class="answer">
-          Never load all rows at once — use pagination (<code>Skip/Take</code>).
-          Use <code>.Select()</code> to fetch only the columns you need. For
-          exports or bulk reads, use <code>AsAsyncEnumerable()</code> to stream
-          results instead of loading everything into memory. Add proper DB
-          indexes and avoid client-side filtering.
+          <strong>Pagination:</strong> always use <code>Skip/Take</code>, never
+          load all rows at once
+          <br />
+          <strong>.Select():</strong> fetch only needed columns, avoid full
+          entity load
+          <br />
+          <strong>Streaming:</strong> use <code>AsAsyncEnumerable()</code> for
+          bulk exports, streams results instead of loading all into memory
+          <br />
+          <strong>Indexes:</strong> add on filtered columns, avoid client-side
+          filtering
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">How would you design a scalable API?</div>
+        <div class="question">How do you handle concurrency issues?</div>
         <div class="answer">
-          Use stateless design (no server-side session) so any instance can
-          handle any request. Add caching (Redis) to reduce DB load. Use
-          async/await throughout for non-blocking I/O. Implement rate limiting.
-          Use a message queue (like Azure Service Bus) for heavy background
-          tasks. Deploy behind a load balancer so you can scale horizontally.
+          <strong>Optimistic Concurrency:</strong> add
+          <code>RowVersion</code> or <code>Timestamp</code> column to entity, EF
+          Core checks on update — if changed since last read throws
+          <code>DbUpdateConcurrencyException</code>, catch and inform user
+          record was already modified, <strong>use:</strong> when multiple users
+          can edit same record
+        </div>
+      </div>
+
+      <!-- GROUP: Error Handling & Monitoring -->
+      <div class="qa-block">
+        <div class="question">
+          How do you handle exceptions across the entire project? How do you log
+          and monitor errors in production?
+        </div>
+        <div class="answer">
+          <strong>Backend:</strong> global middleware catches all unhandled
+          exceptions, returns standard error response, log everything via
+          Serilog
+          <br />
+          <strong>Angular:</strong> HTTP Interceptor catches error responses,
+          shows toast/notification
+          <br />
+          <strong>Expected errors:</strong> return proper HTTP status codes
+          (400, 404, 409)
+          <br />
+          <strong>Production monitoring:</strong> Serilog → Azure Application
+          Insights or Seq, set up alerts for error spikes and failed requests
         </div>
       </div>
 
@@ -1372,57 +1590,17 @@
           process.
         </div>
         <div class="answer">
-          Build the Angular app (<code>ng build --prod</code>) and the .NET API
-          (<code>dotnet publish</code>). Push code to a repo (Git), CI/CD
-          pipeline (Azure DevOps / GitHub Actions) runs tests, builds the
-          artifacts, and deploys to the server or Azure App Service. EF
-          migrations run as part of the deploy script. Environment configs come
-          from App Settings / environment variables — never hardcoded.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you log and monitor errors in production?
-        </div>
-        <div class="answer">
-          Use <strong>Serilog</strong> to write structured logs to a sink like
-          Azure Application Insights, Seq, or a log file. Log all unhandled
-          exceptions via global middleware. Set up alerts on Application
-          Insights for error spikes or failed requests. For the Angular side,
-          use an error interceptor to report frontend errors to the backend or a
-          monitoring service.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What are the SOLID principles?</div>
-        <div class="answer">
-          SOLID is a set of 5 design principles that make code cleaner, more
-          maintainable, and easier to extend.<br /><br />
-          <strong>S — Single Responsibility Principle</strong><br />
-          A class should have only one reason to change. Each class should do
-          one job only.<br />
-          Example: A <code>UserService</code> should handle user logic — not
-          also send emails.<br /><br />
-          <strong>O — Open/Closed Principle</strong><br />
-          A class should be open for extension but closed for modification.<br />
-          Example: Add new behaviour by creating a new class, not by changing
-          existing code.<br /><br />
-          <strong>L — Liskov Substitution Principle</strong><br />
-          A child class should be replaceable for its parent class without
-          breaking the app.<br />
-          Example: If <code>Bird</code> has a <code>Fly()</code> method, a
-          <code>Penguin</code> class should not inherit it since penguins cannot
-          fly.<br /><br />
-          <strong>I — Interface Segregation Principle</strong><br />
-          Do not force a class to implement methods it does not need. Split
-          large interfaces into smaller focused ones.<br /><br />
-          <strong>D — Dependency Inversion Principle</strong><br />
-          High-level classes should not depend on low-level classes. Both should
-          depend on abstractions (interfaces).<br />
-          Example: A <code>Controller</code> should depend on
-          <code>IUserService</code>, not directly on <code>UserService</code>.
+          <strong>Build:</strong> <code>ng build --prod</code> for Angular,
+          <code>dotnet publish</code> for .NET API
+          <br />
+          <strong>CI/CD:</strong> push to Git → Azure DevOps / GitHub Actions
+          runs tests, builds artifacts, deploys to Azure App Service
+          <br />
+          <strong>Migrations:</strong> EF migrations run as part of deploy
+          script
+          <br />
+          <strong>Config:</strong> connection strings and secrets from App
+          Settings / environment variables, never hardcoded
         </div>
       </div>
 
@@ -1443,31 +1621,32 @@
       SECTION 5. Angular <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Core Concepts -->
       <div class="qa-block">
         <div class="question">
           What are the main building blocks of an Angular application?
         </div>
         <div class="answer">
-          <strong>Modules</strong>: group related components/services.
-          <strong>Components</strong>: UI building blocks (template + logic).
-          <strong>Services</strong>: shared business logic and data.
-          <strong>Directives</strong>: manipulate the DOM.
-          <strong>Pipes</strong>: transform data in templates.
-          <strong>Routing</strong>: navigate between views. Everything is wired
-          together through modules and DI.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What are Angular services? How are they different from components?
-        </div>
-        <div class="answer">
-          Services handle business logic, HTTP calls, and shared state — they
-          have no UI. Components handle the view and UI. Services are singletons
-          (by default) shared across the app. You inject a service into a
-          component via the constructor — the component just calls it and
-          displays the result.
+          <strong>Modules:</strong> group related components/services,
+          <strong>use:</strong> organize feature areas
+          <br />
+          <strong>Components:</strong> UI building blocks, template + logic,
+          <strong>use:</strong> every UI element
+          <br />
+          <strong>Services:</strong> shared business logic, HTTP calls, state,
+          no UI, singleton by default, <strong>use:</strong> data fetching,
+          shared logic
+          <br />
+          <strong>Directives:</strong> manipulate DOM, structural (<code
+            >*ngIf</code
+          >
+          <code>*ngFor</code>) or attribute (<code>ngClass</code>)
+          <br />
+          <strong>Pipes:</strong> transform data in templates,
+          <code>{{ date | date:'short' }}</code>
+          <br />
+          <strong>Routing:</strong> navigate between views without full page
+          reload
         </div>
       </div>
 
@@ -1476,24 +1655,32 @@
           What is Dependency Injection in Angular and how does it work?
         </div>
         <div class="answer">
-          Angular has a built-in DI system. When a component or service needs a
-          dependency, Angular's injector looks it up in the provider registry
-          and supplies it automatically. You register services with
-          <code>providedIn: 'root'</code> (app-wide singleton) or in a specific
-          module/component. No need to manually create instances.
+          <strong>DI:</strong> built-in system, Angular injector looks up
+          dependency in provider registry and supplies it automatically, no need
+          to manually create instances
+          <br />
+          <strong>Register:</strong> <code>providedIn: 'root'</code> for
+          app-wide singleton, or in specific module/component for scoped
+          instance
         </div>
       </div>
 
+      <!-- GROUP: Component -->
       <div class="qa-block">
         <div class="question">
           What is the Angular component lifecycle? Main hooks?
         </div>
         <div class="answer">
-          <code>ngOnChanges</code>: runs when @Input values change.
-          <code>ngOnInit</code>: runs once after init — best place for API
-          calls. <code>ngDoCheck</code>: runs on every change detection cycle.
-          <code>ngOnDestroy</code>: runs before removal — use to unsubscribe
-          from observables and clean up resources.
+          <strong>ngOnChanges:</strong> runs when @Input values change
+          <br />
+          <strong>ngOnInit:</strong> runs once after init, inputs available,
+          <strong>use:</strong> API calls, initialization logic
+          <br />
+          <strong>ngDoCheck:</strong> runs on every change detection cycle,
+          <strong>use:</strong> custom change detection
+          <br />
+          <strong>ngOnDestroy:</strong> runs before component removed,
+          <strong>use:</strong> unsubscribe observables, cleanup resources
         </div>
       </div>
 
@@ -1502,11 +1689,12 @@
           What is the difference between constructor and ngOnInit?
         </div>
         <div class="answer">
-          Constructor runs first and is only for dependency injection.
-          <code>ngOnInit</code> runs after Angular sets up the component and its
-          inputs are available. Always put initialization logic and API calls in
-          <code>ngOnInit</code> — at constructor time, the component isn't fully
-          ready yet.
+          <strong>Constructor:</strong> runs first, only for DI, component not
+          fully ready yet
+          <br />
+          <strong>ngOnInit:</strong> runs after Angular sets up component,
+          inputs available, <strong>use:</strong> always put API calls and init
+          logic here, not in constructor
         </div>
       </div>
 
@@ -1516,50 +1704,70 @@
           work?
         </div>
         <div class="answer">
-          <code>@Input()</code>: parent passes data down to child via property
-          binding. <code>@Output()</code>: child sends events up to parent using
-          <code>EventEmitter</code>. Parent → child = Input. Child → parent =
-          Output + emit. For unrelated components, use a shared service or state
-          management.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is ViewChild and ContentChild?</div>
-        <div class="answer">
-          <code>@ViewChild</code>: access a child component or DOM element in
-          your own template. <code>@ContentChild</code>: access content
-          projected into your component via <code>&lt;ng-content&gt;</code>. Use
-          ViewChild when you need to call a child component's method or directly
-          interact with a DOM element.
+          <strong>@Input():</strong> parent passes data down to child via
+          property binding, <strong>use:</strong> parent → child data flow
+          <br />
+          <strong>@Output():</strong> child sends events up to parent via
+          <code>EventEmitter</code>, <strong>use:</strong> child → parent event
+          flow
+          <br />
+          <strong>Unrelated components:</strong> use shared service with
+          BehaviorSubject or NgRx
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is ng-content and content projection in Angular?
+          What is ViewChild and ContentChild? What is ng-content and content
+          projection?
         </div>
         <div class="answer">
-          Content projection lets a parent pass HTML content into a child
-          component's template. The child uses
-          <code>&lt;ng-content&gt;</code> as a placeholder — whatever the parent
-          puts inside the child's tags gets rendered there. It's how you build
-          reusable wrapper components like modals, cards, or panels that accept
-          custom inner content.
+          <strong>@ViewChild:</strong> access child component or DOM element in
+          own template, <strong>use:</strong> call child method or interact with
+          DOM element
+          <br />
+          <strong>@ContentChild:</strong> access content projected into
+          component via <code>&lt;ng-content&gt;</code>
+          <br />
+          <strong>Content projection:</strong> parent passes HTML into child
+          template, child uses <code>&lt;ng-content&gt;</code> as placeholder,
+          <strong>use:</strong> reusable wrapper components like modals, cards,
+          panels
         </div>
       </div>
 
+      <!-- GROUP: Templates & Directives -->
       <div class="qa-block">
         <div class="question">
           What are directives? Structural vs Attribute directives?
         </div>
         <div class="answer">
-          <strong>Structural directives</strong> change the DOM structure —
-          add/remove elements. Examples: <code>*ngIf</code>,
-          <code>*ngFor</code>. <strong>Attribute directives</strong> change the
-          appearance or behavior of an existing element. Examples:
-          <code>ngClass</code>, <code>ngStyle</code>. Components are technically
-          directives with a template.
+          <strong>Structural:</strong> change DOM structure, add/remove
+          elements, <code>*ngIf</code> <code>*ngFor</code>
+          <code>*ngSwitch</code>
+          <br />
+          <strong>Attribute:</strong> change appearance or behavior of existing
+          element, <code>ngClass</code> <code>ngStyle</code>
+          <br />
+          <strong>Note:</strong> components are technically directives with a
+          template
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are pipes? Pure vs Impure?</div>
+        <div class="answer">
+          <strong>Pipes:</strong> transform data in templates without touching
+          component logic, <code>{{ date | date:'short' }}</code>
+          <code>{{ name | uppercase }}</code>, custom pipes use
+          <code>@Pipe</code> decorator
+          <br />
+          <strong>Pure:</strong> re-runs only when input reference changes,
+          fast, default behavior, <strong>use:</strong> most custom pipes
+          <br />
+          <strong>Impure:</strong> re-runs on every change detection cycle,
+          slow, <code>pure: false</code>, <strong>use:</strong> avoid unless
+          necessary
         </div>
       </div>
 
@@ -1568,178 +1776,134 @@
           What is trackBy in *ngFor and why is it important?
         </div>
         <div class="answer">
-          By default, when an array changes Angular re-renders all DOM elements.
-          <code>trackBy</code> tells Angular to identify items by a unique key
-          (like id), so it only re-renders items that actually changed. Big
-          performance improvement for large lists.
+          <strong>trackBy:</strong> identifies items by unique key (like id),
+          Angular only re-renders items that actually changed, not entire list,
+          big performance gain for large lists, <strong>use:</strong> always in
+          *ngFor with large or frequently updated lists
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question">
-          What are pipes? Pure vs Impure? What is data transformation in
-          Angular?
-        </div>
-        <div class="answer">
-          <strong>Pipes</strong> — transform data directly in templates.
-          Example: <code>{{ date | date:'short' }}</code>,
-          <code>{{ name | uppercase }}</code>.<br />
-          This is Angular's built-in data transformation — format, filter, or
-          convert values without touching component logic.<br /><br />
-          <strong>Pure pipes</strong> — only re-run when input reference
-          changes. Fast.<br />
-          <strong>Impure pipes</strong> — re-run on every change detection
-          cycle. Slow — use carefully.<br />
-          Create custom pipes with the <code>@Pipe</code> decorator.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is an Auth Guard (Route Guard) in Angular?
-        </div>
-        <div class="answer">
-          A guard that protects routes from unauthorized access. Implement
-          <code>CanActivate</code> — if user isn't logged in, redirect to login
-          page. Apply in routing:
-          <code>{ path: 'dashboard', canActivate: [AuthGuard] }</code>.
-          <code>CanDeactivate</code> can warn users before leaving a form with
-          unsaved changes.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is Lazy Loading in Angular?</div>
-        <div class="answer">
-          Instead of loading all modules upfront, lazy loading loads them only
-          when the user navigates to that route. Reduces initial bundle size and
-          speeds up startup. Set up with
-          <code
-            >loadChildren: () =&gt; import('./feature/feature.module').then(m
-            =&gt; m.FeatureModule)</code
-          >
-          in routing config.
-        </div>
-      </div>
-
+      <!-- GROUP: Routing -->
       <div class="qa-block">
         <div class="question">
           How does routing work in Angular? What are RouterModule,
-          router-outlet, and RouterLink?
+          router-outlet, and RouterLink? forRoot() vs forChild()?
         </div>
         <div class="answer">
-          <code>RouterModule</code> is the module that enables routing — you
-          define your routes in it. <code>&lt;router-outlet&gt;</code> is the
-          placeholder in the template where the matched component is rendered.
-          <code>RouterLink</code> is the directive you use instead of
-          <code>&lt;a href&gt;</code> to navigate without full page reloads.
+          <strong>RouterModule:</strong> enables routing, define routes in it
+          <br />
+          <strong>&lt;router-outlet&gt;:</strong> placeholder where matched
+          component renders
+          <br />
+          <strong>RouterLink:</strong> navigate without full page reload, use
+          instead of <code>&lt;a href&gt;</code>
+          <br />
+          <strong>forRoot():</strong> used once in root AppModule, sets up
+          router, registers main routes
+          <br />
+          <strong>forChild():</strong> used in feature modules, adds routes
+          without re-initializing router, using forRoot() in feature module
+          causes bugs
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between RouterModule.forRoot() and
-          RouterModule.forChild()?
+          What is Lazy Loading in Angular? What is an Auth Guard?
         </div>
         <div class="answer">
-          <code>forRoot()</code> is used once in the root AppModule — it sets up
-          the router and registers the main routes. <code>forChild()</code> is
-          used in feature modules — it registers additional routes without
-          re-initializing the router. Using <code>forRoot()</code> in a feature
-          module causes bugs.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          Template-driven vs Reactive forms? Where have you used forms in your
-          project?
-        </div>
-        <div class="answer">
-          <strong>Template-driven</strong> — form logic in HTML with
-          <code>ngModel</code>, simple, less code, hard to test.<br />
-          <strong>Reactive</strong> — form logic in component class with
-          <code>FormGroup</code> and <code>FormControl</code>, fully testable,
-          dynamic, better for complex forms. Prefer Reactive in real
-          projects.<br /><br />
-          <strong>In Aviva</strong> — used Reactive Forms for the policy update
-          and claims submission screens. Had complex validations (conditional
-          required fields, custom validators for date ranges) — Reactive forms
-          made it easy to control validation programmatically and test it with
-          unit tests.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you make HTTP calls in Angular? What is HttpClientModule?
-        </div>
-        <div class="answer">
-          Import <code>HttpClientModule</code> in your AppModule, then inject
-          <code>HttpClient</code> into your service. Use
-          <code>this.http.get&lt;T&gt;(url)</code>, <code>.post()</code>,
-          <code>.put()</code>, <code>.delete()</code> — all return Observables.
-          Always make HTTP calls inside a service, not directly in components.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is an HTTP Interceptor?</div>
-        <div class="answer">
-          Interceptors sit between your HTTP calls and the server — they can
-          modify every request or response. Common uses: attach JWT token to
-          every request, show a loading spinner, handle 401/403 errors globally,
-          log all requests. Implement <code>HttpInterceptor</code> and register
-          it as a provider.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you use the response of one service call in another service
-          call in Angular?
-        </div>
-        <div class="answer">
-          Use <strong>switchMap</strong> — chain the second call after the first
-          using RxJS:<br /><br />
+          <strong>Lazy Loading:</strong> loads feature modules only when user
+          navigates to that route, reduces initial bundle size, speeds up
+          startup,
           <code
-            >this.userService.getUser(id).pipe(switchMap(user =>
-            this.orderService.getOrders(user.id))).subscribe(...)</code
-          ><br /><br />
-          <strong>switchMap</strong> — cancels previous inner observable, use
-          when second call depends on first result.<br />
-          <strong>mergeMap</strong> — runs both in parallel, use for independent
-          calls.<br />
-          Avoid nested <code>subscribe()</code> calls — leads to callback hell
-          and memory leaks.
+            >loadChildren: () =&gt; import('./feature.module').then(m =&gt;
+            m.FeatureModule)</code
+          >
+          <br />
+          <strong>Auth Guard (CanActivate):</strong> protects routes from
+          unauthorized access, redirects to login if not logged in,
+          <code>{ path: 'dashboard', canActivate: [AuthGuard] }</code>
+          <br />
+          <strong>CanDeactivate:</strong> warns user before leaving form with
+          unsaved changes
+        </div>
+      </div>
+
+      <!-- GROUP: Forms -->
+      <div class="qa-block">
+        <div class="question">Template-driven vs Reactive forms?</div>
+        <div class="answer">
+          <strong>Template-driven:</strong> form logic in HTML with
+          <code>ngModel</code>, simple, less code, hard to test,
+          <strong>use:</strong> simple forms
+          <br />
+          <strong>Reactive:</strong> form logic in component class with
+          <code>FormGroup</code> and <code>FormControl</code>, fully testable,
+          dynamic, better for complex validations, <strong>use:</strong> real
+          projects, complex forms
+          <br />
+          <strong>In Aviva:</strong> used Reactive Forms for policy update and
+          claims screens, complex conditional validations and custom validators
+          for date ranges
+        </div>
+      </div>
+
+      <!-- GROUP: HTTP & RxJS -->
+      <div class="qa-block">
+        <div class="question">
+          How do you make HTTP calls in Angular? What is an HTTP Interceptor?
+        </div>
+        <div class="answer">
+          <strong>HttpClient:</strong> inject into service,
+          <code>this.http.get&lt;T&gt;(url)</code> <code>.post()</code>
+          <code>.put()</code> <code>.delete()</code>, all return Observables,
+          always call inside service not component
+          <br />
+          <strong>HTTP Interceptor:</strong> sits between HTTP calls and server,
+          modifies every request or response, implement
+          <code>HttpInterceptor</code>, <strong>use:</strong> attach JWT token,
+          show loading spinner, handle 401/403 globally, log all requests
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">What is RxJS? Observable vs Promise?</div>
+        <div class="question">
+          What is RxJS? Observable vs Promise? What are Promises in JavaScript?
+        </div>
         <div class="answer">
-          RxJS is a library for reactive programming with streams.
-          <strong>Observable</strong>: lazy, can emit multiple values over time,
-          can be cancelled, supports operators (map, filter, switchMap).
-          <strong>Promise</strong>: eager, resolves once, can't cancel. Use
-          Observables in Angular for HTTP calls (cancellable) and real-time
-          streams.
+          <strong>RxJS:</strong> library for reactive programming with streams
+          <br />
+          <strong>Observable:</strong> lazy, emits multiple values over time,
+          cancellable, supports operators (map, filter, switchMap),
+          <strong>use:</strong> HTTP calls, real-time streams in Angular
+          <br />
+          <strong>Promise:</strong> eager (starts immediately), resolves once,
+          can't cancel, 3 states: pending → fulfilled or rejected,
+          <code>.then()</code> <code>.catch()</code> <code>.finally()</code>,
+          use async/await for cleaner syntax
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">What are Promises in JavaScript?</div>
+        <div class="question">
+          What is the difference between switchMap, mergeMap, and concatMap? How
+          do you chain service calls?
+        </div>
         <div class="answer">
-          <strong>Promise</strong> — represents a future value, either resolved
-          or rejected.<br />
-          3 states: <strong>pending</strong> → <strong>fulfilled</strong> or
-          <strong>rejected</strong>.<br /><br />
-          <code>.then()</code> — handles success. <code>.catch()</code> —
-          handles error. <code>.finally()</code> — runs always.<br /><br />
-          Eager — starts immediately when created. Resolves only once. Can't
-          cancel.<br />
-          Use <strong>async/await</strong> for cleaner syntax over raw
-          <code>.then()</code> chains.
+          <strong>switchMap:</strong> cancels previous request, starts new one,
+          <strong>use:</strong> search/typeahead, only care about latest result
+          <br />
+          <strong>mergeMap:</strong> runs all in parallel,
+          <strong>use:</strong> independent parallel calls
+          <br />
+          <strong>concatMap:</strong> waits for each to finish before starting
+          next, <strong>use:</strong> order matters
+          <br />
+          <strong>Chaining calls:</strong>
+          <code
+            >getUser(id).pipe(switchMap(user =&gt;
+            getOrders(user.id))).subscribe()</code
+          >, avoid nested subscribe() — causes callback hell and memory leaks
         </div>
       </div>
 
@@ -1748,25 +1912,13 @@
           What is the difference between Subject and BehaviorSubject?
         </div>
         <div class="answer">
-          <strong>Subject</strong>: emits values only to current subscribers —
-          new subscribers miss previous values.
-          <strong>BehaviorSubject</strong>: holds the latest value and emits it
-          immediately to any new subscriber. Use BehaviorSubject for shared
-          state like the current logged-in user — any component subscribing gets
-          the latest value right away.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between switchMap, mergeMap, and concatMap?
-        </div>
-        <div class="answer">
-          <strong>switchMap</strong>: cancels the previous request and starts a
-          new one — best for search (only care about latest result).
-          <strong>mergeMap</strong>: runs all requests in parallel — use for
-          independent operations. <strong>concatMap</strong>: waits for each to
-          finish before starting next — use when order matters.
+          <strong>Subject:</strong> emits values only to current subscribers,
+          new subscribers miss previous values, <strong>use:</strong> one-time
+          events
+          <br />
+          <strong>BehaviorSubject:</strong> holds latest value, emits
+          immediately to any new subscriber, <strong>use:</strong> shared state
+          like current logged-in user, app-wide data
         </div>
       </div>
 
@@ -1775,53 +1927,23 @@
           What is the async pipe and why is it preferred?
         </div>
         <div class="answer">
-          The <code>async</code> pipe subscribes to an Observable in the
-          template and automatically unsubscribes when the component is
-          destroyed — no memory leaks. You don't need to manually call
-          <code>subscribe()</code> and <code>unsubscribe()</code>. Cleaner code
-          and safer by default.
+          <strong>async pipe:</strong> subscribes to Observable in template,
+          auto-unsubscribes on component destroy, no memory leaks, no manual
+          subscribe/unsubscribe needed, <strong>use:</strong> always prefer over
+          manual subscribe in templates
         </div>
       </div>
 
+      <!-- GROUP: Performance -->
       <div class="qa-block">
         <div class="question">What is Change Detection? Default vs OnPush?</div>
         <div class="answer">
-          Change detection is how Angular checks if the UI needs to update.
-          <strong>Default</strong>: checks the entire component tree on every
-          event — safe but can be slow. <strong>OnPush</strong>: only re-checks
-          when an @Input reference changes or an event fires inside the
-          component. Use OnPush for better performance in heavy components.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you share data and manage state between unrelated components?
-        </div>
-        <div class="answer">
-          Use a shared service with a <code>BehaviorSubject</code> — any
-          component can update the value and any other component subscribed to
-          it will get the update. For larger apps, use a state management
-          library like <strong>NgRx</strong> (Redux pattern) which gives you a
-          single store, actions, reducers, and selectors for predictable state.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you make an Angular application responsive?
-        </div>
-        <div class="answer">
-          <strong>CSS Flexbox / Grid</strong> — use for layout, adapts to screen
-          size naturally.<br />
-          <strong>Angular CDK BreakpointObserver</strong> — detect screen size
-          in component and conditionally show/hide elements.<br />
-          <strong>Media queries</strong> — in component CSS or global styles.<br />
-          <strong>Angular Material</strong> — built-in responsive grid and
-          components.<br />
-          <strong>ngClass / ngStyle</strong> — apply classes dynamically based
-          on screen size or component state.<br />
-          Avoid fixed pixel widths — use %, vw, rem instead.
+          <strong>Default:</strong> checks entire component tree on every event,
+          safe but slow for heavy UIs
+          <br />
+          <strong>OnPush:</strong> only re-checks when @Input reference changes
+          or event fires inside component, much faster,
+          <strong>use:</strong> performance-heavy components
         </div>
       </div>
 
@@ -1830,13 +1952,46 @@
           How do you optimize the performance of an Angular application?
         </div>
         <div class="answer">
-          Use <strong>OnPush</strong> change detection,
+          <strong>OnPush</strong> change detection,
           <strong>lazy loading</strong> for feature modules,
-          <strong>trackBy</strong> in <code>*ngFor</code>, the
-          <strong>async pipe</strong> to avoid manual subscriptions,
-          <strong>pure pipes</strong> instead of methods in templates, preload
-          strategies for routes, and run <code>ng build --prod</code> which
-          enables AOT compilation, tree shaking, and minification.
+          <strong>trackBy</strong> in *ngFor, <strong>async pipe</strong> to
+          avoid manual subscriptions, <strong>pure pipes</strong> instead of
+          methods in templates, <code>ng build --prod</code> enables AOT
+          compilation, tree shaking, minification
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you share data and manage state between unrelated components?
+        </div>
+        <div class="answer">
+          <strong>Service + BehaviorSubject:</strong> simplest approach, holds
+          latest value, emits to all subscribers immediately,
+          <strong>use:</strong> small-medium apps
+          <br />
+          <strong>NgRx:</strong> Redux pattern, single immutable store, Actions
+          → Reducers → Selectors, predictable state, <strong>use:</strong> large
+          apps with complex shared state
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          How do you make an Angular application responsive?
+        </div>
+        <div class="answer">
+          <strong>CSS Flexbox/Grid:</strong> adapts to screen size naturally,
+          avoid fixed pixel widths, use %, vw, rem
+          <br />
+          <strong>CDK BreakpointObserver:</strong> detect screen size in
+          component, conditionally show/hide elements
+          <br />
+          <strong>Angular Material:</strong> built-in responsive grid and
+          components
+          <br />
+          <strong>ngClass/ngStyle:</strong> apply classes dynamically based on
+          screen size or state
         </div>
       </div>
 
@@ -1846,19 +2001,15 @@
           newer version?
         </div>
         <div class="answer">
-          Upgrading Angular from one version to another using Angular CLI.<br />
-
-          <strong>Main command:</strong>
-          <code>ng update @angular/core @angular/cli</code> — updates packages
-          and runs migration schematics (auto fixes).<br />
-
-          <strong>Rule:</strong> Upgrade
-          <strong>one major version at a time</strong>. Check
-          <strong>update.angular.io</strong> for breaking changes.<br />
-
-          <strong>Flow:</strong> Check version → Update CLI → Run
-          <code>ng update</code>
-          → Fix issues → Test app.
+          <strong>Upgrade:</strong>
+          <code>ng update @angular/core @angular/cli</code>, updates packages
+          and runs migration schematics (auto fixes)
+          <br />
+          <strong>Rule:</strong> upgrade one major version at a time, check
+          update.angular.io for breaking changes
+          <br />
+          <strong>Flow:</strong> check version → update CLI → run
+          <code>ng update</code> → fix issues → test app
         </div>
       </div>
 
@@ -1879,31 +2030,53 @@
       SECTION 6. SQL &amp; Database <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Fundamentals -->
       <div class="qa-block">
         <div class="question">
-          What is the difference between a primary key and a unique key?
+          What are SQL Constraints? What is the difference between a primary key
+          and a unique key?
         </div>
         <div class="answer">
-          Both enforce uniqueness, but <strong>Primary Key</strong> cannot be
-          NULL and there can only be one per table.
-          <strong>Unique Key</strong> allows one NULL and a table can have
-          multiple unique keys. Primary key is the main row identifier; unique
-          key just prevents duplicate values on a column.
+          <strong>Constraints:</strong> rules enforced on columns to maintain
+          data integrity
+          <br />
+          <strong>PRIMARY KEY:</strong> unique, not null, only one per table,
+          main row identifier
+          <br />
+          <strong>UNIQUE:</strong> no duplicates, allows one NULL, multiple
+          allowed per table
+          <br />
+          <strong>FOREIGN KEY:</strong> links to primary key of another table,
+          enforces referential integrity
+          <br />
+          <strong>NOT NULL:</strong> column cannot be empty
+          <br />
+          <strong>CHECK:</strong> value must satisfy condition,
+          <code>CHECK (Age >= 18)</code>
+          <br />
+          <strong>DEFAULT:</strong> sets default value if none provided
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">What are SQL Constraints?</div>
+        <div class="question">Explain all types of SQL joins.</div>
         <div class="answer">
-          Rules enforced on table columns to maintain data integrity.<br /><br />
-          <strong>PRIMARY KEY</strong> — unique, not null, one per table.<br />
-          <strong>FOREIGN KEY</strong> — links to primary key of another table,
-          enforces referential integrity.<br />
-          <strong>UNIQUE</strong> — no duplicate values, allows one NULL.<br />
-          <strong>NOT NULL</strong> — column cannot be empty.<br />
-          <strong>CHECK</strong> — value must satisfy a condition. Example:
-          <code>CHECK (Age >= 18)</code>.<br />
-          <strong>DEFAULT</strong> — sets a default value if none provided.
+          <strong>INNER JOIN:</strong> rows matching in both tables only
+          <br />
+          <strong>LEFT JOIN:</strong> all rows from left + matching from right,
+          null if no match, <strong>use:</strong> most common, keep all left
+          rows
+          <br />
+          <strong>RIGHT JOIN:</strong> all from right + matching from left
+          <br />
+          <strong>FULL JOIN:</strong> all rows from both tables, nulls where no
+          match
+          <br />
+          <strong>CROSS JOIN:</strong> every row from A × every row from B,
+          cartesian product
+          <br />
+          <strong>SELF JOIN:</strong> table joined with itself,
+          <strong>use:</strong> employee-manager hierarchy in same table
         </div>
       </div>
 
@@ -1912,102 +2085,47 @@
           What is the difference between WHERE and HAVING?
         </div>
         <div class="answer">
-          <code>WHERE</code> filters rows <em>before</em> grouping.
-          <code>HAVING</code> filters groups <em>after</em>
-          <code>GROUP BY</code>. Simple rule: filtering on a regular column =
-          WHERE. Filtering on an aggregate like <code>COUNT</code> or
-          <code>SUM</code> = HAVING.
+          <strong>WHERE:</strong> filters rows before grouping, works on regular
+          columns
+          <br />
+          <strong>HAVING:</strong> filters groups after GROUP BY, works on
+          aggregates like <code>COUNT</code> <code>SUM</code>
+          <br />
+          <strong>Rule:</strong> regular column filter = WHERE, aggregate filter
+          = HAVING
         </div>
       </div>
 
+      <!-- GROUP: Transactions & Integrity -->
       <div class="qa-block">
-        <div class="question">Explain all types of SQL joins.</div>
+        <div class="question">What are transactions in SQL? Explain ACID.</div>
         <div class="answer">
-          <strong>INNER JOIN</strong>: rows matching in both tables.
-          <strong>LEFT JOIN</strong>: all rows from left + matching from right
-          (null if no match). <strong>RIGHT JOIN</strong>: all from right +
-          matching from left. <strong>FULL JOIN</strong>: all rows from both,
-          nulls where no match. <strong>CROSS JOIN</strong>: every row from A ×
-          every row from B. <strong>SELF JOIN</strong>: join a table with itself
-          (e.g., employee-manager in the same table).
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between ROW_NUMBER, RANK, and DENSE_RANK?
-        </div>
-        <div class="answer">
-          All assign a number within a partition. <strong>ROW_NUMBER</strong>:
-          always unique (1,2,3,4) even for ties. <strong>RANK</strong>: ties get
-          the same number but next rank skips (1,2,2,4).
-          <strong>DENSE_RANK</strong>: ties get the same number, no gaps
-          (1,2,2,3). Use DENSE_RANK when you need continuous rankings.
+          <strong>Transaction:</strong> group of operations that either all
+          succeed or all fail together
+          <br />
+          <strong>Atomicity:</strong> all or nothing
+          <br />
+          <strong>Consistency:</strong> DB stays in valid state before and after
+          <br />
+          <strong>Isolation:</strong> concurrent transactions don't interfere
+          with each other
+          <br />
+          <strong>Durability:</strong> committed data survives crashes
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between DELETE, TRUNCATE, and DROP?
+          What are deadlocks in SQL? How do you prevent them?
         </div>
         <div class="answer">
-          <strong>DELETE</strong>: removes specific rows (with WHERE), fully
-          logged, triggers fire, can rollback. <strong>TRUNCATE</strong>:
-          removes all rows fast, minimal logging, resets identity column, can't
-          rollback in most DBs. <strong>DROP</strong>: removes the entire table
-          — structure and data gone permanently.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between a stored procedure and a user-defined
-          function?
-        </div>
-        <div class="answer">
-          <strong>Stored Procedure</strong>: can do anything (SELECT, INSERT,
-          UPDATE, DELETE), can have output params, cannot be used inside a
-          SELECT. <strong>Function</strong>: must return a value, can be used
-          inside SELECT/WHERE, but cannot modify data. Use functions for
-          reusable calculations; use procedures for business logic operations.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is a CTE? What is the difference between CTE and Temp Table? Can
-          you create indexes on a CTE?
-        </div>
-        <div class="answer">
-          <strong>CTE (Common Table Expression)</strong> — named temporary
-          result set defined with <code>WITH</code>. Exists only for that single
-          query, no physical storage.<br /><br />
-          <strong>CTE vs Temp Table</strong>:<br />
-          <strong>CTE</strong> — no storage, no index, single query use, better
-          readability. Good for recursive queries (e.g., hierarchy trees).<br />
-          <strong>Temp Table</strong> (<code>#TempTable</code>) — physically
-          stored in <code>tempdb</code>, persists for the session, can have
-          indexes, reusable across multiple queries.<br /><br />
-          Use CTE for one-time readable queries. Use Temp Table when reusing
-          result multiple times or need indexes for performance.<br /><br />
-          <strong>Indexes on CTE</strong> — No, you cannot create indexes on a
-          CTE directly. If you need indexes, use a Temp Table instead.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Temp Table and Table Variable?
-        </div>
-        <div class="answer">
-          <strong>Temp Table</strong> (<code>#TempTable</code>) — stored in
-          <code>tempdb</code>, supports indexes, visible within the session, can
-          be used across stored procedures.<br /><br />
-          <strong>Table Variable</strong> (<code>@TableVar</code>) — stored in
-          memory (mostly), scoped to the current batch/procedure only, no
-          indexes except primary key, better for small datasets.<br /><br />
-          Use Temp Table for large data sets or when you need indexes. Use Table
-          Variable for small, short-lived datasets.
+          <strong>Deadlock:</strong> two transactions wait for each other to
+          release a lock, neither can proceed, SQL Server auto-detects and kills
+          one
+          <br />
+          <strong>Prevention:</strong> always access tables in same order, keep
+          transactions short, use <code>READ COMMITTED SNAPSHOT</code> isolation
+          to reduce locking conflicts
         </div>
       </div>
 
@@ -2017,62 +2135,128 @@
           procedure?
         </div>
         <div class="answer">
-          Use a <code>BEGIN TRY ... END TRY</code> /
-          <code>BEGIN CATCH ... END CATCH</code> block. Inside the CATCH block
-          you can read the error with <code>ERROR_MESSAGE()</code>,
-          <code>ERROR_NUMBER()</code>, roll back the transaction with
-          <code>ROLLBACK</code>, and re-throw or log the error. Always wrap
-          transactions inside TRY/CATCH so a failure doesn't leave data in a
-          broken state.
+          <strong>TRY/CATCH:</strong> wrap logic in
+          <code>BEGIN TRY...END TRY</code> /
+          <code>BEGIN CATCH...END CATCH</code>
+          <br />
+          <strong>In CATCH:</strong> read error via <code>ERROR_MESSAGE()</code>
+          <code>ERROR_NUMBER()</code>, rollback via <code>ROLLBACK</code>,
+          re-throw or log
+          <br />
+          <strong>use:</strong> always wrap transactions in TRY/CATCH so
+          failures don't leave data in broken state
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question">What are transactions in SQL? Explain ACID.</div>
-        <div class="answer">
-          A transaction is a group of operations that either all succeed or all
-          fail together. <strong>Atomicity</strong> = all or nothing.
-          <strong>Consistency</strong> = DB stays in a valid state.
-          <strong>Isolation</strong> = concurrent transactions don't interfere
-          with each other. <strong>Durability</strong> = committed data survives
-          crashes.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What are deadlocks in SQL? How do you prevent them?
-        </div>
-        <div class="answer">
-          A deadlock is when two transactions wait for each other to release a
-          lock — neither can proceed. SQL Server auto-detects and kills one.
-          Prevention: always access tables in the same order, keep transactions
-          short, and use <code>READ COMMITTED SNAPSHOT</code> isolation to
-          reduce locking conflicts.
-        </div>
-      </div>
-
+      <!-- GROUP: Performance & Optimization -->
       <div class="qa-block">
         <div class="question">
           What are indexes? How do they help and what are the downsides?
         </div>
         <div class="answer">
-          Indexes let the DB find rows fast without scanning every row — like a
-          book's index. Huge speedup for SELECT queries. Downside:
-          INSERT/UPDATE/DELETE become slower (index must be updated too), and
-          they use extra storage. Add indexes on columns used in WHERE, JOIN,
-          and ORDER BY — not on every column.
+          <strong>Indexes:</strong> let DB find rows fast without full table
+          scan, like a book index, huge speedup for SELECT
+          <br />
+          <strong>Downside:</strong> INSERT/UPDATE/DELETE slower (index must
+          update too), extra storage
+          <br />
+          <strong>use:</strong> add on columns used in WHERE, JOIN, ORDER BY —
+          not on every column
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">How do you optimize SQL queries?</div>
         <div class="answer">
-          Add indexes on frequently filtered/joined columns, avoid
-          <code>SELECT *</code>, avoid using functions on indexed columns in
-          WHERE (defeats the index), use JOINs over subqueries where possible,
-          paginate large results with <code>OFFSET/FETCH</code>, and check the
-          Execution Plan to find the actual bottleneck.
+          <strong>Indexes:</strong> on frequently filtered/joined columns
+          <br />
+          <strong>Avoid SELECT *:</strong> fetch only needed columns
+          <br />
+          <strong>Avoid functions on indexed columns in WHERE:</strong> defeats
+          the index
+          <br />
+          <strong>JOINs over subqueries:</strong> generally better performance
+          <br />
+          <strong>Pagination:</strong> <code>OFFSET/FETCH</code> for large
+          results
+          <br />
+          <strong>Execution Plan:</strong> always check to find actual
+          bottleneck
+        </div>
+      </div>
+
+      <!-- GROUP: Window Functions -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between ROW_NUMBER, RANK, and DENSE_RANK?
+        </div>
+        <div class="answer">
+          <strong>ROW_NUMBER:</strong> always unique sequential number, no ties
+          (1,2,3,4), <strong>use:</strong> pagination, picking one row per group
+          <br />
+          <strong>RANK:</strong> ties get same number, next rank skips
+          (1,2,2,4), <strong>use:</strong> leaderboards with gaps
+          <br />
+          <strong>DENSE_RANK:</strong> ties get same number, no gaps (1,2,2,3),
+          <strong>use:</strong> rankings where continuous numbering matters
+        </div>
+      </div>
+
+      <!-- GROUP: Objects & Storage -->
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between DELETE, TRUNCATE, and DROP?
+        </div>
+        <div class="answer">
+          <strong>DELETE:</strong> removes specific rows with WHERE, fully
+          logged, triggers fire, can rollback, <strong>use:</strong> conditional
+          row removal
+          <br />
+          <strong>TRUNCATE:</strong> removes all rows fast, minimal logging,
+          resets identity column, can't rollback, <strong>use:</strong> clear
+          entire table quickly
+          <br />
+          <strong>DROP:</strong> removes entire table (structure + data),
+          permanent, <strong>use:</strong> delete table completely
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between a stored procedure and a user-defined
+          function?
+        </div>
+        <div class="answer">
+          <strong>Stored Procedure:</strong> can SELECT, INSERT, UPDATE, DELETE,
+          can have output params, cannot be used inside SELECT,
+          <strong>use:</strong> business logic operations
+          <br />
+          <strong>Function:</strong> must return a value, used inside
+          SELECT/WHERE, cannot modify data, <strong>use:</strong> reusable
+          calculations
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is a CTE? Difference between CTE, Temp Table, and Table Variable?
+        </div>
+        <div class="answer">
+          <strong>CTE:</strong> named temporary result set with
+          <code>WITH</code>, exists for single query only, no physical storage,
+          no indexes, <strong>use:</strong> readable one-time queries, recursive
+          queries like hierarchy trees
+          <br />
+          <strong>Temp Table (#TempTable):</strong> stored in tempdb, persists
+          for session, supports indexes, reusable across multiple queries,
+          <strong>use:</strong> large datasets or when indexes needed
+          <br />
+          <strong>Table Variable (@TableVar):</strong> stored in memory, scoped
+          to current batch only, no indexes except PK,
+          <strong>use:</strong> small short-lived datasets
+          <br />
+          <strong>Note:</strong> cannot create indexes on CTE — use Temp Table
+          instead
         </div>
       </div>
 
@@ -2093,80 +2277,57 @@
       SECTION 7. Azure <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: Hosting & Storage -->
       <div class="qa-block">
         <div class="question">What is Azure App Service?</div>
         <div class="answer">
-          Fully managed platform to host web apps and REST APIs — no server
-          management needed. Supports .NET, Node, Java and more. Handles
-          scaling, load balancing, and SSL automatically. In insurance projects
-          like Aviva, App Service hosts the backend APIs — connection strings
-          and JWT secrets go in App Settings, never hardcoded.
+          <strong>App Service:</strong> fully managed platform to host web apps
+          and REST APIs, no server management, handles scaling, load balancing,
+          SSL automatically, supports .NET, Node, Java
+          <br />
+          <strong>use:</strong> host backend APIs, connection strings and
+          secrets go in App Settings, never hardcoded
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">
-          What is Azure Blob Storage? When would you use it?
-        </div>
+        <div class="question">What is Azure Blob Storage?</div>
         <div class="answer">
-          Stores unstructured files — PDFs, images, documents. In insurance:
-          store policy documents, claim attachments, scanned ID proofs. Access
-          via <code>Azure.Storage.Blobs</code> SDK. Use a
-          <strong>SAS token</strong> for secure temporary access without
-          exposing the storage key.
+          <strong>Blob Storage:</strong> stores unstructured files — PDFs,
+          images, documents, access via <code>Azure.Storage.Blobs</code> SDK
+          <br />
+          <strong>SAS token:</strong> secure temporary access without exposing
+          storage key
+          <br />
+          <strong>use:</strong> policy documents, claim attachments, scanned ID
+          proofs in insurance apps
         </div>
       </div>
 
+      <!-- GROUP: Messaging -->
       <div class="qa-block">
         <div class="question">
-          What is Azure Queue Storage vs Azure Service Bus? When do you use
-          each?
+          What is Azure Service Bus? What are Topics and Subscriptions? How is
+          it different from Queue Storage?
         </div>
         <div class="answer">
-          <strong>Queue Storage</strong>: simple, cheap, basic FIFO queue — use
-          for non-critical background tasks.<br />
-          <strong>Service Bus</strong>: enterprise messaging — supports topics,
-          subscriptions, dead-letter queue, duplicate detection, and guaranteed
-          delivery.<br />
-          In insurance: Service Bus for critical flows like claim submitted →
-          generate document → send notification. Queue Storage for simple tasks
-          like audit logging.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is Azure Service Bus? What are Topics and Subscriptions?
-        </div>
-        <div class="answer">
-          Enterprise message broker for reliable async communication between
-          services.<br />
-          <strong>Queue</strong>: one sender, one receiver.
-          <strong>Topic + Subscriptions</strong>: one sender, multiple receivers
-          — each subscription gets its own copy.<br />
-          In insurance: claim submitted → publish to topic → document service,
-          notification service, and audit service each subscribe and process
-          independently.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What are Azure Functions? When would you use them? Where did you use
-          them in your project?
-        </div>
-        <div class="answer">
-          Serverless — small code that runs on a trigger, no server management,
-          scales automatically, pay per execution.<br />
-          Triggers: <strong>HTTP</strong> (API),
-          <strong>Timer</strong> (scheduled job),
-          <strong>Service Bus</strong> (process messages),
-          <strong>Blob</strong> (file uploaded).<br /><br />
-          <strong>In Aviva</strong> — used a Timer-triggered Azure Function for
-          nightly policy renewal reminders. It runs at midnight, queries
-          policies expiring in the next 30 days, and pushes notifications to the
-          Service Bus which triggers emails to customers. No server to manage,
-          scales automatically, cost-effective.
+          <strong>Service Bus:</strong> enterprise message broker, reliable
+          async communication, supports topics, subscriptions, dead-letter
+          queue, duplicate detection, guaranteed delivery
+          <br />
+          <strong>Queue:</strong> one sender, one receiver
+          <br />
+          <strong>Topic + Subscriptions:</strong> one sender, multiple
+          receivers, each subscription gets own copy,
+          <strong>use:</strong> claim submitted → document service +
+          notification service + audit service all process independently
+          <br />
+          <strong>Queue Storage:</strong> simple, cheap, basic FIFO, no advanced
+          features, <strong>use:</strong> non-critical background tasks like
+          audit logging
+          <br />
+          <strong>Rule:</strong> critical flows = Service Bus, simple tasks =
+          Queue Storage
         </div>
       </div>
 
@@ -2175,39 +2336,38 @@
           What is Azure Event Grid? How is it different from Service Bus?
         </div>
         <div class="answer">
-          Event Grid routes events that happen in Azure (blob uploaded, resource
-          created) to subscribers instantly — push-based, high throughput.<br />
-          <strong>Service Bus</strong>: reliable message delivery, queuing,
-          complex workflows — use when guaranteed processing matters.<br />
-          <strong>Event Grid</strong>: lightweight event notifications — use
-          when you want to react to something that happened, not send a command.
+          <strong>Event Grid:</strong> routes events from Azure resources to
+          subscribers instantly, push-based, high throughput, lightweight,
+          <strong>use:</strong> react to something that happened (blob uploaded,
+          resource created)
+          <br />
+          <strong>Service Bus:</strong> reliable delivery, queuing, complex
+          workflows, guaranteed processing, <strong>use:</strong> sending
+          commands between services
+          <br />
+          <strong>Rule:</strong> Event Grid = notifications, Service Bus =
+          commands/workflows
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question">What is Azure API Management (APIM)?</div>
-        <div class="answer">
-          Sits in front of your APIs and acts as a gateway — handles
-          authentication, rate limiting, caching, logging, and versioning in one
-          place. Clients talk to APIM, not directly to backend APIs.<br />
-          In insurance: expose Aviva APIs to external partners (brokers,
-          aggregators) securely — apply policies per client and monitor all
-          traffic without touching backend code.
-        </div>
-      </div>
-
+      <!-- GROUP: Compute & Automation -->
       <div class="qa-block">
         <div class="question">
-          What is Azure Key Vault? Why should you use it?
+          What are Azure Functions? When would you use them?
         </div>
         <div class="answer">
-          Securely stores secrets, connection strings, API keys, and
-          certificates — nothing sensitive in code or config files. App fetches
-          secrets at runtime using <strong>Managed Identity</strong> — no
-          credentials needed in code.<br />
-          In insurance: store DB connection strings, JWT signing keys,
-          third-party API keys. Rotate secrets in one place — no redeployment
-          needed.
+          <strong>Azure Functions:</strong> serverless, small code runs on
+          trigger, no server management, scales automatically, pay per execution
+          <br />
+          <strong>Triggers:</strong> HTTP (API), Timer (scheduled job), Service
+          Bus (process messages), Blob (file uploaded)
+          <br />
+          <strong>In Aviva:</strong> Timer-triggered function runs at midnight,
+          queries policies expiring in 30 days, pushes notifications to Service
+          Bus → triggers customer emails
+          <br />
+          <strong>use:</strong> scheduled jobs, event-driven processing,
+          lightweight APIs
         </div>
       </div>
 
@@ -2216,28 +2376,64 @@
           What is Azure Logic Apps? When do you use it over Azure Functions?
         </div>
         <div class="answer">
-          Low-code workflow automation — connect 400+ services (Outlook,
-          SharePoint, SQL, Service Bus) visually with no code.<br />
-          Use <strong>Logic Apps</strong> for simple integration workflows —
-          e.g., claim approved → send email → update SharePoint list.<br />
-          Use <strong>Azure Functions</strong> when you need custom code or
-          complex business logic. In insurance: Logic Apps for notifications,
-          Functions for processing claim data with business rules.
+          <strong>Logic Apps:</strong> low-code workflow automation, connects
+          400+ services visually (Outlook, SharePoint, SQL, Service Bus), no
+          code needed
+          <br />
+          <strong>use Logic Apps:</strong> simple integration workflows, claim
+          approved → send email → update SharePoint list
+          <br />
+          <strong>use Azure Functions:</strong> custom code or complex business
+          logic needed
+          <br />
+          <strong>Rule:</strong> Logic Apps = integration/notifications,
+          Functions = business logic
+        </div>
+      </div>
+
+      <!-- GROUP: Security & Infrastructure -->
+      <div class="qa-block">
+        <div class="question">
+          What is Azure Key Vault? Why should you use it?
+        </div>
+        <div class="answer">
+          <strong>Key Vault:</strong> securely stores secrets, connection
+          strings, API keys, certificates, nothing sensitive in code or config
+          files
+          <br />
+          <strong>Managed Identity:</strong> app fetches secrets at runtime, no
+          credentials needed in code
+          <br />
+          <strong>use:</strong> DB connection strings, JWT signing keys,
+          third-party API keys, rotate secrets in one place without redeployment
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Azure API Management (APIM)?</div>
+        <div class="answer">
+          <strong>APIM:</strong> sits in front of APIs as a gateway, handles
+          auth, rate limiting, caching, logging, versioning in one place,
+          clients never call backend directly
+          <br />
+          <strong>use:</strong> expose APIs to external partners securely, apply
+          policies per client, monitor all traffic without touching backend code
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is Terraform?</div>
         <div class="answer">
-          Infrastructure as Code (IaC) tool — define cloud resources (servers,
-          DBs, networks) in config files and Terraform creates and manages them
-          automatically instead of manual portal setup.<br />
-          Key commands: <code>terraform init</code> (setup),
+          <strong>Terraform:</strong> Infrastructure as Code (IaC) tool, define
+          cloud resources in config files, Terraform creates and manages them
+          automatically instead of manual portal setup
+          <br />
+          <strong>Commands:</strong> <code>terraform init</code> (setup),
           <code>terraform plan</code> (preview),
-          <code>terraform apply</code> (create/update).<br />
-          In insurance: provision App Service, Service Bus, Key Vault
-          consistently across dev, staging, and production — same infrastructure
-          every time, no manual errors.
+          <code>terraform apply</code> (create/update)
+          <br />
+          <strong>use:</strong> provision same infrastructure consistently
+          across dev, staging, production — no manual errors
         </div>
       </div>
 
@@ -2258,17 +2454,28 @@
       SECTION 8. DevOps <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- GROUP: CI/CD -->
       <div class="qa-block">
-        <div class="question">What is CI/CD? Why is it important?</div>
+        <div class="question">
+          What is CI/CD? Why is it important? What is the difference between
+          Continuous Delivery and Continuous Deployment?
+        </div>
         <div class="answer">
-          <strong>CI (Continuous Integration)</strong>: developers push code
-          frequently, automated pipeline runs tests and builds instantly —
-          catches bugs early.<br />
-          <strong>CD (Continuous Delivery/Deployment)</strong>: after CI passes,
-          code is automatically deployed to staging or production — no manual
-          steps.<br />
-          Result: faster releases, fewer errors, consistent deployments every
-          time.
+          <strong>CI (Continuous Integration):</strong> developers push code
+          frequently, automated pipeline runs tests and builds instantly,
+          catches bugs early
+          <br />
+          <strong>CD (Continuous Delivery):</strong> code always ready to
+          deploy, manual approval needed before production,
+          <strong>use:</strong> insurance/enterprise projects where production
+          needs approval gate
+          <br />
+          <strong>CD (Continuous Deployment):</strong> fully automated, every
+          passing build deploys to production with no manual step,
+          <strong>use:</strong> fast-moving products with high test confidence
+          <br />
+          <strong>Result:</strong> faster releases, fewer errors, consistent
+          deployments every time
         </div>
       </div>
 
@@ -2277,98 +2484,76 @@
           What are the stages in a typical CI/CD pipeline?
         </div>
         <div class="answer">
-          Code pushed to Git → <strong>Build</strong> (compile, restore
-          packages) → <strong>Test</strong> (run unit tests) →
-          <strong>Code Quality</strong> (SonarQube scan) →
-          <strong>Publish artifacts</strong> → <strong>Deploy</strong> to
-          dev/staging/production.<br />
-          Tools: <strong>Azure DevOps</strong> or
-          <strong>GitHub Actions</strong> for pipeline,
-          <strong>Docker</strong> for packaging, <strong>Kubernetes</strong> or
-          <strong>App Service</strong> for deployment.
+          <strong>Flow:</strong> Code pushed to Git → Build (compile, restore
+          packages) → Test (unit tests) → Code Quality (SonarQube) → Publish
+          artifacts → Deploy to dev/staging/production
+          <br />
+          <strong>Tools:</strong> Azure DevOps or GitHub Actions for pipeline,
+          Docker for packaging, Kubernetes or App Service for deployment
         </div>
       </div>
 
+      <!-- GROUP: Docker -->
       <div class="qa-block">
         <div class="question">
-          What is the difference between Continuous Delivery and Continuous
-          Deployment?
+          What is Docker? Why do we use it? What is a Dockerfile?
         </div>
         <div class="answer">
-          <strong>Continuous Delivery</strong>: code is always ready to deploy
-          but a manual approval is needed to push to production.<br />
-          <strong>Continuous Deployment</strong>: fully automated — every
-          passing build deploys to production with no manual step.<br />
-          In insurance projects, Continuous Delivery is preferred — production
-          releases go through an approval gate.
+          <strong>Docker:</strong> packages app and all dependencies into a
+          container, runs same everywhere, solves "works on my machine" problem
+          <br />
+          <strong>Image:</strong> blueprint —
+          <strong>Container:</strong> running instance —
+          <strong>Dockerfile:</strong> instructions to build image —
+          <strong>Docker Hub:</strong> registry to store and share images
+          <br />
+          <strong>Dockerfile basics:</strong>
+          <code>FROM mcr.microsoft.com/dotnet/aspnet:8.0</code> base image,
+          <code>COPY . /app</code> copy code,
+          <code>RUN dotnet publish -o /out</code> build,
+          <code>ENTRYPOINT ["dotnet", "MyApi.dll"]</code> run on start
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question">What is Docker? Why do we use it?</div>
-        <div class="answer">
-          Docker packages your application and all its dependencies into a
-          <strong>container</strong> — runs the same everywhere regardless of
-          the machine. Solves the "works on my machine" problem.<br />
-          <strong>Image</strong> = blueprint. <strong>Container</strong> =
-          running instance. <strong>Dockerfile</strong> = instructions to build
-          the image. <strong>Docker Hub</strong> = registry to store and share
-          images.
-        </div>
-      </div>
-
+      <!-- GROUP: Kubernetes -->
       <div class="qa-block">
         <div class="question">
-          What is a Dockerfile? Walk through a basic one for a .NET API.
+          What is Kubernetes (K8s)? Why is it needed? How is it different from
+          Docker?
         </div>
         <div class="answer">
-          A script that defines how to build a Docker image step by step.<br />
-          <code>FROM mcr.microsoft.com/dotnet/aspnet:8.0</code> — base image.<br />
-          <code>COPY . /app</code> — copy code into container.<br />
-          <code>RUN dotnet publish -o /out</code> — build the app.<br />
-          <code>ENTRYPOINT ["dotnet", "MyApi.dll"]</code> — run on start.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">What is Kubernetes (K8s)? Why is it needed?</div>
-        <div class="answer">
-          Container orchestration tool — manages deploying, scaling, and running
-          many Docker containers across multiple machines automatically.<br />
-          Docker runs one container, Kubernetes manages hundreds. Handles:
-          auto-scaling, self-healing (restarts crashed containers), load
-          balancing, and zero downtime rolling deployments.
+          <strong>Kubernetes:</strong> container orchestration tool, manages
+          deploying, scaling, running many containers across multiple machines
+          automatically
+          <br />
+          <strong>Handles:</strong> auto-scaling, self-healing (restarts crashed
+          containers), load balancing, zero downtime rolling deployments
+          <br />
+          <strong>Docker vs Kubernetes:</strong> Docker builds and runs
+          containers on one machine, Kubernetes orchestrates hundreds of
+          containers across many machines
+          <br />
+          <strong>Together:</strong> Docker packages the app, Kubernetes manages
+          running it at scale
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What are the key Kubernetes components?</div>
         <div class="answer">
-          <strong>Pod</strong>: smallest unit — one or more containers running
-          together.<br />
-          <strong>Deployment</strong>: defines how many pod replicas to run and
-          manages updates.<br />
-          <strong>Service</strong>: exposes pods to the network — stable
-          endpoint even if pods restart.<br />
-          <strong>Ingress</strong>: routes external traffic to the right
-          service.<br />
-          <strong>ConfigMap / Secret</strong>: store config and sensitive values
-          outside the container.
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Docker and Kubernetes?
-        </div>
-        <div class="answer">
-          <strong>Docker</strong>: builds and runs containers — works great for
-          one machine.<br />
-          <strong>Kubernetes</strong>: orchestrates many containers across many
-          machines — handles scaling, failures, and deployments
-          automatically.<br />
-          They work together: Docker packages the app, Kubernetes manages
-          running it at scale.
+          <strong>Pod:</strong> smallest unit, one or more containers running
+          together
+          <br />
+          <strong>Deployment:</strong> defines how many pod replicas to run,
+          manages updates
+          <br />
+          <strong>Service:</strong> exposes pods to network, stable endpoint
+          even if pods restart
+          <br />
+          <strong>Ingress:</strong> routes external traffic to the right service
+          <br />
+          <strong>ConfigMap / Secret:</strong> store config and sensitive values
+          outside the container
         </div>
       </div>
 
@@ -2751,11 +2936,13 @@ a = a ^ b;</code></pre>
           <div class="answer">
             Use DENSE_RANK to rank salaries — filter where rank equals 2.
           </div>
-          <pre><code class="language-sql">SELECT Salary
-FROM (
-    SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rnk
+          <pre><code class="language-sql">WITH RankedSalaries AS (
+    SELECT Salary,
+           DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rnk
     FROM Employees
-) ranked
+)
+SELECT Salary
+FROM RankedSalaries
 WHERE Rnk = 2;</code></pre>
         </div>
       </div>
