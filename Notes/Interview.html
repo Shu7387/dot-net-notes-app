@@ -188,16 +188,22 @@
           same method name?
         </div>
         <div class="answer">
-          <strong>Interface:</strong> pure contract, no implementation (before
-          C# 8), multiple allowed, no constructor,
-          <code>interface IAnimal { void Speak(); }</code>,
-          <strong>use:</strong> unrelated classes sharing same behavior
+          <strong>Interface:</strong> pure contract, no implementation, multiple
+          inheritance allowed, no constructor,
+          <code>interface IAnimal { void Speak(); }</code> <br />
+          <strong>use:</strong> Unrelated classes sharing same behavior; Ex.
+          Payment service interface with pay method.
           <br />
           <strong>Abstract class:</strong> mix of abstract + concrete methods,
-          only one allowed, can have constructor,
+          only one inheritance allowed, can have constructor,
           <code>abstract class Shape { public abstract void Draw(); }</code>,
-          <strong>use:</strong> shared base logic with enforced contract
+          <strong>use:</strong> Closely related classes shared base logic with
+          enforced contract; Ex. Policy abstract class with some common logic.
           <br />
+          <strong>Normal class (base class):</strong> regular class with full
+          implementation, object can be created, child classes inherit and reuse
+          its logic & do not need to change behavior,
+          <code>class Logger { public void Log(string m) { } }</code> <br />
           <strong>Same method name conflict:</strong> use explicit interface
           implementation, each gets own body, called via specific interface
           reference, <code>void IAnimal.Speak() { }</code>
@@ -215,8 +221,8 @@
           <strong>use:</strong> creating actual objects
           <br />
           <strong>Abstract class:</strong> partial implementation, cannot be
-          instantiated, forces derived classes to implement abstract methods,
-          <strong>use:</strong> shared base with enforced contract
+          instantiated, forces child classes to implement abstract methods,
+          <strong>use:</strong> shared base + contract
         </div>
       </div>
 
@@ -247,28 +253,38 @@
           lifetime, private constructor prevents external instantiation,
           <strong>use:</strong> config service, logging, caching
           <br />
-          <strong>Thread-safe:</strong> use <code>Lazy&lt;T&gt;</code>, handles
-          thread safety automatically, instance created only on first access,
-          <code
-            >private static readonly Lazy&lt;T&gt; _instance = new(() =&gt; new
-            T());</code
-          >
+
+          <strong>Thread-safe:</strong> safe access from multiple threads,
+          prevents race conditions, use <code>lock(obj)</code> for critical
+          sections, <code>Lazy&lt;T&gt;</code> for thread-safe lazy
+          initialization, or concurrent collections like
+          <code>ConcurrentDictionary</code>
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
           What is Dependency Injection (DI)? What is Inversion of Control (IoC)?
-          What are the types?
+          What are the DI life times? What are the Injection types?
         </div>
         <div class="answer">
-          <strong>IoC:</strong> control of creating dependencies given to
-          external system, not the class itself,
-          <strong>use:</strong> foundation of loosely coupled design
+          <strong>IoC:</strong> Creating dependencies given to external system,
+          not the class itself, <strong>use:</strong> Loosely coupled design
           <br />
           <strong>DI:</strong> most common IoC implementation, class receives
-          dependencies from outside, loosely coupled and testable,
-          <strong>use:</strong> everywhere in ASP.NET Core
+          dependencies from outside instead of creating manually. Register in
+          program.cs
+          <br />
+          <strong>Lifetimes:</strong> <br />
+          <strong>Transient</strong> – new instance per each use,
+          <strong>use:</strong> lightweight, stateless services (helpers,
+          validators)
+          <br />
+          <strong>Scoped</strong> – one instance per HTTP request,
+          <strong>use:</strong> stateful services (DbContext, repository)
+          <br />
+          <strong>Singleton</strong> – single instance for entire app lifetime,
+          <strong>use:</strong> shared services like caching, configuration
           <br />
           <strong>Types:</strong> Constructor injection (most common,
           preferred), Property injection, Interface injection, Service Locator
@@ -296,34 +312,40 @@
           does Stack and Heap relate to them?
         </div>
         <div class="answer">
-          <strong>Value types:</strong> store actual value, copy on assignment,
-          independent memory, stack allocated, <code>int</code>
-          <code>bool</code> <code>struct</code>, <strong>use:</strong> small
-          simple data
+          <strong>Value types:</strong> store actual value, copied on
+          assignment, usually stored in <strong>Stack</strong>, fast allocation,
+          <strong>examples:</strong> <code>int</code>, <code>double</code>,
+          <code>bool</code>, <code>struct</code>
           <br />
-          <strong>Reference types:</strong> store memory address, object lives
-          on heap, multiple variables share same object, changes reflect across
-          all references, <code>class</code> <code>string</code>
-          <code>array</code>, <strong>use:</strong> complex objects
+          <strong>Reference types:</strong> store reference (memory address) to
+          object, object stored in <strong>Heap</strong>, reference copied not
+          object, <strong>examples:</strong> <code>class</code>,
+          <code>string</code>, <code>array</code>, <code>object</code>
           <br />
-          <strong>Stack:</strong> stores value types + method call frames, fast
-          LIFO allocation
+          <strong>Stack:</strong> stores value types and references, fixed size,
+          fast LIFO memory, automatically managed
           <br />
-          <strong>Heap:</strong> stores reference type objects, managed by
-          Garbage Collector
+          <strong>Heap:</strong> stores objects of reference types, dynamic
+          size, managed by
+          <strong>Garbage Collector (GC)</strong>
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is boxing and unboxing in C#?</div>
         <div class="answer">
-          <strong>Boxing:</strong> value type → <code>object</code>, value
-          copied to heap, implicit, performance overhead,
-          <code>object o = 10;</code>, <strong>use:</strong> avoid in hot paths,
-          use generics instead
+          <strong>Boxing:</strong> converting value type to reference type
+          (<code>object</code>), value copied from <strong>Stack</strong> to
+          <strong>Heap</strong>, <strong>example:</strong>
+          <code>int x = 10; object obj = x;</code>
           <br />
-          <strong>Unboxing:</strong> <code>object</code> → value type, explicit
-          cast required, throws if wrong type, <code>int x = (int)o;</code>
+          <strong>Unboxing:</strong> converting reference type
+          (<code>object</code>) back to value type, requires explicit cast,
+          value copied from <strong>Heap</strong> to <strong>Stack</strong>,
+          <strong>example:</strong> <code>int y = (int)obj;</code>
+          <br />
+          <strong>note:</strong> boxing/unboxing causes performance overhead due
+          to heap allocation and casting
         </div>
       </div>
 
@@ -363,7 +385,7 @@
           Thread Pool and how does TPL work?
         </div>
         <div class="answer">
-          <strong>Thread:</strong> raw OS thread, heavy, manual management,
+          <strong>Thread:</strong> Worker, OS level, heavy, manual management,
           expensive to create/destroy, <strong>use:</strong> rarely used
           directly
           <br />
@@ -371,7 +393,7 @@
           .NET, avoids create/destroy overhead, tasks run on pool threads by
           default
           <br />
-          <strong>Task:</strong> lightweight unit of work on thread pool,
+          <strong>Task:</strong> Work, lightweight unit of work on thread pool,
           supports cancellation and continuation,
           <code>Task.Run(() =&gt; DoWork())</code>,
           <strong>use:</strong> CPU-bound background work
@@ -409,9 +431,15 @@
           Parallel.ForEach, and Task.WhenAll?
         </div>
         <div class="answer">
-          <strong>Parallel programming:</strong> runs operations simultaneously
-          across multiple CPU cores, <strong>use:</strong> CPU-bound work only,
-          not I/O
+          <strong>Multithreading:</strong> multiple threads executing different
+          tasks concurrently, tasks may run simultaneously or sequentially
+          <strong>use:</strong> handling different operations at the same time
+          (UI, I/O, background work)
+          <br />
+          <strong>Parallelism:</strong> multiple threads performing the same or
+          similar work simultaneously, task is split into smaller parts and
+          executed across CPU cores, <strong>use:</strong> speeding up CPU-bound
+          workloads (data processing, calculations)
           <br />
           <strong>Parallel.For:</strong> parallel loop over index range,
           <code>Parallel.For(0, 10, i =&gt; Process(i));</code>,
@@ -421,8 +449,13 @@
           <code>Parallel.ForEach(list, item =&gt; Process(item));</code>,
           <strong>use:</strong> collection CPU work
           <br />
+          <strong>Parallel.Invoke:</strong> runs multiple independent actions in
+          parallel, <code>Parallel.Invoke(()=>Task1(),()=>Task2());</code>,
+          <strong>use:</strong> execute independent methods simultaneously
+          <br />
           <strong>Task.WhenAll:</strong> runs multiple async tasks concurrently,
-          waits for all, <code>await Task.WhenAll(task1, task2);</code>,
+          waits for all task to complete,
+          <code>await Task.WhenAll(task1, task2);</code>,
           <strong>use:</strong> multiple independent I/O calls
           <br />
           <strong>Thread safety:</strong> use
@@ -441,13 +474,13 @@
           type fixed after assignment, <code>var x = 5</code> =
           <code>int x = 5</code>, <strong>use:</strong> LINQ, complex type names
           <br />
-          <strong>object:</strong> base type of all types, holds anything but
-          needs explicit casting, compile-time checked,
-          <strong>use:</strong> when type is truly unknown
-          <br />
           <strong>dynamic:</strong> runtime type resolution, no compile-time
           checking, errors only at runtime, <strong>use:</strong> COM interop,
           reflection, avoid in regular code
+          <br />
+          <strong>object:</strong> base type of all types, holds anything but
+          needs explicit casting, compile-time checked,
+          <strong>use:</strong> when type is truly unknown
         </div>
       </div>
 
@@ -458,13 +491,13 @@
         <div class="answer">
           <strong>const:</strong> compile-time constant, assigned at declaration
           only, implicitly static, primitives/string/enum only,
-          <code>const int Max = 100;</code>, <strong>use:</strong> fixed known
+          <code>const int PI = 3.14;</code>, <strong>use:</strong> fixed known
           values like PI, config constants
           <br />
           <strong>readonly:</strong> runtime constant, assigned at declaration
           or constructor, any type allowed, per-instance or static,
-          <code>readonly int _id;</code>, <strong>use:</strong> values known
-          only at runtime or per instance
+          <code>readonly int _studentId</code>, <strong>use:</strong> values
+          known only at runtime or per instance
         </div>
       </div>
 
@@ -494,30 +527,41 @@
           What is the difference between == and .Equals()?
         </div>
         <div class="answer">
-          <strong>==:</strong> reference equality by default for objects (same
-          memory address), overridden for strings to compare values,
-          <strong>use:</strong> primitives and strings
+          <strong>== operator:</strong> compares values for value types,
+          compares references (memory address) for reference types by default,
+          can be overloaded by classes
           <br />
-          <strong>.Equals():</strong> value equality, compares actual content,
-          can be overridden in custom classes, <strong>use:</strong> comparing
-          object values, custom equality logic
+          <strong>.Equals():</strong> method used to compare object equality
+          (logical/value equality), can be overridden to define custom
+          comparison logic
+          <br />
+          <strong>example:</strong>
+          <code>object a = "hello"; object b = "hello";</code>
+          <code>a == b</code> compares references,
+          <code>a.Equals(b)</code> compares values
         </div>
       </div>
 
       <!-- GROUP: Collections & LINQ -->
+
       <div class="qa-block">
         <div class="question">
           What is the difference between IEnumerable and IQueryable?
         </div>
         <div class="answer">
-          <strong>IEnumerable:</strong> executes query in-memory client side,
-          data already fetched from DB, filtering happens in C#,
-          <strong>use:</strong> in-memory collections
+          <strong>IEnumerable:</strong> works on in-memory collections, query
+          executed in application memory, LINQ-to-Objects, filtering happens
+          after data is loaded, <strong>use:</strong> when data already loaded
+          in memory. <strong>example:</strong>
+          <code>var users = context.Users.ToList();</code>
           <br />
-          <strong>IQueryable:</strong> builds expression tree, executes on DB
-          server side, filters run as SQL, more efficient,
-          <strong>use:</strong> EF Core DB queries, always prefer over
-          IEnumerable for DB
+          <strong>IQueryable:</strong> works with remote data sources
+          (database), builds expression tree and converts query to SQL,
+          filtering happens at database level, <strong>use:</strong> efficient
+          querying with large datasets
+          <strong>example:</strong>
+          <code>context.Users.Where(x => x.Age > 30)</code> → SQL generated with
+          <strong>IQueryable</strong>
         </div>
       </div>
 
@@ -565,12 +609,17 @@
           and Predicate?
         </div>
         <div class="answer">
-          <strong>Delegate:</strong> type-safe function pointer, holds reference
-          to method, supports multicast via <code>+=</code>,
+          <strong>Delegate:</strong> type-safe function pointer, pass method as
+          argument to another method, holds reference to method, supports
+          singlecast & multicast via <code>+=</code>,
           <strong>use:</strong> callbacks, events, LINQ
           <br />
+          <strong>example:</strong> payment system choosing payment method
+          dynamically, <code>ProcessPayment(PayWithGPay)</code>,
+          <code>ProcessPayment(PayWithPhonePe)</code>,
+          <code>ProcessPayment(PayWithPaytm)</code>
+          <br />
           <strong>Action:</strong> built-in delegate, returns <code>void</code>,
-          0–16 params,
           <code>Action&lt;string&gt; a = msg =&gt; Console.WriteLine(msg);</code
           >, <strong>use:</strong> operations with no return value
           <br />
@@ -583,8 +632,12 @@
           <code>Predicate&lt;int&gt; p = x =&gt; x &gt; 10;</code>,
           <strong>use:</strong> filtering/conditions in collections
           <br />
-          <strong>Event:</strong> delegate with safety wrapper, only raised from
-          declaring class, <strong>use:</strong> publisher-subscriber pattern
+          <strong>Event delegate:</strong> delegate with safety wrapper, only
+          raised from declaring class,
+          <strong>use:</strong> publisher–subscriber pattern
+          <br />
+          <strong>example:</strong> button click event notifying multiple
+          subscribers, e.g., show message, log action, send notification
         </div>
       </div>
 
@@ -623,6 +676,26 @@
           place, much faster for repeated changes,
           <code>sb.Append("text");</code>, <strong>use:</strong> loops with many
           string concatenations
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is Pattern Matching in C#?</div>
+        <div class="answer">
+          <strong>Pattern matching:</strong> check type/value/object structure
+          and extract data in one step, reduces casting and complex conditions
+          <br />
+          <strong>Type pattern:</strong> <code>if(obj is string s)</code>
+          <br />
+          <strong>Constant pattern:</strong> <code>if(x is 10)</code>
+          <br />
+          <strong>Relational pattern:</strong> <code>if(age is &gt; 18)</code>
+          <br />
+          <strong>Property pattern:</strong>
+          <code>if(p is { Age: &gt; 18 })</code>
+          <br />
+          <strong>Switch pattern:</strong>
+          <code>x switch { &lt;0 =&gt; "Neg", &gt;0 =&gt; "Pos" }</code>
         </div>
       </div>
 
@@ -674,7 +747,11 @@
           <strong>Program.cs (.NET 6+):</strong> Startup.cs removed, everything
           in one file, services via <code>builder.Services.Add...()</code>,
           middleware via <code>app.Use...()</code>, cleaner minimal hosting
-          model
+          model.
+          <strong
+            >Entry point of ASP.NET Core app, configures services and
+            middlewares</strong
+          >
         </div>
       </div>
 
@@ -684,18 +761,28 @@
           difference between app.Use(), app.Run(), and app.Map()?
         </div>
         <div class="answer">
-          <strong>Middleware:</strong> components that handle request and
-          response in a pipeline, each can process request, call next, then
-          process response on way back
+          <strong>Middleware:</strong> components that handle request/response
+          in pipeline, each can process request, call next, then process
+          response on return
           <br />
-          <strong>app.Use():</strong> calls next middleware, used for most
-          cases, <strong>use:</strong> logging, auth, exception handling
+
+          <strong>Common Middleware Order:</strong> UseExceptionHandler →
+          UseStaticFiles → UseRouting → UseCors → UseAuthentication →
+          UseAuthorization → MapControllers
           <br />
-          <strong>app.Run():</strong> terminal, stops pipeline, no next called,
-          <strong>use:</strong> final response handler
+
+          <strong>app.Use():</strong> adds middleware, can call next middleware
+          using next delegate, used for most cases,
+          <strong>use:</strong> logging, auth, exception handling
           <br />
+
+          <strong>app.Run():</strong> terminal middleware, stops pipeline, no
+          next called, usually at end, <strong>use:</strong> final response
+          handler
+          <br />
+
           <strong>app.Map():</strong> branches pipeline based on URL path,
-          <strong>use:</strong> different handling per route
+          <strong>use:</strong> different handling for specific routes
         </div>
       </div>
 
@@ -719,14 +806,19 @@
       <div class="qa-block">
         <div class="question">How does JWT authentication work in Web API?</div>
         <div class="answer">
-          <strong>JWT flow:</strong> on login server creates signed token with
-          user claims, client sends token in Authorization header on every
-          request, server validates signature and reads claims, no session
-          stored server-side
+          <strong>Flow:</strong> user login → server validates credentials →
+          server generates JWT token → client stores token in HttpOnly cookie →
+          client sends token in every request
           <br />
-          <strong>Config:</strong>
-          <code>AddAuthentication().AddJwtBearer()</code>, protect endpoints
-          with <code>[Authorize]</code>
+          <strong>Header:</strong> Authorization: Bearer &lt;token&gt;
+          <br />
+          <strong>Token Parts:</strong> Header (algorithm), Payload (claims/user
+          data), Signature (verification)
+          <br />
+          <strong>Validation:</strong> server verifies signature, expiry,
+          issuer, audience before allowing access.
+          <code>AddAuthentication().AddJwtBearer()</code>,
+          <code>[Authorize]</code>
         </div>
       </div>
 
@@ -736,9 +828,9 @@
           difference between OAuth and JWT?
         </div>
         <div class="answer">
-          <strong>OAuth 2.0:</strong> authorization framework, lets user grant
-          third-party app access without sharing password,
-          <strong>use:</strong> Login with Google/Facebook
+          <strong>OAuth 2.0:</strong> authorization framework which generates
+          tokens, lets user grant third-party app access without sharing
+          password, <strong>use:</strong> Login with Google/Facebook
           <br />
           <strong>JWT:</strong> token format, compact signed string with claims,
           OAuth uses JWT as token format but JWT can be used independently too
@@ -767,27 +859,35 @@
           never concatenate user input into SQL
           <br />
           <strong>XSS:</strong> Angular auto-escapes by default, avoid
-          <code>innerHTML</code> with user data
+          <code>innerHTML</code> <code>@HTML.Raw</code> with user data
           <br />
           <strong>CSRF:</strong> use anti-forgery tokens for form submissions
           <br />
           <strong>Secrets:</strong> store in Azure Key Vault, never in code
           <br />
           <strong>Other:</strong> input validation, rate limiting, never expose
-          sensitive data in responses
+          sensitive data in responses or URL
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">What is CORS and how do you configure it?</div>
         <div class="answer">
-          <strong>CORS:</strong> browser security rule, blocks requests from
-          different domain/port, server must explicitly allow origins
+          <strong>CORS (Cross-Origin Resource Sharing):</strong> browser
+          security policy that blocks requests from different origin
+          (domain/port/protocol)
           <br />
-          <strong>Config:</strong> <code>builder.Services.AddCors()</code> to
-          define policy, <code>app.UseCors("PolicyName")</code> to apply,
-          <strong>use:</strong> allow Angular frontend to call API from
-          different port/domain
+          <strong>Purpose:</strong> allow frontend (different domain) to call
+          Web API
+          <br />
+          <strong>Configure:</strong> define CORS policy in services, then
+          enable middleware
+          <br />
+          <strong>Example:</strong> AddCors() → define allowed origins, headers,
+          methods → UseCors()
+          <br />
+          <strong>Options:</strong> AllowAnyOrigin, AllowAnyHeader,
+          AllowAnyMethod, WithOrigins(specific domains)
         </div>
       </div>
 
@@ -798,16 +898,25 @@
           specific return types?
         </div>
         <div class="answer">
-          <strong>IActionResult:</strong> most flexible, can return any HTTP
-          response, <code>Ok()</code> <code>NotFound()</code>
-          <code>BadRequest()</code>, <strong>use:</strong> when return type
-          varies
+          <strong>IActionResult:</strong> base HTTP response type, most
+          flexible,
+          <strong
+            >Use when no specific model and returning multiple HTTP
+            responses</strong
+          >
+          (<code>Ok()</code>,
+          <code>NotFound()</code>, <code>BadRequest()</code>)
           <br />
-          <strong>ActionResult&lt;T&gt;:</strong> flexible + typed, better for
-          Swagger docs, <strong>use:</strong> most common in real projects
+          <strong>ActionResult&lt;T&gt;:</strong>
+          <strong>use when returning specific data model + status codes</strong
+          >, allows returning object directly, better Swagger support,
+          <strong>use:</strong> most common in Web APIs <em>example:</em>
+          <code>return user;</code> or
+          <code>return NotFound();</code>
           <br />
-          <strong>Specific type (e.g. User):</strong> simplest but loses HTTP
-          status code control, <strong>use:</strong> simple read-only endpoints
+          <strong>Specific type (e.g. User):</strong> returns only data, no
+          control over HTTP status codes, <strong>use:</strong> simple read-only
+          endpoints <em>example:</em> <code>public User GetUser()</code>
         </div>
       </div>
 
@@ -823,9 +932,8 @@
           <strong>PATCH:</strong> partial update, send only changed fields,
           <strong>use:</strong> update single field like email
           <br />
-          <strong>PATCH implementation:</strong> read only changed field from
-          body, update that property on entity, call <code>SaveChanges()</code>,
-          use <code>JsonPatchDocument&lt;T&gt;</code> for clean implementation
+          <strong>PATCH implementation:</strong> PatchDTO + AutoMapper
+          conditional mapping (srcMember != null)
         </div>
       </div>
 
@@ -868,15 +976,21 @@
           How do you perform input validation? What is FluentValidation?
         </div>
         <div class="answer">
-          <strong>Data Annotations:</strong> <code>[Required]</code>
-          <code>[MaxLength]</code> on model, check
+          <strong>Data Annotations:</strong> <code>[Required]</code>,
+          <code>[StringLength]</code>, <code>[Range]</code>,
+          <code>[EmailAddress]</code>, <code>[MaxLength]</code>, check
           <code>ModelState.IsValid</code> in controller,
-          <strong>use:</strong> simple validations
           <br />
-          <strong>FluentValidation:</strong> validation rules in separate class,
-          clean readable syntax, better for complex rules, register with
-          <code>AddFluentValidation()</code> in <code>Program.cs</code>,
-          <strong>use:</strong> complex conditional validations
+
+          <strong>Custom Validation:</strong> create custom rules using
+          <code>ValidationAttribute</code> or implement
+          <code>IValidatableObject</code> for model-level validation.
+
+          <strong>FluentValidation:</strong> External library, validation rules
+          in separate class, clean readable syntax, better for complex rules,
+          register with <code>AddFluentValidation()</code> in
+          <code>Program.cs</code>, <strong>use:</strong> complex conditional
+          validations
         </div>
       </div>
 
@@ -892,28 +1006,47 @@
           <code>IExceptionFilter</code>
           <br />
           <strong>try-catch in controller:</strong> use when specific error is
-          expected and needs meaningful handling, e.g. catch
-          <code>DbUpdateException</code> to return clear 400 instead of generic
-          500
+          expected,
+          <strong
+            >proper log with error code, path and message instead of generic
+            error</strong
+          >
+          , e.g. catch <code>DbUpdateException</code> to return clear 400
+          instead of generic 500
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What are Filters in ASP.NET Core? How are they different from
-          middleware?
+          What are Filters in ASP.NET Core? Filter types, How are they different
+          from middleware?
         </div>
         <div class="answer">
-          <strong>Filters:</strong> run inside MVC pipeline, have access to
-          controller context (action name, model, result)
+          <strong>Filters:</strong> attributes that runs around controller
+          action methods in MVC pipeline
           <br />
-          <strong>Types:</strong> Authorization (check access first), Action
-          (before/after action), Exception (handle MVC errors), Result
-          (before/after response sent)
+          <strong>Filter Types:</strong>
           <br />
-          <strong>vs Middleware:</strong> middleware runs before MVC, no
-          controller context, <strong>use:</strong> filters for MVC-specific
-          logic, middleware for app-wide concerns
+          <strong>Authorization Filter:</strong> runs first before all filters
+          before action, checks user authorization,
+          <strong>use:</strong> role/policy validation
+          <br />
+          <strong>Resource Filter:</strong> runs before model binding and after
+          the action result <strong>use:</strong> caching, performance logic,
+          should we continue this request?
+          <br />
+          <strong>Action Filter:</strong> runs before/after controller action,
+          <strong>use:</strong> logging, validation
+          <br />
+          <strong>Result Filter:</strong> runs before/after action result
+          execution, <strong>use:</strong> modify response/result
+          <br />
+          <strong>Exception Filter:</strong> handles exceptions from
+          controller/action, <strong>use:</strong> global error handling
+          <br />
+          <strong>Difference from Middleware:</strong> middleware runs for all
+          HTTP requests in pipeline, filters run only inside MVC pipeline for
+          controller actions
         </div>
       </div>
 
@@ -940,11 +1073,13 @@
 
       <div class="qa-block">
         <div class="question">
-          What is API versioning and how do you implement it?
+          What is API versioning and how do you implement it? What is Backward
+          compatibility?
         </div>
         <div class="answer">
-          <strong>API versioning:</strong> release API changes without breaking
-          existing clients
+          <strong>API versioning:</strong>
+          <strong>Multiple APIs version for different client</strong>, release
+          API changes without breaking existing clients
           <br />
           <strong>Approaches:</strong> URL versioning
           <code>/api/v1/users</code> (most common), header versioning, query
@@ -952,6 +1087,10 @@
           <br />
           <strong>Implementation:</strong> <code>Asp.Versioning.Mvc</code> NuGet
           package, configure in <code>Program.cs</code>
+          <br />
+          <strong>Backward compatibility:</strong> keep old clients working by
+          using API versioning, adding fields instead of changing/removing them,
+          optional parameters, and gradual API deprecation.
         </div>
       </div>
 
@@ -961,9 +1100,9 @@
           specific formats?
         </div>
         <div class="answer">
-          <strong>Content negotiation:</strong> client requests format via
-          <code>Accept</code> header, server responds accordingly, default is
-          JSON in ASP.NET Core
+          <strong>Content negotiation:</strong> client requests response format
+          via <code>Accept</code> header, server responds accordingly, default
+          is JSON in ASP.NET Core
           <br />
           <strong>Restrict to JSON:</strong> don't register
           <code>AddXmlSerializerFormatters()</code>, or use
@@ -973,23 +1112,17 @@
 
       <div class="qa-block">
         <div class="question">
-          What is state management and data passing in MVC?
+          What is state management? Data passing techniques in MVC?
         </div>
         <div class="answer">
-          <strong>HTTP is stateless</strong> — ASP.NET Core provides several
-          options:
+          <strong>State management:</strong>
+          <code
+            >ViewData, ViewBag, TempData, Session, Cookies, Hidden Fields, Query
+            Strings</code
+          >
           <br />
-          <strong>ViewData/ViewBag:</strong> controller to view, single request
-          only
-          <br />
-          <strong>TempData:</strong> survives one redirect, uses session under
-          the hood
-          <br />
-          <strong>Session:</strong> per user, stored server-side
-          <br />
-          <strong>Query strings / Route values:</strong> passed in URL
-          <br />
-          <strong>Cookies:</strong> stored in browser, persists across requests
+          <strong>Data passing:</strong>
+          <code>Model, ViewData, ViewBag, TempData, Form</code>
         </div>
       </div>
 
@@ -1019,7 +1152,8 @@
           <code>var mock = new Mock&lt;IUserRepository&gt;();</code> then
           <code>mock.Setup(r =&gt; r.GetById(1)).Returns(fakeUser);</code>
           <br />
-          <strong>use:</strong> test only business logic, not the actual DB
+          <strong>use:</strong> test only business logic, not the actual DB,
+          <strong>Use wiremocks for integration tests</strong>
         </div>
       </div>
 
@@ -1047,18 +1181,21 @@
           architecture?
         </div>
         <div class="answer">
-          <strong>Monolithic:</strong> single deployable unit, all features
-          tightly coupled, easy to start but hard to scale and maintain as
-          grows, <strong>use:</strong> small or early-stage apps
+          <strong>Microservices:</strong> architecture where application is
+          split into small independent services, each service handles a specific
+          business capability and communicates via APIs;
+          <strong
+            >Independent deploy, scale per service, separate db, different tech
+            per service, easier maintenance</strong
+          >
           <br />
-          <strong>Microservices:</strong> app split into small independent
-          services, each handles one business capability,
-          deployed/scaled/updated independently, <strong>use:</strong> large
-          enterprise apps, independent teams
+          <strong>Monolithic:</strong> entire application built as single unit
+          with UI, business logic, and data access in one codebase;
+          <strong
+            >Single deploy, scale whole app, single tech stack, harder
+            maintenance, big failure</strong
+          >
           <br />
-          <strong>Why not monolith at scale:</strong> hard to scale specific
-          parts, one change needs full redeploy, teams block each other, slow
-          releases
         </div>
       </div>
 
