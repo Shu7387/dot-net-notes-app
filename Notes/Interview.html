@@ -1185,8 +1185,8 @@
           split into small independent services, each service handles a specific
           business capability and communicates via APIs;
           <strong
-            >Independent deploy, scale per service, separate db, different tech
-            per service, easier maintenance</strong
+            >Independent deploy(docker), scale per service, separate db,
+            different tech per service, easier maintenance</strong
           >
           <br />
           <strong>Monolithic:</strong> entire application built as single unit
@@ -1210,9 +1210,10 @@
           response
           <br />
           <strong>Asynchronous (Message Queue):</strong> service publishes
-          message and doesn't wait, fully decoupled, sender doesn't care if
-          receiver is down, Azure Service Bus / RabbitMQ / Kafka,
-          <strong>use:</strong> events, notifications, background processing
+          message to queue storage and subscriber services listen to it, fully
+          decoupled, sender doesn't care if receiver is down, Azure Service Bus
+          / RabbitMQ / Kafka, <strong>use:</strong> events, notifications,
+          background processing
         </div>
       </div>
 
@@ -1265,25 +1266,11 @@
           threshold, returns fallback immediately), Half-Open (tries one request
           to check recovery)
           <br />
-          <strong>Implementation:</strong> Polly library in .NET, supports
-          retry, circuit breaker, timeout policies, <strong>use:</strong> any
-          service-to-service HTTP call
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How does each microservice manage its own database?
-        </div>
-        <div class="answer">
-          <strong>Database per Service:</strong> each service owns its own DB,
-          services never share DB directly, communicate via APIs or events
-          <br />
-          <strong>Benefits:</strong> each service picks best DB type, teams stay
-          independent, schema changes don't break others
-          <br />
-          <strong>Downside:</strong> joining data across services is harder, use
-          API calls or eventual consistency via events
+          <strong>Implementation:</strong>
+          <strong
+            >Polly library in .NET, supports retry, circuit breaker, timeout
+            policies</strong
+          >, <strong>use:</strong> any service-to-service HTTP call
         </div>
       </div>
 
@@ -1294,8 +1281,9 @@
           use in Aviva?
         </div>
         <div class="answer">
-          <strong>Distributed Tracing:</strong> unique Correlation ID generated
-          at entry point, passed in HTTP header to every downstream service,
+          <strong>Distributed Tracing:</strong>
+          <strong>unique Correlation ID</strong> generated at entry point,
+          <strong>passed in HTTP header to every downstream service</strong>,
           each service logs this ID, filter all logs for single request across
           all services
           <br />
@@ -1307,16 +1295,19 @@
       <div class="qa-block">
         <div class="question">What is Service Discovery in microservices?</div>
         <div class="answer">
-          <strong>Service Discovery:</strong> services find each other
-          automatically without hardcoded URLs, needed because IPs change on
-          dynamic deployments
+          <strong>Service Discovery:</strong> mechanism where services register
+          in a service registry and other services discover them dynamically
+          instead of using hardcoded URLs. <strong>Use:</strong> avoids
+          hardcoded URLs since service IP/addresses can change in multi server
+          auto-scaling.
           <br />
-          <strong>Client-side:</strong> caller queries registry (Consul, Eureka)
-          to get address, then calls directly
+          <strong>Client-side discovery:</strong> calling service queries
+          registry (e.g., Consul, Eureka) to get service address, then calls it
+          directly.
           <br />
-          <strong>Server-side:</strong> caller goes through load balancer or API
-          Gateway which handles lookup, <strong>use:</strong> built-in in
-          AWS/Azure cloud setups
+          <strong>Server-side discovery:</strong> request goes through load
+          balancer/API Gateway which looks up the service and routes the
+          request.
         </div>
       </div>
 
@@ -1364,9 +1355,9 @@
       <div class="qa-block">
         <div class="question">What is DbContext and DbSet?</div>
         <div class="answer">
-          <strong>DbContext:</strong> main class, manages DB connection and all
-          operations (query, save, track changes), one per request (Scoped
-          lifetime)
+          <strong>DbContext:</strong> main class which represents database,
+          manages DB connection and all operations (query, save, track changes),
+          Scoped lifetime
           <br />
           <strong>DbSet&lt;T&gt;:</strong> represents a table, each property
           maps to one table, query through DbSet, commit via
@@ -1379,7 +1370,7 @@
           What is the difference between Code First and Database First?
         </div>
         <div class="answer">
-          <strong>Code First:</strong> write C# model classes, EF generates DB
+          <strong>Code First:</strong> write C# entity classes, EF generates DB
           from them, use migrations for schema changes,
           <strong>use:</strong> new projects, full control from code
           <br />
@@ -1391,8 +1382,9 @@
       <div class="qa-block">
         <div class="question">What are EF Core migrations?</div>
         <div class="answer">
-          <strong>Migrations:</strong> track model changes over time, apply to
-          DB incrementally, like version control for DB schema
+          <strong>Migrations:</strong>
+          <strong>Changes made in entity apply to DB</strong> incrementally,
+          like version control for DB schema
           <br />
           <code>Add-Migration MigrationName</code> creates migration file,
           <code>Update-Database</code> applies it, <strong>use:</strong> every
@@ -1406,28 +1398,15 @@
           What is the difference between Lazy Loading and Eager Loading?
         </div>
         <div class="answer">
-          <strong>Eager Loading:</strong> loads related data immediately with
-          <code>.Include()</code>, single query with JOIN,
-          <strong>use:</strong> when you know you need related data
+          <strong>Eager Loading:</strong> fetches main entity and related data
+          together using <code>.Include()</code> in one query (JOIN),
+          <strong>use:</strong> when you know related data is required
           <br />
-          <strong>Lazy Loading:</strong> related data loads automatically when
-          navigation property accessed, fires separate query per access, causes
-          N+1 problem, <strong>use:</strong> avoid in most cases
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          What is the N+1 query problem? How do you fix it?
-        </div>
-        <div class="answer">
-          <strong>N+1 problem:</strong> load 100 orders then access
-          <code>order.Customer</code> in loop — fires 101 queries total, one per
-          row
-          <br />
-          <strong>Fix:</strong> use <code>.Include(o =&gt; o.Customer)</code> —
-          loads everything in one JOIN query upfront,
-          <strong>use:</strong> always include related data you know you'll need
+          <strong>Lazy Loading:</strong> related data is fetched later only when
+          the navigation property is accessed, triggers additional queries (can
+          lead to N+1 issue), <strong>use:</strong> generally avoided in
+          performance-sensitive APIs. Always include related data you know
+          you'll need.
         </div>
       </div>
 
@@ -1437,11 +1416,10 @@
           What is AsNoTracking() and when should you use it?
         </div>
         <div class="answer">
-          <strong>AsNoTracking():</strong> skips change tracking for fetched
-          entities, faster queries, less memory, EF doesn't monitor those
-          objects, <code>context.Users.AsNoTracking().ToList()</code>,
-          <strong>use:</strong> read-only queries where you don't plan to update
-          data
+          <strong>AsNoTracking():</strong> Tells EF Core not to track retrieved
+          entities in the change tracker, improves performance and reduces
+          memory usage, <strong>use:</strong> read-only queries where data will
+          not be updated.
         </div>
       </div>
 
@@ -1462,26 +1440,9 @@
           all rows
           <br />
           <strong>Indexes:</strong> add proper DB indexes on filtered/joined
-          columns
-        </div>
-      </div>
-
-      <!-- GROUP: Entity State & Relationships -->
-      <div class="qa-block">
-        <div class="question">
-          What is the difference between Add, Update, and Attach in EF Core?
-        </div>
-        <div class="answer">
-          <strong>Add:</strong> marks entity as new, INSERT on SaveChanges,
-          <strong>use:</strong> inserting new records
-          <br />
-          <strong>Update:</strong> marks all properties as modified, UPDATE on
-          SaveChanges even for unchanged fields, <strong>use:</strong> full
-          entity update
-          <br />
-          <strong>Attach:</strong> attaches existing entity without marking
-          modified, manually set changed properties,
-          <strong>use:</strong> partial update of specific fields only
+          columns <br />
+          <strong>Compiled queries:</strong> precompile frequently executed
+          queries to reduce query translation overhead and improve performance.
         </div>
       </div>
 
@@ -1490,7 +1451,8 @@
           How do you configure a Many-to-Many relationship in EF Core?
         </div>
         <div class="answer">
-          <strong>EF Core 5+ (direct):</strong> no junction entity needed,
+          Define navigation collections in both entities and configure using
+          <br />
           <code
             >modelBuilder.Entity&lt;Student&gt;().HasMany(s =&gt;
             s.Courses).WithMany(c =&gt; c.Students)</code
@@ -1572,6 +1534,14 @@
           <strong>Decorator:</strong> add behavior to objects dynamically
           without modifying them, <strong>use:</strong> logging, caching
           wrappers
+          <br />
+          <strong>CQRS:</strong> separates read and write operations into
+          different models/services, <strong>use:</strong> complex systems,
+          performance and scalability
+          <br />
+          <strong>Facade:</strong> provides simplified interface over complex
+          subsystems/services, <strong>use:</strong> combine multiple services
+          into single entry point
         </div>
       </div>
 
@@ -1617,8 +1587,8 @@
         </div>
         <div class="answer">
           <strong>Layered architecture:</strong> Presentation (Controllers /
-          Angular) → Business Logic (Services) → Data Access (Repositories / EF
-          Core) → Database
+          Angular) → Application later (CQRS Handler) → Business Logic
+          (Services) → Data Access (Repositories / EF Core) → Database
           <br />
           each layer talks only to layer below it, concerns separated, code
           testable, easy to maintain, <strong>use:</strong> standard enterprise
@@ -1646,25 +1616,58 @@
       <!-- GROUP: Performance & Scalability -->
       <div class="qa-block">
         <div class="question">
-          How do you improve performance in your APIs? How would you design a
-          scalable API?
+          How do you improve performance in your App? Your APIs? How would you
+          design a scalable API?
         </div>
         <div class="answer">
-          <strong>EF queries:</strong> <code>AsNoTracking()</code> for reads,
-          <code>.Select()</code> for only needed columns, pagination with
-          <code>Skip/Take</code>
+          <strong>EF Optimization:</strong>
+          <code>AsNoTracking()</code> for read-only queries,
+          <code>.Select()</code> only needed columns, <code>Skip/Take</code> for
+          pagination, avoid N+1 with <code>.Include()</code> eager loading, use
+          <code>.AsSplitQuery()</code> for multiple collections, batch updates
+          with <code>ExecuteUpdateAsync()</code>, avoid
+          <code>ToList()</code> before filtering
           <br />
-          <strong>Caching:</strong> IMemoryCache for single server, Redis for
-          multi-server, reduces DB load
+
+          <strong>Angular Optimization:</strong>
+          lazy loading modules, <code>OnPush</code> change detection,
+          <code>trackBy</code> in <code>*ngFor</code>, unsubscribe observables
+          with <code>takeUntil</code> / <code>async</code> pipe, preload
+          strategies, bundle size with tree shaking, avoid heavy logic in
+          templates
           <br />
-          <strong>Async/await:</strong> everywhere for non-blocking I/O, frees
-          threads during DB/HTTP calls
+
+          <strong>MVC Optimization:</strong>
+          output caching on actions, minify CSS/JS, bundling static files, avoid
+          ViewBag overuse, partial views for reusable UI, response compression
+          middleware
           <br />
-          <strong>Scalable design:</strong> stateless (no server-side session),
-          load balancer for horizontal scaling, message queue for heavy
-          background tasks, rate limiting
+
+          <strong>DB Optimization:</strong>
+          indexes on filtered/joined/sorted columns, avoid
+          <code>SELECT *</code>, use stored procedures for complex queries,
+          connection pooling, query execution plans, avoid cursor-based logic,
+          normalize schema
           <br />
-          <strong>DB:</strong> proper indexes on filtered/joined columns
+
+          <strong>Web API Optimization:</strong>
+          async/await everywhere, response compression (Gzip/Brotli), rate
+          limiting, output caching, minimal payload with <code>DTO</code> not
+          full entities, HTTP <code>304</code> with ETag/Last-Modified,
+          versioning for backward compatibility
+          <br />
+
+          <strong>Caching:</strong>
+          <code>IMemoryCache</code> single server,
+          <code>IDistributedCache</code> / Redis multi-server, cache DB results,
+          reduces repeated DB hits
+          <br />
+
+          <strong>Scalable API Design:</strong>
+          stateless (no server-side session), JWT for auth, horizontal scaling
+          with load balancer, message queue (RabbitMQ/Azure Service Bus) for
+          heavy tasks, health checks, circuit breaker pattern, containerize with
+          Docker + Kubernetes
         </div>
       </div>
 
@@ -1690,12 +1693,18 @@
       <div class="qa-block">
         <div class="question">How do you handle concurrency issues?</div>
         <div class="answer">
-          <strong>Optimistic Concurrency:</strong> add
-          <code>RowVersion</code> or <code>Timestamp</code> column to entity, EF
-          Core checks on update — if changed since last read throws
-          <code>DbUpdateConcurrencyException</code>, catch and inform user
-          record was already modified, <strong>use:</strong> when multiple users
-          can edit same record
+          <strong>Optimistic Concurrency:</strong> detect conflicts when
+          multiple users update same record at same time
+          <br />
+          <strong>Approach:</strong> add
+          <code>RowVersion / Timestamp</code> column to entity
+          <br />
+          <strong>Behavior:</strong> EF includes RowVersion in update WHERE
+          clause automatically, DB auto-updates it on every change
+          <br />
+          <strong>Result:</strong> if RowVersion mismatches →
+          <code>DbUpdateConcurrencyException</code> thrown, preventing data
+          overwrite
         </div>
       </div>
 
@@ -1710,34 +1719,14 @@
           exceptions, returns standard error response, log everything via
           Serilog
           <br />
-          <strong>Angular:</strong> HTTP Interceptor catches error responses,
-          shows toast/notification
+          <strong>Angular:</strong> Implement HandleError & register in
+          app.config.ts; Interceptor catches error responses
           <br />
           <strong>Expected errors:</strong> return proper HTTP status codes
           (400, 404, 409)
           <br />
           <strong>Production monitoring:</strong> Serilog → Azure Application
           Insights or Seq, set up alerts for error spikes and failed requests
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question">
-          How do you deploy your application? Walk through your deployment
-          process.
-        </div>
-        <div class="answer">
-          <strong>Build:</strong> <code>ng build --prod</code> for Angular,
-          <code>dotnet publish</code> for .NET API
-          <br />
-          <strong>CI/CD:</strong> push to Git → Azure DevOps / GitHub Actions
-          runs tests, builds artifacts, deploys to Azure App Service
-          <br />
-          <strong>Migrations:</strong> EF migrations run as part of deploy
-          script
-          <br />
-          <strong>Config:</strong> connection strings and secrets from App
-          Settings / environment variables, never hardcoded
         </div>
       </div>
 
@@ -1764,60 +1753,91 @@
           What are the main building blocks of an Angular application?
         </div>
         <div class="answer">
-          <strong>Modules:</strong> group related components/services,
-          <strong>use:</strong> organize feature areas
+          <strong>Modules:</strong> group related components/services/pipes,
+          <code>@NgModule</code>, <strong>use:</strong> organize feature areas,
+          root = AppModule, feature = lazy loaded modules
           <br />
-          <strong>Components:</strong> UI building blocks, template + logic,
-          <strong>use:</strong> every UI element
+          <strong>Components:</strong> UI building blocks, template + logic +
+          styles, <code>@Component</code>, <strong>use:</strong> every UI
+          element
           <br />
           <strong>Services:</strong> shared business logic, HTTP calls, state,
-          no UI, singleton by default, <strong>use:</strong> data fetching,
-          shared logic
+          no UI, singleton by default with <code>providedIn: 'root'</code>,
+          <strong>use:</strong> data fetching, shared logic
           <br />
-          <strong>Directives:</strong> manipulate DOM, structural (<code
-            >*ngIf</code
-          >
-          <code>*ngFor</code>) or attribute (<code>ngClass</code>)
+          <strong>Directives:</strong> Attributes that manipulate DOM,
+          structural (<code>*ngIf</code> <code>*ngFor</code>) or attribute
+          (<code>ngClass</code> <code>ngStyle</code>)
           <br />
           <strong>Pipes:</strong> transform data in templates,
-          <code>{{ date | date:'short' }}</code>
+          <code>{{ date | date:'short' }}</code>,
+          <code>{{ price | currency }}</code>
           <br />
           <strong>Routing:</strong> navigate between views without full page
-          reload
+          reload, <code>RouterModule</code>, <code>&lt;router-outlet&gt;</code>
+          <br />
+          <strong>Guards:</strong> protect routes, <code>CanActivate</code> auth
+          check, <code>CanDeactivate</code> unsaved changes warning
+          <br />
+          <strong>Interceptors:</strong> intercept all HTTP calls, attach token,
+          handle errors globally
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is Dependency Injection in Angular and how does it work?
+          What is Dependency Injection in Angular? How does it work? What is
+          providedIn root vs component level?
         </div>
         <div class="answer">
-          <strong>DI:</strong> built-in system, Angular injector looks up
-          dependency in provider registry and supplies it automatically, no need
-          to manually create instances
+          <strong>DI:</strong> Angular injector provides dependencies
+          automatically, no manual <code>new Service()</code> needed, inject via
+          constructor, loosely coupled design
           <br />
-          <strong>Register:</strong> <code>providedIn: 'root'</code> for
-          app-wide singleton, or in specific module/component for scoped
-          instance
+          <strong>providedIn: 'root':</strong> single app-wide singleton,
+          available everywhere, tree-shakable, <strong>use:</strong> shared
+          services (AuthService, ApiService)
+          <br />
+          <strong>providers in component:</strong> new instance per component,
+          isolated scope, destroyed with component,
+          <strong>use:</strong> component-specific services
+          <br />
+          <strong>providers in module:</strong> shared within that module,
+          <strong>use:</strong> feature-scoped services
+          <br />
+          <strong>note:</strong> always prefer <code>providedIn: 'root'</code>
+          unless scoped instance needed
         </div>
       </div>
 
-      <!-- GROUP: Component -->
+      <!-- GROUP: Component Lifecycle -->
       <div class="qa-block">
         <div class="question">
-          What is the Angular component lifecycle? Main hooks?
+          What is the Angular component lifecycle? What are the main hooks and
+          when do they run?
         </div>
         <div class="answer">
-          <strong>ngOnChanges:</strong> runs when @Input values change
+          <strong>ngOnChanges:</strong> runs when @Input values change, receives
+          <code>SimpleChanges</code>, runs before ngOnInit,
+          <strong>use:</strong> react to parent data changes
           <br />
-          <strong>ngOnInit:</strong> runs once after init, inputs available,
-          <strong>use:</strong> API calls, initialization logic
+          <strong>ngOnInit:</strong> runs once after component init, all inputs
+          available, <strong>use:</strong> API calls, initialization logic —
+          always prefer over constructor
+          <br />
+          <strong>ngAfterViewInit:</strong> runs after component's view and
+          child views are initialized, <code>@ViewChild</code> available here,
+          <strong>use:</strong> DOM manipulation, access child components
+          <br />
+          <strong>ngAfterContentInit:</strong> runs after projected content
+          initialized, <code>@ContentChild</code> available here
           <br />
           <strong>ngDoCheck:</strong> runs on every change detection cycle,
-          <strong>use:</strong> custom change detection
+          <strong>use:</strong> custom change detection, expensive — use rarely
           <br />
           <strong>ngOnDestroy:</strong> runs before component removed,
-          <strong>use:</strong> unsubscribe observables, cleanup resources
+          <strong>use:</strong> unsubscribe observables, clear timers, prevent
+          memory leaks
         </div>
       </div>
 
@@ -1826,85 +1846,121 @@
           What is the difference between constructor and ngOnInit?
         </div>
         <div class="answer">
-          <strong>Constructor:</strong> runs first, only for DI, component not
-          fully ready yet
+          <strong>Constructor:</strong> runs first, TypeScript class init, only
+          inject dependencies here, component not fully ready, inputs not yet
+          available, <strong>use:</strong> DI only
           <br />
-          <strong>ngOnInit:</strong> runs after Angular sets up component,
-          inputs available, <strong>use:</strong> always put API calls and init
-          logic here, not in constructor
+          <strong>ngOnInit:</strong> runs after Angular sets up component, all
+          @Input values ready, <strong>use:</strong> API calls, data
+          initialization, subscriptions
+          <br />
+          <strong>rule:</strong> never make API calls in constructor, always in
+          ngOnInit
         </div>
       </div>
 
+      <!-- GROUP: Component Communication -->
       <div class="qa-block">
         <div class="question">
-          What is @Input() and @Output()? How does parent-child communication
-          work?
+          What is @Input() and @Output()? How does component communication work?
+          How do unrelated components share data?
         </div>
         <div class="answer">
           <strong>@Input():</strong> parent passes data down to child via
-          property binding, <strong>use:</strong> parent → child data flow
+          property binding, <code>[childProp]="parentData"</code>,
+          <strong>use:</strong> parent → child data flow
           <br />
-          <strong>@Output():</strong> child sends events up to parent via
-          <code>EventEmitter</code>, <strong>use:</strong> child → parent event
-          flow
+          <strong>@Output():</strong> child emits events up to parent via
+          <code>EventEmitter</code>,
+          <code>(childEvent)="parentMethod($event)"</code>,
+          <strong>use:</strong> child → parent event flow
           <br />
-          <strong>Unrelated components:</strong> use shared service with
-          BehaviorSubject or NgRx
+          <strong>@ViewChild:</strong> parent directly accesses child component
+          or DOM element, call child methods, available after
+          <code>ngAfterViewInit</code>
+          <br />
+          <strong>Service + BehaviorSubject:</strong> shared state across
+          unrelated components, holds latest value, emits to all subscribers,
+          <strong>use:</strong> small-medium apps
+          <br />
+          <strong>NgRx:</strong> Redux pattern, single immutable store, Actions
+          → Reducers → Selectors, <strong>use:</strong> large apps with complex
+          shared state
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is ViewChild and ContentChild? What is ng-content and content
+          What is ViewChild, ContentChild, and ng-content? What is content
           projection?
         </div>
         <div class="answer">
-          <strong>@ViewChild:</strong> access child component or DOM element in
-          own template, <strong>use:</strong> call child method or interact with
-          DOM element
+          <strong>@ViewChild:</strong> access child component or DOM element
+          inside own template, available after <code>ngAfterViewInit</code>,
+          <strong>use:</strong> call child methods, interact with DOM
           <br />
-          <strong>@ContentChild:</strong> access content projected into
-          component via <code>&lt;ng-content&gt;</code>
+          <strong>@ContentChild:</strong> access projected content passed into
+          component, available after <code>ngAfterContentInit</code>
           <br />
-          <strong>Content projection:</strong> parent passes HTML into child
-          template, child uses <code>&lt;ng-content&gt;</code> as placeholder,
-          <strong>use:</strong> reusable wrapper components like modals, cards,
-          panels
+          <strong>ng-content:</strong> placeholder slot inside child template,
+          parent passes HTML into it, <strong>use:</strong> reusable wrapper
+          components like modals, cards, panels
+          <br />
+          <strong>Multi-slot projection:</strong>
+          <code>&lt;ng-content select="[header]"&gt;</code> projects specific
+          named slots
         </div>
       </div>
 
       <!-- GROUP: Templates & Directives -->
       <div class="qa-block">
         <div class="question">
-          What are directives? Structural vs Attribute directives?
+          What are directives? Structural vs Attribute? How do you create a
+          custom directive?
         </div>
         <div class="answer">
           <strong>Structural:</strong> change DOM structure, add/remove
-          elements, <code>*ngIf</code> <code>*ngFor</code>
+          elements, prefix <code>*</code>, <code>*ngIf</code>
+          <code>*ngFor</code>
           <code>*ngSwitch</code>
           <br />
           <strong>Attribute:</strong> change appearance or behavior of existing
           element, <code>ngClass</code> <code>ngStyle</code>
           <br />
-          <strong>Note:</strong> components are technically directives with a
-          template
+          <strong>Custom directive:</strong> <code>@Directive</code> decorator,
+          inject <code>ElementRef</code> + <code>Renderer2</code>, use
+          <code>@HostListener</code> for events, <strong>use:</strong> highlight
+          on hover, auto-focus, restrict input
+          <br />
+          <strong>note:</strong> use Renderer2 instead of direct DOM access for
+          SSR compatibility
         </div>
       </div>
 
       <div class="qa-block">
-        <div class="question">What are pipes? Pure vs Impure?</div>
+        <div class="question">
+          What are pipes? Pure vs Impure? How do you create a custom pipe?
+        </div>
         <div class="answer">
-          <strong>Pipes:</strong> transform data in templates without touching
-          component logic, <code>{{ date | date:'short' }}</code>
-          <code>{{ name | uppercase }}</code>, custom pipes use
-          <code>@Pipe</code> decorator
+          <strong>Pipes:</strong> transform display data in templates,
+          <code>{{ date | date:'short' }}</code>
+          <code>{{ name | uppercase }}</code>
+          <code>{{ price | currency:'USD' }}</code>
           <br />
           <strong>Pure:</strong> re-runs only when input reference changes,
-          fast, default behavior, <strong>use:</strong> most custom pipes
+          fast, default, <strong>use:</strong> most custom pipes
           <br />
-          <strong>Impure:</strong> re-runs on every change detection cycle,
-          slow, <code>pure: false</code>, <strong>use:</strong> avoid unless
-          necessary
+          <strong>Impure:</strong> re-runs every change detection cycle, slow,
+          <code>pure: false</code>, <strong>use:</strong> avoid unless necessary
+          (e.g. filtering mutable arrays)
+          <br />
+          <strong>Custom pipe:</strong> implement <code>PipeTransform</code>,
+          <code>transform(value, args)</code> method,
+          <code>@Pipe({ name: 'truncate' })</code>,
+          <strong>use:</strong> reusable formatting logic
+          <br />
+          <strong>note:</strong> prefer pure pipes over methods in templates —
+          methods called on every change detection
         </div>
       </div>
 
@@ -1913,75 +1969,101 @@
           What is trackBy in *ngFor and why is it important?
         </div>
         <div class="answer">
-          <strong>trackBy:</strong> identifies items by unique key (like id),
-          Angular only re-renders items that actually changed, not entire list,
-          big performance gain for large lists, <strong>use:</strong> always in
-          *ngFor with large or frequently updated lists
+          <strong>trackBy:</strong> identifies list items by unique key (id),
+          Angular only re-renders changed items not entire list, without trackBy
+          — Angular destroys and recreates all DOM nodes on array change, big
+          performance gain for large/frequently updated lists
+          <br />
+          <strong>use:</strong> always add in *ngFor with API-driven lists
+          <br />
+          <code>*ngFor="let item of items; trackBy: trackById"</code>
+          <br />
+          <code>trackById(index, item) { return item.id; }</code>
         </div>
       </div>
 
       <!-- GROUP: Routing -->
       <div class="qa-block">
         <div class="question">
-          How does routing work in Angular? What are RouterModule,
-          router-outlet, and RouterLink? forRoot() vs forChild()?
+          How does routing work in Angular? What are route guards? What is
+          forRoot() vs forChild()?
         </div>
         <div class="answer">
-          <strong>RouterModule:</strong> enables routing, define routes in it
+          <strong>RouterModule:</strong> enables routing, define routes array,
+          <code>&lt;router-outlet&gt;</code> renders matched component,
+          <code>routerLink</code> navigates without page reload
           <br />
-          <strong>&lt;router-outlet&gt;:</strong> placeholder where matched
-          component renders
-          <br />
-          <strong>RouterLink:</strong> navigate without full page reload, use
-          instead of <code>&lt;a href&gt;</code>
-          <br />
-          <strong>forRoot():</strong> used once in root AppModule, sets up
-          router, registers main routes
+          <strong>forRoot():</strong> used once in AppModule, initializes router
+          singleton, registers root routes
           <br />
           <strong>forChild():</strong> used in feature modules, adds routes
-          without re-initializing router, using forRoot() in feature module
-          causes bugs
+          without re-initializing router, <strong>note:</strong> using forRoot()
+          in feature module causes bugs
+          <br />
+          <strong>Route params:</strong>
+          <code>this.route.snapshot.paramMap.get('id')</code> or
+          <code>this.route.params.subscribe()</code> for dynamic changes
+          <br />
+          <strong>CanActivate:</strong> blocks route if not authorized, redirect
+          to login, <strong>use:</strong> auth protection
+          <br />
+          <strong>CanDeactivate:</strong> warns before leaving,
+          <strong>use:</strong> unsaved form changes
+          <br />
+          <strong>Resolve:</strong> pre-fetches data before route activates,
+          <strong>use:</strong> ensure data ready before component loads
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is Lazy Loading in Angular? What is an Auth Guard?
+          What is Lazy Loading? How does it work? What is preloading strategy?
         </div>
         <div class="answer">
           <strong>Lazy Loading:</strong> loads feature modules only when user
-          navigates to that route, reduces initial bundle size, speeds up
-          startup,
+          navigates to that route, not in initial bundle, reduces initial load
+          time, improves startup performance
+          <br />
           <code
-            >loadChildren: () =&gt; import('./feature.module').then(m =&gt;
+            >loadChildren: () => import('./feature/feature.module') .then(m =>
             m.FeatureModule)</code
           >
           <br />
-          <strong>Auth Guard (CanActivate):</strong> protects routes from
-          unauthorized access, redirects to login if not logged in,
-          <code>{ path: 'dashboard', canActivate: [AuthGuard] }</code>
+          <strong>Preloading strategy:</strong> lazy modules downloaded in
+          background after app loads, instant navigation when user goes there
           <br />
-          <strong>CanDeactivate:</strong> warns user before leaving form with
-          unsaved changes
+          <code>PreloadAllModules</code> — preloads all lazy modules,
+          <code>NoPreloading</code> — default, no preload, custom strategy —
+          preload only priority modules
+          <br />
+          <strong>use:</strong> always lazy load feature modules in large apps,
+          preload for critical routes
         </div>
       </div>
 
       <!-- GROUP: Forms -->
       <div class="qa-block">
-        <div class="question">Template-driven vs Reactive forms?</div>
+        <div class="question">
+          Template-driven vs Reactive forms? Which is preferred and why?
+        </div>
         <div class="answer">
-          <strong>Template-driven:</strong> form logic in HTML with
-          <code>ngModel</code>, simple, less code, hard to test,
-          <strong>use:</strong> simple forms
+          <strong>Template-driven:</strong> form logic in HTML,
+          <code>[(ngModel)]</code> two-way binding, simple setup, hard to unit
+          test, limited dynamic control, <strong>use:</strong> simple/small
+          forms
           <br />
-          <strong>Reactive:</strong> form logic in component class with
-          <code>FormGroup</code> and <code>FormControl</code>, fully testable,
-          dynamic, better for complex validations, <strong>use:</strong> real
-          projects, complex forms
+          <strong>Reactive:</strong> form logic in component class,
+          <code>FormGroup</code> <code>FormControl</code>
+          <code>FormArray</code>, fully testable, dynamic fields, complex
+          validations, built-in validators + custom validators,
+          <strong>use:</strong> real projects, complex forms — preferred
           <br />
-          <strong>In Aviva:</strong> used Reactive Forms for policy update and
-          claims screens, complex conditional validations and custom validators
-          for date ranges
+          <strong>Custom validator:</strong> function returning
+          <code>ValidationErrors | null</code>, cross-field validation (e.g.
+          password match) set at FormGroup level
+          <br />
+          <strong>Async validator:</strong> returns Observable/Promise,
+          <strong>use:</strong> check email uniqueness via API
         </div>
       </div>
 
@@ -1989,98 +2071,186 @@
       <div class="qa-block">
         <div class="question">
           How do you make HTTP calls in Angular? What is an HTTP Interceptor?
+          What are common interceptor use cases?
         </div>
         <div class="answer">
           <strong>HttpClient:</strong> inject into service,
-          <code>this.http.get&lt;T&gt;(url)</code> <code>.post()</code>
-          <code>.put()</code> <code>.delete()</code>, all return Observables,
-          always call inside service not component
+          <code>this.http.get&lt;T&gt;(url)</code>
+          <code>.post()</code> <code>.put()</code> <code>.delete()</code>, all
+          return Observables, always in service not component
           <br />
-          <strong>HTTP Interceptor:</strong> sits between HTTP calls and server,
-          modifies every request or response, implement
-          <code>HttpInterceptor</code>, <strong>use:</strong> attach JWT token,
-          show loading spinner, handle 401/403 globally, log all requests
+          <strong>HTTP Interceptor:</strong> sits between app and server,
+          intercepts every request/response, implement
+          <code>HttpInterceptor</code> interface, register in providers with
+          <code>HTTP_INTERCEPTORS</code> token
+          <br />
+          <strong>Common uses:</strong>
+          attach JWT token to every request, global error handling (401 →
+          redirect to login, 500 → show toast), show/hide loading spinner, log
+          all requests for debugging, retry failed requests
+          <br />
+          <strong>note:</strong> call <code>next.handle(req)</code> to pass
+          request through, clone request before modifying — requests are
+          immutable
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is RxJS? Observable vs Promise? What are Promises in JavaScript?
+          What is RxJS? Observable vs Promise? Key RxJS operators?
         </div>
         <div class="answer">
-          <strong>RxJS:</strong> library for reactive programming with streams
+          <strong>RxJS:</strong> reactive programming library, handles async
+          data streams with operators
           <br />
-          <strong>Observable:</strong> lazy, emits multiple values over time,
-          cancellable, supports operators (map, filter, switchMap),
-          <strong>use:</strong> HTTP calls, real-time streams in Angular
+          <strong>Observable:</strong> lazy (starts on subscribe), multiple
+          values over time, cancellable, supports operators,
+          <strong>use:</strong> HTTP calls, real-time streams, user events
           <br />
-          <strong>Promise:</strong> eager (starts immediately), resolves once,
-          can't cancel, 3 states: pending → fulfilled or rejected,
-          <code>.then()</code> <code>.catch()</code> <code>.finally()</code>,
-          use async/await for cleaner syntax
+          <strong>Promise:</strong> eager (starts immediately), single value,
+          not cancellable, 3 states: pending → fulfilled/rejected,
+          <code>.then()</code> <code>.catch()</code> <code>.finally()</code>
+          <br />
+          <strong>map:</strong> transform each value,
+          <code>pipe(map(data => data.users))</code>
+          <br />
+          <strong>filter:</strong> emit only matching values
+          <br />
+          <strong>tap:</strong> side effects without changing stream (logging,
+          debugging)
+          <br />
+          <strong>catchError:</strong> handle errors in stream, return fallback
+          or rethrow
+          <br />
+          <strong>debounceTime:</strong> wait X ms after last emit,
+          <strong>use:</strong> search input delay
+          <br />
+          <strong>distinctUntilChanged:</strong> ignore duplicate consecutive
+          values, <strong>use:</strong> search optimization
+          <br />
+          <strong>takeUntil:</strong> auto-unsubscribe when subject emits,
+          <strong>use:</strong> ngOnDestroy cleanup
+          <br />
+          <strong>forkJoin:</strong> run multiple observables in parallel, emit
+          when all complete, <strong>use:</strong> parallel API calls
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between switchMap, mergeMap, and concatMap? How
-          do you chain service calls?
+          What is the difference between switchMap, mergeMap, concatMap, and
+          exhaustMap?
         </div>
         <div class="answer">
-          <strong>switchMap:</strong> cancels previous request, starts new one,
-          <strong>use:</strong> search/typeahead, only care about latest result
+          <strong>switchMap:</strong> cancels previous inner observable, starts
+          new one, <strong>use:</strong> search/typeahead — only latest result
+          matters
           <br />
-          <strong>mergeMap:</strong> runs all in parallel,
+          <strong>mergeMap:</strong> runs all in parallel, no cancellation,
           <strong>use:</strong> independent parallel calls
           <br />
-          <strong>concatMap:</strong> waits for each to finish before starting
-          next, <strong>use:</strong> order matters
+          <strong>concatMap:</strong> queues, waits for each to finish before
+          starting next, preserves order, <strong>use:</strong> sequential
+          dependent calls
           <br />
-          <strong>Chaining calls:</strong>
+          <strong>exhaustMap:</strong> ignores new values while current is
+          running, <strong>use:</strong> login button — prevent multiple
+          clicks/requests
+          <br />
+          <strong>chaining calls:</strong>
           <code
-            >getUser(id).pipe(switchMap(user =&gt;
+            >getUser(id).pipe(switchMap(user =>
             getOrders(user.id))).subscribe()</code
-          >, avoid nested subscribe() — causes callback hell and memory leaks
+          >, avoid nested subscribe — causes callback hell + memory leaks
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between Subject and BehaviorSubject?
+          What is Subject, BehaviorSubject, ReplaySubject, AsyncSubject?
         </div>
         <div class="answer">
-          <strong>Subject:</strong> emits values only to current subscribers,
-          new subscribers miss previous values, <strong>use:</strong> one-time
-          events
+          <strong>Subject:</strong> multicast, no initial value, new subscribers
+          miss past values, <strong>use:</strong> one-time events, button clicks
           <br />
           <strong>BehaviorSubject:</strong> holds latest value, emits
-          immediately to any new subscriber, <strong>use:</strong> shared state
-          like current logged-in user, app-wide data
+          immediately to new subscribers, requires initial value,
+          <strong>use:</strong> shared state — current user, cart count,
+          app-wide data
+          <br />
+          <strong>ReplaySubject:</strong> replays last N values to new
+          subscribers, <code>new ReplaySubject(3)</code>,
+          <strong>use:</strong> cache recent emissions
+          <br />
+          <strong>AsyncSubject:</strong> emits only last value and only on
+          complete, <strong>use:</strong> rare, result-only streams
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What is the async pipe and why is it preferred?
+          What is the async pipe and why is it preferred over manual subscribe?
         </div>
         <div class="answer">
           <strong>async pipe:</strong> subscribes to Observable in template,
           auto-unsubscribes on component destroy, no memory leaks, no manual
-          subscribe/unsubscribe needed, <strong>use:</strong> always prefer over
-          manual subscribe in templates
+          subscribe/unsubscribe, triggers change detection automatically with
+          OnPush
+          <br />
+          <strong>use:</strong> always prefer in templates over manual subscribe
+          <br />
+          <strong>manual subscribe risk:</strong> if forgotten to unsubscribe in
+          ngOnDestroy → memory leak, especially with long-lived observables
+          <br />
+          <code>{{ users$ | async }}</code>
+          <code>*ngIf="data$ | async as data"</code>
         </div>
       </div>
 
-      <!-- GROUP: Performance -->
+      <!-- GROUP: Change Detection & Performance -->
       <div class="qa-block">
-        <div class="question">What is Change Detection? Default vs OnPush?</div>
+        <div class="question">
+          What is Change Detection in Angular? Default vs OnPush? What is
+          Zone.js?
+        </div>
         <div class="answer">
-          <strong>Default:</strong> checks entire component tree on every event,
-          safe but slow for heavy UIs
+          <strong>Change Detection:</strong> Angular checks component tree to
+          sync model with view, runs after events, HTTP calls, timers
           <br />
-          <strong>OnPush:</strong> only re-checks when @Input reference changes
-          or event fires inside component, much faster,
-          <strong>use:</strong> performance-heavy components
+          <strong>Zone.js:</strong> patches async APIs (setTimeout, Promise,
+          events) to notify Angular when to run change detection automatically
+          <br />
+          <strong>Default:</strong> checks entire component tree on every event,
+          safe but slow for large apps
+          <br />
+          <strong>OnPush:</strong> only re-checks when @Input reference changes,
+          event fires inside component, or async pipe emits, skips subtree if
+          inputs unchanged, much faster
+          <br />
+          <strong>use:</strong> OnPush on all presentational/dumb components,
+          pass new object/array references not mutated ones
+          <br />
+          <strong>ChangeDetectorRef:</strong> manually trigger
+          <code>markForCheck()</code> or detach detection for fine control
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is the difference between Smart and Dumb components?
+        </div>
+        <div class="answer">
+          <strong>Smart (Container):</strong> knows about services/store,
+          fetches data, manages state, passes data down via @Input, handles
+          business logic, <strong>use:</strong> page-level components
+          <br />
+          <strong>Dumb (Presentational):</strong> receives data via @Input,
+          emits events via @Output, no service injection, pure UI rendering,
+          reusable, use OnPush for performance, <strong>use:</strong> UI
+          components — cards, tables, forms
+          <br />
+          <strong>benefit:</strong> separation of concerns, dumb components
+          easily testable and reusable
         </div>
       </div>
 
@@ -2089,64 +2259,160 @@
           How do you optimize the performance of an Angular application?
         </div>
         <div class="answer">
-          <strong>OnPush</strong> change detection,
-          <strong>lazy loading</strong> for feature modules,
-          <strong>trackBy</strong> in *ngFor, <strong>async pipe</strong> to
-          avoid manual subscriptions, <strong>pure pipes</strong> instead of
-          methods in templates, <code>ng build --prod</code> enables AOT
-          compilation, tree shaking, minification
+          <strong>OnPush</strong> change detection on components,
+          <strong>lazy loading</strong> feature modules,
+          <strong>trackBy</strong> in *ngFor, <strong>async pipe</strong> — no
+          manual subscribe, auto cleanup, <strong>pure pipes</strong> instead of
+          methods in templates,
+          <strong>debounceTime + distinctUntilChanged</strong> on search inputs,
+          <strong>virtual scrolling</strong> for large lists (CDK),
+          <strong>AOT compilation</strong> default in production,
+          <code>ng build --configuration production</code>
+          enables tree shaking, minification, dead code removal,
+          <strong>preloading strategy</strong> for critical lazy routes, avoid
+          memory leaks — unsubscribe with takeUntil or async pipe
+        </div>
+      </div>
+
+      <!-- GROUP: State Management -->
+      <div class="qa-block">
+        <div class="question">
+          What is NgRx? When would you use it over a simple service?
+        </div>
+        <div class="answer">
+          <strong>NgRx:</strong> Redux pattern for Angular, single immutable
+          state store, predictable state management
+          <br />
+          <strong>Flow:</strong> Component dispatches Action → Effects calls
+          APIs → Reducer updates Store → Selector reads state → Component gets
+          updated data via Observable
+          <br />
+          <strong>Actions:</strong> describe what happened,
+          <code>createAction('[Auth] Login Success')</code>
+          <br />
+          <strong>Reducers:</strong> pure functions, return new state, never
+          mutate directly
+          <br />
+          <strong>Selectors:</strong> memoized queries on store,
+          <code>createSelector()</code>
+          <br />
+          <strong>Effects:</strong> handle side effects (API calls), listen to
+          actions, dispatch new actions on success/failure
+          <br />
+          <strong>use NgRx when:</strong> large app, complex shared state,
+          multiple components need same data, time-travel debugging needed
+          <br />
+          <strong>use Service + BehaviorSubject when:</strong>
+          small-medium app, simple shared state
+        </div>
+      </div>
+
+      <!-- GROUP: Advanced -->
+      <div class="qa-block">
+        <div class="question">What is AOT vs JIT compilation in Angular?</div>
+        <div class="answer">
+          <strong>JIT (Just-In-Time):</strong> compiles in browser at runtime,
+          slower startup, larger bundle, used in development
+          <br />
+          <strong>AOT (Ahead-Of-Time):</strong> compiles at build time, faster
+          rendering, smaller bundle, catches template errors early, default in
+          production builds
+          <br />
+          <strong>use:</strong> always AOT in production —
+          <code>ng build --configuration production</code>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What are standalone components in Angular?</div>
+        <div class="answer">
+          <strong>Standalone components:</strong> Angular 14+, components that
+          don't need NgModule, self-contained, declare own imports directly,
+          reduces boilerplate
+          <br />
+          <code
+            >@Component({ standalone: true, imports: [CommonModule,
+            RouterModule] })</code
+          >
+          <br />
+          <strong>benefit:</strong> simpler architecture, better tree shaking,
+          easier lazy loading per component not just module
+          <br />
+          <strong>use:</strong> new Angular projects and Angular 17+ default
+          approach
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          How do you share data and manage state between unrelated components?
+          What are Angular Signals? How do they differ from RxJS?
         </div>
         <div class="answer">
-          <strong>Service + BehaviorSubject:</strong> simplest approach, holds
-          latest value, emits to all subscribers immediately,
-          <strong>use:</strong> small-medium apps
+          <strong>Signals:</strong> Angular 17+, reactive primitive, hold value
+          and notify consumers when changed,
+          <code>const count = signal(0)</code>, read: <code>count()</code>,
+          update: <code>count.set(1)</code> or
+          <code>count.update(v => v + 1)</code>
           <br />
-          <strong>NgRx:</strong> Redux pattern, single immutable store, Actions
-          → Reducers → Selectors, predictable state, <strong>use:</strong> large
-          apps with complex shared state
+          <strong>computed:</strong> derived signal, auto-updates when
+          dependencies change,
+          <code>const double = computed(() => count() * 2)</code>
+          <br />
+          <strong>effect:</strong> side effect when signal changes,
+          <code>effect(() => console.log(count()))</code>
+          <br />
+          <strong>vs RxJS:</strong> Signals simpler, synchronous, no
+          subscribe/unsubscribe, better change detection integration, RxJS
+          better for complex async streams and operators
+          <br />
+          <strong>use:</strong> Signals for local component state, RxJS for HTTP
+          and complex async workflows
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          How do you make an Angular application responsive?
+          How do you handle errors globally in Angular?
         </div>
         <div class="answer">
-          <strong>CSS Flexbox/Grid:</strong> adapts to screen size naturally,
-          avoid fixed pixel widths, use %, vw, rem
+          <strong>HTTP errors:</strong> interceptor with
+          <code>catchError</code> in pipe, handle 401 → logout, 403 → forbidden
+          page, 500 → show error toast
           <br />
-          <strong>CDK BreakpointObserver:</strong> detect screen size in
-          component, conditionally show/hide elements
+          <strong>Global error handler:</strong> implement
+          <code>ErrorHandler</code> class, override <code>handleError()</code>,
+          catch all uncaught errors, log to monitoring service (Sentry,
+          AppInsights)
           <br />
-          <strong>Angular Material:</strong> built-in responsive grid and
-          components
+          <strong>RxJS stream errors:</strong>
+          <code>catchError(() => of([]))</code> return fallback,
+          <code>retry(3)</code> retry failed requests
           <br />
-          <strong>ngClass/ngStyle:</strong> apply classes dynamically based on
-          screen size or state
+          <strong>Template errors:</strong> use
+          <code>*ngIf="data; else errorTemplate"</code>
+          for conditional error UI
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question">
-          What are Angular Migrations? How do you upgrade an Angular app to a
-          newer version?
+          How do you upgrade an Angular app? What is the Angular update process?
         </div>
         <div class="answer">
-          <strong>Upgrade:</strong>
-          <code>ng update @angular/core @angular/cli</code>, updates packages
-          and runs migration schematics (auto fixes)
+          <strong>Rule:</strong> upgrade one major version at a time, don't skip
+          versions
           <br />
-          <strong>Rule:</strong> upgrade one major version at a time, check
-          update.angular.io for breaking changes
+          <strong>Steps:</strong>
+          check current version → visit update.angular.io for breaking changes →
+          <code>ng update @angular/core @angular/cli</code> → migration
+          schematics auto-fix code → fix remaining issues → run tests → verify
+          app
           <br />
-          <strong>Flow:</strong> check version → update CLI → run
-          <code>ng update</code> → fix issues → test app
+          <strong>Common breaking changes:</strong> removed APIs, stricter
+          TypeScript, module changes, RxJS upgrades
+          <br />
+          <strong>note:</strong> always update CLI first, then core, then
+          third-party Angular libraries
         </div>
       </div>
 
@@ -2175,7 +2441,7 @@
         </div>
         <div class="answer">
           <strong>Constraints:</strong> rules enforced on columns to maintain
-          data integrity
+          data integrity; Validate user input
           <br />
           <strong>PRIMARY KEY:</strong> unique, not null, only one per table,
           main row identifier
@@ -2305,20 +2571,28 @@
       <div class="qa-block">
         <div class="question">How do you optimize SQL queries?</div>
         <div class="answer">
-          <strong>Indexes:</strong> on frequently filtered/joined columns
+          <strong>Execution Plan:</strong> analyze query plan, detect
+          table/index scans, index seeks, key lookups, missing indexes,
+          high-cost operations
           <br />
-          <strong>Avoid SELECT *:</strong> fetch only needed columns
+          <strong>Indexing:</strong> create indexes on WHERE, JOIN, ORDER BY
+          columns, covering indexes, avoid over-indexing, index maintenance
           <br />
-          <strong>Avoid functions on indexed columns in WHERE:</strong> defeats
-          the index
+          <strong>Query Writing:</strong> avoid SELECT *, avoid cursors, use
+          set-based queries, avoid functions on indexed columns, avoid implicit
+          conversions
           <br />
-          <strong>JOINs over subqueries:</strong> generally better performance
+          <strong>Statistics:</strong> maintain data statistics,
+          <strong>use:</strong> optimizer chooses better execution plan
           <br />
-          <strong>Pagination:</strong> <code>OFFSET/FETCH</code> for large
-          results
+          <strong>Pagination:</strong> use OFFSET-FETCH or keyset pagination,
+          avoid large TOP offsets
           <br />
-          <strong>Execution Plan:</strong> always check to find actual
-          bottleneck
+          <strong>Performance Practices:</strong> stored procedures,
+          parameterized queries, short transactions
+          <br />
+          <strong>Monitoring:</strong> SQL Profiler,
+          <strong>use:</strong> capture queries, performance tuning
         </div>
       </div>
 
@@ -2360,17 +2634,17 @@
 
       <div class="qa-block">
         <div class="question">
-          What is the difference between a stored procedure and a user-defined
-          function?
+          Difference between Stored Procedure and Function?
         </div>
         <div class="answer">
-          <strong>Stored Procedure:</strong> can SELECT, INSERT, UPDATE, DELETE,
-          can have output params, cannot be used inside SELECT,
-          <strong>use:</strong> business logic operations
+          <strong>Stored Procedure (SP):</strong> can read/modify data, return
+          multiple result sets and output parameters, supports transactions,
+          error handling, temp tables, dynamic SQL, executed using EXEC;
+          <strong>Contains business logic</strong>
           <br />
-          <strong>Function:</strong> must return a value, used inside
-          SELECT/WHERE, cannot modify data, <strong>use:</strong> reusable
-          calculations
+          <strong>Function:</strong> read-only, returns single value or table,
+          used inside SELECT, must be deterministic, cannot use transactions or
+          cause side effects
         </div>
       </div>
 
@@ -2433,8 +2707,9 @@
           <strong>Blob Storage:</strong> stores unstructured files — PDFs,
           images, documents, access via <code>Azure.Storage.Blobs</code> SDK
           <br />
-          <strong>SAS token:</strong> secure temporary access without exposing
-          storage key
+          <strong>SAS token:</strong> temporary secure URL granting limited
+          access to Azure Storage container or a specific blob (file) without
+          exposing account keys
           <br />
           <strong>use:</strong> policy documents, claim attachments, scanned ID
           proofs in insurance apps
