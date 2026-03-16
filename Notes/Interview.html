@@ -2995,19 +2995,26 @@
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
-            Convert to char array, swap from both ends moving inward.
+            Loop from end of string and build the reversed result.
           </div>
-          <pre><code class="language-csharp">string Reverse(string s)
+          <pre><code class="language-csharp">
+// Option1: Reverse string using for reverse loop
+string ReverseFor(string s)
 {
-    char[] chars = s.ToCharArray();
-    int left = 0, right = chars.Length - 1;
-    while (left &lt; right)
+    string result = "";
+    for (int i = s.Length - 1; i >= 0; i--)
     {
-        (chars[left], chars[right]) = (chars[right], chars[left]);
-        left++; right--;
+        result += s[i];
     }
-    return new string(chars);
-}</code></pre>
+    return result;
+}
+
+// Option2: Reverse string using LINQ
+string ReverseLinq(string s)
+{
+    return new string(s.Reverse().ToArray());
+}
+</code></pre>
         </div>
       </div>
 
@@ -3022,8 +3029,14 @@
           <pre><code class="language-csharp">string ReverseWords(string s)
 {
     string[] words = s.Split(' ');
-    Array.Reverse(words);
-    return string.Join(' ', words);
+    string[] result = new string[words.Length];
+
+    for (int i = 0; i < words.Length; i++)
+    {
+        result[i] = words[words.Length - 1 - i];
+    }
+
+    return string.Join(' ', result);
 }</code></pre>
         </div>
       </div>
@@ -3039,14 +3052,12 @@
           </div>
           <pre><code class="language-csharp">bool IsPalindrome(string s)
 {
-    s = s.ToLower();
-    int left = 0, right = s.Length - 1;
-    while (left &lt; right)
+    string rev = "";
+    for (int i = s.Length - 1; i >= 0; i--)
     {
-        if (s[left] != s[right]) return false;
-        left++; right--;
+        rev += s[i];
     }
-    return true;
+    return s == rev;
 }</code></pre>
         </div>
       </div>
@@ -3067,75 +3078,42 @@
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          5. Find the first non-repeated character in a string.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Count frequency of each character, return the first one with count
-            1.
-          </div>
-          <pre><code class="language-csharp">char? FirstNonRepeated(string s)
-{
-    var freq = new Dictionary&lt;char, int&gt;();
-    foreach (char c in s)
-        freq[c] = freq.GetValueOrDefault(c) + 1;
-
-    foreach (char c in s)
-        if (freq[c] == 1) return c;
-
-    return null;
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          6. Check if a string contains only digits.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Use char.IsDigit on every character — all must be digits.
-          </div>
-          <pre><code class="language-csharp">bool IsAllDigits(string s) => s.All(char.IsDigit);</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          7. Check if two strings are anagrams of each other.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Sort both strings — if equal, they are anagrams.
-          </div>
-          <pre><code class="language-csharp">bool AreAnagrams(string a, string b)
-{
-    if (a.Length != b.Length) return false;
-    return a.OrderBy(c => c).SequenceEqual(b.OrderBy(c => c));
-}</code></pre>
-        </div>
-      </div>
-
       <!-- Array Problems -->
       <h3 class="subsection-header">Array Problems</h3>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          8. Remove duplicates from an array.
+          1. Remove duplicates from an array.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
-            Use Distinct() — it only keeps unique values automatically.
+            Use Distinct() for quick removal or loop with HashSet to keep unique
+            values.
           </div>
-          <pre><code class="language-csharp">int[] RemoveDuplicates(int[] arr) => arr.Distinct().ToArray();</code></pre>
+
+          <pre><code class="language-csharp">
+// Option1: Remove duplicates using LINQ (easy)
+int[] RemoveDuplicates(int[] arr) =&gt; arr.Distinct().ToArray();
+
+// Option2: Remove duplicates using loop
+int[] RemoveDuplicatesLoop(int[] arr)
+{
+    HashSet&lt;int&gt; set = new HashSet&lt;int&gt;();
+
+    foreach (int num in arr)
+    {
+        set.Add(num);
+    }
+
+    return set.ToArray();
+}
+</code></pre>
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          9. Find the second largest number in an array.
+          2. Find the second largest number in an array.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3148,7 +3126,7 @@
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          10. Find all duplicate elements in an array.
+          3. Find all duplicate elements in an array.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3166,41 +3144,7 @@
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          11. Find the missing number in an array (1 to N).
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Expected sum of 1 to N minus actual sum gives the missing number.
-          </div>
-          <pre><code class="language-csharp">int FindMissing(int[] arr, int n)
-{
-    int expected = n * (n + 1) / 2;
-    return expected - arr.Sum();
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          12. Sort an array without using any built-in sort method.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Bubble sort — compare adjacent elements and swap if out of order.
-          </div>
-          <pre><code class="language-csharp">void BubbleSort(int[] arr)
-{
-    for (int i = 0; i &lt; arr.Length - 1; i++)
-        for (int j = 0; j &lt; arr.Length - i - 1; j++)
-            if (arr[j] > arr[j + 1])
-                (arr[j], arr[j + 1]) = (arr[j + 1], arr[j]);
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          13. Return numbers divisible by 2 and numbers divisible by 3.
+          4. Return numbers divisible by 2 and numbers divisible by 3.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3217,104 +3161,12 @@
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          14. Reorder array: even numbers first, then divisible by 3, then
-          remaining odd numbers (no duplicates, maintain order).
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Add evens first, then div-by-3 (not already added), then remaining
-            odds. Use HashSet to track added numbers.
-          </div>
-          <pre><code class="language-csharp">// Input:  { -6, 5, -1, 3, 0, 10, -3, 9 }
-// Output: -6, 0, 10, 3, -3, 9, 5, -1
-
-int[] ReorderArray(int[] arr)
-{
-    var seen = new HashSet&lt;int&gt;();
-    var result = new List&lt;int&gt;();
-
-    // Step 1: even numbers
-    foreach (var n in arr)
-        if (n % 2 == 0 && seen.Add(n))
-            result.Add(n);
-
-    // Step 2: divisible by 3 (not already added)
-    foreach (var n in arr)
-        if (n % 3 == 0 && seen.Add(n))
-            result.Add(n);
-
-    // Step 3: remaining odd numbers
-    foreach (var n in arr)
-        if (seen.Add(n))
-            result.Add(n);
-
-    return result.ToArray();
-}</code></pre>
-        </div>
-      </div>
-
       <!-- Number Problems -->
       <h3 class="subsection-header">Number Problems</h3>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          15. Return the sum of the digits of an integer.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Convert to string, parse each character as digit and sum.
-          </div>
-          <pre><code class="language-csharp">int SumOfDigits(int n)
-{
-    return Math.Abs(n).ToString().Sum(c => c - '0');
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          16. Calculate the factorial of a number using recursion.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Base case is 0 or 1 = 1. Each call multiplies n by factorial of n-1.
-          </div>
-          <pre><code class="language-csharp">int Factorial(int n)
-{
-    if (n &lt;= 1) return 1;
-    return n * Factorial(n - 1);
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          17. Return the N-th number in the Fibonacci sequence.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Each number is the sum of the previous two. Base cases: 0 and 1.
-          </div>
-          <pre><code class="language-csharp">int Fibonacci(int n)
-{
-    if (n &lt;= 1) return n;
-    int a = 0, b = 1;
-    for (int i = 2; i &lt;= n; i++)
-    {
-        int temp = a + b;
-        a = b;
-        b = temp;
-    }
-    return b;
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          18. Swap two variables without using a third variable.
+          1. Swap two variables without using a third variable.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3329,11 +3181,7 @@ int a = 5, b = 10;
 a = a + b;  // a = 15
 b = a - b;  // b = 5
 a = a - b;  // a = 10
-
-// Method 3: XOR (integers only)
-a = a ^ b;
-b = a ^ b;
-a = a ^ b;</code></pre>
+</code></pre>
         </div>
       </div>
 
@@ -3342,26 +3190,7 @@ a = a ^ b;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          19. Write a query to find the second highest salary.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Use DENSE_RANK to rank salaries — filter where rank equals 2.
-          </div>
-          <pre><code class="language-sql">WITH RankedSalaries AS (
-    SELECT Salary,
-           DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rnk
-    FROM Employees
-)
-SELECT Salary
-FROM RankedSalaries
-WHERE Rnk = 2;</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          20. Write a SQL query and LINQ query to find the 3rd highest salary.
+          1. Write a SQL query and LINQ query to find the 3rd highest salary.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3387,7 +3216,7 @@ int thirdHighest = employees
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          21. Write a query to find the employee count per department.
+          2. Write a query to find the employee count per department.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3402,119 +3231,61 @@ ORDER BY EmployeeCount DESC;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          22. Write a CTE to find employees earning above the average salary.
+          3. Write a query using subquery to find employees earning above the
+          average salary.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
-            CTE defines a named temporary result — use it like a regular table
-            in the main query.
+            Use a subquery to calculate the average salary and compare each
+            employee salary.
           </div>
-          <pre><code class="language-sql">WITH AvgSalary AS (
-    SELECT AVG(Salary) AS Avg
+          <pre><code class="language-sql">-- Option1: Using subquery
+SELECT Name, Salary
+FROM Employees
+WHERE Salary > (
+    SELECT AVG(Salary)
     FROM Employees
-)
-SELECT e.Name, e.Salary
-FROM Employees e, AvgSalary a
-WHERE e.Salary > a.Avg;</code></pre>
+);</code></pre>
         </div>
       </div>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          23. Rank employees by salary within each department.
+          4. Top 1 rank employees by salary within each department.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
             Use DENSE_RANK with PARTITION BY to rank within each department
             separately.
           </div>
-          <pre><code class="language-sql">SELECT Name, DepartmentId, Salary,
-    DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS Rnk
-FROM Employees;</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          24. Write a query to get the top 3 salaries in each department.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Rank salaries per department, then filter where rank is 3 or less.
-          </div>
-          <pre><code class="language-sql">SELECT Name, DepartmentId, Salary, Rnk
-FROM (
+          <pre><code class="language-sql">WITH RankedEmployees AS (
     SELECT Name, DepartmentId, Salary,
-        DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS Rnk
+           DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS Rnk
     FROM Employees
-) ranked
-WHERE Rnk &lt;= 3;</code></pre>
+)
+SELECT Name, DepartmentId, Salary
+FROM RankedEmployees
+WHERE Rnk = 1;</code></pre>
         </div>
       </div>
 
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          25. Write a query to implement pagination (page 2, 10 records per
-          page).
+      <div class="code-block" style="display: none">
+        <div class="answer">
+          5. Find emails appearing more than once, then return employees having
+          those emails.
         </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Use OFFSET to skip rows and FETCH NEXT to take the page size.
-          </div>
-          <pre><code class="language-sql">SELECT * FROM Employees
-ORDER BY EmployeeId
-OFFSET 10 ROWS          -- skip first 10 (page 1)
-FETCH NEXT 10 ROWS ONLY; -- take next 10 (page 2)</code></pre>
-        </div>
-      </div>
 
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          26. Write a query to find duplicate emails in a table.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            GROUP BY email, use HAVING to find groups with more than one row.
-          </div>
-          <pre><code class="language-sql">SELECT Email, COUNT(*) AS Count
+        <pre><code class="language-sql">
+-- Option1: Using subquery
+SELECT *
 FROM Employees
-GROUP BY Email
-HAVING COUNT(*) > 1;</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          27. Write a CTE to get a running total of sales by date.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Use SUM with OVER and ORDER BY — window function accumulates row by
-            row.
-          </div>
-          <pre><code class="language-sql">SELECT SaleDate, Amount,
-    SUM(Amount) OVER (ORDER BY SaleDate) AS RunningTotal
-FROM Sales
-ORDER BY SaleDate;</code></pre>
-        </div>
-      </div>
-
-      <div class="qa-block">
-        <div class="question" onclick="toggleCode(this)">
-          28. Write a query to filter and search with dynamic conditions.
-        </div>
-        <div class="code-block" style="display: none">
-          <div class="answer">
-            Use WHERE with optional conditions — pass NULL to skip a filter.
-          </div>
-          <pre><code class="language-sql">SELECT * FROM Employees
-WHERE
-    (@DepartmentId IS NULL OR DepartmentId = @DepartmentId)
-    AND (@Name IS NULL OR Name LIKE '%' + @Name + '%')
-    AND (@MinSalary IS NULL OR Salary >= @MinSalary)
-ORDER BY Name
-OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;</code></pre>
-        </div>
+WHERE Email IN (
+    SELECT Email
+    FROM Employees
+    GROUP BY Email
+    HAVING COUNT(*) &gt; 1
+);
+</code></pre>
       </div>
 
       <!-- Implementation Problems -->
@@ -3522,7 +3293,7 @@ OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          29. Write a custom middleware in ASP.NET Core.
+          1. Write a custom middleware in ASP.NET Core.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3550,7 +3321,7 @@ app.UseMiddleware&lt;LoggingMiddleware&gt;();</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          30. Write a thread-safe Singleton class in C#.
+          2. Write a thread-safe Singleton class in C#.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3583,7 +3354,7 @@ app.UseMiddleware&lt;LoggingMiddleware&gt;();</code></pre>
 
       <div class="qa-block">
         <div class="question" onclick="toggleCode(this)">
-          31. Implement multiple interfaces with the same method signature.
+          3. Implement multiple interfaces with the same method signature.
         </div>
         <div class="code-block" style="display: none">
           <div class="answer">
@@ -3603,6 +3374,32 @@ class Person : IAnimal, IHuman
 Person p = new Person();
 ((IAnimal)p).Speak(); // "Animal sound"
 ((IHuman)p).Speak();  // "Hello!"</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          4. Write code to implement pagination in ASP.NET Core Web API.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use Skip() to skip previous records and Take() to fetch page size.
+          </div>
+
+          <pre><code class="language-csharp">
+// Option1: Pagination using Skip & Take
+[HttpGet]
+public IActionResult GetEmployees(int page = 2, int pageSize = 10)
+{
+    var employees = _context.Employees
+        .OrderBy(e => e.Id)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    return Ok(employees);
+}
+</code></pre>
         </div>
       </div>
 
