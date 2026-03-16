@@ -3269,13 +3269,32 @@ WHERE Rnk = 1;</code></pre>
         </div>
       </div>
 
-      <div class="code-block" style="display: none">
-        <div class="answer">
-          5. Find emails appearing more than once, then return employees having
-          those emails.
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          5. Join employees with their department name.
         </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Join Employees with Departments using DepartmentId.
+          </div>
+          <pre><code class="language-sql">SELECT e.Name, d.DepartmentName
+FROM Employees e
+JOIN Departments d
+  ON e.DepartmentId = d.DepartmentId;</code></pre>
+        </div>
+      </div>
 
-        <pre><code class="language-sql">
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          6. Find employees having duplicate emails.
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Find emails appearing more than once, then return employees having
+            those emails.
+          </div>
+
+          <pre><code class="language-sql">
 -- Option1: Using subquery
 SELECT *
 FROM Employees
@@ -3286,6 +3305,7 @@ WHERE Email IN (
     HAVING COUNT(*) &gt; 1
 );
 </code></pre>
+        </div>
       </div>
 
       <!-- Implementation Problems -->
