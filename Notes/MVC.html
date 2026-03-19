@@ -685,19 +685,22 @@
           <tr>
             <td><strong>ViewBag</strong></td>
             <td>Current request</td>
-            <td>Pass small data to view (dynamic key/value)</td>
+            <td>Pass small data from controller to view; Dynamic properties</td>
             <td><code>ViewBag.Title = "Home"</code></td>
           </tr>
           <tr>
             <td><strong>ViewData</strong></td>
             <td>Current request</td>
-            <td>Pass small data to view (dictionary; casting required)</td>
+            <td>
+              Pass small data from controller to view; Dictionary object;
+              Casting required
+            </td>
             <td><code>ViewData["Title"] = "Home"</code></td>
           </tr>
           <tr>
             <td><strong>TempData</strong></td>
             <td>One redirect; <code>Peek()</code>, <code>Keep()</code></td>
-            <td>Controller to controller (success/error messages)</td>
+            <td>Controller to controller; Survive 1 redirect</td>
             <td><code>TempData["Msg"] = "Saved"</code></td>
           </tr>
           <tr>

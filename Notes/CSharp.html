@@ -937,8 +937,11 @@
           </li>
           <li>
             <strong>Memory Leaks:</strong> Objects kept alive longer than needed
-            — unsubscribed events, static references, not disposing
-            <code>IDisposable</code>, long-running timers
+            — <strong>Common causes</strong> include unremoved event handlers,
+            static references, undisposed unmanaged resources, long-running
+            timers and improper caching.
+            <strong>Detect by using tools</strong> like Visual Studio Diagnostic
+            Tools, dotMemory, task manager, chrome dev tool memory tab
           </li>
         </ul>
       </div>

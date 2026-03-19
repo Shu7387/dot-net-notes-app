@@ -1027,9 +1027,19 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>State Management Ways:</strong> Component state, Shared
-          Service with RxJS (Subjects), Signals, NgRx (Store), Router state,
-          Browser storage.
+          <strong>Data Passing Ways:</strong>
+          Component → Template (Interpolation, Property Binding), Template →
+          Component (Two-way Binding, Template Reference Variables, Event
+          Binding, Forms), Parent ↔ Child (@Input, @Output), Routing (Route
+          Params, Query Params, Router State, Resolver), Shared service + RxJS
+          BehaviorSubject (for unrelated components)
+        </p>
+
+        <p>
+          <strong>State Management Ways:</strong>
+          Component Local State, Shared service + RxJS BehaviorSubject, Angular
+          Signals, Browser Storage (localStorage, sessionStorage, cookies), NgRx
+          (Store / Effects)
         </p>
         <p>
           <strong>NgRx:</strong> Action triggers effect → effect calls API →
@@ -1213,7 +1223,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Angular authentication flows.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">

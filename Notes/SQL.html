@@ -430,19 +430,20 @@
       </table>
       <div class="note">
         <p>
-          <strong>SP vs Functions:</strong> SP changes data and runs logic,
-          Function only returns data
+          <strong>SP vs Function:</strong> SP can perform business logic and
+          modify data (return optional), while Function is read-only and must
+          return a value (scalar or table).
         </p>
         <ul>
           <li>
-            <strong>SP:</strong> Can read/modify data, return multiple result
-            sets and output parameters, support transactions, error handling,
-            temp tables, and dynamic SQL; executed using <code>EXEC</code>.
+            <strong>SP:</strong> Supports DML, multiple result sets, output
+            parameters, transactions, error handling, temp tables, dynamic SQL;
+            executed with <code>EXEC</code>.
           </li>
           <li>
-            <strong>Function:</strong> Read-only, returns a single value or
-            table, used inside <code>SELECT</code>, must be deterministic, and
-            cannot use transactions or cause side effects.
+            <strong>Function:</strong> Used in
+            <code>SELECT</code>/<code>WHERE</code>, returns scalar/table only,
+            no DML, no transactions, no dynamic SQL.
           </li>
         </ul>
       </div>

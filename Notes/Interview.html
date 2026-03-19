@@ -264,6 +264,21 @@
 
       <div class="qa-block">
         <div class="question">
+          Why use a Singleton class instead of a static class?
+        </div>
+        <div class="answer">
+          <strong>Singleton:</strong> single instance, supports DI, interfaces,
+          <strong>polymorphism</strong>, testable & replaceable,
+          <strong>use:</strong> config, cache, services
+          <br />
+          <strong>Static:</strong> no instance, no DI, no interfaces,
+          <strong>no polymorphism</strong>, tightly coupled,
+          <strong>use:</strong> utility methods
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
           What is Dependency Injection (DI)? What is Inversion of Control (IoC)?
           What are the DI life times? What are the Injection types?
         </div>
@@ -866,7 +881,7 @@
           <strong>Secrets:</strong> store in Azure Key Vault, never in code
           <br />
           <strong>Other:</strong> input validation, rate limiting, never expose
-          sensitive data in responses or URL
+          sensitive data in responses or URL, Encrypt policyNumber
         </div>
       </div>
 
@@ -875,7 +890,7 @@
         <div class="answer">
           <strong>CORS (Cross-Origin Resource Sharing):</strong> browser
           security policy that blocks requests from different origin
-          (domain/port/protocol)
+          (protocol/domain/port)
           <br />
           <strong>Purpose:</strong> allow frontend (different domain) to call
           Web API
@@ -1236,7 +1251,7 @@
       <div class="qa-block">
         <div class="question">
           What is the Saga Pattern? How do you handle distributed transactions
-          across microservices?
+          across microservices? What happens if 2 succeed and last fail?
         </div>
         <div class="answer">
           <strong>Saga:</strong> executes operations step-by-step across
@@ -1250,7 +1265,15 @@
           <br />
           <strong>Orchestration:</strong> central orchestrator coordinates each
           step, easier to follow but orchestrator is a dependency,
-          <strong>use:</strong> Azure Durable Functions
+          <strong>use:</strong> Azure Durable Functions <br />
+
+          <strong>Partial failure</strong> → retry (Polly), send failed messages
+          to DLQ, use messageId for idempotency (duplicate detection), <br />
+          apply Saga pattern:
+          <strong
+            >Each service has success actions & compensating actions triggered
+            via different events</strong
+          >
         </div>
       </div>
 
@@ -1336,7 +1359,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Saga Pattern Azure Service bus.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
@@ -1813,6 +1840,52 @@
           <br />
           <strong>Interceptors:</strong> intercept all HTTP calls, attach token,
           handle errors globally
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are Data Passing ways and State Management ways in Angular?
+        </div>
+        <div class="answer">
+          <strong>Data Passing:</strong> Mechanisms used to transfer data
+          between components
+          <br />
+          <strong>Component → Template:</strong> Interpolation, Property Binding
+          <br />
+          <strong>Template → Component:</strong> Event Binding, Two-way Binding,
+          Template Reference Variables, Forms
+          <br />
+          <strong>Parent ↔ Child:</strong> <code>@Input</code>,
+          <code>@Output</code>
+          <br />
+          <strong
+            >Unrelated Components (Shared service + RxJS
+            BehaviorSubject):</strong
+          >
+          Used for sibling/unrelated components <br />
+          <strong>Routing:</strong> Route Params, Query Params, Router State,
+          Resolver
+
+          <br /><br />
+
+          <strong>State Management:</strong> Ways to store, manage, and share
+          application state
+          <br />
+          <strong>Component Local State:</strong> Data inside component only
+          <br />
+          <strong>App wide (Shared service + RxJS BehaviorSubject):</strong>
+          <code>Subject</code> / <code>BehaviorSubject</code> for reactive
+          shared state
+          <br />
+          <strong>Simple UI state (Angular Signals):</strong> Modern reactive
+          state system
+          <br />
+          <strong>Browser Storage:</strong> localStorage, sessionStorage,
+          cookies (for persistence)
+          <br />
+          <strong>Complex App state (NgRx):</strong> Centralized store with
+          Actions, Reducers, Effects (large-scale apps)
         </div>
       </div>
 
