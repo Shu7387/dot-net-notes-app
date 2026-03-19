@@ -1748,6 +1748,38 @@
     </h2>
     <div class="section-content">
       <!-- GROUP: Core Concepts -->
+
+      <div class="qa-block">
+        <div class="question">Explain your Angular project.</div>
+        <div class="answer">
+          <strong>ESG Reports:</strong> manage and view customer policy
+          information and policy documents
+          <br />
+          <strong>Flow:</strong> user enters OAN → HTTP call →
+          <strong>Customer API (Azure Function)</strong> → fetches customer +
+          policy list via <strong>Entity Framework Core(DB)</strong> → displayed
+          on Policy List page
+          <br />
+          <strong>Policy Selection:</strong> user selects policy →
+          <strong>Policy Type Router</strong> → invokes correct service (<code
+            >Life</code
+          >
+          / <code>Health</code> / <code>Pension</code>) → returns full details →
+          <strong>Policy Details page</strong>; Which shows full policy details
+          and following actions
+          <br />
+          <strong>Actions:</strong> Reinstate / Cancel / Draft Trust → opens
+          form → triggers respective API workflow
+          <br />
+          <strong>Documents:</strong> download click →
+          <strong>Document API (Azure Function)</strong> →
+          <strong>Azure Blob Storage</strong> → returns PDF to user
+          <br />
+          <strong>Stack:</strong> Angular, Azure Functions, EF Core, SQL Server,
+          Azure Blob Storage
+        </div>
+      </div>
+
       <div class="qa-block">
         <div class="question">
           What are the main building blocks of an Angular application?
@@ -3418,6 +3450,120 @@ public IActionResult GetEmployees(int page = 2, int pageSize = 10)
         .ToList();
 
     return Ok(employees);
+}
+</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          5. How to pass list to stored procedure using EF Core?
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Use TVP: create user-defined table type in SQL, convert list to
+            DataTable, pass as structured SqlParameter.
+          </div>
+
+          <pre><code class="language-sql">
+-- SQL (Type + Stored Procedure)
+CREATE TYPE UserListType AS TABLE (
+    UserId INT,
+    UserName NVARCHAR(100)
+);
+
+CREATE PROCEDURE GetUsersData
+    @Users UserListType READONLY
+AS
+BEGIN
+    SELECT *
+    FROM Users u
+    INNER JOIN @Users ul ON u.UserId = ul.UserId;
+END
+</code></pre>
+
+          <pre><code class="language-csharp">
+// EF Core + TVP
+[HttpPost]
+public IActionResult GetUsers()
+{
+    var users = new List&lt;UserType&gt;
+    {
+        new UserType { UserId = 1, UserName = "A" },
+        new UserType { UserId = 2, UserName = "B" }
+    };
+
+    var table = new DataTable();
+    table.Columns.Add("UserId", typeof(int));
+    table.Columns.Add("UserName", typeof(string));
+
+    foreach (var u in users)
+        table.Rows.Add(u.UserId, u.UserName);
+
+    var param = new SqlParameter
+    {
+        ParameterName = "@Users",
+        SqlDbType = SqlDbType.Structured,
+        TypeName = "dbo.UserListType",
+        Value = table
+    };
+
+    var result = _context.Users
+        .FromSqlRaw("EXEC GetUsersData @Users", param)
+        .ToList();
+
+    return Ok(result);
+}
+</code></pre>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question" onclick="toggleCode(this)">
+          6. How to call multiple APIs in Angular?
+        </div>
+        <div class="code-block" style="display: none">
+          <div class="answer">
+            Independent APIs → forkJoin (parallel). Dependent APIs → switchMap
+            (chaining).
+          </div>
+
+          <pre><code class="language-javascript">
+// Option1: Independent APIs (forkJoin)
+@Component({ selector: 'app-demo' })
+export class DemoComponent {
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    forkJoin({
+      users: this.api.getUsers(),
+      orders: this.api.getOrders(),
+      payments: this.api.getPayments()
+    }).subscribe(res => {
+      console.log(res.users);
+      console.log(res.orders);
+      console.log(res.payments);
+    });
+  }
+}
+</code></pre>
+
+          <pre><code class="language-javascript">
+// Option2: Dependent APIs (switchMap)
+@Component({ selector: 'app-demo' })
+export class DemoComponent {
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.api.getUser().pipe(
+      switchMap(user => this.api.getOrders(user.id)),
+      switchMap(orders => this.api.getPayments(orders[0].id))
+    ).subscribe(res => {
+      console.log(res);
+    });
+  }
 }
 </code></pre>
         </div>
