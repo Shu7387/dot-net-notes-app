@@ -256,14 +256,17 @@
         </li>
         <li>
           <strong>Connected vs Disconnected:</strong>
-          <code>SqlDataReader</code> — fast, row-by-row, connection stays open.
-          <code>DataAdapter</code> + <code>DataTable</code> — edit in memory and
-          save later, connection can be closed
+          <code>SqlDataReader</code> — read-only, fast, streams row-by-row
+          (doesn't consume memory), DB connection stays open throughout. <br />
+          <code>SqlDataAdapter</code> + <code>DataTable</code>: loads all data
+          from DB into memory, connection closes after fetch, can edit offline,
+          <code>Update()</code> pushes changes to DB.
         </li>
         <li>
           <strong>Execute Methods:</strong> <code>ExecuteScalar()</code> → one
           value (COUNT/SUM); <code>ExecuteNonQuery()</code> → rows affected
-          (INSERT/UPDATE/DELETE); <code>ExecuteReader()</code> → many rows
+          (INSERT/UPDATE/DELETE); <code>ExecuteReader()</code> → many rows read
+          (SELECT)
         </li>
         <li>
           <strong>Parameters &amp; SQL Injection:</strong> Always use parameters
@@ -289,7 +292,8 @@
         </li>
         <li>
           <strong>Bulk Operations:</strong> Use <code>SqlBulkCopy</code> to
-          insert many rows fast from a <code>DataTable</code> or
+          <strong>insert many rows into db</strong> fast from a
+          <code>DataTable</code> or
           <code>IDataReader</code>
         </li>
         <li>
@@ -824,8 +828,10 @@
           encrypting data using SSL/TLS certificates
         </li>
         <li>
-          <strong>Layered Architecture:</strong> Thin Controller → Request
-          Handler (CQRS) → Service/Repository → DbContext → Database
+          <strong>Layered Architecture:</strong> Thin Controller (Presentation
+          layer) → Request Handler (CQRS, Application layer) → Service (Business
+          layer) → <br />
+          Repository + DbContext (Data access layer) → Database (Data)
         </li>
         <li>
           <strong>CORS:</strong> Security feature controlling which frontend
