@@ -65,8 +65,10 @@ window.toggleSection = function (headerElement) {
     headerElement.classList.add("active");
     if (icon) icon.classList.add("rotated");
 
+    document.body.style.zoom = "";
+
     setTimeout(() => {
-      headerElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      headerElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 80);
   }
 };
@@ -98,7 +100,7 @@ window.toggleService = function (headerElement) {
 
   if (hidden) {
     setTimeout(() => {
-      headerElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      headerElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 80);
   }
 };
