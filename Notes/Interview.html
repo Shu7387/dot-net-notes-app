@@ -1784,7 +1784,8 @@
           <strong>Flow:</strong> user enters OAN → HTTP call →
           <strong>Customer API (Azure Function)</strong> → fetches customer +
           policy list via <strong>Entity Framework Core(DB)</strong> → displayed
-          on Policy List page
+          on Policy List page; Filters used in policy list component (near
+          expiry policies, policy types)
           <br />
           <strong>Policy Selection:</strong> user selects policy →
           <strong>Policy Type Router</strong> → invokes correct service (<code
@@ -2522,7 +2523,11 @@
 
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/ESG Reports Angular Project.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">

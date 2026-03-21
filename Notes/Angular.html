@@ -428,8 +428,13 @@
     <div class="section-content">
       <div class="note">
         <p>
-          <strong>Routing:</strong> Navigation system that maps URL paths to
-          components, enabling single-page application behavior
+          <strong>Routing:</strong> Navigation system that maps
+          <strong>URL paths to components</strong>; <strong>Routing </strong>→
+          full page navigation (URL changes), <strong>Parent-Child</strong>
+          → reusable UI always visible inside page (same URL, like partial
+          view); If route has
+          <code>children</code> → add <code>router-outlet</code> in parent
+          template, else → not required
         </p>
       </div>
 
@@ -578,19 +583,19 @@
             <td>One input</td>
             <td>
               <code
-                >this.fb.control('', Validators.required, { updateOn: 'blur'
-                })</code
+                >this.fb.control('', [Validators.required], { updateOn: 'blur' |
+                'change' | 'submit' })</code
               >
             </td>
           </tr>
           <tr>
             <td><strong>FormGroup</strong></td>
-            <td>Group of controls</td>
+            <td>Group of controls — can be nested</td>
             <td>Related fields</td>
             <td>
               <code
                 >this.fb.group({ email: ['', [Validators.required,
-                Validators.email]] })</code
+                Validators.email]] }, { validators: crossFieldValidator })</code
               >
             </td>
           </tr>
@@ -598,7 +603,20 @@
             <td><strong>FormArray</strong></td>
             <td>Dynamic list of controls</td>
             <td>Add/remove rows</td>
-            <td><code>this.fb.array([])</code></td>
+            <td>
+              <code>this.fb.array([]) — push(control) / removeAt(index)</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Validation States</strong></td>
+            <td>Flags that reflect current state of a control</td>
+            <td>Conditional UI &amp; error display</td>
+            <td>
+              <code
+                >valid, invalid, touched, untouched, dirty, pristine,
+                pending</code
+              >
+            </td>
           </tr>
           <tr>
             <td><strong>Read Error</strong></td>
@@ -611,21 +629,63 @@
               >
             </td>
           </tr>
+
+          <tr>
+            <td><strong>Built-in Validators</strong></td>
+            <td>Angular provided validation functions</td>
+            <td>Common validations</td>
+            <td>
+              <code
+                >required, email, min(n), max(n), minLength(n), maxLength(n),
+                pattern('regex'), nullValidator</code
+              >
+            </td>
+          </tr>
+
           <tr>
             <td><strong>Custom Validator</strong></td>
+            <td>Directives, Sync, Async, Cross-field, Dynamic validations</td>
+            <td>Business rules &amp; API checks</td>
             <td>
-              User-defined validation; Directive, Sync, Async, Cross-field
+              <code
+                >Sync: (control: AbstractControl): ValidationErrors | null</code
+              ><br />
+              <code>Async: Observable&lt;ValidationErrors | null&gt;</code>
+              <br />
+              <code
+                >control.setValidators([Validators.required]) →
+                control.updateValueAndValidity()</code
+              >
             </td>
-            <td>Business rules</td>
+          </tr>
+          <tr>
+            <td><strong>markAllAsTouched</strong></td>
+            <td>Marks all controls as touched — triggers all error messages</td>
+            <td>Show all errors on submit</td>
+            <td><code>this.form.markAllAsTouched()</code></td>
+          </tr>
+          <tr>
+            <td><strong>valueChanges / statusChanges</strong></td>
+            <td>Observables that emit when value or status changes</td>
+            <td>React to input changes, disable/enable fields</td>
             <td>
-              <code>(control: AbstractControl): ValidationErrors | null</code>
+              <code>this.form.get('email').valueChanges.subscribe(v => {})</code
+              ><br />
+              <code
+                >this.form.statusChanges.subscribe(s => {}) — VALID | INVALID |
+                PENDING</code
+              >
             </td>
           </tr>
           <tr>
             <td><strong>PatchValue vs SetValue</strong></td>
             <td>Update form values</td>
             <td>Partial vs full update</td>
-            <td><code>patchValue()</code> / <code>setValue()</code></td>
+            <td>
+              <code>patchValue({ name: 'John' })</code> — some fields<br />
+              <code>setValue({ name: 'John', email: '...' })</code> — all fields
+              required
+            </td>
           </tr>
         </tbody>
       </table>
@@ -773,6 +833,17 @@
             <td><strong>pipe()</strong></td>
             <td>Chain operators</td>
             <td><code>obs.pipe(map(x => x * 2), filter(x => x > 5))</code></td>
+          </tr>
+          <tr>
+            <td><strong>Creation</strong></td>
+            <td>Ways to create Observables</td>
+            <td>
+              <code>of(1,2,3)</code> — emit values |
+              <code>from([]/promise)</code> — convert array/promise |
+              <code>interval(1000)</code> — emit every n ms |
+              <code>timer(2000)</code> — emit after delay | <code>EMPTY</code> —
+              complete immediately | <code>throwError()</code> — emit error
+            </td>
           </tr>
         </tbody>
       </table>
@@ -1012,7 +1083,11 @@
         >
           📷
         </button>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Angular pure pipe spread operator.png"
+        >
           📷
         </button>
       </div>
@@ -1129,26 +1204,30 @@
 
       <ul>
         <li>
-          <strong>Default Strategy:</strong> Angular uses
-          <code>Zone.js</code> to check the entire component tree on every event
-          (click, HTTP, timer). Causes unnecessary checks and slow performance
-          on large apps.
+          <strong>Default Strategy:</strong> Zone.js watches all async ops
+          (clicks, HTTP, timers) — checks entire component tree on every change.
+          Simple but slow on large apps.
         </li>
         <li>
-          <strong>OnPush Strategy:</strong> Checks component only when @Input
-          reference changes, component event occurs, async/observable emits, or
-          CD is manually triggered. Much more performant.
+          <strong>OnPush Strategy:</strong> Checks component only when
+          <code>@Input</code> reference changes · event fires inside · async
+          pipe emits · CD triggered manually. Much faster.
         </li>
         <li>
-          <strong>ChangeDetectorRef:</strong> Manual control —
-          <code>markForCheck()</code> (check next cycle),
-          <code>detectChanges()</code> (run immediately),
-          <code>detach()</code> (stop checking), <code>attach()</code> (resume)
+          <strong>Signals (Angular 16+):</strong> No Zone.js needed — signal
+          knows exactly what changed, only that part updates. Most efficient.
         </li>
         <li>
-          <strong>When to use:</strong> Use <code>OnPush</code> + manual
-          detection for large lists, complex UIs, or frequently updating
-          components
+          <strong>ChangeDetectorRef:</strong>
+          <code>detectChanges()</code> (now) · <code>markForCheck()</code> (next
+          cycle) · <code>detach()</code> (stop — use for real-time/live data) ·
+          <code>reattach()</code> (resume)
+        </li>
+        <li>
+          <strong>Best Practices:</strong> OnPush everywhere · spread operator
+          for new references · async pipe over manual subscribe · trackBy on all
+          <code>*ngFor</code> · Signals for local state · set OnPush default in
+          <code>angular.json</code> schematics.
         </li>
       </ul>
       <div class="image-icons">
@@ -1590,10 +1669,22 @@
           attach to elements via <code>[@triggerName]</code> in template.
           <strong>Gives animation effect to HTML elemnts.</strong>
         </li>
+
+        <li>
+          <strong>Angular Migration:</strong> Upgrade Angular version
+          step-by-step — <code>ng version</code> (check current),
+          <code>ng update @angular/core @angular/cli</code> (upgrade + auto
+          migrations), <code>npm install</code> (setup deps), fix errors, run
+          <code>ng serve</code> & <code>ng test</code>;
+        </li>
       </ul>
       <div class="image-icons">
         <span class="image-icons-label">Images:</span>
-        <button class="image-icon" onclick="toggleImage(this)" data-src="">
+        <button
+          class="image-icon"
+          onclick="toggleImage(this)"
+          data-src="./Images/Angular migration steps.png"
+        >
           📷
         </button>
         <button class="image-icon" onclick="toggleImage(this)" data-src="">
