@@ -7,7 +7,7 @@
     <title>ASP.NET Core Web API Notes</title>
   </head>
   <body>
-    <h1>3. ASP.NET CORE WEB API</h1>
+    <h1>3. WEB API & ORMs</h1>
 
     <!-- ===================== SECTION 1 ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
@@ -118,9 +118,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 3 ===================== -->
+    <!-- ===================== SECTION 3: ORMs ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 3: Entity Framework Core Integration
+      SECTION 3.1: Entity Framework Core
       <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
@@ -150,10 +150,6 @@
           in sql; avoid lazy loading
         </li>
         <li>
-          <strong>Relationships &amp; Keys:</strong> Configure one-to-many,
-          many-to-many relations, PKs, FKs, and cascade rules
-        </li>
-        <li>
           <strong>Indexes:</strong> Fluent API <code>HasIndex(...)</code> or
           annotation <code>[Index(nameof(Email), IsUnique = true)]</code>
         </li>
@@ -177,6 +173,23 @@
           <strong>Compiled Queries:</strong> EF translates LINQ to SQL each
           time; use <code>EF.CompileQuery()</code> for high-frequency queries to
           reduce translation overhead
+        </li>
+        <li>
+          <strong>Fluent API vs Data Annotations:</strong>
+          Fluent API → configured in <code>OnModelCreating()</code>, more
+          control, preferred in large projects, keeps model classes clean; Data
+          Annotations → attributes on model class like <code>[Required]</code>,
+          <code>[MaxLength]</code>, <code>[Key]</code>, simple but mixes config
+          with model
+        </li>
+        <li>
+          <strong>Relationships:</strong>
+          One-to-One → <code>HasOne().WithOne().HasForeignKey&lt;T&gt;()</code>;
+          One-to-Many → <code>HasOne().WithMany().HasForeignKey()</code>;
+          Many-to-Many → <code>HasMany().WithMany().UsingEntity()</code>; use
+          <code>OnDelete(DeleteBehavior.Cascade)</code> to auto delete child
+          records when parent is deleted; Navigation properties link related
+          entities; FK in child entity, collection in parent entity
         </li>
       </ul>
 
@@ -235,9 +248,9 @@
       <div class="image-preview-box"></div>
     </div>
 
-    <!-- ===================== SECTION 4 ===================== -->
+    <!-- ===================== ADO.NET ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 4: ADO.NET <span class="toggle-icon">▼</span>
+      SECTION 3.2: ADO.NET <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <ul>
@@ -329,6 +342,294 @@
         </button>
       </div>
       <div class="image-preview-box"></div>
+    </div>
+
+    <!-- ===================== Dapper ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 3.3: Dapper <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <ul>
+        <li>
+          <strong>What is Dapper:</strong> Micro ORM built on top of ADO.NET by
+          Stack Overflow team; you write raw SQL, Dapper automatically maps
+          result columns to C# object properties; faster than EF Core, less
+          boilerplate than ADO.NET
+        </li>
+        <li>
+          <strong>Core Methods:</strong> <code>QueryAsync&lt;T&gt;</code> →
+          SELECT many rows → <code>IEnumerable&lt;T&gt;</code>;
+          <code>QueryFirstOrDefaultAsync&lt;T&gt;</code> → single row → T or
+          null; <code>ExecuteAsync</code> → INSERT / UPDATE / DELETE → rows
+          affected; <code>ExecuteScalarAsync&lt;T&gt;</code> → single value
+          (COUNT / SUM); <code>QueryMultipleAsync</code> → multiple result sets
+        </li>
+        <li>
+          <strong>Parameters:</strong> Pass as anonymous object
+          <code>new { Id = id, Name = name }</code>; or use
+          <code>DynamicParameters</code> for dynamic cases; or pass whole C#
+          object — Dapper picks matching properties automatically
+        </li>
+        <li>
+          <strong>Stored Procedures:</strong> Pass proc name as SQL string, set
+          <code>commandType: CommandType.StoredProcedure</code>, pass input
+          params as anonymous object
+        </li>
+        <li>
+          <strong>Multi Mapping (JOIN):</strong> Use
+          <code>QueryAsync&lt;T1, T2, T1&gt;</code> with a map function to split
+          JOIN result into two objects; use <code>splitOn: "ColumnName"</code>
+          to tell Dapper where second object starts
+        </li>
+        <li>
+          <strong>Transactions:</strong> Same as ADO.NET —
+          <code>conn.BeginTransaction()</code>; pass transaction object to each
+          Dapper call; <code>Commit()</code> or <code>Rollback()</code>
+        </li>
+        <li>
+          <strong>Column → Property Mapping:</strong> DB column name must match
+          C# property name; if different use
+          <code>Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true</code>
+          or use alias in SQL <code>SELECT student_name AS Name</code> or use
+          <code>CustomPropertyTypeMap</code>
+        </li>
+      </ul>
+
+      <div class="note">
+        <p><strong>ADO.NET vs Dapper vs EF Core:</strong></p>
+        <p>
+          <strong>ADO.NET</strong> → raw SQL, manual mapping, most boilerplate,
+          fastest; <strong>Rarely used</strong><br />
+          <strong>Dapper</strong>→ raw SQL, auto mapping, minimal code, very
+          fast; <strong>Use:</strong> for complex queries / stored procs /
+          performance critical reads;<br />
+          <strong>EF Core</strong> → auto SQL, auto mapping, slowest but
+          easiest; <strong>Use: </strong> CRUD, change tracking, LINQ,
+          migrations, relationships, less code, faster development
+        </p>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 4 ===================== -->
+    <h2 class="section-header" onclick="toggleSection(this)">
+      SECTION 4: Advanced Concepts
+      <span class="toggle-icon">▼</span>
+    </h2>
+    <div class="section-content">
+      <!-- RabbitMQ -->
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#RabbitMQ#</strong></td>
+            <td>
+              Message broker — Producer sends, Queue holds, Consumer reads;
+              decouples services, handles traffic spikes, messages wait if
+              consumer is down
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Core Concepts</strong></td>
+            <td>
+              Producer → Exchange(routes) → Queue → Consumer; RoutingKey = label
+              to route message; Binding = rule connecting exchange to queue
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Exchange Types</strong></td>
+            <td>
+              Direct → exact key match;<br />
+              Fanout → broadcast to ALL queues;<br />
+              Topic → pattern match (<code>order.*</code>);<br />
+              Headers → route by headers (rarely used)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Key Properties</strong></td>
+            <td>
+              <code>durable: true</code> → survives restart;<br />
+              <code>persistent: true</code> → message survives restart;<br />
+              <code>autoAck: false</code> → manual acknowledge (safer);<br />
+              <code>BasicAck</code> → processed ✅; <code>BasicNack</code> →
+              failed, re-queue ❌;<br />
+              <code>prefetchCount</code> → one message at a time
+            </td>
+          </tr>
+          <tr>
+            <td><strong>In Code</strong></td>
+            <td>
+              <code>ConnectionFactory</code> → <code>CreateConnection()</code> →
+              <code>CreateModel()</code> → <code>ExchangeDeclare()</code> →
+              <code>QueueDeclare()</code> → <code>QueueBind()</code>;<br />
+              Producer → <code>BasicPublish()</code>;<br />
+              Consumer → <code>EventingBasicConsumer</code> +
+              <code>BasicConsume()</code>;<br />
+              Register as <code>AddHostedService()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>When to Use</strong></td>
+            <td>
+              Email/SMS after registration; order processing; notifications; any
+              async background task; decouple heavy ops from main request
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Flow Example</strong></td>
+            <td>
+              POST /register → Producer → <code>student_exchange</code> (Fanout)
+              → <code>email_queue</code> + <code>sms_queue</code>
+              → EmailConsumer + SmsConsumer run as background services
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- API Gateway -->
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#API Gateway#</strong></td>
+            <td>
+              Single entry point for all client requests in microservices;
+              client talks to gateway, gateway routes to correct service; hides
+              internal services from client
+            </td>
+          </tr>
+          <tr>
+            <td><strong>What it Does</strong></td>
+            <td>
+              Routing → forwards request to correct microservice;<br />
+              Auth → validates JWT before reaching services;<br />
+              Rate Limiting → limits requests per client;<br />
+              Load Balancing → distributes traffic across instances;<br />
+              SSL Termination → handles HTTPS in one place
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Popular Options</strong></td>
+            <td>
+              Ocelot → .NET based, easy config via JSON;<br />
+              YARP → Microsoft reverse proxy, high performance;<br />
+              Kong, AWS API Gateway → cloud/enterprise level
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Ocelot in Code</strong></td>
+            <td>
+              Install <code>Ocelot</code> package → create
+              <code>ocelot.json</code> with routes →
+              <code>UpstreamPathTemplate</code> = what client calls;
+              <code>DownstreamPathTemplate</code> = where to forward; register
+              in <code>Program.cs</code> →
+              <code>app.UseOcelot()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Ocelot Config Example</strong></td>
+            <td>
+              <code>/api/students</code> → routes to →
+              <code>http://student-service:5001/api/students</code>;<br />
+              <code>/api/courses</code> → routes to →
+              <code>http://course-service:5002/api/courses</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>When to Use</strong></td>
+            <td>
+              Microservices architecture; hide service URLs from client;
+              centralize auth and rate limiting; avoid client calling multiple
+              services directly
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- GraphQL -->
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#GraphQL#</strong></td>
+            <td>
+              Query language for APIs — client asks for exactly what it needs,
+              nothing more, nothing less; one endpoint handles all requests;
+              alternative to REST
+            </td>
+          </tr>
+          <tr>
+            <td><strong>REST vs GraphQL</strong></td>
+            <td>
+              REST → multiple endpoints, fixed response shape, over/under
+              fetching;<br />
+              GraphQL → single endpoint <code>/graphql</code>, client defines
+              response shape, gets exactly what it asks for
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Core Concepts</strong></td>
+            <td>
+              Query → read data (like GET);<br />
+              Mutation → write data (like POST/PUT/DELETE);<br />
+              Subscription → real-time data via WebSocket;<br />
+              Schema → defines types and available queries;<br />
+              Resolver → function that fetches data for a field
+            </td>
+          </tr>
+          <tr>
+            <td><strong>In .NET (HotChocolate)</strong></td>
+            <td>
+              Install <code>HotChocolate.AspNetCore</code> → create
+              <code>Query</code> class with methods → create
+              <code>Mutation</code> class → register via
+              <code>builder.Services.AddGraphQLServer()</code>
+              <code>.AddQueryType&lt;Query&gt;()</code>
+              <code>.AddMutationType&lt;Mutation&gt;()</code> →
+              <code>app.MapGraphQL()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Query Example</strong></td>
+            <td>
+              Client sends:
+              <code>{ student(id: 1) { name email course } }</code>; gets back
+              only <code>name</code>, <code>email</code>, <code>course</code> —
+              no extra fields; same endpoint, different fields = different
+              response shape; with <strong>Projections</strong> (<code
+                >[UseProjection]</code
+              >
+              + <code>.AddProjections()</code>) this selection goes all the way
+              to DB — EF Core generates
+              <code>SELECT Name, Email, Course</code> only, unused fields never
+              fetched from DB
+            </td>
+          </tr>
+          <tr>
+            <td><strong>When to Use</strong></td>
+            <td>
+              Mobile apps (bandwidth sensitive); dashboards needing flexible
+              data; when clients need different shapes of same data; avoid
+              over-fetching / under-fetching problems
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- ===================== SECTION 5 ===================== -->
