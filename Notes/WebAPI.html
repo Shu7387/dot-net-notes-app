@@ -446,17 +446,19 @@
               Direct → exact key match;<br />
               Fanout → broadcast to ALL queues;<br />
               Topic → pattern match (<code>order.*</code>);<br />
-              Headers → route by headers (rarely used)
             </td>
           </tr>
           <tr>
             <td><strong>Key Properties</strong></td>
             <td>
-              <code>durable: true</code> → survives restart;<br />
-              <code>persistent: true</code> → message survives restart;<br />
-              <code>autoAck: false</code> → manual acknowledge (safer);<br />
-              <code>BasicAck</code> → processed ✅; <code>BasicNack</code> →
-              failed, re-queue ❌;<br />
+              <code>durable: true</code> → Queue survives if RabbitMQ
+              RESTARTS<br />
+              <code>persistent: true</code> → Message survives if RabbitMQ
+              RESTARTS;<br />
+              <code>autoAck: false</code> → Message stays until you confirm;<br />
+              <code>BasicAck</code> → processed by consumer ✅ Remove from
+              queue; <br />
+              <code>BasicNack</code> → failed, re-queue ❌;<br />
               <code>prefetchCount</code> → one message at a time
             </td>
           </tr>
@@ -480,11 +482,17 @@
             </td>
           </tr>
           <tr>
-            <td><strong>Flow Example</strong></td>
+            <td><strong>Real Project Setup</strong></td>
             <td>
-              POST /register → Producer → <code>student_exchange</code> (Fanout)
-              → <code>email_queue</code> + <code>sms_queue</code>
-              → EmailConsumer + SmsConsumer run as background services
+              <code>RabbitMQInitializer</code> declares all Exchanges, Queues,
+              Bindings <strong>once at startup</strong> → Producers
+              <strong>only</strong> publish → Consumers
+              <strong>only</strong> consume → All names in
+              <code>RabbitMQConstants</code> → Consumer down?
+              <strong>Queue holds messages until consumer is back</strong> →
+              <code>BasicAck</code> ✅ delete it → <code>BasicNack</code> ❌
+              retry it → Too many failures moved to →
+              <strong>Dead Letter Queue</strong> 🪦
             </td>
           </tr>
         </tbody>
@@ -555,7 +563,6 @@
           </tr>
         </tbody>
       </table>
-
       <!-- GraphQL -->
       <table>
         <thead>
@@ -568,64 +575,95 @@
           <tr>
             <td><strong>#GraphQL#</strong></td>
             <td>
-              Query language for APIs — client asks for exactly what it needs,
-              nothing more, nothing less; one endpoint handles all requests;
-              alternative to REST
+              Query language for APIs — client asks for
+              <strong>exactly what it needs</strong>, nothing more, nothing
+              less; one endpoint <code>/graphql</code> handles all requests;
+              alternative to REST; solves
+              <strong>over-fetching</strong> (getting unused fields) and
+              <strong>under-fetching</strong> (needing multiple calls for
+              related data)
             </td>
           </tr>
           <tr>
             <td><strong>REST vs GraphQL</strong></td>
             <td>
               REST → multiple endpoints, fixed response shape, over/under
-              fetching;<br />
+              fetching, multiple round trips for related data;<br />
               GraphQL → single endpoint <code>/graphql</code>, client defines
-              response shape, gets exactly what it asks for
+              response shape, gets exactly what it asks for, related data in
+              <strong>one request</strong>;<br />
+              Example: need student + courses + grades →
+              <code>REST = 3 calls</code> vs <code>GraphQL = 1 call</code>
             </td>
           </tr>
           <tr>
             <td><strong>Core Concepts</strong></td>
             <td>
-              Query → read data (like GET);<br />
-              Mutation → write data (like POST/PUT/DELETE);<br />
-              Subscription → real-time data via WebSocket;<br />
-              Schema → defines types and available queries;<br />
-              Resolver → function that fetches data for a field
+              <strong>Query</strong> → read data (like GET);<br />
+              <strong>Mutation</strong> → write data (like POST/PUT/DELETE);<br />
+              <strong>Subscription</strong> → real-time data via WebSocket,
+              server pushes updates to client;<br />
+              <strong>Schema</strong> → blueprint of all available types and
+              queries;<br />
+              <strong>Resolver</strong> → function that fetches actual data for
+              a field from DB or service
             </td>
           </tr>
           <tr>
             <td><strong>In .NET (HotChocolate)</strong></td>
             <td>
-              Install <code>HotChocolate.AspNetCore</code> → create
-              <code>Query</code> class with methods → create
-              <code>Mutation</code> class → register via
+              Install <code>HotChocolate.AspNetCore</code> +
+              <code>HotChocolate.Data.EntityFramework</code> → create
+              <code>Query</code> class (read) → create
+              <code>Mutation</code> class (write) → register via
               <code>builder.Services.AddGraphQLServer()</code>
               <code>.AddQueryType&lt;Query&gt;()</code>
-              <code>.AddMutationType&lt;Mutation&gt;()</code> →
-              <code>app.MapGraphQL()</code>
+              <code>.AddMutationType&lt;Mutation&gt;()</code>
+              <code>.AddProjections()</code> <code>.AddFiltering()</code>
+              <code>.AddSorting()</code> → <code>app.MapGraphQL()</code> → test
+              via <strong>Banana Cake Pop</strong> UI at
+              <code>/graphql</code> in browser (like Swagger for GraphQL)
             </td>
           </tr>
           <tr>
-            <td><strong>Query Example</strong></td>
+            <td><strong>Query &amp; Projections</strong></td>
             <td>
               Client sends:
-              <code>{ student(id: 1) { name email course } }</code>; gets back
-              only <code>name</code>, <code>email</code>, <code>course</code> —
-              no extra fields; same endpoint, different fields = different
-              response shape; with <strong>Projections</strong> (<code
-                >[UseProjection]</code
+              <code>{ student(id: 1) { name email courses { title } } }</code> →
+              gets back <strong>only requested fields</strong>, no extras;<br />
+              <code>[UseProjection]</code> + <code>.AddProjections()</code> →
+              selection goes all the way to DB, EF Core generates
+              <code>SELECT Name, Email</code> only — unused fields
+              <strong>never fetched from DB</strong>;<br />
+              <code>[UseFiltering]</code> → client can filter:
+              <code>where: { name: { eq: "Ali" } }</code>;<br />
+              <code>[UseSorting]</code> → client can sort:
+              <code>order: { name: ASC }</code>;<br />
+              return <code>IQueryable</code> not <code>List</code> — lets
+              HotChocolate build optimized SQL
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Mutation Example</strong></td>
+            <td>
+              <code
+                >mutation { createStudent(name: "Ali" email: "ali@gmail.com") {
+                id name } }</code
               >
-              + <code>.AddProjections()</code>) this selection goes all the way
-              to DB — EF Core generates
-              <code>SELECT Name, Email, Course</code> only, unused fields never
-              fetched from DB
+              → creates student, returns only <code>id</code> and
+              <code>name</code>; same for update and delete;
+              <strong>client controls what fields come back</strong> after
+              mutation too
             </td>
           </tr>
           <tr>
             <td><strong>When to Use</strong></td>
             <td>
-              Mobile apps (bandwidth sensitive); dashboards needing flexible
-              data; when clients need different shapes of same data; avoid
-              over-fetching / under-fetching problems
+              ✅ Mobile apps (bandwidth sensitive); dashboards needing flexible
+              data; multiple clients needing different shapes of same data;
+              avoid over/under-fetching;<br />
+              ❌ Avoid when: simple CRUD app; file uploads; public APIs (REST
+              more familiar); heavy caching needs (REST caches easier)
             </td>
           </tr>
         </tbody>
