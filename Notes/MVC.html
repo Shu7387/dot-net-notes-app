@@ -408,31 +408,44 @@
         <thead>
           <tr>
             <th>Lifetime</th>
-            <th>Scope</th>
-            <th>Typical Use Cases</th>
+            <th>Instance</th>
+            <th>Sharing</th>
+            <th>State</th>
+            <th>Lifespan</th>
+            <th>Use Cases</th>
+            <th>Analogy</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Singleton</strong></td>
-            <td>One instance for app lifetime</td>
-            <td>Configuration, caching, stateless helpers, loggers</td>
+            <td><strong>Transient</strong></td>
+            <td>New instance every time</td>
+            <td>Not shared (isolated)</td>
+            <td>Stateless, lightweight</td>
+            <td>Shortest-lived</td>
+            <td>Helpers — validators, mappers</td>
+            <td>Disposable item (tissue paper)</td>
           </tr>
           <tr>
             <td><strong>Scoped</strong></td>
-            <td>One per HTTP request</td>
+            <td>One instance per request</td>
+            <td>Shared within request</td>
+            <td>Ensures state consistency</td>
+            <td>Medium-lived</td>
             <td>
-              DbContext, business services, repositories —
-              <strong>stateful, data, user</strong>
+              Data access &amp; business logic — DbContext, repositories,
+              transactions
             </td>
+            <td>One notebook used throughout a task</td>
           </tr>
           <tr>
-            <td><strong>Transient</strong></td>
-            <td>New instance each use</td>
-            <td>
-              Lightweight, short-lived utility services —
-              <strong>stateless helpers</strong>
-            </td>
+            <td><strong>Singleton</strong></td>
+            <td>Single instance for entire app</td>
+            <td>Shared globally</td>
+            <td>Must be thread-safe</td>
+            <td>Long-lived</td>
+            <td>Caching, configuration, logging</td>
+            <td>One shared resource for everyone (TV, kitchen, garden)</td>
           </tr>
         </tbody>
       </table>
@@ -1373,7 +1386,7 @@
       </div>
 
       <div class="scenario-item">
-        <h3>14. Authentication Flow in ASP.NET MVC &amp; Angular</h3>
+        <h3>14. Complete authentication Flow in ASP.NET MVC &amp; Angular</h3>
         <p>
           A user logs in to an ASP.NET MVC application that consumes a Web API.
           The browser does not call the API directly. How does authentication
@@ -1383,111 +1396,123 @@
           <strong>Answer:</strong>
 
           <p>
-            <strong>How JWT Token is Created:</strong>
-            When a user logs in, MVC or Angular calls the Login API. The API
-            validates the username and password from the database and then
-            creates a JWT token. The JWT contains three parts: header, payload,
-            and signature. The payload includes user information such as user
-            id, claims, and role, along with expiry time. The token is signed
-            using a secret key to ensure it is not modified. After creation, the
-            API stores the JWT inside an HttpOnly secure cookie. The browser
-            saves this cookie and automatically sends it with every request.
+            <strong>Two Types of Authentication:</strong>
+            For user authentication — MVC used cookie-based auth, Angular used
+            JWT stored in localStorage with an interceptor attaching it to every
+            request. For app-to-app — the calling App gets a JWT from our Auth
+            Service using client credentials and passes it to the target API.
           </p>
 
           <hr />
 
-          <p>
-            <strong>How MVC Handles the JWT Cookie:</strong>
-            When a user accesses any page, the browser sends the cookie to MVC
-            automatically. When MVC receives a request with the cookie, the
-            authentication middleware extracts the JWT from the cookie and
-            validates its signature and expiry. If the token is valid, it
-            creates a ClaimsPrincipal and sets HttpContext.User, which contains
-            all user information. Then the authorization middleware checks roles
-            if required. After that, the controller runs and can access user
-            information using User.Identity and User.Claims.
-          </p>
+          <p><strong>App to App Authentication:</strong></p>
+          <ul>
+            <li>
+              On OAuth portal Register API (define scopes); Register Client (get
+              ClientId/Secret, select API &amp; assign scopes)
+            </li>
+            <li>
+              Client requests token (client_credentials with scope/audience)
+              from OAuth service
+            </li>
+            <li>OAuth server issues JWT</li>
+            <li>Client calls API with token</li>
+            <li>API validates token &amp; scopes</li>
+          </ul>
 
           <hr />
 
-          <p>
-            <strong>How Angular Works with JWT Cookie:</strong>
-            In Angular, the browser also sends the HttpOnly cookie automatically
-            with each outgoing API request. Angular cannot read the HttpOnly
-            cookie directly, so to display user details it calls the /UserInfo
-            API. That API reads the cookie, validates the JWT from the cookie,
-            and returns user information like name and role. For protected APIs,
-            we use [Authorize(Roles="Admin")], and if the role does not match,
-            the API returns 403 Forbidden.
-          </p>
+          <p><strong>User Authentication (MVC + Cookie):</strong></p>
+          <ul>
+            <li>User enters credentials on MVC login page</li>
+            <li>MVC calls Login API (username/password)</li>
+            <li>
+              Login API validates user from DB & returns user data (id,
+              username, roles, claims) in JSON response
+            </li>
+            <li>
+              MVC receives user data & creates ClaimsPrincipal using that data;
+              MVC generates encrypted auth cookie & sent to browser
+            </li>
+
+            <li>
+              Browser stores cookie; Browser sends cookie with each request
+            </li>
+            <li>
+              MVC middleware validates cookie; Rebuilds ClaimsPrincipal → sets
+              HttpContext.User
+            </li>
+          </ul>
 
           <hr />
 
-          <p>
-            <strong>Cache vs Session:</strong>
-            Cache is used to store frequently used or expensive data to improve
-            performance, and it is usually shared across all users. Session is
-            used to store user-specific temporary data like cart or multi-step
-            form state. Cache improves system speed, while session maintains
-            user state. Both cache and session can be implemented in in-memory
-            or distributed types.
-          </p>
+          <p><strong>User Authentication (Angular + JWT):</strong></p>
+          <ul>
+            <li>
+              User enters credentials on Angular login page and submit POST form
+            </li>
+            <li>Angular calls Login API (username/password)</li>
+            <li>
+              Login API validates user from DB & generates JWT (user info,
+              roles, claims, signature, expiry); JWT returned to Angular
+            </li>
+            <li>Angular stores JWT in localStorage</li>
+
+            <li>
+              Angular interceptor attaches token (Authorization: Bearer) to
+              every outgoing API request
+            </li>
+            <li>
+              API receives request with token; API middleware validates JWT
+              (signature, expiry, issuer/audience); API sets user context
+              (HttpContext.User)
+            </li>
+            <li>
+              Angular guards check login/token before route access; User
+              allowed/blocked based on authentication
+            </li>
+          </ul>
 
           <hr />
 
-          <p>
-            <strong>Backend Caching in MVC:</strong>
-            On the MVC/backend side, to cache expensive API responses, we use
-            IMemoryCache for single-server applications or IDistributedCache
-            with Redis for multi-server environments. We store the response
-            using a key and set a TTL (expiration time). On the next request, we
-            return the cached data instead of hitting the database.
-          </p>
+          <p><strong>Refresh Token (Angular):</strong></p>
+          <ul>
+            <li>
+              Login API issues JWT Access Token (short-lived, 20 min) &amp;
+              Refresh Token (long-lived, days/weeks)
+            </li>
+            <li>
+              Refresh token is stored securely in browser (HttpOnly cookie
+              preferred)
+            </li>
+            <li>When JWT expires → Angular calls Refresh API</li>
+            <li>Browser automatically sends refresh token (cookie)</li>
+            <li>
+              Refresh API validates refresh token & Issues new JWT and
+              optionally new refresh token
+            </li>
+            <li>User stays logged in without re-entering credentials</li>
+          </ul>
 
           <hr />
 
-          <p>
-            <strong>Frontend Caching in Angular:</strong>
-            On the Angular side, we cache responses mainly for UI performance
-            using an in-memory service, RxJS shareReplay, sessionStorage,
-            localStorage, or NgRx store. Backend caching improves overall system
-            performance, while frontend caching mainly improves user experience.
-          </p>
-
-          <hr />
-
-          <p>
-            <strong>MVC → Web API (App to App authentication):</strong>
-            App-to-app authentication ensures that only trusted applications can
-            call backend APIs. User authentication proves who the user is, while
-            application authentication proves which application is making the
-            request. This is not for end users; it is for the MVC application
-            when calling backend Web APIs. Basic Auth sends username and
-            password on every request, which is insecure. With OAuth (client
-            credentials flow), MVC authenticates once with an OAuth server and
-            receives a JWT access token and refresh token. MVC uses the access
-            token to call APIs, and when it expires, the refresh token is used
-            to obtain a new one. The JWT may contain scopes for authorization,
-            and OAuth acts as the token issuer.
-          </p>
-
-          <hr />
-
-          <p>
-            <strong>Refresh Token (MVC and Angular):</strong>
-            Refresh tokens are used to obtain a new access token when the
-            current JWT access token expires, without forcing the user or
-            application to log in again. In Angular (user authentication), after
-            login the API issues a short-lived access token (stored in an
-            HttpOnly cookie) and a longer-lived refresh token. When the access
-            token expires, Angular calls a refresh endpoint, and the backend
-            validates the refresh token and issues a new JWT. In MVC app-to-app
-            authentication, OAuth also provides an access token and refresh
-            token. MVC uses the access token to call Web APIs, and when it
-            expires, the refresh token is used to request a new access token
-            from the OAuth server. This improves security by keeping access
-            tokens short-lived while maintaining seamless authentication.
-          </p>
+          <p><strong>Refresh Token (MVC):</strong></p>
+          <ul>
+            <li>
+              User logs in → server creates auth cookie & it has expiry (e.g.,
+              30 min)
+            </li>
+            <li>On each browser request → cookie is validated</li>
+            <li>
+              If cookie sliding expiration enabled → expiry extended
+              automatically
+            </li>
+            <li>
+              User stays logged in without refresh token. Refresh tokens are
+              usually not required because cookies support sliding expiration to
+              maintain the session.
+            </li>
+          </ul>
         </div>
         <div class="image-icons">
           <span class="image-icons-label">Images:</span>
