@@ -985,6 +985,46 @@
         </div>
       </div>
 
+      <div class="qa-block">
+        <div class="question">
+          In multi server setup, How is data consistency maintained in a shared
+          database setup?
+        </div>
+        <div class="answer">
+          <strong>Single source of truth:</strong> all instances write to same
+          DB
+          <br />
+          <strong>Transactions + isolation levels:</strong> ensure atomic,
+          consistent writes, and prevent race conditions
+          <br />
+          <strong>Constraints:</strong> enforce data integrity at DB level
+          <br />
+          <strong>Optimistic concurrency:</strong> RowVersion prevents conflicts
+          <br />
+          <strong>Locking (optional):</strong> rowlock, used in high-conflict
+          scenarios
+          <br />
+          <strong>Idempotency:</strong> avoids duplicate writes on retries
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">What is a race condition?</div>
+        <div class="answer">
+          <strong>Race condition:</strong> multiple threads/processes access and
+          modify shared data concurrently
+          <br />
+          <strong>Problem:</strong> final result depends on execution order
+          (unpredictable)
+          <br />
+          <strong>Example:</strong> two requests update same record → one
+          overwrite causes data loss
+          <br />
+          <strong>Prevention:</strong> Locks, transactions, isolation levels,
+          concurrency control like RowVersion
+        </div>
+      </div>
+
       <!-- GROUP: Validation & Error Handling -->
       <div class="qa-block">
         <div class="question">

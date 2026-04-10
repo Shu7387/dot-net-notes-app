@@ -963,41 +963,105 @@
       SECTION 8: SOLID &amp; Design Patterns <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
+      <!-- SOLID -->
       <table>
         <thead>
           <tr>
             <th>Principle</th>
-            <th>Description</th>
+            <th>Why it matters</th>
+            <th>Analogy</th>
+            <th>Real coding situation</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>S</strong>RP</td>
-            <td>Single Responsibility — one class, one reason to change</td>
-          </tr>
-          <tr>
-            <td><strong>O</strong>CP</td>
-            <td>Open/Closed — open for extension, closed for modification</td>
-          </tr>
-          <tr>
-            <td><strong>L</strong>SP</td>
             <td>
-              Liskov Substitution — child must replace parent without breaking
-              behavior
+              <strong>S</strong>RP<br />
+              <small>One class, one reason to change</small>
+            </td>
+            <td>
+              Without it — one change breaks unrelated things; class becomes a
+              mess that nobody wants to touch
+            </td>
+            <td>
+              👨‍🍳 Chef only cooks — he doesn't take orders, clean tables, or
+              handle billing
+            </td>
+            <td>
+              UserService should not handle emails — split into UserService and
+              EmailService
             </td>
           </tr>
           <tr>
-            <td><strong>I</strong>SP</td>
             <td>
-              Interface Segregation — many small interfaces; don't force classes
-              to implement unused methods
+              <strong>O</strong>CP<br />
+              <small>Open to extend, closed to modify</small>
+            </td>
+            <td>
+              Without it — every new feature means editing old working code and
+              risking breaking it
+            </td>
+            <td>
+              🔌 Power strip — add new devices by plugging in, never rewire the
+              strip itself
+            </td>
+            <td>
+              Add new payment method by adding new class — never touch existing
+              PaymentService logic
             </td>
           </tr>
           <tr>
-            <td><strong>D</strong>IP</td>
             <td>
-              Dependency Inversion — depend on abstractions (interfaces), not
-              concrete classes
+              <strong>L</strong>SP<br />
+              <small>Child must work wherever parent works</small>
+            </td>
+            <td>
+              Without it — using a child class instead of parent causes
+              unexpected crashes and broken behavior
+            </td>
+            <td>
+              🚗 Rental car — you booked a car, got a different model — it still
+              drives the same way
+            </td>
+            <td>
+              If Bird has Fly() — Penguin extending Bird and throwing exception
+              breaks LSP
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>I</strong>SP<br />
+              <small>Small focused interfaces, not one big one</small>
+            </td>
+            <td>
+              Without it — classes are forced to implement methods they don't
+              need — empty or fake implementations everywhere
+            </td>
+            <td>
+              🖨️ Printer only prints — don't force it to also scan, fax, and
+              staple if it can't
+            </td>
+            <td>
+              IWorker with Work() and Eat() — robots implement Work() but not
+              Eat() — split the interface
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>D</strong>IP<br />
+              <small>Depend on interfaces, not concrete classes</small>
+            </td>
+            <td>
+              Without it — swapping one class forces changes everywhere it is
+              used — tightly coupled, hard to test
+            </td>
+            <td>
+              💡 Lamp plugs into socket — lamp doesn't care if power comes from
+              grid or generator
+            </td>
+            <td>
+              UserService depends on IEmailService not EmailService — swap
+              implementation without changing UserService
             </td>
           </tr>
         </tbody>
@@ -1021,88 +1085,445 @@
           <tr>
             <th>Category</th>
             <th>Pattern</th>
+            <th>Analogy</th>
             <th>What problem it solves</th>
             <th>Real-world use</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td rowspan="3">
-              <strong>Creational</strong><br /><small
-                >How objects are created</small
-              >
-            </td>
-            <td><strong>Singleton</strong></td>
-            <td>Only one instance for the whole app</td>
-            <td>Config, logging, cache service</td>
-          </tr>
-          <tr>
-            <td><strong>Factory</strong></td>
-            <td>Create objects without exposing creation logic</td>
-            <td>
-              Create the right DB provider (SQL, PostgreSQL) based on config
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Builder</strong></td>
-            <td>Build complex objects step by step with optional parts</td>
-            <td>
-              Construct an email or HTTP request with optional headers, body,
-              attachments
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="3">
-              <strong>Structural</strong><br /><small
-                >How classes are connected</small
-              >
-            </td>
-            <td><strong>Adapter</strong></td>
-            <td>Make incompatible interfaces work together</td>
-            <td>Wrap a third-party library to match your own interface</td>
-          </tr>
-          <tr>
-            <td><strong>Decorator</strong></td>
-            <td>Add behavior to an object without changing its class</td>
-            <td>Add logging or caching on top of an existing service</td>
-          </tr>
-          <tr>
-            <td><strong>Facade</strong></td>
-            <td>One simple interface over a complex subsystem</td>
-            <td>
-              OrderService calling payment, inventory, and shipping internally
-            </td>
-          </tr>
+          <!-- Creational -->
           <tr>
             <td rowspan="4">
-              <strong>Behavioral</strong><br /><small
-                >How objects communicate</small
+              <strong>Creational</strong><br />
+              <small>How objects are created</small>
+            </td>
+            <td>
+              <strong>Singleton</strong><br />
+              <small>Single instance throughout app</small>
+            </td>
+            <td>
+              👑 One president for the whole country — everyone talks to the
+              same one
+            </td>
+            <td>
+              Prevents creating multiple instances of the same heavy object —
+              wastes memory and resources
+            </td>
+            <td>
+              Config, logging, Redis connection — created once, shared
+              everywhere
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Factory</strong><br />
+              <small>Creates the right object for you</small>
+            </td>
+            <td>
+              🏭 You order a car — factory decides how to build and which model
+              to give you
+            </td>
+            <td>
+              Too many if/else blocks deciding which object to create — messy
+              and repeated everywhere
+            </td>
+            <td>
+              Payment methods, DB providers — ask factory for the right one
+              based on config
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Builder</strong><br />
+              <small>Build complex object step by step</small>
+            </td>
+            <td>
+              🍔 Custom burger — add cheese, skip onions, extra sauce — you
+              decide what goes in
+            </td>
+            <td>
+              Constructor with too many parameters — confusing, hard to read,
+              passing nulls everywhere
+            </td>
+            <td>
+              Building emails, HTTP requests, API responses with optional parts
+              step by step
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Options</strong><br />
+              <small>Strongly typed settings from config</small>
+            </td>
+            <td>
+              📋 App settings form — fill in your values, app reads them in a
+              strongly typed way
+            </td>
+            <td>
+              Reading raw config strings everywhere — no type safety, easy to
+              mistype key names
+            </td>
+            <td>
+              JwtSettings, RedisSettings, IdempotencySettings — injected
+              anywhere via IOptions&lt;T&gt;
+            </td>
+          </tr>
+
+          <!-- Structural -->
+          <tr>
+            <td rowspan="4">
+              <strong>Structural</strong><br />
+              <small>How classes are connected</small>
+            </td>
+            <td>
+              <strong>Adapter</strong><br />
+              <small>Makes incompatible interfaces work together</small>
+            </td>
+            <td>
+              🔌 Travel plug adapter — your plug doesn't fit the socket, adapter
+              makes it work
+            </td>
+            <td>
+              Two incompatible interfaces need to work together — you can't
+              change either side
+            </td>
+            <td>Wrapping a third-party library to match your own interface</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Decorator</strong><br />
+              <small>Adds behavior without changing original class</small>
+            </td>
+            <td>
+              ☕ Plain coffee → add milk → add sugar — same cup, new layers
+              added on top
+            </td>
+            <td>
+              You want to add behavior to an object but don't want to touch or
+              change its original code
+            </td>
+            <td>
+              CachedEmployeeService wraps EmployeeService — adds Redis caching
+              without changing original
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Facade</strong><br />
+              <small>One simple interface over complex system</small>
+            </td>
+            <td>
+              📺 TV remote — one button does everything, you don't care what
+              happens inside the TV
+            </td>
+            <td>
+              Caller has to deal with many complex classes — too much to know
+              and manage
+            </td>
+            <td>
+              EmployeeService hides repository, UnitOfWork, mapper behind one
+              simple interface
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Proxy</strong><br />
+              <small>Controls access to an object</small>
+            </td>
+            <td>
+              🛡️ Bodyguard — stands in front of the boss, checks who gets
+              through before letting them in
+            </td>
+            <td>
+              You need to intercept calls to an object — add checks, caching, or
+              logging before reaching it
+            </td>
+            <td>
+              CachedXService sits in front of real service — checks cache first,
+              only forwards on miss
+            </td>
+          </tr>
+
+          <!-- Behavioral -->
+          <tr>
+            <td rowspan="7">
+              <strong>Behavioral</strong><br />
+              <small>How objects communicate</small>
+            </td>
+            <td>
+              <strong>Strategy</strong><br />
+              <small>Swap algorithms at runtime</small>
+            </td>
+            <td>
+              🗺️ Google Maps — same app, choose driving / walking / cycling
+              strategy at runtime
+            </td>
+            <td>
+              Hard-coded algorithm that needs to change based on situation —
+              messy if/else everywhere
+            </td>
+            <td>
+              ICacheStrategy — swap Redis vs InMemory without changing any
+              caller
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Repository</strong><br />
+              <small
+                >Layer that separates business logic from data access</small
               >
             </td>
-            <td><strong>Strategy</strong></td>
-            <td>Swap algorithms at runtime without changing the caller</td>
-            <td>Different discount types or payment methods</td>
-          </tr>
-          <tr>
-            <td><strong>Repository</strong></td>
-            <td>Abstract data access; decouple business logic from DB</td>
             <td>
-              <code>IUserRepository</code> with SQL or mock implementation
+              📚 Library desk — you ask for a book, librarian handles where and
+              how to find it
+            </td>
+            <td>
+              DB queries scattered all over business logic — hard to test,
+              maintain, or swap DB
+            </td>
+            <td>
+              GenericRepository + EmployeeRepository — business logic never
+              touches DB directly
             </td>
           </tr>
           <tr>
-            <td><strong>Observer</strong></td>
-            <td>Notify multiple objects when something changes</td>
-            <td>Order placed → notify email, SMS, inventory services</td>
+            <td>
+              <strong>Unit of Work</strong><br />
+              <small
+                >Groups operations into one transaction & save all together or
+                not at all <br />
+                (One service, one DB)</small
+              >
+            </td>
+            <td>
+              🛒 Shopping cart — add items all session, pay once at checkout —
+              all succeed or nothing goes through
+            </td>
+            <td>
+              Each repo saving immediately — crash halfway = some saved, some
+              not = corrupted data with no way to roll back
+            </td>
+            <td>
+              BeginTransaction → stage delete all Employees → stage delete all
+              Departments → stage delete Employer → SaveChangesAsync() →
+              CommitTransaction ✅ all saved together — exception at any point?
+              RollbackTransaction ❌ nothing touched, DB stays perfectly clean
+            </td>
           </tr>
           <tr>
-            <td><strong>CQRS</strong></td>
             <td>
-              Separates read (Query) and write (Command) operations; commonly
-              implemented using <strong>MediatR</strong> for handling requests.
-              1 handler => 1 request
+              <strong>Observer (Mediator)</strong><br />
+              <small
+                >Automatically informs all subscribers/Handlers of a change
+                <br />
+                INotification, Publish()</small
+              >
             </td>
-            <td>Used in Clean Architecture, scalable .NET APIs</td>
+            <td>
+              🔔 YouTube subscription — one video uploaded, all subscribers
+              notified automatically
+            </td>
+            <td>
+              After an event, you manually call every service that needs to know
+              — tight coupling
+            </td>
+            <td>
+              One request many handlers <br />
+              EmployeeCreatedNotification published → CacheInvalidationHandler +
+              AuditLogHandler react automatically
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>CQRS (Mediator)</strong><br />
+              <small
+                >Reads and writes are fully separated <br />
+                IRequest, Send()</small
+              >
+            </td>
+            <td>
+              📖 Library — reading room and writing room are separate, different
+              rules for each
+            </td>
+            <td>
+              Reads and writes mixed in same service — hard to scale, optimize,
+              or reason about
+            </td>
+            <td>
+              One request one handler <br />
+              CreateEmployeeCommand for writes, GetAllEmployeesQuery for reads —
+              fully separated via MediatR
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Chain of Responsibility (MediatR)</strong><br />
+              <small
+                >Request passes through chain of handlers <br />
+                IPipelineBehavior + next()</small
+              >
+            </td>
+            <td>
+              🏢 Job application — CV screener → HR → technical → manager, each
+              decides pass or reject
+            </td>
+            <td>
+              Bad: One big handler doing everything — validation, logging,
+              performance all tangled together
+            </td>
+            <td>
+              Each handler does it's job and pass to the next handler, <br />
+              Register MediatR Pipeline —> LoggingHandler → PerformanceHandler →
+              ValidationHandler → Actual Handler
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>Template Method</strong><br />
+              <small>Base class defines skeleton, subclass fills steps</small>
+            </td>
+            <td>
+              📝 Exam paper — same structure for all students, each fills in
+              their own answers
+            </td>
+            <td>
+              Same flow repeated in many classes with small differences —
+              copy-paste with tiny changes
+            </td>
+            <td>
+              Abstract class BaseCommandHandler defines Handle method (log →
+              execute → log) flow; each handler class overrides only execute();
+              All request go through Abstract Handle.
+            </td>
+          </tr>
+
+          <!-- Resilience -->
+          <tr>
+            <td rowspan="2">
+              <strong>Resilience</strong><br />
+              <small>How failures are handled</small>
+            </td>
+            <td>
+              <strong>Retry (Polly)</strong><br />
+              <small>Auto retries failed operation N times</small>
+            </td>
+            <td>
+              📞 Phone call fails — you try again 2-3 times before giving up
+            </td>
+            <td>
+              One network blip fails the whole request — transient errors should
+              not crash the operation
+            </td>
+            <td>
+              HTTP call fails → automatically retry 3 times with delay via Polly
+              before returning error
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Circuit Breaker (Polly)</strong><br />
+              <small>Stops calling dead service, auto-recovers</small>
+            </td>
+            <td>
+              ⚡ Electric circuit breaker — too much current, switch trips,
+              protects the whole house
+            </td>
+            <td>
+              Calling a dead service repeatedly — wastes resources, slows app,
+              causes cascading failures
+            </td>
+            <td>
+              After 5 failures circuit opens → all calls instantly return error
+              for 30s → auto-recovers; <strong>States:</strong> Close, Open,
+              Half Open
+            </td>
+          </tr>
+
+          <!-- Microservices -->
+          <tr>
+            <td rowspan="4">
+              <strong>Microservices</strong><br />
+              <small>Distributed system patterns</small>
+            </td>
+            <td>
+              <strong>Saga</strong><br />
+              <small
+                >Manages transactions across multiple services <br />
+                Many services, Many DB</small
+              >
+            </td>
+            <td>
+              ✈️ Flight booking — book flight → hotel → car; if car fails →
+              cancel hotel → cancel flight
+            </td>
+            <td>
+              Long transaction spanning multiple services — no single DB
+              transaction to roll back across all
+            </td>
+            <td>
+              Order → payment → inventory → shipping; any step fails →
+              compensating transactions undo previous steps; <br />
+              <strong>Ways: </strong>Choreography (Event based), Orchestration
+              (Directly step by step)
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Service Discovery</strong><br />
+              <small>Services find each other dynamically</small>
+            </td>
+            <td>
+              📖 Phone book — you look up a name, get the current number — no
+              hardcoded numbers
+            </td>
+            <td>
+              Hardcoded service URLs break when services move to different
+              servers, scale, or restart
+            </td>
+            <td>
+              Services register on startup → others ask Consul or Eureka for
+              live address → call it dynamically
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Outbox</strong><br />
+              <small>Guarantees event delivery via DB table</small>
+            </td>
+            <td>
+              📮 Write a letter, put in outbox — postman picks it up and
+              delivers later, guaranteed
+            </td>
+            <td>
+              Save to DB and publish event separately — if broker is down, event
+              is lost forever. Save event in db first
+            </td>
+            <td>
+              OutboxMessage saved atomically with entity in DB → background
+              service reads pending rows from OutboxMessage table in DB →
+              publishes to Service Bus — broker down? message waits in DB until
+              it recovers, never lost ✅
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Feature Flag (LaunchDarkly)</strong><br />
+              <small>Toggle features on/off without redeploying</small>
+            </td>
+            <td>
+              💡 Light switch — turn feature on or off without touching any
+              wires
+            </td>
+            <td>
+              Deploying new features is risky — need to redeploy to enable or
+              disable something
+            </td>
+            <td>
+              EnableRedisCache, EnableIdempotency, EnableMultiTenancy — all
+              toggled in appsettings.json at runtime
+            </td>
           </tr>
         </tbody>
       </table>

@@ -563,6 +563,7 @@
           </tr>
         </tbody>
       </table>
+
       <!-- GraphQL -->
       <table>
         <thead>
@@ -664,6 +665,142 @@
               avoid over/under-fetching;<br />
               ❌ Avoid when: simple CRUD app; file uploads; public APIs (REST
               more familiar); heavy caching needs (REST caches easier)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- gRPC -->
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#gRPC#</strong></td>
+            <td>
+              Remote Procedure Call framework by Google — client calls a method
+              on a <strong>remote server as if it were local</strong>; uses
+              <strong>HTTP/2</strong> +
+              <strong>Protocol Buffers (Protobuf)</strong> instead of JSON;
+              faster and lighter than REST; strongly typed contract defined in
+              <code>.proto</code> file; ideal for
+              <strong>service-to-service</strong> communication in microservices
+            </td>
+          </tr>
+          <tr>
+            <td><strong>REST vs gRPC</strong></td>
+            <td>
+              REST → JSON (text, heavy), HTTP/1.1, multiple endpoints, no strict
+              contract, slower;<br />
+              gRPC → Protobuf (binary, tiny), HTTP/2, single contract via
+              <code>.proto</code>, strict typing, faster;<br />
+              Example: sending student data →
+              <code>REST = JSON string</code> vs
+              <code>gRPC = binary bytes</code> — gRPC can be
+              <strong>5–10x smaller</strong> on the wire
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Core Concepts</strong></td>
+            <td>
+              <strong>Proto file</strong> → contract defining services and
+              messages; shared between client and server;<br />
+              <strong>Service</strong> → defines RPC methods (like
+              controller);<br />
+              <strong>Message</strong> → defines data shape (like DTO);<br />
+              <strong>Channel</strong> → connection from client to server;<br />
+              <strong>Stub/Client</strong> → auto-generated class client uses to
+              call server methods;<br />
+              <strong>Server Streaming</strong> → server sends a stream of
+              responses;<br />
+              <strong>Client Streaming</strong> → client sends a stream of
+              requests;<br />
+              <strong>Bidirectional Streaming</strong> → both sides stream at
+              the same time
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Proto File</strong></td>
+            <td>
+              <code>syntax = "proto3";</code> → proto version;<br />
+              <code
+                >service StudentService { rpc GetStudent (StudentRequest)
+                returns (StudentReply); }</code
+              >
+              → defines the RPC method;<br />
+              <code>message StudentRequest { int32 id = 1; }</code> → request
+              shape;<br />
+              <code
+                >message StudentReply { int32 id = 1; string name = 2; string
+                email = 3; }</code
+              >
+              → response shape;<br />
+              Numbers (<code>= 1</code>, <code>= 2</code>) → field tags used by
+              Protobuf for binary encoding, <strong>not values</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>In .NET (Grpc.AspNetCore)</strong></td>
+            <td>
+              Install <code>Grpc.AspNetCore</code> → add
+              <code>.proto</code> file to project → set
+              <code
+                >&lt;Protobuf Include="..." GrpcServices="Server" /&gt;</code
+              >
+              in <code>.csproj</code> → .NET
+              <strong>auto-generates</strong> base classes from proto → create
+              service class that extends
+              <code>StudentService.StudentServiceBase</code> → override RPC
+              methods → register via <code>builder.Services.AddGrpc()</code> →
+              <code>app.MapGrpcService&lt;StudentGrpcService&gt;()</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Client Setup (.NET)</strong></td>
+            <td>
+              Install <code>Grpc.Net.Client</code> +
+              <code>Google.Protobuf</code> + <code>Grpc.Tools</code> → add same
+              <code>.proto</code> file with <code>GrpcServices="Client"</code> →
+              .NET generates client stub → create channel:
+              <code>GrpcChannel.ForAddress("https://localhost:5001")</code> →
+              create client:
+              <code>new StudentService.StudentServiceClient(channel)</code> →
+              call method:
+              <code>client.GetStudentAsync(new StudentRequest { Id = 1 })</code>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Streaming Example</strong></td>
+            <td>
+              <strong>Server Streaming</strong> →
+              <code
+                >rpc GetAllStudents (Empty) returns (stream StudentReply);</code
+              >
+              → server writes multiple responses, client reads them one by one
+              via <code>await foreach</code>;<br />
+              <strong>Client Streaming</strong> →
+              <code
+                >rpc AddStudents (stream StudentRequest) returns
+                (Summary);</code
+              >
+              → client sends many, server processes and replies once;<br />
+              <strong>Bidirectional</strong> → both sides stream simultaneously
+              — useful for chat, live updates
+            </td>
+          </tr>
+          <tr>
+            <td><strong>When to Use</strong></td>
+            <td>
+              ✅ Internal service-to-service calls in microservices; high
+              performance / low latency needs; real-time streaming; strongly
+              typed contracts between teams; mobile backends (small payload);<br />
+              ❌ Avoid when: browser clients (gRPC not natively supported in
+              browsers without gRPC-Web); public APIs (REST more familiar);
+              simple apps that don't need the overhead
             </td>
           </tr>
         </tbody>
