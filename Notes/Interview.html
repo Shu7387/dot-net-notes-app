@@ -728,7 +728,7 @@
 
     <!-- ===================== SECTION 2. ASP.NET Core ===================== -->
     <h2 class="section-header" onclick="toggleSection(this)">
-      SECTION 2. ASP.NET Core / Web API <span class="toggle-icon">▼</span>
+      SECTION 2. ASP.NET Core MVC / Web API <span class="toggle-icon">▼</span>
     </h2>
     <div class="section-content">
       <!-- GROUP: Core Architecture -->
@@ -747,6 +747,48 @@
           <br />
           <strong>Controller:</strong> handles requests, calls services, returns
           view or JSON, <strong>use:</strong> entry point for every HTTP request
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What is Bootstrap? How do you make a website responsive?
+        </div>
+        <div class="answer">
+          <strong>Bootstrap:</strong> CSS framework, provides ready-made classes
+          and components (like button, dropdown, nav bar etc.) for building
+          responsive UI fast, no custom CSS needed
+          <br />
+          <strong>Grid System:</strong> 12-column layout, use row + col, columns
+          add up to 12, e.g. col-6 + col-6 = full row
+          <br />
+          <strong>Responsive:</strong> breakpoints sm, md, lg, xl to set
+          different layouts per screen size, mobile first approach
+          <br />
+          <strong>Viewport:</strong> meta tag ensures proper page scaling on
+          mobile devices
+          <br />
+          <strong>Display Utilities:</strong> d-none, d-block to hide/show
+          elements per screen size, e.g. d-none d-lg-block = hidden on mobile,
+          visible on laptop
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What UI frameworks do you use in your project?
+        </div>
+        <div class="answer">
+          <strong>Aviva UI Library:</strong> company's own custom UI library,
+          built on top of Bootstrap and Angular Material, follows Aviva's brand
+          guidelines (colors, fonts, design), used across all projects for
+          consistency
+          <br />
+          <strong>MVC Apps:</strong> use Bootstrap for UI, grid system,
+          responsive layout, spacing utilities
+          <br />
+          <strong>Angular Apps:</strong> use Angular Material for components
+          (mat-button, mat-table, mat-dialog) + Bootstrap for grid/layout
         </div>
       </div>
 
@@ -2540,24 +2582,22 @@
       </div>
 
       <div class="qa-block">
-        <div class="question">
-          How do you upgrade an Angular app? What is the Angular update process?
-        </div>
+        <div class="question">How do you migrate Angular 16 to 20?</div>
         <div class="answer">
-          <strong>Rule:</strong> upgrade one major version at a time, don't skip
-          versions
+          <strong>Rule:</strong> migrate one major version at a time
+          (16→17→18→19→20), never skip versions
           <br />
-          <strong>Steps:</strong>
-          check current version → visit update.angular.io for breaking changes →
-          <code>ng update @angular/core @angular/cli</code> → migration
-          schematics auto-fix code → fix remaining issues → run tests → verify
-          app
+          <strong>Steps per version:</strong> read migration guide
+          (update.angular.io), update Node.js, commit current code so you can
+          rollback, <br />
+          run main command
+          <strong>ng update @angular/core@xx @angular/cli@xx</strong>, sometimes
+          we have to update third party packages manually, <br />
+          fix errors, run ng build/serve test, commit, repeat for next version
           <br />
-          <strong>Common breaking changes:</strong> removed APIs, stricter
-          TypeScript, module changes, RxJS upgrades
-          <br />
-          <strong>note:</strong> always update CLI first, then core, then
-          third-party Angular libraries
+          <strong>Best Practice:</strong> always commit before migration, fix
+          all errors before next version, update third party packages, run all
+          tests
         </div>
       </div>
 
@@ -2933,6 +2973,37 @@
           <br />
           <strong>use:</strong> scheduled jobs, event-driven processing,
           lightweight APIs
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="question">
+          What are Azure Function Keys? How do you secure them?
+        </div>
+        <div class="answer">
+          <strong>What:</strong> simple API keys to protect Azure Functions,
+          without key function returns 401 Unauthorized
+          <br />
+          <strong>Types:</strong> Function Key (one function only), Host Key
+          (all functions), Master Key (all + admin APIs, never share)
+          <br />
+          <strong>Auth Levels:</strong> Anonymous (no key), Function (function
+          key required), Admin (master key)
+          <br />
+          <strong>How to pass:</strong> URL query string (?code=key) or header
+          (x-functions-key: key)
+          <br />
+          <strong>When:</strong> service-to-service calls, no user login needed,
+          e.g. .NET API calls Azure Function internally using function key
+          <br />
+          <strong>Security:</strong> lower environments (Dev, QA) keys in
+          appsettings.json, higher environments (UAT, Prod) keys in Azure Key
+          Vault, accessed via Managed Identity, never hardcoded in code
+          <br />
+          <strong>Key Point:</strong> Angular never calls Azure Function
+          directly, always through .NET API, function key stays in backend only.
+          <br />
+          Angular → .NET API → Azure services
         </div>
       </div>
 

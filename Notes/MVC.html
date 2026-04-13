@@ -1399,8 +1399,9 @@
             <strong>Two Types of Authentication:</strong>
             For user authentication — MVC used cookie-based auth, Angular used
             JWT stored in localStorage with an interceptor attaching it to every
-            request. For app-to-app — the calling App gets a JWT from our Auth
-            Service using client credentials and passes it to the target API.
+            request. <br />
+            For app-to-app — the calling App gets a JWT from our Auth Service
+            using client credentials and passes it to the target API.
           </p>
 
           <hr />
@@ -1412,11 +1413,11 @@
               ClientId/Secret, select API &amp; assign scopes)
             </li>
             <li>
-              Client requests token (client_credentials with scope/audience)
-              from OAuth service
+              Client (eg, MVC app) requests token (client_credentials with
+              scope/audience) from OAuth service
             </li>
             <li>OAuth server issues JWT</li>
-            <li>Client calls API with token</li>
+            <li>Client calls Other APIs with this JWT token</li>
             <li>API validates token &amp; scopes</li>
           </ul>
 
@@ -1425,14 +1426,14 @@
           <p><strong>User Authentication (MVC + Cookie):</strong></p>
           <ul>
             <li>User enters credentials on MVC login page</li>
-            <li>MVC calls Login API (username/password)</li>
+            <li>MVC calls Auth API (username/password)</li>
             <li>
-              Login API validates user from DB & returns user data (id,
-              username, roles, claims) in JSON response
+              Auth API validates user from Azure AD & returns JWT token which
+              has user data (id, username, roles, claims)
             </li>
             <li>
-              MVC receives user data & creates ClaimsPrincipal using that data;
-              MVC generates encrypted auth cookie & sent to browser
+              MVC receives JWT & creates ClaimsPrincipal using that data; MVC
+              generates encrypted auth cookie & sent to browser
             </li>
 
             <li>
@@ -1451,9 +1452,9 @@
             <li>
               User enters credentials on Angular login page and submit POST form
             </li>
-            <li>Angular calls Login API (username/password)</li>
+            <li>Angular calls Auth API (username/password)</li>
             <li>
-              Login API validates user from DB & generates JWT (user info,
+              Auth API validates user Azure AD & generates JWT (user info,
               roles, claims, signature, expiry); JWT returned to Angular
             </li>
             <li>Angular stores JWT in localStorage</li>
@@ -1478,18 +1479,19 @@
           <p><strong>Refresh Token (Angular):</strong></p>
           <ul>
             <li>
-              Login API issues JWT Access Token (short-lived, 20 min) &amp;
-              Refresh Token (long-lived, days/weeks)
+              Azure AD issues both JWT Access Token (short-lived, ~20 min) &
+              Refresh Token (long-lived, days/weeks), Auth API passes them to
+              Angular
             </li>
             <li>
               Refresh token is stored securely in browser (HttpOnly cookie
               preferred)
             </li>
-            <li>When JWT expires → Angular calls Refresh API</li>
+            <li>When JWT expires → Angular calls Auth Refresh API</li>
             <li>Browser automatically sends refresh token (cookie)</li>
             <li>
-              Refresh API validates refresh token & Issues new JWT and
-              optionally new refresh token
+              Auth API validates refresh token & Issues new JWT and optionally
+              new refresh token
             </li>
             <li>User stays logged in without re-entering credentials</li>
           </ul>
@@ -1498,6 +1500,12 @@
 
           <p><strong>Refresh Token (MVC):</strong></p>
           <ul>
+            <li>
+              <strong
+                >We can also follow angular approach here. Or else
+                following</strong
+              >
+            </li>
             <li>
               User logs in → server creates auth cookie & it has expiry (e.g.,
               30 min)
@@ -1510,7 +1518,7 @@
             <li>
               User stays logged in without refresh token. Refresh tokens are
               usually not required because cookies support sliding expiration to
-              maintain the session.
+              maintain session.
             </li>
           </ul>
         </div>
