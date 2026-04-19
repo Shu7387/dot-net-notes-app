@@ -1080,6 +1080,7 @@
         </p>
       </div>
 
+      <!-- Design Patterns -->
       <table>
         <thead>
           <tr>
@@ -1171,7 +1172,7 @@
 
           <!-- Structural -->
           <tr>
-            <td rowspan="4">
+            <td rowspan="5">
               <strong>Structural</strong><br />
               <small>How classes are connected</small>
             </td>
@@ -1243,10 +1244,31 @@
               only forwards on miss
             </td>
           </tr>
+          <tr>
+            <td>
+              <strong>Marker Interface</strong><br />
+              <small
+                >A common interface that multiple classes implement to be
+                identified and processed uniformly</small
+              >
+            </td>
+            <td>
+              🏷️ Airport wristband — anyone wearing it gets lounge access, staff
+              doesn't check your name, just the band
+            </td>
+            <td>
+              Checking each class by name to see if it has a property — fragile,
+              breaks on rename, must update everywhere
+            </td>
+            <td>
+              IRefreshTokenResponse, IRefreshTokenRequest — filter checks one
+              interface instead of checking each DTO by name
+            </td>
+          </tr>
 
           <!-- Behavioral -->
           <tr>
-            <td rowspan="7">
+            <td rowspan="9">
               <strong>Behavioral</strong><br />
               <small>How objects communicate</small>
             </td>
@@ -1396,6 +1418,49 @@
               Abstract class BaseCommandHandler defines Handle method (log →
               execute → log) flow; each handler class overrides only execute();
               All request go through Abstract Handle.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Interceptor / Filter</strong><br />
+              <small
+                >A piece of code that automatically runs before or after your
+                method without changing it</small
+              >
+            </td>
+            <td>
+              🛃 Airport security — runs before every flight, passengers don't
+              handle security themselves
+            </td>
+            <td>
+              Same logic repeated inside every method — cookie handling,
+              logging, validation copy-pasted everywhere
+            </td>
+            <td>
+              RefreshTokenCookieFilter — automatically reads/writes/removes
+              cookies before/after actions without touching controller
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Attribute / Decorator Metadata</strong><br />
+              <small
+                >Labels you stick on code to give it special meaning or extra
+                behavior without changing actual code logic</small
+              >
+            </td>
+            <td>
+              📌 Sticky note on a file — "Urgent" or "Read First" — file stays
+              same, note tells others how to treat it
+            </td>
+            <td>
+              Logic decides behavior based on method name or hardcoded
+              conditions — fragile and hidden
+            </td>
+            <td>
+              [ReadRefreshTokenFromCookie], [RemoveRefreshTokenCookie],
+              [RequireRole(RoleType.Admin)] — declaratively marks what should
+              happen
             </td>
           </tr>
 
